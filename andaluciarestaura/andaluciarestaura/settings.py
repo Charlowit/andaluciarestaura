@@ -25,7 +25,7 @@ SECRET_KEY = '$s=6@kmmhg$yxavb)m*#n-72qk6*gr+s7bnwh@#voxod&ef^p%'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost','54.14.184.104']
+ALLOWED_HOSTS = ['localhost','172.31.16.134']
 
 
 # Application definition
@@ -54,7 +54,7 @@ ROOT_URLCONF = 'andaluciarestaura.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -123,3 +123,5 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
