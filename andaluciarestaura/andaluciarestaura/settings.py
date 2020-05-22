@@ -25,7 +25,7 @@ SECRET_KEY = '$s=6@kmmhg$yxavb)m*#n-72qk6*gr+s7bnwh@#voxod&ef^p%'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['ec2-52-14-184-104.us-east-2.compute.amazonaws.com','localhost','andaluciarestaura.com','www.andaluciarestaura.com']
+ALLOWED_HOSTS = ['127.0.0.1','localhost','ec2-52-14-184-104.us-east-2.compute.amazonaws.com','andaluciarestaura.com','www.andaluciarestaura.com']
 
 
 # Application definition
@@ -38,7 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'frontend.apps.FrontendConfig',
+    'accounts.apps.AccountsConfig',
     'rest_framework',
+    'knox',
 ]
 
 MIDDLEWARE = [
@@ -72,21 +74,29 @@ TEMPLATES = [
 WSGI_APPLICATION = 'andaluciarestaura.wsgi.application'
 
 
-# Database
+# Database PRODUCCION
+# https://docs.djangoproject.com/en/3.0/ref/settings/#databases
+
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#        'NAME': 'andaluciarestaura',
+#        'USER': 'andaluciarestaura',
+#        'PASSWORD': 'jzif0039',
+#        'HOST': 'localhost',
+#        'PORT': '',
+#    }
+#}
+
+# Database DEV
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'andaluciarestaura',
-        'USER': 'andaluciarestaura',
-        'PASSWORD': 'jzif0039',
-        'HOST': 'localhost',
-        'PORT': '',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
-
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -131,4 +141,4 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'),os.path.join(BASE_DIR, 'frontend/static')]
+AUTH_USER_MODEL = 'accounts.User'

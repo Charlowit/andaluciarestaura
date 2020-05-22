@@ -1,25 +1,25 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { HashRouter as Router, Route, Switch, Redirect } from "react-router-dom";
 import ReactDOM from 'react-dom';
 import App from './App';
 import AppLogin from './AppLogin';
 import AdminPage from './AdminPage';
 
-class Router extends Component{
+class Routerback extends Component{
     render(){
         return(
-            <BrowserRouter>
+            <Router>
                 <Switch>
                     <Route path="/" exact component={App} />
                     <Route path="/login" component={AppLogin} />
                     <Route path="/admin-page" component={AdminPage} />
                 </Switch>
-            </BrowserRouter>
+            </Router>
         );
     }
 }
 
 ReactDOM.render(
-    <Router />,
+    <Routerback />,
     document.getElementById('app')
   )
