@@ -1,1 +1,1 @@
-import ViewIndex from "./components/Router";
+import App from "./components/App";

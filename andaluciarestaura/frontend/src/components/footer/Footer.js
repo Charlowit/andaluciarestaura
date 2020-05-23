@@ -7,19 +7,19 @@ class Footer extends Component {
         return (
             <React.Fragment>
                 <footer>
-                    <div className="level is-mobile">
-                        <div className="level-item has-text-centered">
+                    <div className="columns is-mobile">
+                        <div className="column is-one-quarter has-text-centered">
                             <div>
                                 <p className="heading">Descargar aplicación</p>
-                                <p className="image is-2by1">
-                                    <img src="https://netbulbsocialmedia.com/noticias/wp-content/uploads/2018/06/apps-aplicaciones-coomunity-manager-android.png"></img>
+                                <p >
+                                    <img width="200" height="50" src="https://netbulbsocialmedia.com/noticias/wp-content/uploads/2018/06/apps-aplicaciones-coomunity-manager-android.png"></img>
                                 </p>
-                                <p className="image is-3by1">
-                                    <img src="https://cmsphoto.ww-cdn.com/superstatic/81328/art/grande/17360379-21870473.jpg?v=1506622198"></img>
+                                <p >
+                                    <img width="200" height="50" src="https://cmsphoto.ww-cdn.com/superstatic/81328/art/grande/17360379-21870473.jpg?v=1506622198"></img>
                                 </p>
                             </div>
                         </div>
-                        <div className="level-item has-text-left">
+                        <div className="column is-one-quarter has-text-left">
                             <div>
                             <p className="heading">¿Quiénes somos?</p>
                             <p className="heading">Información de contacto</p>
@@ -27,7 +27,7 @@ class Footer extends Component {
                             <p className="heading">Trabaja con nosotros</p>
                             </div>
                         </div>
-                        <div className="level-item has-text-left">
+                        <div className="column is-one-quarter has-text-left">
                             <div>
                             <p className="heading">Politica de cookies</p>
                             <p className="heading">Preguntas frecuentes</p>
@@ -35,7 +35,7 @@ class Footer extends Component {
                             <p className="heading">Blog</p>
                             </div>
                         </div>
-                        <div classNameName="level-item has-text-left">
+                        <div className="column is-one-quarter has-text-left">
                             <div>
                                 <p >2020 Andalucía Restaura</p>
                                 <p className="heading">TODOS LOS DERECHOS RESERVADOS</p>
