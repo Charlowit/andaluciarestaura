@@ -22,6 +22,8 @@ class User(AbstractUser, PermissionsMixin):
     telefono_2 = models.CharField(max_length=100)
     fax = models.CharField(max_length=100)
     iban = models.CharField(max_length=100)
+    image = models.ImageField(upload_to='frontend/static/frontend', default="")
+    qr = models.ImageField(upload_to='qruser/', default="")
     creado_en = models.DateTimeField(auto_now_add=True)
     email = models.EmailField(_('email address'), default="")
     is_superuser = models.BooleanField(default=False)
@@ -33,6 +35,3 @@ class User(AbstractUser, PermissionsMixin):
     REQUIRED_FIELDS = []
 
     objects = CustomUserManager()
-
-    def __str__(self):
-        return self.cif

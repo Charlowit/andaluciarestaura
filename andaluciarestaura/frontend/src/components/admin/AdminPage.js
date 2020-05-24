@@ -1,23 +1,34 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from "prop-types";
-import { logout } from '../../actions/auth';
-//Esto conecta Redux con React
-
+import { updateuser } from '../../actions/datosusuario';
 
 
 class AdminPage extends Component {
+
     static propTypes = {
         auth: PropTypes.object.isRequired,
+        updateuser: PropTypes.func.isRequired,
     };
 
-  render() {
+
+    onSubmit = e =>{
+        e.preventDefault();
+        const { cif, marca_comercial, nombre_fiscal, razon_social, direccion_fiscal, localidad, codigo_postal, provincia, email, telefono_1, telefono_2, fax, iban, tipo_negocio } = this.state;
+        const user = { cif, marca_comercial, nombre_fiscal, razon_social, direccion_fiscal, localidad, codigo_postal, provincia, email, telefono_1, telefono_2, fax, iban, tipo_negocio };
+        this.props.updateuser();
+    };
+
+    onChange = e => this.setState({ [e.target.name]: e.target.value });
+
+    render() {
     const { isAuthenticated, user } = this.props.auth;
+
     return (
         //Esto envuelve lo que queramos devolver
         //Aqui estamos diciendo que el provider recoja de store
         <React.Fragment>
+
                 <div class="AdminPage">
                     <div class="columns">
                         <div class="column is-2"></div>
@@ -28,6 +39,7 @@ class AdminPage extends Component {
                         <div class="column is-one-fifth"></div>
                     </div>
                     <hr />
+
                         <form>
                             <div class="columns">
                                 <div class="column is-2"></div>
@@ -39,7 +51,7 @@ class AdminPage extends Component {
                                         <div class="field-body">
                                             <div class="field">
                                                 <p class="control has-icons-left">
-                                                    <input class="input" type="text" placeholder="" value={user ? `${user.cif}` : "" } readOnly/>
+                                                    <input class="input" type="text" placeholder="" name="cif" onChange={this.onChange} defaultValue={user ? `${user.cif}` : ""} />
                                                     <span class="icon is-small is-left">
                                                         <i class="fas fa-id-card-alt"></i>
                                                     </span>
@@ -54,7 +66,7 @@ class AdminPage extends Component {
                                         <div class="field-body">
                                             <div class="field">
                                                 <p class="control has-icons-left">
-                                                    <input class="input" type="text" placeholder="" value={user ? `${user.marca_comercial}` : "" } />
+                                                    <input class="input" type="text" placeholder="" name="marca_comercial" onChange={this.onChange} defaultValue={user ? `${user.marca_comercial}` : ""} />
                                                     <span class="icon is-small is-left">
                                                         <i class="fas fa-id-card-alt"></i>
                                                     </span>
@@ -69,7 +81,7 @@ class AdminPage extends Component {
                                         <div class="field-body">
                                             <div class="field">
                                                 <p class="control has-icons-left">
-                                                    <input class="input" type="text" placeholder="" value={user ? `${user.nombre_fiscal}` : "" } />
+                                                    <input class="input" type="text" placeholder="" name="nombre_fiscal" onChange={this.onChange} defaultValue={user ? `${user.nombre_fiscal}` : ""}/>
                                                     <span class="icon is-small is-left">
                                                         <i class="fas fa-id-card-alt"></i>
                                                     </span>
@@ -84,7 +96,7 @@ class AdminPage extends Component {
                                         <div class="field-body">
                                             <div class="field">
                                                 <p class="control has-icons-left">
-                                                    <input class="input" type="text" placeholder="" value={user ? `${user.razon_social}` : "" } />
+                                                    <input class="input" type="text" placeholder="" name="razon_social" onChange={this.onChange} defaultValue={user ? `${user.razon_social}` : ""} />
                                                     <span class="icon is-small is-left">
                                                         <i class="fas fa-id-card-alt"></i>
                                                     </span>
@@ -99,7 +111,7 @@ class AdminPage extends Component {
                                         <div class="field-body">
                                             <div class="field">
                                                 <p class="control has-icons-left">
-                                                    <input class="input" type="text" placeholder="" value={user ? `${user.direccion_fiscal}` : "" } />
+                                                    <input class="input" type="text" placeholder="" name="direccion_fiscal" onChange={this.onChange} defaultValue={user ? `${user.direccion_fiscal}` : ""} />
                                                     <span class="icon is-small is-left">
                                                         <i class="fas fa-address-book"></i>
                                                     </span>
@@ -114,7 +126,7 @@ class AdminPage extends Component {
                                         <div class="field-body">
                                             <div class="field">
                                                 <p class="control has-icons-left">
-                                                    <input class="input" type="text" placeholder="" value={user ? `${user.localidad}` : "" } />
+                                                    <input class="input" type="text" placeholder=""  name="localidad" onChange={this.onChange} defaultValue={user ? `${user.localidad}` : ""} />
                                                     <span class="icon is-small is-left">
                                                         <i class="fas fa-address-book"></i>
                                                     </span>
@@ -129,7 +141,7 @@ class AdminPage extends Component {
                                         <div class="field-body">
                                             <div class="field">
                                                 <p class="control has-icons-left">
-                                                    <input class="input" type="text" placeholder="" value={user ? `${user.codigo_postal}` : "" } />
+                                                    <input class="input" type="text" placeholder="" name="codigo_postal" onChange={this.onChange} defaultValue={user ? `${user.codigo_postal}` : ""} />
                                                     <span class="icon is-small is-left">
                                                         <i class="fas fa-address-book"></i>
                                                     </span>
@@ -144,7 +156,7 @@ class AdminPage extends Component {
                                         <div class="field-body">
                                             <div class="field">
                                                 <p class="control has-icons-left">
-                                                    <input class="input" type="text" placeholder="" value={user ? `${user.provincia}` : "" } />
+                                                    <input class="input" type="text" placeholder="" name="provincia" onChange={this.onChange} defaultValue={user ? `${user.provincia}` : ""} />
                                                     <span class="icon is-small is-left">
                                                         <i class="fas fa-address-book"></i>
                                                     </span>
@@ -161,7 +173,7 @@ class AdminPage extends Component {
                                         <div class="field-body">
                                             <div class="field">
                                                 <p class="control has-icons-left">
-                                                    <input class="input" type="text" placeholder="" value={user ? `${user.email}` : "" } />
+                                                    <input class="input" type="text" placeholder="" name="email" onChange={this.onChange} defaultValue={user ? `${user.email}` : ""} />
                                                     <span class="icon is-small is-left">
                                                         <i class="fas fa-envelope-square"></i>
                                                     </span>
@@ -176,7 +188,7 @@ class AdminPage extends Component {
                                         <div class="field-body">
                                             <div class="field">
                                                 <p class="control has-icons-left">
-                                                    <input class="input" type="text" placeholder="" value={user ? `${user.telefono_1}` : "" } />
+                                                    <input class="input" type="text" placeholder="" name="telefono_1" onChange={this.onChange} defaultValue={user ? `${user.telefono_1}` : ""} />
                                                     <span class="icon is-small is-left">
                                                         <i class="fas fa-phone-square-alt"></i>
                                                     </span>
@@ -191,7 +203,7 @@ class AdminPage extends Component {
                                         <div class="field-body">
                                             <div class="field">
                                                 <p class="control has-icons-left">
-                                                    <input class="input" type="text" placeholder="" value={user ? `${user.telefono_2}` : "" } />
+                                                    <input class="input" type="text" placeholder="" name="telefono_2" onChange={this.onChange} defaultValue={user ? `${user.telefono_2}` : ""} />
                                                     <span class="icon is-small is-left">
                                                         <i class="fas fa-phone-square-alt"></i>
                                                     </span>
@@ -206,7 +218,7 @@ class AdminPage extends Component {
                                         <div class="field-body">
                                             <div class="field">
                                                 <p class="control has-icons-left">
-                                                    <input class="input" type="text" placeholder="" value={user ? `${user.fax}` : "" } />
+                                                    <input class="input" type="text" placeholder="" name="fax" onChange={this.onChange} defaultValue={user ? `${user.fax}` : ""} />
                                                     <span class="icon is-small is-left">
                                                         <i class="fas fa-fax"></i>
                                                     </span>
@@ -221,7 +233,7 @@ class AdminPage extends Component {
                                         <div class="field-body">
                                             <div class="field">
                                                 <p class="control has-icons-left">
-                                                    <input class="input" type="text" placeholder="" value={user ? `${user.iban}` : "" } />
+                                                    <input class="input" type="text" placeholder="" name="iban" onChange={this.onChange} defaultValue={user ? `${user.iban}` : ""} />
                                                     <span class="icon is-small is-left">
                                                         <i class="fas fa-credit-card"></i>
                                                     </span>
@@ -251,7 +263,7 @@ class AdminPage extends Component {
                                         <div class="field-body">
                                             <div class="field">
                                                 <p class="control has-icons-left">
-                                                    <input class="input" type="text" placeholder="Name" value={user ? `${user.tipo_negocio}` : "" } />
+                                                    <input class="input" type="text" placeholder="" name="tipo_negocio" onChange={this.onChange} defaultValue={user ? `${user.tipo_negocio}` : ""} />
                                                     <span class="icon is-small is-left">
                                                         <i class="fas fa-building"></i>
                                                     </span>
@@ -269,6 +281,7 @@ class AdminPage extends Component {
                         <div class="field-body">
                             <div class="field">
                                 <div class="buttons is-centered">
+
                                     <button class="button">Guardar Cambios</button>
                                 </div>
                             </div>
@@ -285,4 +298,4 @@ const mapStateToProps = state => ({
     auth: state.auth
 });
 
-export default connect(mapStateToProps)(AdminPage);
+export default connect(mapStateToProps, { updateuser })(AdminPage);

@@ -5,14 +5,17 @@ import {
     LOGIN_SUCCESS,
     LOGIN_FAIL,
     LOGOUT_SUCCESS,
-
+    UPDATE_SUCCESS,
+    UPDATE_ERROR,
+    UPDATE_LOADING,
 } from '../actions/types';
 
 const initialState = {
     token: localStorage.getItem('token'),
     isAuthenticated: null,
     isLoading: false,
-    user: null
+    user: null,
+    isUpdating: false
 }
 
 export default function(state = initialState, action){
@@ -21,13 +24,15 @@ export default function(state = initialState, action){
         case USER_LOADING:
             return {
                 ...state,
-                isLoading: true
+                isLoading: true,
+                isUpdating: false
             }
         case USER_LOADED:
             return{
                 ...state,
                 isAuthenticated: true,
                 isLoading: false,
+                isUpdating: false,
                 user: action.payload
             }
         case LOGIN_SUCCESS:
@@ -36,8 +41,30 @@ export default function(state = initialState, action){
                 ...state,
                 ...action.payload,
                 isAuthenticated: true,
+                isUpdating: false,
                 isLoading: false
             }
+        case UPDATE_LOADING:
+            return {
+                ...state,
+                isAuthenticated: true,
+                isLoading: false,
+                isUpdating: true,
+            }
+        case UPDATE_SUCCESS:
+            return {
+                ...state,
+                ...action.payload,
+                isAuthenticated: true,
+                isLoading: false,
+                isUpdating: false,
+            }
+        case UPDATE_ERROR:
+            return{
+                ...state,
+                isUpdating: false
+            }
+
         case AUTH_ERROR:
         case LOGIN_FAIL:
         case LOGOUT_SUCCESS:
@@ -47,7 +74,8 @@ export default function(state = initialState, action){
                 token: null,
                 user: null,
                 isAuthenticated: false,
-                isLoading: false
+                isLoading: false,
+                isUpdating: false,
             }
         default:
             return state;

@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'frontend.apps.FrontendConfig',
     'accounts.apps.AccountsConfig',
+    'carta.apps.CartaConfig',
     'rest_framework',
     'knox'
 ]
@@ -141,3 +142,5 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 AUTH_USER_MODEL = 'accounts.User'
+
+PUBLIC_URL = ''
