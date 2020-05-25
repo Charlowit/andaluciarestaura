@@ -14,12 +14,11 @@ class UserSerializer(serializers.ModelSerializer):
 class RegisterSerializer(serializers.ModelSerializer):
     class Meta:
             model = User
-            fields = ('cif', 'password')
+            fields = ('id', 'cif', 'password')
             extra_kwargs = {'password': {'write_only':True} }
 
     def create(self, validated_data):
-        user = User.objects.create_user(**validated_data)
-
+        user = User.objects.create_user(validated_data['cif'], validated_data['password'])
         return user
 
 # Login Serializer

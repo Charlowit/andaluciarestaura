@@ -7,7 +7,7 @@ from django.utils import timezone
 from .managers import CustomUserManager
 
 class User(AbstractUser, PermissionsMixin):
-    username = models.CharField(max_length=100, unique=True, blank=True, null=True, default="hotehubclient")
+    username = models.CharField(max_length=100, blank=True, null=True, default="hotehubclient")
     cif = models.CharField(max_length=100, unique=True, default="00000000A")
     razon_social = models.CharField(max_length=100)
     marca_comercial = models.CharField(max_length=100)
@@ -22,8 +22,10 @@ class User(AbstractUser, PermissionsMixin):
     telefono_2 = models.CharField(max_length=100)
     fax = models.CharField(max_length=100)
     iban = models.CharField(max_length=100)
+    image = models.ImageField(upload_to='frontend/static/frontend', default="")
+    qr = models.ImageField(upload_to='qruser/', default="")
     creado_en = models.DateTimeField(auto_now_add=True)
-    email = models.EmailField(_('email address'), unique=True, default="")
+    email = models.EmailField(_('email address'), default="")
     is_superuser = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
@@ -33,6 +35,3 @@ class User(AbstractUser, PermissionsMixin):
     REQUIRED_FIELDS = []
 
     objects = CustomUserManager()
-
-    def __str__(self):
-        return self.cif

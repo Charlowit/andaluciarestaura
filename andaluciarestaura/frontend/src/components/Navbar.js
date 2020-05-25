@@ -14,9 +14,9 @@ class NavbarLog extends Component {
         return (
             <React.Fragment>
                 <header>
-                    <nav class="navbar is-transparent v-centered">
+                    <nav class="navbar is-transparent">
                         <div class="navbar-brand">
-                            <p className="navbar-item" href="#">
+                            <p className="navbar-item " href="#">
                                 <NavLink to="/">
                                     <img src="https://cdn.discordapp.com/attachments/451551902186995713/713100395819434024/WhatsApp_Image_2020-05-21_at_20.42.20_1.jpeg" width="200" height="50" />
                                 </NavLink>
@@ -25,7 +25,6 @@ class NavbarLog extends Component {
                         <div className="navbar-brand">
                             <a onClick={() => {this.setState({ isActive: !this.state.isActive })}}
                             className={this.state.isActive ? "navbar-burger burger is-active" : "navbar-burger burger"} >
-
                                 <span aria-hidden="true"></span>
                                 <span aria-hidden="true"></span>
                                 <span aria-hidden="true"></span>
