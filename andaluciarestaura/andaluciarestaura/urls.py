@@ -21,4 +21,5 @@ urlpatterns = [
     path('', include('frontend.urls')),
     path('', include('carta.urls')),
     path('', include('accounts.urls')),
+    path('', include('frontend.urls')),
 ]
