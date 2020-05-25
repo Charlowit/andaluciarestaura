@@ -27,7 +27,7 @@ class Carta(models.Model):
 class Productos(models.Model):
         categoria = models.ForeignKey(Categorias, on_delete=models.CASCADE, related_name="categoria", null=False)
         name = models.CharField(max_length=100, default="producto")
-        descripcion: models.CharField(max_length=100);
+        descripcion= models.CharField(max_length=100);
         tamanio = models.CharField(max_length=3, choices=TAMANIOS, default='S')
         precio1 = models.IntegerField(default="0")
         precio2 = models.IntegerField(default="0")

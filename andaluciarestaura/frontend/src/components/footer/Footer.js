@@ -7,43 +7,19 @@ class Footer extends Component {
         return (
             <React.Fragment>
                 <footer>
-                    <div className="columns is-mobile">
-                        <div className="column is-one-quarter has-text-centered">
+                    <div className="columns is-full">
+                        <div className="column is-half is-centered is-offset-one-quarter">
                             <div>
-                                <p className="heading">Descargar aplicación</p>
-                                <p >
-                                    <img width="200" height="50" src="https://netbulbsocialmedia.com/noticias/wp-content/uploads/2018/06/apps-aplicaciones-coomunity-manager-android.png"></img>
+                                <p>
+                                    <img width="200" height="50" src={"/static/frontend/logotipo.jpeg"}></img> <br />
+                                    Andalucía Restaura by Hotehub
+                                    <br />
+                                    Copyright@2020 Todos los derechos reservados
                                 </p>
-                                <p >
-                                    <img width="200" height="50" src="https://cmsphoto.ww-cdn.com/superstatic/81328/art/grande/17360379-21870473.jpg?v=1506622198"></img>
-                                </p>
-                            </div>
-                        </div>
-                        <div className="column is-one-quarter has-text-left">
-                            <div>
-                            <p className="heading">¿Quiénes somos?</p>
-                            <p className="heading">Información de contacto</p>
-                            <p className="heading">Condiciones de Uso y politica de Privacidad</p>
-                            <p className="heading">Trabaja con nosotros</p>
-                            </div>
-                        </div>
-                        <div className="column is-one-quarter has-text-left">
-                            <div>
-                            <p className="heading">Politica de cookies</p>
-                            <p className="heading">Preguntas frecuentes</p>
-                            <p className="heading">Consentimiento de cookies</p>
-                            <p className="heading">Blog</p>
-                            </div>
-                        </div>
-                        <div className="column is-one-quarter has-text-left">
-                            <div>
-                                <p >2020 Andalucía Restaura</p>
-                                <p className="heading">TODOS LOS DERECHOS RESERVADOS</p>
                             </div>
                         </div>
                     </div>
-                    <br />
-                    <p className="has-text-centered">Las ofertas promocionales están sujetas a las condiciones que figuran en la página del restaurante. las ofertas en bebidas alcohólicas están dirigidas únicamente a adultos. El consumo de alcohol es perjudicial para la salud. Bebe con moderación.</p>
+
                 </footer>
             </React.Fragment>
         );

@@ -121,6 +121,13 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+#Configuración SMTP
+
+EMAIL_HOST = 'mail.hotehub.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'soporte@hotehub.com'
+EMAIL_HOST_PASSWORD = 'soporte42987'
+EMAIL_USE_TLS = True
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
