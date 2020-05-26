@@ -29,7 +29,7 @@ class AdminPage extends Component {
         //Aqui estamos diciendo que el provider recoja de store
         <React.Fragment>
 
-                <div class="AdminPage">
+                <div class="section">
                     <div class="columns">
                         <div class="column is-2"></div>
                         <div class="column is-one-third">
