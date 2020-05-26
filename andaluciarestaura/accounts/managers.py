@@ -13,7 +13,7 @@ class CustomUserManager(BaseUserManager):
         """
         if not cif:
             raise ValueError(_('The Email must be set'))
-        email = self.normalize_email(cif)
+        cif = self.normalize_email(cif)
         user = self.model(cif=cif, **extra_fields)
         user.set_password(password)
         user.save()

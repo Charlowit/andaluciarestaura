@@ -88,5 +88,23 @@ export const logout = () => (dispatch, getState) => {
         }).catch(err => console.log(err));
 };
 
+// Registro
+
+export const registro = (user) => dispatch => {
+
+    //Headers
+    const config = {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    };
+
+    const body = JSON.stringify(user);
+
+    axios.post('/api/auth/register', body, config)
+        .catch(err => console.log(err));
+
+};
+
 
 

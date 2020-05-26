@@ -58,7 +58,15 @@ export class Navbar extends Component {
         const guestLinks = (
 
              <div className={this.state.isActive ? "navbar-menu is-active" : "navbar-menu"} >
+
                 <div className="navbar-end">
+                    <div className="navbar-item">
+                        <div className="buttons">
+                            <Link to="/register-page">
+                                <p className="button">Registro</p>
+                            </Link>
+                        </div>
+                    </div>
                     <div className="navbar-item">
                         <div className="buttons">
                             <Link to="/">
@@ -77,7 +85,7 @@ export class Navbar extends Component {
                         <div className="navbar-brand">
                             <p className="navbar-item" href="#">
                                 <Link to="/">
-                                    <img src="https://cdn.discordapp.com/attachments/451551902186995713/713100395819434024/WhatsApp_Image_2020-05-21_at_20.42.20_1.jpeg" width="200" height="50" />
+                                    <img src={"/static/frontend/logoar.svg"} width="300" height="125" />
                                 </Link>
                             </p>
                         </div>

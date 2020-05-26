@@ -9,7 +9,7 @@ import ServiciosPage from "./servicios/ServiciosPage";
 import ReservasPage from "./reservas/ReservasPage";
 import DeliveryPage from "./delivery/DeliveryPage";
 import CartaPage from "./carta/CartaPage";
-import Register from "./accounts/Register";
+import Registro from "./accounts/Registro";
 import PrivateRoute from "./privateroute/PrivateRoute";
 import PrivateRouteLogin from "./privateroute/PrivateRouteLogin";
 import { Provider } from 'react-redux';
@@ -29,7 +29,7 @@ class App extends Component {
                     <Switch>
                         <PrivateRouteLogin exact path="/" component={Login} />
                         <PrivateRoute exact path="/admin-page" component={AdminPage} />
-                        <Route exact path="/register" component={Register} />
+                        <Route exact path="/register-page" component={Registro} />
                         <PrivateRoute exact path="/servicios-page" component={ServiciosPage} />
                         <PrivateRoute exact path="/carta-page" component={CartaPage} />
                         <PrivateRoute exact path="/reservas-page" component={ReservasPage} />
