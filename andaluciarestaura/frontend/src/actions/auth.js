@@ -79,6 +79,7 @@ export const logout = () => (dispatch, getState) => {
         config.headers['Authorization'] = `Token ${token}`;
     }
 
+
     axios.post('/api/auth/logout',null, config)
         .then(res =>{
             dispatch({

@@ -4,6 +4,7 @@ from django.contrib.auth.models import PermissionsMixin
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 
+
 from .managers import CustomUserManager
 
 class User(AbstractUser, PermissionsMixin):
@@ -22,8 +23,9 @@ class User(AbstractUser, PermissionsMixin):
     telefono_2 = models.CharField(max_length=100)
     fax = models.CharField(max_length=100)
     iban = models.CharField(max_length=100)
-    image = models.ImageField(upload_to='frontend/static/frontend/uploads', default="")
-    qr = models.ImageField(upload_to='frontend/static/frontend/qr', default="")
+    image = models.ImageField(upload_to='frontend/static/updloads', default="")
+    pdf = models.FileField(blank=False, null=False, upload_to='frontend/static/uploads', default="")
+    qr = models.ImageField(default="")
     creado_en = models.DateTimeField(auto_now_add=True)
     email = models.EmailField(_('email address'), default="")
     is_superuser = models.BooleanField(default=False)

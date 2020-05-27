@@ -39,8 +39,7 @@ export class Registro extends Component {
         localidad: "",
         provincia: "",
         telefono_1: "",
-        email: ""
-
+        email: "",
     }
 
     static propTypes = {
@@ -173,6 +172,15 @@ export class Registro extends Component {
                                                             <label className="label has-text-centered is-size-4">Teléfono de contacto</label>
                                                             <div className="control has-icons-left">
                                                                 <input type="text" placeholder="6969696969" name="telefono_1" className="input" onChange={this.onChange} value={telefono_1} />
+                                                                <span className="icon is-small is-left">
+                                                                    <i className="fa fa-lock"></i>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                        <div className="field">
+                                                            <label className="label has-text-centered is-size-4">Correo Electrónico</label>
+                                                            <div className="control has-icons-left">
+                                                                <input type="email" placeholder="correo@hotehub.com" name="email" className="input" onChange={this.onChange} value={email} />
                                                                 <span className="icon is-small is-left">
                                                                     <i className="fa fa-lock"></i>
                                                                 </span>

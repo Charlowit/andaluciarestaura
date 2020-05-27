@@ -24,7 +24,7 @@ export class Navbar extends Component {
     render() {
 
         const { isAuthenticated, user } = this.props.auth;
-
+        
         const authLinks = (
             <div className={this.state.isActive ? "navbar-menu is-active" : "navbar-menu"}>
                 <div className="navbar-start">
