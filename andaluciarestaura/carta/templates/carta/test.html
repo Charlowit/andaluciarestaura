@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+{% load static %}
 <head>
     <meta charset="UTF-8">
     <title>Andalucia Restaura by Hotehub</title>
@@ -42,8 +43,10 @@
     {% else %}
         <p>No hay carta.</p>
     {% endif %}
-    <object data="http://bibliotecadigital.ilce.edu.mx/Colecciones/ObrasClasicas/_docs/Corazon_Amicis.pdf" type="application/pdf">
+    <object data="{% static 'clientes/{{ id_carta }}/free.pdf'%}" type="application/pdf">
         <iframe src="https://docs.google.com/viewer?url=your_url_to_pdf&embedded=true"></iframe>
     </object>
 </body>
 </html>
+<!--<object data="http://127.0.0.1:8000/static/free.pdf" type="application/pdf">
+  <object data="{% static 'clientes/{{ id_carta }}/free.pdf'%}" type="application/pdf">

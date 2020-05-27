@@ -7,11 +7,11 @@ class CustomUserCreationForm(UserCreationForm):
 
     class Meta(UserCreationForm):
         model = User
-        fields = ('cif','email','username','razon_social','marca_comercial', 'nombre_fiscal', 'tipo_negocio', 'tipo_via', 'direccion_fiscal', 'localidad', 'codigo_postal', 'telefono_1', 'telefono_2', 'fax', 'iban', 'image', 'qr')
+        fields = ('cif','email','username','razon_social','marca_comercial', 'nombre_fiscal', 'tipo_negocio', 'tipo_via', 'direccion_fiscal', 'localidad', 'codigo_postal', 'provincia', 'telefono_1', 'telefono_2', 'fax', 'iban', 'image', 'pdf', 'qr')
 
 
 class CustomUserChangeForm(UserChangeForm):
 
     class Meta:
         model = User
-        fields = ('cif','email','username','razon_social','marca_comercial', 'nombre_fiscal', 'tipo_negocio', 'tipo_via', 'direccion_fiscal', 'localidad', 'codigo_postal', 'telefono_1', 'telefono_2', 'fax', 'iban', 'image', 'qr')
+        fields = ('cif','email','username','razon_social','marca_comercial', 'nombre_fiscal', 'tipo_negocio', 'tipo_via', 'direccion_fiscal', 'localidad', 'codigo_postal', 'provincia', 'telefono_1', 'telefono_2', 'fax', 'iban', 'image', 'pdf', 'qr')

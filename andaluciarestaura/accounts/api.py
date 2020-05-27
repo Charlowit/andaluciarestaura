@@ -1,11 +1,18 @@
 from rest_framework import generics, permissions
-from .models import User
 from rest_framework.response import Response
+from .models import User
 from rest_framework import viewsets, permissions
 from knox.models import AuthToken
-from .serializers import UserSerializer, RegisterSerializer, LoginSerializer
+from .serializers import UserSerializer, RegisterSerializer, LoginSerializer, FilePDFSerializer
 from django.core.mail import send_mail
+from rest_framework.views import APIView
+from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.response import Response
+from rest_framework import status
+import logging
+import os
 
+logger = logging.getLogger(__name__)
 #Register API
 
 class RegisterApi(generics.GenericAPIView):
@@ -18,6 +25,7 @@ class RegisterApi(generics.GenericAPIView):
         subject = 'Anadalucia Restaura'
         from_email = 'soporte@hotehub.com'
         to = request.data['email']
+        
         message = 'Gracias por registrarse en Andalucia Restaura, en breve nos pondremos en contacto con usted para elaborar su carta digital de forma gratuita.'
         send_mail(subject, message, from_email, [to])
         return Response({
@@ -51,5 +59,39 @@ class UserApi(generics.RetrieveAPIView):
 
     def get_object(self):
         return self.request.user
+
+
+
+#File pdf Upload
+
+
+def handle_uploaded_file(f):
+    with open('./frontend/static', 'wb+') as destination:
+        for chunk in f.chunks():
+            destination.write(chunk)
+
+class FilePDFApi(APIView):
+    permission_classes = [
+        permissions.AllowAny,
+    ]
+    parser_classes = (MultiPartParser, FormParser)
+
+    def post(self, request, *args, **kwargs):
+        pdf_serializer = FilePDFSerializer(data=request.data)
+        if pdf_serializer.is_valid():
+            cif_user = request.data["cif"]
+            if cif_user is not None:
+                usuarioainsertarpdf = User.objects.filter(cif=cif_user)
+
+                usuarioainsertarpdf[0].pdf = request.data["pdf"]
+                logger.error(os.system('echo %cd%'))
+                handle_uploaded_file(request.data["pdf"])
+                logger.error('ANTES DEL SAVE:')
+                logger.error(request.data["pdf"])
+                usuarioainsertarpdf[0].save()
+                return Response(pdf_serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            print('error', pdf_serializer.errors)
+            return Response(pdf_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 

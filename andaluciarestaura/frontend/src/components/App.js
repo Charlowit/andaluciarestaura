@@ -12,6 +12,8 @@ import CartaPage from "./carta/CartaPage";
 import Registro from "./accounts/Registro";
 import PrivateRoute from "./privateroute/PrivateRoute";
 import PrivateRouteLogin from "./privateroute/PrivateRouteLogin";
+import FileUpload from "./accounts/FileUpload";
+import ViewPdf from "./accounts/ViewPdf";
 import { Provider } from 'react-redux';
 import store from '../store';
 import { loadUser, login } from '../actions/auth';
@@ -34,6 +36,8 @@ class App extends Component {
                         <PrivateRoute exact path="/carta-page" component={CartaPage} />
                         <PrivateRoute exact path="/reservas-page" component={ReservasPage} />
                         <PrivateRoute exact path="/delivery-page" component={DeliveryPage} />
+                        <Route exact path="/pdf-upload" component={FileUpload} />
+                        <Route exact path="/view-pdf" component={ViewPdf} />
                     </Switch>
                     <Footer />
                 </Fragment>
