@@ -5,9 +5,9 @@ from django.template import loader
 def react(response,cif):
     return HttpResponse("You're looking at question %s." % cif)
 
-def index(request,id_carta):
+def index(request,cif_cliente):
     template = loader.get_template('carta/test.html')
     context = {
-        'id_carta': id_carta,
+        'cif_cliente': cif_cliente,
     }
     return HttpResponse(template.render(context, request))

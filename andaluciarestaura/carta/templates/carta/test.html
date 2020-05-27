@@ -3,50 +3,89 @@
 {% load static %}
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
     <title>Andalucia Restaura by Hotehub</title>
 </head>
 <body>
-    <header>
-        <nav class="navbar is-transparent">
-            <div class="navbar-brand">
-                <p className="navbar-item " href="#">
-                    <NavLink to="/">
-                        <img src="https://cdn.discordapp.com/attachments/451551902186995713/713100395819434024/WhatsApp_Image_2020-05-21_at_20.42.20_1.jpeg" width="200" height="50" />
-                    </NavLink>
-                </p>
-            </div>
-            <div className="navbar-brand">
-                <a >
-                    <span aria-hidden="true"></span>
-                    <span aria-hidden="true"></span>
-                    <span aria-hidden="true"></span>
-                </a>
-            </div>
-            <div>
-                <div className="navbar-end">
-                    <div className="navbar-item">
-                        <div className="buttons">
-                            <NavLink to="/login">
-                                <p className="button">Log in</p>
-                            </NavLink>
-                        </div>
-                    </div>
+  <header>
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+      <div class="navbar-brand">
+        <a class="navbar-item" href="/">
+          <img src="{% static 'frontend/logoar.svg' %}" width="300" height="125">
+        </a>
+
+        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+    </nav>
+  </header>
+  <section class="hero is-info is-bold">
+    <div class="hero-body">
+        <div class="container has-text-centered is-clearfix">
+            <div class='equal-height'>
+                <div class="card-image has-text-centered">
+                    <figure class="image is-128x128 is-inline-block">
+                      {% if cif_cliente %}
+                          {% with 'clientes/'|add:cif_cliente|add:'/logo.jpeg' as img_static %}
+                          <img class="is-rounded"src="{% static img_static %}"></img>
+                          {% endwith %}
+                      {% endif %}
+                    </figure>
                 </div>
             </div>
-        </nav>
-    </header>
-    <hr />
-    {% if id_carta %}
-        <ul>
-            <li><a href="">{{ id_carta }}</a></li>
-        </ul>
-        <object data="http://127.0.0.1:8000/static/clientes/b14982516/free.pdf" type="application/pdf">
-            <iframe src="https://docs.google.com/viewer?url=your_url_to_pdf&embedded=true"></iframe>
-        </object> 
-    {% else %}
-        <p>No hay carta.</p>
-    {% endif %}
+            <h1 class="title"> Los Patios de la Marquesa </h1>
+            <h2 class="subtitle">"Feria de Mayo 2020" </h2>
+            <p class="field">
+                <a href="https://www.facebook.com/patiosmarquesa" class="button is-rounded is-medium">
+                    <span class="icon">
+                      <i class="fab fa-facebook"></i>
+                    </span>
+                </a>
+                <!--
+                <a class="button is-rounded is-medium">
+                    <span class="icon">
+                        <i class="fab fa-tripadvisor"></i>
+                    </span>
+                </a>
+                <a class="button is-rounded is-medium">
+                    <span class="icon">
+                      <i class="fab fa-instagram"></i>
+                    </span>
+                </a>
+                -->
+            </p>
+            <hr/>
+            <div class="container">
+                <h1 class="title">Carta de Feria</h1>
+                {% if cif_cliente %}
+                    {% with 'clientes/'|add:cif_cliente|add:'' as url_static %}
+                        <a href="whatsapp://send?text=https://www.andaluciarestaura.com{% static url_static %}/?utm_source=whatsapp" class="button">
+                    {% endwith %}
+                {% endif %}
+                  <span class="icon is-small">
+                      <i class="fab fa-whatsapp"></i>
+                  </span>
+                  <span>Comparte por Whatsapp</span>
+                </a>
+          </div>
+        </div>
+    </div>
+</section>
+{% if cif_cliente %}
+    {% with 'clientes/'|add:cif_cliente|add:'/free.pdf' as pdf_static %}
+
+      <object style="width:100%;height:100vh;" data="{% static pdf_static %}" type="application/pdf">
+          <iframe style="height:100%;width:100%;" height="100%" width="100%"
+          src="https://docs.google.com/viewer?url=https://www.andaluciarestaura.com/{% static pdf_static %}&embedded=true"></iframe>
+      </object>
+
+    {% endwith %}
+{% endif %}
 </body>
 </html>
 <!--<object data="http://127.0.0.1:8000/static/free.pdf" type="application/pdf">
-  <object data="{% static 'clientes/{{ id_carta }}/free.pdf'%}" type="application/pdf">
+  <object data="{% static 'clientes/{ id_carta }/free.pdf'%}" type="application/pdf">

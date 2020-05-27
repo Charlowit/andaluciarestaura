@@ -24,5 +24,5 @@ urlpatterns = [
     path('', include('frontend.urls')),
     path('', include('carta.urls')),
     path('', include('accounts.urls')),
-    path("cartaestatica/<str:id_carta>", v.index, name="cartaestatica"),
+    path("cartaestatica/<str:cif_cliente>", v.index, name="cartaestatica"),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
