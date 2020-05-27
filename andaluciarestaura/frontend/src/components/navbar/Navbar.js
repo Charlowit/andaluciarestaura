@@ -106,12 +106,12 @@ export class Navbar extends Component {
                 
                 <Menu right styles={styles}>
 
-                    <div class="menu-item" style={{ width: '100%' }}>
+                    <div className="menu-item" style={{ width: '100%' }}>
                         <Link to="/register-page">
                             <p className="button is-link" style={{ width: '100%' }}>Registro</p>
                         </Link>
                     </div>
-                    <div class="menu-item" style={{ width: '100%', marginTop: '10px' }}>
+                    <div className="menu-item" style={{ width: '100%', marginTop: '10px' }}>
                         <Link to="/">
                             <p className="button is-link" style={{ width: '100%' }}>Login</p>
                         </Link>

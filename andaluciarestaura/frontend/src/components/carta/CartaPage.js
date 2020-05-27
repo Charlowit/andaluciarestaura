@@ -159,9 +159,6 @@ export class CartaPage extends Component {
 
                                 {this.props.carta.map( carta => (
                                     
-                                    
-
-                             
                                 <div className='card equal-height '>
                                     <div className="columns">
                                         <div className="container">
