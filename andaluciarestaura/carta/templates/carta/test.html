@@ -6,6 +6,11 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css">
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
     <title>Andalucia Restaura by Hotehub</title>
+    <style>
+        @media (min-width: 668px) {
+            .whatsapp { display: none }
+        }
+    </style>
 </head>
 <body>
   <header>
@@ -63,7 +68,7 @@
                 <h1 class="title">Carta de Feria</h1>
                 {% if cif_cliente %}
                     {% with 'clientes/'|add:cif_cliente|add:'' as url_static %}
-                        <a href="whatsapp://send?text=https://www.andaluciarestaura.com{% static url_static %}/?utm_source=whatsapp" class="button">
+                        <a href="whatsapp://send?text=Carta%20Feria%20Los%20Patios%20de%20la%20Marquesa%20by%20Andalucía%20Restaura%20https://www.andaluciarestaura.com{% static url_static %}?utm_source=whatsapp" class="button whatsapp">
                     {% endwith %}
                 {% endif %}
                   <span class="icon is-small">
@@ -79,9 +84,11 @@
     {% with 'clientes/'|add:cif_cliente|add:'/free.pdf' as pdf_static %}
 
       <object style="width:100%;height:100vh;" data="{% static pdf_static %}" type="application/pdf">
-          <iframe style="height:100%;width:100%;" height="100%" width="100%"
-          src="https://docs.google.com/viewer?url=https://www.andaluciarestaura.com/{% static pdf_static %}&embedded=true"></iframe>
+        <iframe style="height:1200px;width:100%;"
+          src="https://docs.google.com/viewer?url=https://www.andaluciarestaura.com/{% static pdf_static %}&embedded=true">
+        </iframe>
       </object>
+      
 
     {% endwith %}
 {% endif %}
