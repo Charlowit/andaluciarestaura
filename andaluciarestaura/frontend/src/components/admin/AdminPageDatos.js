@@ -279,7 +279,12 @@ export class AdminPageDatos extends Component {
                     ))}
                     <hr />
                 </div>
+
+                <h1> Hola </h1>
             </React.Fragment>
+            
+                
+            
         );
     }
 }
