@@ -15,11 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf.urls.static import static
+from django.conf import settings
+from carta import views as v
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('frontend.urls')),
     path('', include('carta.urls')),
     path('', include('accounts.urls')),
-    path('', include('frontend.urls')),
-]
+    path("cartaestatica/<str:id_carta>", v.index, name="cartaestatica"),
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

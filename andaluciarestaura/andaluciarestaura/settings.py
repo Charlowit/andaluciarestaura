@@ -81,18 +81,18 @@ WSGI_APPLICATION = 'andaluciarestaura.wsgi.application'
 
 # Database PRODUCCION
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
-
-#DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#        'NAME': 'andaluciarestaura',
-#        'USER': 'andaluciarestaura',
-#        'PASSWORD': 'jzif0039',
-#        'HOST': 'localhost',
-#        'PORT': '',
-#    }
-#}
-
+"""
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'andaluciarestaura',
+        'USER': 'andaluciarestaura',
+        'PASSWORD': 'jzif0039',
+        'HOST': 'localhost',
+        'PORT': '',
+    }
+}
+"""
 # Database DEV
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
@@ -150,4 +150,10 @@ STATIC_URL = '/static/'
 
 AUTH_USER_MODEL = 'accounts.User'
 
+#STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 PUBLIC_URL = ''
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+]
+STATIC_ROOT = '/home/ubuntu/andaluciarestaura/andaluciarestaura/frontend/static'
