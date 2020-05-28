@@ -290,7 +290,7 @@ class AdminPage extends Component {
                     </div>
                     <hr />
                 </div>
-                <div className="section">
+                {/*<div className="section">
                     <div classNames="container">
                         <Files
                             multiple={false} maxSize="2mb" multipleMaxSize="10mb" accept={["application/pdf", "image/jpg", "image/jpeg"]}
@@ -335,6 +335,7 @@ class AdminPage extends Component {
                         </Files>
                     </div>
                 </div>
+                        */}       
             </React.Fragment>
         );
     }
