@@ -9,14 +9,12 @@ class Footer extends Component {
                 <footer>
                     <section className="section has-text-centered">
                         <p>
-                            <img width="200" height="50" src={"/static/frontend/logotipoActualizado.jpeg"}></img>
+                            <img width="200" height="50" src={"/static/frontend/hotehub.svg"}></img>
                             <br />
                             <p style={{marginTop: '1%'}}> Andalucía Restaura by Hotehub </p>
                             Copyright@2020 Todos los derechos reservados
                         </p>
                     </section>
-
-
                 </footer>
             </React.Fragment>
         );

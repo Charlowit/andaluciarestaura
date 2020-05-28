@@ -13,7 +13,7 @@
         }
     </style>
 </head>
-<body initial-scale=1>
+<body>
   <header>
     <nav class="navbar" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
@@ -24,7 +24,7 @@
       </div>
     </nav>
   </header>
-  <section class="hero is-info is-bold">
+  <section initial-scale=1 class="hero is-info is-bold">
     <div class="hero-body">
         <div class="container has-text-centered is-clearfix">
             <div class='equal-height'>
@@ -62,21 +62,7 @@
             <hr/>
             <div class="container">
                 <h1 class="title">Carta de Feria</h1>
-                {% if cif_cliente %}
-                    {% with 'clientes/'|add:cif_cliente|add:'' as url_static %}
-                        <!--
-                        <a href="whatsapp://send?text=Carta%20Feria%20Los%20Patios%20de%20la%20Marquesa%20by%20Andalucía%20Restaura%20https://www.andaluciarestaura.com{% static url_static %}?utm_source=whatsapp" class="button whatsapp">
-                          -->
-                    {% endwith %}
-                {% endif %}
-                <!--
-                  <span class="icon is-small">
-                      <i class="fab fa-whatsapp"></i>
-                  </span>
-                  <span>Comparte por Whatsapp</span>
-                </a>
-                -->
-          </div>
+	    </div>
         </div>
     </div>
 </section>
@@ -92,6 +78,16 @@
 
     {% endwith %}
 {% endif %}
+  <footer>
+        <section class="section has-text-centered">
+            <p>
+                <img width="200" height="50" src="{% static 'frontend/hotehub.svg' %}"></img>
+                <br />
+                <p style="margin-top:1%" > Andalucía Restaura by Hotehub </p>
+                Copyright@2020 Todos los derechos reservados
+            </p>
+        </section>
+  </footer>
 </body>
 </html>
 <!--<object data="http://127.0.0.1:8000/static/free.pdf" type="application/pdf">
