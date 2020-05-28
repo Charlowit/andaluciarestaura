@@ -99,11 +99,27 @@ export const registro = (user) => dispatch => {
             'Content-Type': 'application/json'
         }
     };
-
-    const body = JSON.stringify(user);
+    const body = JSON.stringify({cif:user.cif, password:user.password, marca_comercial:user.marca_comercial, telefono_1:user.telefono_1, email:user.email});
+    console.log("ESTE ES EL BODY: " + body);
 
     axios.post('/api/auth/register', body, config)
         .catch(err => console.log(err));
+
+};
+
+export const subirpdf = (formdata) => dispatch => {
+
+      const config ={
+          headers: {
+            'content-type': 'multipart/form-data'
+          }
+      }
+
+      axios.post('api/auth/pdf', formdata, config)
+        .then(res => {
+          console.log(res.data);
+        })
+        .catch(err => console.log(err))
 
 };
 
