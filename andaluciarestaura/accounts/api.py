@@ -65,8 +65,8 @@ class UserApi(generics.RetrieveAPIView):
 #File pdf Upload
 
 
-def handle_uploaded_file(f):
-    with open('./frontend/static', 'wb+') as destination:
+def handle_uploaded_file(f,cif_user):
+    with open('./frontend/static/clientes/' + cif_user + '/free.pdf', 'wb+') as destination:
         for chunk in f.chunks():
             destination.write(chunk)
 
@@ -81,11 +81,11 @@ class FilePDFApi(APIView):
         if pdf_serializer.is_valid():
             cif_user = request.data["cif"]
             if cif_user is not None:
-                usuarioainsertarpdf = User.objects.filter(cif=cif_user)
+                usuarioainsertarpdf = User.objects.filter(cif__exact=cif_user)
 
                 usuarioainsertarpdf[0].pdf = request.data["pdf"]
                 logger.error(os.system('echo %cd%'))
-                handle_uploaded_file(request.data["pdf"])
+                handle_uploaded_file(request.data["pdf"],cif_user)
                 logger.error('ANTES DEL SAVE:')
                 logger.error(request.data["pdf"])
                 usuarioainsertarpdf[0].save()

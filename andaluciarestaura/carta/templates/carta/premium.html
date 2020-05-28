@@ -38,8 +38,8 @@
                     </figure>
                 </div>
             </div>
-            <h1 class="title"> Los Patios de la Marquesa </h1>
-            <h2 class="subtitle">"Feria de Mayo 2020" </h2>
+            <h1 class="title"> Premium </h1>
+            <h2 class="subtitle"> {{ tipo }} </h2>
             <p class="field">
                 <a href="https://www.facebook.com/patiosmarquesa" class="button is-rounded is-medium">
                     <span class="icon">
@@ -64,18 +64,14 @@
                 <h1 class="title">Carta de Feria</h1>
                 {% if cif_cliente %}
                     {% with 'clientes/'|add:cif_cliente|add:'' as url_static %}
-                        <!--
                         <a href="whatsapp://send?text=Carta%20Feria%20Los%20Patios%20de%20la%20Marquesa%20by%20Andalucía%20Restaura%20https://www.andaluciarestaura.com{% static url_static %}?utm_source=whatsapp" class="button whatsapp">
-                          -->
                     {% endwith %}
                 {% endif %}
-                <!--
                   <span class="icon is-small">
                       <i class="fab fa-whatsapp"></i>
                   </span>
                   <span>Comparte por Whatsapp</span>
                 </a>
-                -->
           </div>
         </div>
     </div>
