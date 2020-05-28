@@ -6,7 +6,7 @@ def react(response,cif):
     return HttpResponse("You're looking at question %s." % cif)
 
 def index(request,cif_cliente):
-    template = loader.get_template('carta/test.html')
+    template = loader.get_template('carta/free.html')
     context = {
         'cif_cliente': cif_cliente,
     }
