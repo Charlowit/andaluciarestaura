@@ -17,6 +17,14 @@ import ViewPdf from "./accounts/ViewPdf";
 import { Provider } from 'react-redux';
 import store from '../store';
 import { loadUser, login } from '../actions/auth';
+
+
+
+{/* Pruebas Nieto */}
+import Maps from './maps_position/Map'
+import Yey from './creditcard/App'
+
+
 class App extends Component {
 
   componentDidMount() {
@@ -24,6 +32,7 @@ class App extends Component {
   }
   render() {
     return (
+
         <Provider store={store}>
             <Router>
                 <Fragment>
@@ -38,6 +47,13 @@ class App extends Component {
                         <PrivateRoute exact path="/delivery-page" component={DeliveryPage} />
                         <Route exact path="/pdf-upload" component={FileUpload} />
                         <Route exact path="/view-pdf" component={ViewPdf} />
+
+                        {/* PRUEBAS NIETO */}
+                        <Route exact path="/maps-page" component={Maps} />
+                        {/*<Route exact path="/autocomplete-page" component={Roads} />*/}
+                        {<PrivateRoute exact path="/creditcard-page" component={Yey} />}
+
+                        
                     </Switch>
                     <Footer />
                 </Fragment>

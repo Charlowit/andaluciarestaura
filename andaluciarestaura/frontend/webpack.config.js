@@ -1,6 +1,6 @@
 module.exports = {
   module: {
-    rules: [
+     rules: [
       {
         test: /\.js$/,
         exclude: /node_modules/,
@@ -8,6 +8,7 @@ module.exports = {
           loader: "babel-loader"
         }
       }
+
     ]
   }
 };

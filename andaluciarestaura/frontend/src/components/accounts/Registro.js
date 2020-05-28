@@ -159,6 +159,7 @@ export class Registro extends Component {
                                                                 </span>
                                                             </div>
                                                         </div>
+                                                       
                                                         <div className="field">
                                                             <label className="label has-text-centered is-size-4">Provincia</label>
                                                             <div className="control has-icons-left">
