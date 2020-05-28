@@ -3,7 +3,50 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from "prop-types";
 import { logout } from '../../actions/auth';
-
+import { bubble as Menu } from 'react-burger-menu'
+var styles = {
+    bmBurgerButton: {
+        position: 'absolute',
+        width: '30px',
+        height: '24px',
+        right: '30px',
+        top: '10px'
+    },
+    bmBurgerBars: {
+        background: '#373a47'
+    },
+    bmBurgerBarsHover: {
+        background: '#a90000'
+    },
+    bmCrossButton: {
+        height: '24px',
+        width: '24x'
+    },
+    bmCross: {
+        background: '#bdc3c7'
+    },
+    bmMenuWrap: {     
+        height: '100%'
+    },
+    bmMenu: {
+        background: '#f4f4f4',
+        padding: '2.5em 1.5em 0',
+        fontSize: '1.15em'
+    },
+    bmMorphShape: {
+        fill: '#f4f4f4'
+    },
+    bmItemList: {
+        color: '#b8b7ad',
+        padding: '0.8em'
+    },
+    bmItem: {
+        display: 'inline-block'
+    },
+    bmOverlay: {
+        background: 'rgba(0, 0, 0, 0.3)'
+    }
+}
 
 export class Navbar extends Component {
 
@@ -26,80 +69,70 @@ export class Navbar extends Component {
         const { isAuthenticated, user } = this.props.auth;
         
         const authLinks = (
-            <div className={this.state.isActive ? "navbar-menu is-active" : "navbar-menu"}>
-                <div className="navbar-start">
-                    <Link className="navbar-item" to="/admin-page">Datos Negocio</Link>
-                    <Link className="navbar-item" to="/servicios-page">Servicios</Link>
-                    <Link className="navbar-item" to="/carta-page">Carta</Link>
-                    <Link className="navbar-item" to="/reservas-page">Reservas</Link>
-                    <Link className="navbar-item" to="/delivery-page">Delivery</Link>
-                    <a className="navbar-item">Aforo</a>
-                </div>
-                <div className="navbar-end">
-                    <div className="navbar-item is-vcentered">
 
-                                 <img className="is-rounded is-square" src={"/static/frontend/1/logo1.jpeg"}  alt="Placeholder image"/>
 
+
+
+            <Menu right styles={styles}>
+                <Link className="menu-item button is-link" style={{ width: '100%', marginTop: '10px' }} to="/admin-page">Datos Negocio</Link>
+                <Link className="menu-item button is-link" style={{ width: '100%', marginTop: '10px' }} to="/servicios-page">Servicios</Link>
+                <Link className="menu-item button is-link" style={{ width: '100%', marginTop: '10px' }} to="/carta-page">Carta</Link>
+                <Link className="menu-item button is-link" style={{ width: '100%', marginTop: '10px' }} to="/reservas-page">Reservas</Link>
+                <Link className="menu-item button is-link" style={{ width: '100%', marginTop: '10px' }} to="/delivery-page">Delivery</Link>
+                <a className="menu-item button is-link" style={{ width: '100%', marginTop: '10px' }} >Aforo</a>
+
+                <div className="menu-item" style={{ width: '100%' }}>
+                    <div style={{ width: '100%', marginTop: '10px'}}>
+                        <img className="is-rounded is-square" src={"/static/frontend/1/logo1.jpeg"} alt="Placeholder image" />
                     </div>
-                    <div className="navbar-item">
+                    <div style={{ width: '100%', marginTop: '20px'}}>
                         <div className="media-content">
                             <p className="subtitle is-6">{user ? `Bienvenido ${user.cif}` : ""}</p>
                         </div>
                     </div>
-                    <div className="navbar-item">
+                    <div style={{ width: '100%', marginTop: '20px'}}>
                         <div className="buttons">
-                            <Link to="/" className="button" onClick={this.props.logout}>Logout</Link>
+                            <Link to="/" className="button is-danger" onClick={this.props.logout}>Logout</Link>
                         </div>
                     </div>
                 </div>
-            </div>
+            </Menu>
+
+
         );
 
         const guestLinks = (
+            <div>
+                
+                <Menu right styles={styles}>
 
-             <div className={this.state.isActive ? "navbar-menu is-active" : "navbar-menu"} >
+                    <div className="menu-item" style={{ width: '100%' }}>
+                        <Link to="/register-page">
+                            <p className="button is-link" style={{ width: '100%' }}>Registro</p>
+                        </Link>
+                    </div>
+                    <div className="menu-item" style={{ width: '100%', marginTop: '10px' }}>
+                        <Link to="/">
+                            <p className="button is-link" style={{ width: '100%' }}>Login</p>
+                        </Link>
+                    </div>
 
-                <div className="navbar-end">
-                    <div className="navbar-item">
-                        <div className="buttons">
-                            <Link to="/register-page">
-                                <p className="button">Registro</p>
-                            </Link>
-                        </div>
-                    </div>
-                    <div className="navbar-item">
-                        <div className="buttons">
-                            <Link to="/">
-                                <p className="button">Login</p>
-                            </Link>
-                        </div>
-                    </div>
-                </div>
-             </div>
+                </Menu>
+            </div>
         );
 
         return (
             <React.Fragment>
-                <header>
-                    <nav className="navbar" role="navigation" aria-label="main navigation">
-                        <div className="navbar-brand">
-                            <p className="navbar-item" href="#">
-                                <Link to="/">
-                                    <img src={"/static/frontend/logoar.svg"} width="300" height="125" />
-                                </Link>
-                            </p>
-                        </div>
-                        <div className="navbar-brand">
-                            <a onClick={() => {this.setState({ isActive: !this.state.isActive })}}
-                            className={this.state.isActive ? "navbar-burger burger is-active" : "navbar-burger burger"} >
+                <header>   
+                    {isAuthenticated ? authLinks : guestLinks}
+                    <div className="navbar-brand is-inline" >
+                        <p className="navbar-item" href="#">
+                            <Link to="/">
+                                <img src={"/static/frontend/logoar.svg"} width="300" height="125" />
+                            </Link>
+                        </p>
+                    </div>
 
-                                <span aria-hidden="true"></span>
-                                <span aria-hidden="true"></span>
-                                <span aria-hidden="true"></span>
-                            </a>
-                        </div>
-                        {isAuthenticated ? authLinks : guestLinks}
-                    </nav>
                 </header>
             </React.Fragment>
         );

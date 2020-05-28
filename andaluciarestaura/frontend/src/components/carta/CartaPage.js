@@ -1,4 +1,8 @@
 import React, { Component, Fragment } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+
+import { getCarta } from '../../actions/carta';
 
 const div100 = {
   width:'100%',
@@ -34,8 +38,18 @@ const divmargin1 ={
 const divtop2 = {
   marginTop: '60px'
 };
+
+
+
 export class CartaPage extends Component {
 
+    static propTypes = {
+        carta: PropTypes.array.isRequired
+    };
+
+    componentDidMount(){
+        this.props.getCarta();
+    }
 
     render(){
         return(
@@ -142,6 +156,9 @@ export class CartaPage extends Component {
 
                         <div className="container">
                             <div className="notification">
+
+                                {this.props.carta.map( carta => (
+                                    
                                 <div className='card equal-height '>
                                     <div className="columns">
                                         <div className="container">
@@ -149,11 +166,9 @@ export class CartaPage extends Component {
                                                 <div className="columns">
                                                     <div className="column is-two-thirds"
                                                          style={div2}>
-                                                        <h1 className="title">Ensalada Mixta</h1>
-                                                        <h2 className="subtitle has-text-weight-light">Mezclum de
-                                                            lechugas, cherry, pepino, cebolla,
-                                                            remolacha, zanahoria, espárragos, maíz, huevo, atún,
-                                                            pepinillos, aceitunas y picos </h2>
+                                                        <h1 className="title"> {carta.name} </h1>
+
+                                                        <h2 className="subtitle has-text-weight-light">  {carta.productos[0].descripcion}</h2>
                                                     </div>
                                                     <div className="column" style={divtop}>
                                                         <div className="columns is-mobile" style={divcenter}>
@@ -207,6 +222,7 @@ export class CartaPage extends Component {
                                         </div>
                                     </div>
                                 </div>
+                                ))}
                                 <div className='card equal-height ' style={divtop2}>
                                     <div className="columns">
                                         <div className="container">
@@ -278,4 +294,8 @@ export class CartaPage extends Component {
 
 }
 
-export default CartaPage;
+const mapStateToProps = state => ({
+    carta: state.carta.carta
+});
+
+export default connect(mapStateToProps, { getCarta })(CartaPage);

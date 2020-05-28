@@ -7,18 +7,15 @@ class Footer extends Component {
         return (
             <React.Fragment>
                 <footer>
-                    <div className="columns is-full">
-                        <div className="column is-half is-centered is-offset-one-quarter">
-                            <div>
-                                <p>
-                                    <img width="200" height="50" src={"/static/frontend/logotipo.jpeg"}></img> <br />
-                                    Andalucía Restaura by Hotehub
-                                    <br />
-                                    Copyright@2020 Todos los derechos reservados
-                                </p>
-                            </div>
-                        </div>
-                    </div>
+                    <section className="section has-text-centered">
+                        <p>
+                            <img width="200" height="50" src={"/static/frontend/logotipoActualizado.jpeg"}></img>
+                            <br />
+                            <p style={{marginTop: '1%'}}> Andalucía Restaura by Hotehub </p>
+                            Copyright@2020 Todos los derechos reservados
+                        </p>
+                    </section>
+
 
                 </footer>
             </React.Fragment>

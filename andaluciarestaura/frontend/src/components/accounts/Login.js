@@ -41,43 +41,46 @@ export class Login extends Component {
             <section className="hero is-medium">
                 <div className="hero-body">
                     <div className="container">
-                        <div className="level">
-                            <div className="level-item v-centered is-5-tablet is-4-desktop is-3-widescreen"></div>
-                            <div className="level-item is-5-tablet is-4-desktop is-3-widescreen">
-                                <div>
-                                    <form>
-                                        <div className="field">
-                                            <label className="label has-text-centered is-size-4">CIF/NIF Empresa</label>
-                                            <div className="control has-icons-left">
-                                                <input type="text" placeholder="e.g. A58818501" className="input" name="cif" onChange={this.onChange} value={cif} />
-                                                <span className="icon is-small is-left">
-                                                    <i className="fas fa-id-card-alt"></i>
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div className="field">
-                                            <label className="label has-text-centered is-size-4">Password</label>
-                                            <div className="control has-icons-left">
-                                                <input type="password" placeholder="*******" name="password" className="input" onChange={this.onChange} value={password} />
-                                                <span className="icon is-small is-left">
-                                                    <i className="fa fa-lock"></i>
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div className="has-text-centered">
-                                            <button type="submit" className="button" onClick={this.onSubmit} >Login</button>
-                                        </div>
-                                    </form>
-                                </div>
 
-                            </div>
-                            <div className="level-item is-pulled-right is-5-tablet is-4-desktop is-3-widescreen">
-                                <div className="centered">
-                                    <img className="image" src={image} />
-                                    <p className="has-text-centered">Tapa de Diseño ofrecida by Bar Los Cármenes</p>
+
+                            <div className="columns is-centered" style={{marginLeft: '-10%'}}>
+                                <div className="column is-one-quarter has-text-centered" style={{marginLeft: '10%', marginBottom:'6%'}}>
+
+                                        <div>
+                                            <form style={{marginTop: '10%'}}>
+                                                <div className="field">
+                                                    <label className="label has-text-centered is-size-4">CIF/NIF Empresa</label>
+                                                    <div className="control has-icons-left">
+                                                        <input type="text" placeholder="e.g. A58818501" className="input" name="cif" onChange={this.onChange} value={cif} />
+                                                        <span className="icon is-small is-left">
+                                                            <i className="fas fa-id-card-alt"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div className="field">
+                                                    <label className="label has-text-centered is-size-4">Password</label>
+                                                    <div className="control has-icons-left">
+                                                        <input type="password" placeholder="*******" name="password" className="input" onChange={this.onChange} value={password} />
+                                                        <span className="icon is-small is-left">
+                                                            <i className="fa fa-lock"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div className="has-text-centered">
+                                                    <button type="submit" className="button" onClick={this.onSubmit} >Login</button>
+                                                </div>
+                                            </form>
+                                        </div>
+
+                                </div>
+                                <div className="column is-one-quarter has-text-centered" style={{marginLeft: '10%'}}>
+                                        <div className="centered">
+                                            <img className="is-centered" src={image} />
+                                            <p className="has-text-centered">Tapa de Diseño ofrecida by Bar Los Cármenes</p>
+                                        </div>
+
                                 </div>
                             </div>
-                        </div>
                     </div>
                 </div>
             </section>

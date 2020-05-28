@@ -20,7 +20,8 @@ const less = {
 
 const bkg = {
     backgroundColor: '#bca466',
-    marginTop: '20%;'
+    marginTop: '20%;',
+    height: '400px'
 }
 
 const colorBlue = {
@@ -87,24 +88,23 @@ export class Registro extends Component {
                                                 </div>
                                             </div>
                                         </section>
-                                        <section className="section is-large has-text-centered" style={bkg}>
 
+                                        <section className="section has-text-centered" style={bkg}>
+                                            <h1 className="title" style={{color: 'white'}}>¡Únete a nosotr@s!</h1>
                                         </section>
-                                        <section className="section has-text-centered " style={up}>
+                                        <section className="section has-text-centered " style={{marginTop: '-250px'}}>
                                             <div className="container ">
                                                 <div className="box">
                                                     <div className="content">
-                                                        <div className="columns is-centered">
-                                                            <div className="column is-two-fifths">
-                                                                <section className="hero is-medium">
+                                                        <div className="columns is-centered is-marginless" style={{width: '100%'}}>
+                                                            <div className="column is-two-fifths ">
+                                                                <section className="hero has-text-centered">
                                 <div className="hero-body">
-                                    <div className="container">
-                                        <div className="level">
-                                            <div className="level-item v-centered is-5-tablet is-4-desktop is-3-widescreen"></div>
-                                            <div className="level-item is-5-tablet is-4-desktop is-3-widescreen">
+                                    <div className="container ">
+                                        <div className="section is-one-third">
                                                 <div>
-                                                    <form>
-                                                        <h1>¡Únete a nosotr@s!</h1>
+                                                    <form style={{marginTop: '-60px'}}>
+
                                                         <div className="field">
                                                             <label className="label has-text-centered is-size-4">CIF/NIF Empresa</label>
                                                             <div className="control has-icons-left">
@@ -119,7 +119,7 @@ export class Registro extends Component {
                                                             <div className="control has-icons-left">
                                                                 <input type="text" placeholder="Razon Social" name="razon_social" className="input" onChange={this.onChange} value={razon_social} />
                                                                 <span className="icon is-small is-left">
-                                                                    <i className="fa fa-lock"></i>
+                                                                    <i className="fa fa-pen-nib"></i>
                                                                 </span>
                                                             </div>
                                                         </div>
@@ -128,7 +128,7 @@ export class Registro extends Component {
                                                             <div className="control has-icons-left">
                                                                 <input type="text" placeholder="Marca Comercial" name="marca_comercial" className="input" onChange={this.onChange} value={marca_comercial} />
                                                                 <span className="icon is-small is-left">
-                                                                    <i className="fa fa-lock"></i>
+                                                                    <i className="fa fa-copyright"></i>
                                                                 </span>
                                                             </div>
                                                         </div>
@@ -137,7 +137,7 @@ export class Registro extends Component {
                                                             <div className="control has-icons-left">
                                                                 <input type="text" placeholder="Bar" name="tipo_negocio" className="input" onChange={this.onChange} value={tipo_negocio} />
                                                                 <span className="icon is-small is-left">
-                                                                    <i className="fa fa-lock"></i>
+                                                                    <i className="fa fa-utensils"></i>
                                                                 </span>
                                                             </div>
                                                         </div>
@@ -146,7 +146,7 @@ export class Registro extends Component {
                                                             <div className="control has-icons-left">
                                                                 <input type="text" placeholder="Tipo de via" name="tipo_via" className="input" onChange={this.onChange} value={tipo_via} />
                                                                 <span className="icon is-small is-left">
-                                                                    <i className="fa fa-lock"></i>
+                                                                    <i className="fa fa-road"></i>
                                                                 </span>
                                                             </div>
                                                         </div>
@@ -155,7 +155,7 @@ export class Registro extends Component {
                                                             <div className="control has-icons-left">
                                                                 <input type="text" placeholder="Localidad" name="localidad" className="input" onChange={this.onChange} value={localidad} />
                                                                 <span className="icon is-small is-left">
-                                                                    <i className="fa fa-lock"></i>
+                                                                    <i className="fa fa-building"></i>
                                                                 </span>
                                                             </div>
                                                         </div>
@@ -164,7 +164,7 @@ export class Registro extends Component {
                                                             <div className="control has-icons-left">
                                                                 <input type="text" placeholder="Provincia" name="provincia" className="input" onChange={this.onChange} value={provincia} />
                                                                 <span className="icon is-small is-left">
-                                                                    <i className="fa fa-lock"></i>
+                                                                    <i className="fa fa-map-marked-alt"></i>
                                                                 </span>
                                                             </div>
                                                         </div>
@@ -173,7 +173,7 @@ export class Registro extends Component {
                                                             <div className="control has-icons-left">
                                                                 <input type="text" placeholder="6969696969" name="telefono_1" className="input" onChange={this.onChange} value={telefono_1} />
                                                                 <span className="icon is-small is-left">
-                                                                    <i className="fa fa-lock"></i>
+                                                                    <i className="fa fa-phone"></i>
                                                                 </span>
                                                             </div>
                                                         </div>
@@ -182,7 +182,7 @@ export class Registro extends Component {
                                                             <div className="control has-icons-left">
                                                                 <input type="email" placeholder="correo@hotehub.com" name="email" className="input" onChange={this.onChange} value={email} />
                                                                 <span className="icon is-small is-left">
-                                                                    <i className="fa fa-lock"></i>
+                                                                    <i className="fa fa-envelope"></i>
                                                                 </span>
                                                             </div>
                                                         </div>
@@ -209,8 +209,6 @@ export class Registro extends Component {
                                                         </div>
                                                     </form>
                                                 </div>
-
-                                            </div>
                                         </div>
                                     </div>
                                 </div>

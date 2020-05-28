@@ -12,3 +12,6 @@ export const UPDATE_ERROR = "UPDATE_ERROR";
 export const UPDATE_LOADING = "UPDATE_LOADING";
 export const GET_DATOS_USUARIO = "GET_DATOS_USUARIO";
 
+/* Aqui cositas de la carta */
+export const GET_CARTA = "GET_CARTA";
+
