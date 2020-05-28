@@ -14,11 +14,11 @@ class UserSerializer(serializers.ModelSerializer):
 class RegisterSerializer(serializers.ModelSerializer):
     class Meta:
             model = User
-            fields = ('id', 'cif', 'password', 'provincia', 'localidad', 'razon_social', 'marca_comercial', 'telefono_1', 'tipo_negocio', 'tipo_via', 'email', 'pdf' )
+            fields = ('id', 'cif', 'password', 'provincia', 'localidad', 'razon_social', 'marca_comercial', 'telefono_1', 'tipo_negocio', 'tipo_via', 'email')
             extra_kwargs = {'password': {'write_only':True} }
 
     def create(self, validated_data):
-        user = User.objects.create_user(validated_data['cif'], validated_data['password'], validated_data['provincia'], validated_data['localidad'], validated_data['razon_social'], validated_data['marca_comercial'], validated_data['telefono_1'], validated_data['tipo_negocio'], validated_data['tipo_via'], validated_data['email'], validated_data['pdf'])
+        user = User.objects.create_user(validated_data['cif'], validated_data['password'], validated_data['provincia'], validated_data['localidad'], validated_data['razon_social'], validated_data['marca_comercial'], validated_data['telefono_1'], validated_data['tipo_negocio'], validated_data['tipo_via'], validated_data['email'])
         return user
 
 # Login Serializer
