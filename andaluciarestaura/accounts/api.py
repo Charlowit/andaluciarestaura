@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from .models import User
 from rest_framework import viewsets, permissions
 from knox.models import AuthToken
-from .serializers import UserSerializer, RegisterSerializer, LoginSerializer, FilePDFSerializer
+from .serializers import UserSerializer, RegisterSerializer, LoginSerializer, FilePDFSerializer, UserSerializerActualizar
 from django.core.mail import send_mail
 from rest_framework.views import APIView
 from rest_framework.parsers import MultiPartParser, FormParser
@@ -157,5 +157,35 @@ class UserApi(generics.RetrieveAPIView):
 
     def get_object(self):
         return self.request.user
+
+
+class UpdateNameApi(generics.GenericAPIView):
+    permission_classes = [
+        permissions.IsAuthenticated,
+    ]
+    serializer_class = UserSerializerActualizar
+    def post(self, request, *args, **kwargs):
+        serializer = self.update_serializer(data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        logger.error(request.data)
+        logger.error("ANTES DEL SAVE")
+        #user = request.data
+        #serializer.update(request.data)
+        serializer.save()
+        logger.error("DESPUES DEL SAVE")
+        return Response({
+            "Todo Correcto Usuario Actualizado"
+        })
+
+class UserActualizarApi(generics.UpdateAPIView):
+    serializer_class = UserSerializerActualizar
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def update(self, request, *args, **kwargs):
+        serializer = self.serializer_class(request.user, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
