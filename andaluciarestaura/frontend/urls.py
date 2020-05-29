@@ -4,5 +4,5 @@ from . import views
 
 urlpatterns = [
     path('', views.index),
-    path('cordoba/', views.cordoba),
+    path('index_react', views.index_react),
 ]
