@@ -24,7 +24,8 @@ def index(request,cif_cliente):
     #Se carga el template
     
     #Traemos la carta del usuario
-    api_to_json = consumir_api("http://127.0.0.1:8000/api/carta/?cif=" + cif_cliente)
+    #api_to_json = consumir_api("http://127.0.0.1/api/carta/?cif=" + cif_cliente)
+    api_to_json = consumir_api("http://www.andaluciarestaura.com/api/carta/?cif=" + cif_cliente)
     data = {}
     categories = []
     #Si hay carta guardamos los datos
