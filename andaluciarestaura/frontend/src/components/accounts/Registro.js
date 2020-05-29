@@ -151,30 +151,7 @@ export class Registro extends Component {
                                                             <div className="control has-icons-left">
                                                                 <input type="file" id="pdf" accept="application/pdf" onChange={this.handlePDFChange} />
                                                                 <span className="icon is-small is-left">
-<<<<<<< HEAD
                                                                     <i className="fa fa-copyright"></i>
-=======
-                                                                    <i className="fa fa-building"></i>
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                       
-                                                        <div className="field">
-                                                            <label className="label has-text-centered is-size-4">Provincia</label>
-                                                            <div className="control has-icons-left">
-                                                                <input type="text" placeholder="Provincia" name="provincia" className="input" onChange={this.onChange} value={provincia} />
-                                                                <span className="icon is-small is-left">
-                                                                    <i className="fa fa-map-marked-alt"></i>
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                        <div className="field">
-                                                            <label className="label has-text-centered is-size-4">Teléfono de contacto</label>
-                                                            <div className="control has-icons-left">
-                                                                <input type="text" placeholder="6969696969" name="telefono_1" className="input" onChange={this.onChange} value={telefono_1} />
-                                                                <span className="icon is-small is-left">
-                                                                    <i className="fa fa-phone"></i>
->>>>>>> RamaNieto
                                                                 </span>
                                                             </div>
                                                         </div>

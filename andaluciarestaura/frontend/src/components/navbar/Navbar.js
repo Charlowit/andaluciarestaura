@@ -29,10 +29,10 @@ export class Navbar extends Component {
             <div className="navbar-end">
                 <div className="navbar-item">
                     <div className="field is-grouped">
-                        <span className="control" style={{marginTop: 7}}>
+                        <span className="control" style={{ marginTop: 7 }}>
                             <img className="is-rounded is-square" src={"/static/frontend/1/logo1.jpeg"} alt="Placeholder image" />
                         </span>
-                        <span className="control" style={{marginTop: 10}}>
+                        <span className="control" style={{ marginTop: 10 }}>
                             <div className="media-content">
                                 <p className="subtitle is-6">{user ? `Bienvenido ${user.cif}` : ""}</p>
                             </div>
@@ -78,97 +78,32 @@ export class Navbar extends Component {
         </a>
                     <div className="navbar-dropdown ">
                         <Link className="navbar-item" style={{ width: '100%', marginTop: '10px' }} to="/admin-page">Datos Negocio</Link>
-                        <Link className="navbar-item" style={{ width: '100%', marginTop: '10px' }} to="/servicios-page">Servicios</Link>
-                        <Link className="navbar-item" style={{ width: '100%', marginTop: '10px' }} to="/carta-page">Carta</Link>
-                        <Link className="navbar-item" style={{ width: '100%', marginTop: '10px' }} to="/reservas-page">Reservas</Link>
-                        <Link className="navbar-item" style={{ width: '100%', marginTop: '10px' }} to="/delivery-page">Delivery</Link>
                         <Link className="navbar-item" style={{ width: '100%', marginTop: '10px' }} to="/maps-page">Maps</Link>
                         <Link className="navbar-item" style={{ width: '100%', marginTop: '10px' }} to="/creditcard-page">Credit Card</Link>
-                        <Link className="navbar-item" style={{ width: '100%', marginTop: '10px' }} to="/autocomplete-page">Roads</Link>
+                        {/*<Link className="navbar-item" style={{ width: '100%', marginTop: '10px' }} to="/autocomplete-page">Roads</Link>*/}
+
 
                         
-                        <a className="navbar-item" style={{ width: '100%', marginTop: '10px' }} >Aforo</a>
                         <hr className="navbar-divider">
 
                         </hr>
-                        <div className="navbar-item">
-                            <div>
-                                <span className="is-size-6-desktop">
-                                    <strong className="has-text-info">0.5.1</strong>
-                                </span>
-
-                                <small>
-                                    <a className="bd-view-all-versions" href="/versions">View all versions</a>
-                                </small>
-
-                            </div>
-                        </div>
+                        
                     </div>
                 </div>
-                <div className="navbar-item has-dropdown is-hoverable is-mega">
-                    <div className="navbar-link">
-                        Blog
-        </div>
-                    <div id="blogDropdown" className="navbar-dropdown " style={{ width: '60rem' }}>
-                        <div className="container is-fluid">
-                            <div className="columns">
-                                <div className="column">
-                                    <h1 className="title is-6 is-mega-menu-title">Sub Menu Title</h1>
-                                    <a className="navbar-item" href="/2017/08/03/list-of-tags/">
-                                        <div className="navbar-content">
-                                            <span>
-                                                <small className="has-text-info">03 Aug 2017</small>
-                                            </span>
-                                            <span>New feature: list of tags</span>
-                                        </div>
-                                    </a>
-                                    <a className="navbar-item" href="/2017/08/03/list-of-tags/">
-                                        <div className="navbar-content">
-                                            <span>
-                                                <small className="has-text-info">03 Aug 2017</small>
-                                            </span>
-                                            <span>New feature: list of tags</span>
-                                        </div>
-                                    </a>
-                                    <a className="navbar-item" href="/2017/08/03/list-of-tags/">
-                                        <div className="navbar-content">
-                                            <span>
-                                                <small className="has-text-info">03 Aug 2017</small>
-                                            </span>
-                                            <span>New feature: list of tags</span>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div className="column">
-                                    <h1 className="title is-6 is-mega-menu-title">Sub Menu Title</h1>
-                                    <a className="navbar-item" href="/2017/08/03/list-of-tags/">
-                                        <div className="navbar-content">
-
-                                            <span>
-                                                <small className="has-text-info">03 Aug 2017</small>
-                                            </span>
-                                            <span>New feature: list of tags</span>
-                                        </div>
-                                    </a>
-                                    <a className="navbar-item " href="/documentation/overview/start/">
-                                        Overview
-          </a>
-                                    <a className="navbar-item " href="http://bulma.io/documentation/modifiers/syntax/">
-                                        Modifiers
-          </a>
-                                    <a className="navbar-item " href="http://bulma.io/documentation/columns/basics/">
-                                        Columns
-          </a>
-                                </div>
-                                
-                                
-                            </div>
-                        </div>
-
-                        <hr/>
-
-
-                    </div>
+                <div className="navbar-item is-hoverable has-dropdown">
+                    <Link className="navbar-link " style={{ width: '100%'}} to="/servicios-page">Servicios</Link>
+                </div>
+                <div className="navbar-item  is-hoverable has-dropdown">
+                    <Link className="navbar-link" style={{ width: '100%'}} to="/carta-page">Carta</Link>
+                </div>
+                <div className="navbar-item  is-hoverable has-dropdown">
+                    <Link className="navbar-link" style={{ width: '100%'}} to="/reservas-page">Reservas</Link>
+                </div>
+                <div className="navbar-item  is-hoverable  has-dropdown">
+                    <Link className="navbar-link" style={{ width: '100%'}} to="/delivery-page">Delivery</Link>
+                </div>
+                <div className="navbar-item   is-hoverable has-dropdown">
+                    <a className="navbar-link" style={{ width: '100%'}} >Aforo</a>
                 </div>
             </div>
 
@@ -179,7 +114,7 @@ export class Navbar extends Component {
             <div>
                 <nav className="navbar ">
                     <div className="navbar-brand">
-                        <Link to="/" style={{marginTop: 16}}>
+                        <Link to="/" style={{ marginTop: 16 }}>
                             <img src={"/static/frontend/logoar.svg"} width="300" height="125" />
                         </Link>
 

@@ -42,12 +42,13 @@ const div11 = {
      textAlign:'right'
 };
 const div12 = {
-    marginTop:'10%',
+    marginTop:'7%',
     marginLeft: '0%'
 };
 const div13 = {
     marginBottom:'10%',
-    marginLeft: '0%'
+    marginLeft: '0%',
+    marginRight: '5%'
 };
 const div14 = {
     marginTop: '1%',

@@ -17,15 +17,9 @@ import ViewPdf from "./accounts/ViewPdf";
 import { Provider } from 'react-redux';
 import store from '../store';
 import { loadUser, login } from '../actions/auth';
+import CreditCard from './creditcard/CreditCard'
 
-
-
-{/* Pruebas Nieto */}
-import Maps from './maps_position/Map'
-import Maps2 from './maps_position/Maps2'
-import Yey from './creditcard/App'
-
-
+{/*"LOCO QUE FALTAN MIS RUTAS"*/}
 class App extends Component {
 
   componentDidMount() {
@@ -50,9 +44,9 @@ class App extends Component {
                         <Route exact path="/view-pdf" component={ViewPdf} />
 
                         {/* PRUEBAS NIETO */}
-                        <Route exact path="/maps-page" component={Maps2} />
+                        {/*<Route exact path="/maps-page" component={Maps2} />*/}
                         {/*<Route exact path="/autocomplete-page" component={Roads} />*/}
-                        {<PrivateRoute exact path="/creditcard-page" component={Yey} />}
+                        <PrivateRoute exact path="/creditcard-page" component={CreditCard} />
 
                         
                     </Switch>
