@@ -17,7 +17,7 @@ class UserSerializer(serializers.ModelSerializer):
 class UserSerializerActualizar(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'cif', 'marca_comercial', 'razon_social', 'direccion_fiscal', 'localidad', 'codigo_postal', 'provincia', 'email', 'telefono_1', 'telefono_2', 'fax', 'iban', 'tipo_negocio')
+        fields = ('id', 'cif', 'marca_comercial', 'nombre_fiscal', 'razon_social', 'direccion_fiscal', 'localidad', 'codigo_postal', 'provincia', 'email', 'telefono_1', 'telefono_2', 'fax', 'iban', 'tipo_negocio')
 
 # Registro User Serializer
 class RegisterSerializer(serializers.ModelSerializer):

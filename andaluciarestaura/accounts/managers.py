@@ -17,7 +17,7 @@ class CustomUserManager(BaseUserManager):
         marca_comercial = self.normalize_email(marca_comercial)
         telefono_1 = self.normalize_email(telefono_1)
         email = self.normalize_email(email)
-        user = self.model(cif=cif,marca_comercial=marca_comercial,telefono_1=telefono_1,email=email, **extra_fields)
+        user = self.model(cif=cif, **extra_fields)
         user.set_password(password)
         user.save()
         return user

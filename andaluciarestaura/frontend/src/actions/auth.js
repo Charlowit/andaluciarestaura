@@ -124,7 +124,7 @@ export const subirpdf = (formdata) => dispatch => {
             'content-type': 'multipart/form-data'
           }
       }
-
+      console.log("FORM DATA " + formdata.pdf)
       axios.post('api/auth/pdf', formdata, config)
         .then(res => {
           console.log(res.data);
@@ -157,6 +157,7 @@ export const tokenConfig = (getState) => {
 export const updateuser = (user) => (dispatch, getState) => {
 
     console.log("USER DENTRO DE ACTION: " + user.id)
+    console.log("NOMBRE FISCAL DENTRO DE ACTION: "+ user.nombre_fiscal)
 
     // GET THE TOKE FROM THE STATE
     const token = getState().auth.token;
@@ -168,7 +169,7 @@ export const updateuser = (user) => (dispatch, getState) => {
         }
     }
 
-    const body = JSON.stringify({id:user.id, cif:user.cif, marca_comercial:user.marca_comercial, nombre_fiscal:user.nombre_fiscal, razon_social:user.razon_social, direccion_fiscal:user.direccion_fiscal, localidad:user.localidad, codigo_postal:user.codigo_postal, provincia:user.provincia, email:user.email, telefono_1:user.telefono_1, telefono_2:user.telefono_2, fax:user.fax, iban:user.iban, tipo_negocio:user.tipo_negocio})
+    const body = JSON.stringify({id:user.id, cif:user.cif, nombre_fiscal:user.nombre_fiscal, marca_comercial:user.marca_comercial, razon_social:user.razon_social, direccion_fiscal:user.direccion_fiscal, localidad:user.localidad, codigo_postal:user.codigo_postal, provincia:user.provincia, email:user.email, telefono_1:user.telefono_1, telefono_2:user.telefono_2, fax:user.fax, iban:user.iban, tipo_negocio:user.tipo_negocio})
 
     console.log("ESTE ES EL BODY DEL UPDATE: " + body)
     // If token, add to headers config

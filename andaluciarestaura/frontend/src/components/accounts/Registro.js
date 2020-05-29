@@ -35,6 +35,7 @@ export class Registro extends Component {
         cif: "",
         marca_comercial: "",
         pdf: null,
+        logo: null,
         email: "",
         telefono_1: "",
         password: "",
@@ -59,6 +60,7 @@ export class Registro extends Component {
         form_data.append('cif', this.state.cif);
         form_data.append('marca_comercial', this.state.marca_comercial);
         form_data.append('pdf', this.state.pdf);
+        form_data.append('logo', this.state.logo);
         form_data.append('email', this.state.email);
         form_data.append('telefono_1', this.state.telefono_1);
         form_data.append('password', this.state.password);
@@ -72,6 +74,11 @@ export class Registro extends Component {
     handlePDFChange = (e) => {
         this.setState({
           pdf: e.target.files[0]
+        })
+    };
+    handleLogoChange = (e) => {
+        this.setState({
+          logo: e.target.files[0]
         })
     };
 
@@ -143,6 +150,15 @@ export class Registro extends Component {
                                                             <label className="label has-text-centered is-size-4">Adjunta tu carta en pdf</label>
                                                             <div className="control has-icons-left">
                                                                 <input type="file" id="pdf" accept="application/pdf" onChange={this.handlePDFChange} />
+                                                                <span className="icon is-small is-left">
+                                                                    <i className="fa fa-copyright"></i>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                        <div className="field">
+                                                            <label className="label has-text-centered is-size-4">Adjunta el logo de tu negocio</label>
+                                                            <div className="control has-icons-left">
+                                                                <input type="file" id="logo" accept="image/x-png,image/gif,image/jpeg"  onChange={this.handleLogoChange} />
                                                                 <span className="icon is-small is-left">
                                                                     <i className="fa fa-copyright"></i>
                                                                 </span>
