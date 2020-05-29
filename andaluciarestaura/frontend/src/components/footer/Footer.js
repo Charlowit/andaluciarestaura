@@ -11,7 +11,7 @@ class Footer extends Component {
                         <p>
                             <img width="200" height="50" src={"/static/frontend/hotehub.svg"}></img>
                             <br />
-                            <p style={{marginTop: '1%'}}> Andalucía Restaura by Hotehub </p>
+                            <span style={{marginTop: '1%'}}> Andalucía Restaura by Hotehub </span>
                             Copyright@2020 Todos los derechos reservados
                         </p>
                     </section>

@@ -3,50 +3,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from "prop-types";
 import { logout } from '../../actions/auth';
-import { bubble as Menu } from 'react-burger-menu'
-var styles = {
-    bmBurgerButton: {
-        position: 'absolute',
-        width: '30px',
-        height: '24px',
-        right: '30px',
-        top: '10px'
-    },
-    bmBurgerBars: {
-        background: '#373a47'
-    },
-    bmBurgerBarsHover: {
-        background: '#a90000'
-    },
-    bmCrossButton: {
-        height: '24px',
-        width: '24x'
-    },
-    bmCross: {
-        background: '#bdc3c7'
-    },
-    bmMenuWrap: {     
-        height: '100%'
-    },
-    bmMenu: {
-        background: '#f4f4f4',
-        padding: '2.5em 1.5em 0',
-        fontSize: '1.15em'
-    },
-    bmMorphShape: {
-        fill: '#f4f4f4'
-    },
-    bmItemList: {
-        color: '#b8b7ad',
-        padding: '0.8em'
-    },
-    bmItem: {
-        display: 'inline-block'
-    },
-    bmOverlay: {
-        background: 'rgba(0, 0, 0, 0.3)'
-    }
-}
+
 
 export class Navbar extends Component {
 
@@ -67,74 +24,182 @@ export class Navbar extends Component {
     render() {
 
         const { isAuthenticated, user } = this.props.auth;
-        
-        const authLinks = (
+        const authEnd = (
 
+            <div className="navbar-end">
+                <div className="navbar-item">
+                    <div className="field is-grouped">
+                        <span className="control" style={{marginTop: 7}}>
+                            <img className="is-rounded is-square" src={"/static/frontend/1/logo1.jpeg"} alt="Placeholder image" />
+                        </span>
+                        <span className="control" style={{marginTop: 10}}>
+                            <div className="media-content">
+                                <p className="subtitle is-6">{user ? `Bienvenido ${user.cif}` : ""}</p>
+                            </div>
 
-
-
-            <Menu right styles={styles}>
-                <Link className="menu-item button is-link" style={{ width: '100%', marginTop: '10px' }} to="/admin-page">Datos Negocio</Link>
-                <Link className="menu-item button is-link" style={{ width: '100%', marginTop: '10px' }} to="/servicios-page">Servicios</Link>
-                <Link className="menu-item button is-link" style={{ width: '100%', marginTop: '10px' }} to="/carta-page">Carta</Link>
-                <Link className="menu-item button is-link" style={{ width: '100%', marginTop: '10px' }} to="/reservas-page">Reservas</Link>
-                <Link className="menu-item button is-link" style={{ width: '100%', marginTop: '10px' }} to="/delivery-page">Delivery</Link>
-                <a className="menu-item button is-link" style={{ width: '100%', marginTop: '10px' }} >Aforo</a>
-
-                <div className="menu-item" style={{ width: '100%' }}>
-                    <div style={{ width: '100%', marginTop: '10px'}}>
-                        <img className="is-rounded is-square" src={"/static/frontend/1/logo1.jpeg"} alt="Placeholder image" />
-                    </div>
-                    <div style={{ width: '100%', marginTop: '20px'}}>
-                        <div className="media-content">
-                            <p className="subtitle is-6">{user ? `Bienvenido ${user.cif}` : ""}</p>
-                        </div>
-                    </div>
-                    <div style={{ width: '100%', marginTop: '20px'}}>
-                        <div className="buttons">
-                            <Link to="/" className="button is-danger" onClick={this.props.logout}>Logout</Link>
-                        </div>
+                        </span>
+                        <span className="control">
+                            <div className="buttons">
+                                <Link to="/" className="button is-danger" onClick={this.props.logout}>Logout</Link>
+                            </div>
+                        </span>
                     </div>
                 </div>
-            </Menu>
+            </div>
+
 
 
         );
 
-        const guestLinks = (
-            <div>
-                
-                <Menu right styles={styles}>
-
-                    <div className="menu-item" style={{ width: '100%' }}>
-                        <Link to="/register-page">
-                            <p className="button is-link" style={{ width: '100%' }}>Registro</p>
-                        </Link>
+        const guestEnd = (
+            <div className="navbar-end">
+                <div className="navbar-item">
+                    <div className="field is-grouped">
+                        <span className="control">
+                            <Link to="/register-page">
+                                <p className="button is-link" style={{ width: '100%' }}>Registro</p>
+                            </Link>
+                        </span>
+                        <span className="control">
+                            <Link to="/">
+                                <p className="button is-link" style={{ width: '100%' }}>Login</p>
+                            </Link>
+                        </span>
                     </div>
-                    <div className="menu-item" style={{ width: '100%', marginTop: '10px' }}>
-                        <Link to="/">
-                            <p className="button is-link" style={{ width: '100%' }}>Login</p>
-                        </Link>
-                    </div>
-
-                </Menu>
+                </div>
             </div>
         );
 
+        const authLinks = (
+            <div className={isAuthenticated ? "navbar-start" : "navbar-start is-hidden"}>
+                <div className="navbar-item has-dropdown is-hoverable">
+                    <a className="navbar-link  is-active" href="#">
+                        Informacion
+        </a>
+                    <div className="navbar-dropdown ">
+                        <Link className="navbar-item" style={{ width: '100%', marginTop: '10px' }} to="/admin-page">Datos Negocio</Link>
+                        <Link className="navbar-item" style={{ width: '100%', marginTop: '10px' }} to="/servicios-page">Servicios</Link>
+                        <Link className="navbar-item" style={{ width: '100%', marginTop: '10px' }} to="/carta-page">Carta</Link>
+                        <Link className="navbar-item" style={{ width: '100%', marginTop: '10px' }} to="/reservas-page">Reservas</Link>
+                        <Link className="navbar-item" style={{ width: '100%', marginTop: '10px' }} to="/delivery-page">Delivery</Link>
+                        <Link className="navbar-item" style={{ width: '100%', marginTop: '10px' }} to="/maps-page">Maps</Link>
+                        <Link className="navbar-item" style={{ width: '100%', marginTop: '10px' }} to="/creditcard-page">Credit Card</Link>
+                        <Link className="navbar-item" style={{ width: '100%', marginTop: '10px' }} to="/autocomplete-page">Roads</Link>
+
+                        
+                        <a className="navbar-item" style={{ width: '100%', marginTop: '10px' }} >Aforo</a>
+                        <hr className="navbar-divider">
+
+                        </hr>
+                        <div className="navbar-item">
+                            <div>
+                                <span className="is-size-6-desktop">
+                                    <strong className="has-text-info">0.5.1</strong>
+                                </span>
+
+                                <small>
+                                    <a className="bd-view-all-versions" href="/versions">View all versions</a>
+                                </small>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="navbar-item has-dropdown is-hoverable is-mega">
+                    <div className="navbar-link">
+                        Blog
+        </div>
+                    <div id="blogDropdown" className="navbar-dropdown " style={{ width: '60rem' }}>
+                        <div className="container is-fluid">
+                            <div className="columns">
+                                <div className="column">
+                                    <h1 className="title is-6 is-mega-menu-title">Sub Menu Title</h1>
+                                    <a className="navbar-item" href="/2017/08/03/list-of-tags/">
+                                        <div className="navbar-content">
+                                            <span>
+                                                <small className="has-text-info">03 Aug 2017</small>
+                                            </span>
+                                            <span>New feature: list of tags</span>
+                                        </div>
+                                    </a>
+                                    <a className="navbar-item" href="/2017/08/03/list-of-tags/">
+                                        <div className="navbar-content">
+                                            <span>
+                                                <small className="has-text-info">03 Aug 2017</small>
+                                            </span>
+                                            <span>New feature: list of tags</span>
+                                        </div>
+                                    </a>
+                                    <a className="navbar-item" href="/2017/08/03/list-of-tags/">
+                                        <div className="navbar-content">
+                                            <span>
+                                                <small className="has-text-info">03 Aug 2017</small>
+                                            </span>
+                                            <span>New feature: list of tags</span>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div className="column">
+                                    <h1 className="title is-6 is-mega-menu-title">Sub Menu Title</h1>
+                                    <a className="navbar-item" href="/2017/08/03/list-of-tags/">
+                                        <div className="navbar-content">
+
+                                            <span>
+                                                <small className="has-text-info">03 Aug 2017</small>
+                                            </span>
+                                            <span>New feature: list of tags</span>
+                                        </div>
+                                    </a>
+                                    <a className="navbar-item " href="/documentation/overview/start/">
+                                        Overview
+          </a>
+                                    <a className="navbar-item " href="http://bulma.io/documentation/modifiers/syntax/">
+                                        Modifiers
+          </a>
+                                    <a className="navbar-item " href="http://bulma.io/documentation/columns/basics/">
+                                        Columns
+          </a>
+                                </div>
+                                
+                                
+                            </div>
+                        </div>
+
+                        <hr/>
+
+
+                    </div>
+                </div>
+            </div>
+
+        );
+
         return (
-            <React.Fragment>
-                <header>   
-                    {isAuthenticated ? authLinks : guestLinks}
-                    <div className="navbar-brand is-inline" >
-                        <p className="navbar-item" href="#">
-                            <Link to="/">
-                                <img src={"/static/frontend/logoar.svg"} width="300" height="125" />
-                            </Link>
-                        </p>
+
+            <div>
+                <nav className="navbar ">
+                    <div className="navbar-brand">
+                        <Link to="/" style={{marginTop: 16}}>
+                            <img src={"/static/frontend/logoar.svg"} width="300" height="125" />
+                        </Link>
+
+                        <div className="navbar-burger burger" data-target="navMenubd-example">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
                     </div>
 
-                </header>
-            </React.Fragment>
+                    <div id="navMenubd-example" className="navbar-menu">
+
+                        {isAuthenticated ? authLinks : ""}
+                        {isAuthenticated ? authEnd : guestEnd}
+                    </div>
+                </nav>
+
+
+
+            </div>
         );
     }
 }
