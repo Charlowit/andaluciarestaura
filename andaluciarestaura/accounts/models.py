@@ -37,7 +37,7 @@ class User(AbstractUser, PermissionsMixin):
     telefono_2 = models.CharField(max_length=100)
     fax = models.CharField(max_length=100)
     iban = models.CharField(max_length=100)
-    image = models.CharField(max_length=1000)
+    logo = models.CharField(max_length=1000)
     pdf = models.CharField(max_length=1000)
     qr = models.CharField(max_length=1000)
     creado_en = models.DateTimeField(auto_now_add=True)

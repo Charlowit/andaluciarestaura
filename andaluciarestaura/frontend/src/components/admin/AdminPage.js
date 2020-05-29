@@ -38,6 +38,7 @@ class AdminPage extends Component {
         e.preventDefault();
         const { id, cif, marca_comercial, nombre_fiscal, razon_social, direccion_fiscal, localidad, codigo_postal, provincia, email, telefono_1, telefono_2, fax, iban, tipo_negocio } = this.state;
         const user = { id, cif, marca_comercial, nombre_fiscal, razon_social, direccion_fiscal, localidad, codigo_postal, provincia, email, telefono_1, telefono_2, fax, iban, tipo_negocio };
+        console.log("NOMBRE FISCAL: " + user.nombre_fiscal)
         console.log("USUARIO FINAL: " + user.cif)
         this.props.updateuser(user);
         console.log("FIN DEL UPDATE USER")
