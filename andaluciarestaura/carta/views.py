@@ -22,7 +22,7 @@ def index(request,cif_cliente):
     #Transformamos el usuario a una lista
     user = list(user)
     #Se carga el template
-    template = loader.get_template('carta/premium.html')
+    template = loader.get_template('carta/free.html')
     #Traemos la carta del usuario
     api_to_json = consumir_api("http://127.0.0.1:8000/api/carta/?cif=" + cif_cliente)
     data = {}
