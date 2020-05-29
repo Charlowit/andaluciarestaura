@@ -47,9 +47,10 @@ export class Maps extends React.Component {
   render() {
     return (
       <div>
-        <div ref="map" style={{ height: '500px', width: '100%' }}></div>
+      <div ref="map" style={{ height: '500px', width: '100%' }}></div>
         {!this.map && <div className="center-md">Loading...</div>}
       </div>
+
     );
   }
 }

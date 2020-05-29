@@ -22,6 +22,7 @@ import { loadUser, login } from '../actions/auth';
 
 {/* Pruebas Nieto */}
 import Maps from './maps_position/Map'
+import Maps2 from './maps_position/Maps2'
 import Yey from './creditcard/App'
 
 
@@ -49,7 +50,7 @@ class App extends Component {
                         <Route exact path="/view-pdf" component={ViewPdf} />
 
                         {/* PRUEBAS NIETO */}
-                        <Route exact path="/maps-page" component={Maps} />
+                        <Route exact path="/maps-page" component={Maps2} />
                         {/*<Route exact path="/autocomplete-page" component={Roads} />*/}
                         {<PrivateRoute exact path="/creditcard-page" component={Yey} />}
 
