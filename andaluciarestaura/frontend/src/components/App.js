@@ -17,6 +17,8 @@ import ViewPdf from "./accounts/ViewPdf";
 import { Provider } from 'react-redux';
 import store from '../store';
 import { loadUser, login } from '../actions/auth';
+
+{/*"LOCO QUE FALTAN MIS RUTAS"*/}
 class App extends Component {
 
   componentDidMount() {
