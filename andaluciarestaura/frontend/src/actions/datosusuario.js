@@ -1,5 +1,6 @@
 import axios from "axios";
 import {UPDATE_ERROR, UPDATE_LOADING, UPDATE_SUCCESS, GET_DATOS_USUARIO} from "./types";
+import { tokenConfig } from './auth';
 
 // CHANGE DATA USER METHOD PUT
 export const updateuser = (id, user) => (dispatch, getState) => {
@@ -22,7 +23,7 @@ export const updateuser = (id, user) => (dispatch, getState) => {
     if(token) {
         config.headers['Authorization'] = `Token ${token}`;
     }
-    axios.post(`/api/auth/user/${id}`, user)
+    axios.post(`/api/auth/user/${id}`, user, config)
 
         .then(res =>{
             dispatch({
@@ -37,15 +38,14 @@ export const updateuser = (id, user) => (dispatch, getState) => {
 };
 
 // GET DATOS USUARIO
-export const getDatosUsuario = () => dispatch => {
+export const getDatosUsuario = () => (dispatch, getState) => {
 
-    axios.get('/api/auth/datos')
+    axios.get('/api/auth/datauser', tokenConfig(getState))
         .then(res =>{
             dispatch({
                 type: GET_DATOS_USUARIO,
                 payload: res.data
             });
         }).catch(err => console.log(err));
-
 };
 

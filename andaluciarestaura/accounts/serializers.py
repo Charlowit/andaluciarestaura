@@ -3,6 +3,7 @@ from accounts.models import User
 from django.contrib.auth import authenticate
 import logging
 
+
 logger = logging.getLogger(__name__)
 
 #User serializer
@@ -12,6 +13,11 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = '__all__'
 
+#USER SERIALIZER ACTUALIZAR
+class UserSerializerActualizar(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'cif', 'marca_comercial', 'razon_social', 'direccion_fiscal', 'localidad', 'codigo_postal', 'provincia', 'email', 'telefono_1', 'telefono_2', 'fax', 'iban', 'tipo_negocio')
 
 # Registro User Serializer
 class RegisterSerializer(serializers.ModelSerializer):
