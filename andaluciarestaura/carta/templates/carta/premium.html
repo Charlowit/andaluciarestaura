@@ -38,33 +38,31 @@
                     </figure>
                 </div>
             </div>
-            <h1 class="title"> Premium </h1>
-            <h2 class="subtitle"> {{ tipo }} </h2>
+            <h1 class="title"> {{user.username}} </h1>
+            <h2 class="subtitle"> {{user.marca_comercial}} <br /></h2>
             <p class="field">
-                <a href="https://www.facebook.com/patiosmarquesa" class="button is-rounded is-medium">
+                <a href="#" class="button is-rounded is-medium">
                     <span class="icon">
                       <i class="fab fa-facebook"></i>
                     </span>
                 </a>
-                <!--
-                <a class="button is-rounded is-medium">
+                <a href="#" class="button is-rounded is-medium">
                     <span class="icon">
                         <i class="fab fa-tripadvisor"></i>
                     </span>
                 </a>
-                <a class="button is-rounded is-medium">
+                <a href="#" class="button is-rounded is-medium">
                     <span class="icon">
                       <i class="fab fa-instagram"></i>
                     </span>
                 </a>
-                -->
             </p>
             <hr/>
             <div class="container">
-                <h1 class="title">Carta de Feria</h1>
+                <h1 class="title">{{ data.name }}</h1>
                 {% if cif_cliente %}
                     {% with 'clientes/'|add:cif_cliente|add:'' as url_static %}
-                        <a href="whatsapp://send?text=Carta%20Feria%20Los%20Patios%20de%20la%20Marquesa%20by%20Andalucía%20Restaura%20https://www.andaluciarestaura.com{% static url_static %}?utm_source=whatsapp" class="button whatsapp">
+                        <a href="#" class="button whatsapp">
                     {% endwith %}
                 {% endif %}
                   <span class="icon is-small">
@@ -76,18 +74,125 @@
         </div>
     </div>
 </section>
-{% if cif_cliente %}
-    {% with 'clientes/'|add:cif_cliente|add:'/free.pdf' as pdf_static %}
+<p>{{username}}</p>
+<!-- La carta se pinta aqui-->
+<div class="container">
+  <div class="notification">
+      <div class="tabs is-centered is-boxed">
+          <ul>
+              <li class="is-active">
+                  <a>
+                      <span class="icon is-small">
+                        <i class="fas fa-clipboard-list" aria-hidden="true"></i></span>
+                      <span>Entrantes</span>
+                  </a>
+              </li>
+              <li>
+                <a>
+                  <span class="icon is-small">
+                    <i class="fas fa-utensils"aria-hidden="true"></i>
+                  </span>
+                  <span>Principales</span>
+                </a>
+              </li>
+              <li>
+                <a>
+                  <span class="icon is-small">
+                    <i class="fas fa-stroopwafel" aria-hidden="true"></i>
+                  </span>
+                  <span>Postres</span>
+                </a>
+              </li>
+              <li>
+                <a>
+                  <span class="icon is-small">
+                    <i class="fas fa-cocktail" aria-hidden="true"></i>
+                  </span>
+                  <span>Bebidas</span>
+                </a>
+              </li>
+          </ul>
+      </div>
 
-      <object style="width:100%;height:100vh;" data="{% static pdf_static %}" type="application/pdf">
-        <iframe style="height:1200px;width:100%;"
-          src="https://docs.google.com/viewer?url=https://www.andaluciarestaura.com/{% static pdf_static %}&embedded=true">
-        </iframe>
-      </object>
-      
+      <div class="container">
+          <div class="notification">
+              <!-- FOR DE LA CARTA -->   
+            {% for producto in data.productos %}
+              <div class='card equal-height '>
+                  <div class="columns">
+                      <div class="container">
+                          <div class="column">
+                              <div class="columns">
+                                  <div class="column is-two-thirds" style="margin-left: 2%;margin-top: 2%">
+                                      <h1 class="title"> {{ producto.name }} </h1>
+                                      <h2 class="subtitle has-text-weight-light">  {{ producto.descripcion }}</h2>
+                                  </div>
+                                  <div class="column" style="margin-top: 2%">
+                                      <div class="columns is-mobile" style="text-align: center">
+                                          <div class="column">
+                                              <div style="width:100%;margin-top:5%;">
+                                                  <span class="icon is-small" style="color: rgb(51, 153, 255)">
+                                                    <i class="fas fa-dot-circle" aria-hidden="true"></i>
+                                                  </span>
+                                              </div>
+                                              <span>
+                                                <b> Media Ración </b>
+                                              </span>
+                                              <div style="width:100%;">
+                                                  <span>
+                                                    <b style="color: red">  {{ producto.precio1 }} </b>
+                                                  </span>
+                                              </div>
+                                          </div>
+                                          <div class="column"
+                                               style="margin-left: 4%; margin-top: 2%">
+                                              <div style="width:100%;">
+                                                  <span class="icon is-small" style="font-size:36px;color: rgb(51, 153, 255)">
+                                                    <i class="fas fa-dot-circle" aria-hidden="true"></i>
+                                                  </span>
+                                              </div>
+                                              <span>
+                                                <b> Ración </b>
+                                              </span>
+                                              <div style="width:100%;">
+                                                  <span>
+                                                    <b style="color: red">  {{ producto.precio2 }} </b>
+                                                  </span>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div style="margin-left: 2%">
+                                  <!-- FOR DE ALERGENOS -->
+                                  <img src="http://127.0.0.1:8000/static/frontend/Allergens/huevos.svg" alt="triangle with all three sides equal" width="50"/>
+                                  <img src="http://127.0.0.1:8000/static/frontend/Allergens/lacteos.svg" alt="triangle with all three sides equal" width="50"/>
+                                  <img src="http://127.0.0.1:8000/static/frontend/Allergens/soja.svg" alt="triangle with all three sides equal" width="50"/>
+                                  <img src="http://127.0.0.1:8000/static/frontend/Allergens/cascara.svg" alt="triangle with all three sides equal" width="50"/>
+                                  <img src="http://127.0.0.1:8000/static/frontend/Allergens/moluscos.svg" alt="triangle with all three sides equal" width="50"/>
+                                  <img src="http://127.0.0.1:8000/static/frontend/Allergens/fish.svg" alt="triangle with all three sides equal" width="50"/>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+            {% endfor %}
+          </div>
+      </div>
+  </div>
+</div>
+<footer>
+  <section class="section has-text-centered">
+      <p>
+          <img width="200" height="50" src="{% static 'frontend/hotehub.svg' %}"></img>
+          <br />
+          <p style="margin-top:1%" > Andalucía Restaura by Hotehub </p>
+          Copyright@2020 Todos los derechos reservados
+      </p>
+  </section>
+</footer>
 
-    {% endwith %}
-{% endif %}
+
 </body>
 </html>
 <!--<object data="http://127.0.0.1:8000/static/free.pdf" type="application/pdf">
