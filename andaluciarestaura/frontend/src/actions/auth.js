@@ -113,6 +113,8 @@ export const registro = (user) => dispatch => {
     axios.post('/api/auth/register', body, config)
         .catch(err => console.log(err));
 
+
+
 };
 
 export const subirpdf = (formdata) => dispatch => {

@@ -24,6 +24,7 @@ def enviar_email_v1(correo):
     subject = 'Anadalucia Restaura'
     from_email = 'soporte@hotehub.com'
     to = correo
+    logger.error("DENTRO DE MAIL V1 EL CORREO ES"+ correo)
     message = 'Gracias por registrarse en Andalucia Restaura, en breve nos pondremos en contacto con usted para elaborar su carta digital de forma gratuita.'
     send_mail(subject, message, from_email, [to])
     logger.error("SALGO EN EMAIL V1")
@@ -33,6 +34,7 @@ def enviar_email_v2(correo, url_carta, ruta_qr):
     subject= 'Tu Carta Online con QR by Andalucia Restaura'
     from_email= 'soporte@hotehub.com'
     to = correo
+    logger.error("DENTRO DE MAIL V2 EL CORREO ES" + correo)
     text_content = 'Gracias por registrarse en Andalucia Restaura.'
     html_content = '<p>Aquí tienes tu dirección donde tus clientes podrán ver tu carta en PDF:' \
                    '<a href='+url_carta+'>Pulsa aquí para visualizar tu carta</a</p>'
@@ -40,7 +42,7 @@ def enviar_email_v2(correo, url_carta, ruta_qr):
     msg.attach_alternative(html_content, "text/html")
     msg.attach_file(ruta_qr)
     msg.send()
-    logger.error("ENTRO EN EMAIL V2")
+    logger.error("SALGO EN EMAIL V2")
 
 
 def generar_qr_file(directorio, archivo_qr, url_carta):
@@ -67,17 +69,19 @@ class FilePDFApi(APIView):
     parser_classes = (MultiPartParser, FormParser)
 
     def post(self, request, *args, **kwargs):
-        pdf_serializer = FilePDFSerializer(data=request.data)
+        pdf_serializer = RegisterSerializer(data=request.data)
+        correo = ''
         if pdf_serializer.is_valid():
             cif_user = request.data["cif"]
             logger.error("CIF_USER: " + cif_user)
             if cif_user is not None:
                 # 1 Creamos el directorio con el cif del usuario donde ira el fichero en pdf
-                usuarioainsertarpdf = User.objects.filter(cif__exact=request.data["cif"])
-                logger.error(usuarioainsertarpdf[0].email)
-                correo = usuarioainsertarpdf[0].email
+                #usuarioainsertarpdf = User.objects.filter(cif__exact=request.data["cif"])
+                #logger.error("USUARIO A INSERTAR PDF ENTERO: " + usuarioainsertarpdf[0])
+                #logger.error("EMAIL DESDE EL USUARIO: " +usuarioainsertarpdf[0].email)
+                correo = request.data["email"]
                 #correo = "neozizou@gmail.com"
-                logger.error("EMAIL:" + correo)
+                logger.error("EMAIL DESDE LA VARIABLE: " + correo)
                 archivo_pdf = 'free.pdf'
                 archivo_qr = 'qr.jpg'
                 directorio = './frontend/static/clientes/' + cif_user
@@ -101,17 +105,33 @@ class FilePDFApi(APIView):
                 logger.error('DESPUES DEL GENERAR EL QR:')
 
 
-                #6 Creamos el correo electronico y lo enviamos.
-                #ENVIAR EMAIL VERSION 1
-                enviar_email_v1(correo)
-                enviar_email_v2(correo,url_carta,ruta_qr)
+
                 # 3 Insertamos la ruta del fichero pdf en el modelo
-                usuarioainsertarpdf[0].pdf = ruta_pdf
-                usuarioainsertarpdf[0].qr = ruta_qr
+
+                pdf_serializer.is_valid(raise_exception=True)
+                user = pdf_serializer.save()
+                logger.error("USUARIO REGISTRADO!")
+
+                usuarioainsertarpdf = User.objects.filter(cif__exact=request.data["cif"]).update(pdf=ruta_pdf, qr=ruta_qr)
+                #logger.error(usuarioainsertarpdf[0])
+                #usuarioainsertarpdf[0].pdf = ruta_pdf
+                #usuarioainsertarpdf[0].qr = ruta_qr
+                #usuarioainsertarpdf[0].save()
                 # 5 Guardamos todos los datos en el modelo usuario
                 logger.error('ANTES DEL SAVE:' + cif_user)
-                usuarioainsertarpdf[0].save()
+
+
+                # 6 Creamos el correo electronico y lo enviamos.
+                # ENVIAR EMAIL VERSION 1
+                enviar_email_v1(correo)
+                enviar_email_v2(correo, url_carta, ruta_qr)
                 return Response(pdf_serializer.data, status=status.HTTP_201_CREATED)
+                """"
+                return Response({
+                    "user": UserSerializer(user, context=self.get_serializer_context()).data,
+                    "token": AuthToken.objects.create(user)[1]
+                })
+                """
         else:
             print('error', pdf_serializer.errors)
             return Response(pdf_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -125,6 +145,7 @@ class RegisterApi(generics.GenericAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
+        logger.error("USUARIO REGISTRADO!")
 
         return Response({
             "user": UserSerializer(user, context=self.get_serializer_context()).data,"token": AuthToken.objects.create(user)[1]
