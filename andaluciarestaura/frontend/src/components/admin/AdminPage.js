@@ -8,23 +8,23 @@ import Files from "react-butterfiles";
 class AdminPage extends Component {
 
     constructor() {
-      super();
-      this.state = {
-        id: "",
-        cif: "",
-        marca_comercial: "",
-        nombre_fiscal: "",
-        razon_social: "",
-        direccion_fiscal: "",
-        localidad: "",
-        codigo_postal: "",
-        provincia: "",
-        email: "",
-        telefono_1: "",
-        telefono_2: "",
-        fax: "",
-        tipo_negocio: "",
-      };
+        super();
+        this.state = {
+            id: "",
+            cif: "",
+            marca_comercial: "",
+            nombre_fiscal: "",
+            razon_social: "",
+            direccion_fiscal: "",
+            localidad: "",
+            codigo_postal: "",
+            provincia: "",
+            email: "",
+            telefono_1: "",
+            telefono_2: "",
+            fax: "",
+            tipo_negocio: "",
+        };
     }
     static propTypes = {
         auth: PropTypes.object.isRequired,
@@ -75,20 +75,20 @@ class AdminPage extends Component {
     }
 
     render() {
-        const { id=this.props.auth.user.id } = this.state.id
-        const { cif=this.props.auth.user.cif} = this.state.cif
-        const { marca_comercial=this.props.auth.user.marca_comercial} = this.state.marca_comercial
-        const { nombre_fiscal=this.props.auth.user.nombre_fiscal} = this.state.nombre_fiscal
-        const { razon_social=this.props.auth.user.razon_social} = this.state.razon_social
-        const { direccion_fiscal=this.props.auth.user.direccion_fiscal} = this.state.direccion_fiscal
-        const { localidad=this.props.auth.user.localidad} = this.state.localidad
-        const { codigo_postal=this.props.auth.user.codigo_postal} = this.state.codigo_postal
-        const { provincia=this.props.auth.user.provincia} = this.state.provincia
-        const { email=this.props.auth.user.email} = this.state.email
-        const { telefono_1=this.props.auth.user.telefono_1} = this.state.telefono_1
-        const { telefono_2=this.props.auth.user.telefono_2} = this.state.telefono_2
-        const { fax=this.props.auth.user.fax} = this.state.fax
-        const { tipo_negocio=this.props.auth.user.tipo_negocio} = this.state.tipo_negocio
+        const { id = this.props.auth.user.id } = this.state.id
+        const { cif = this.props.auth.user.cif } = this.state.cif
+        const { marca_comercial = this.props.auth.user.marca_comercial } = this.state.marca_comercial
+        const { nombre_fiscal = this.props.auth.user.nombre_fiscal } = this.state.nombre_fiscal
+        const { razon_social = this.props.auth.user.razon_social } = this.state.razon_social
+        const { direccion_fiscal = this.props.auth.user.direccion_fiscal } = this.state.direccion_fiscal
+        const { localidad = this.props.auth.user.localidad } = this.state.localidad
+        const { codigo_postal = this.props.auth.user.codigo_postal } = this.state.codigo_postal
+        const { provincia = this.props.auth.user.provincia } = this.state.provincia
+        const { email = this.props.auth.user.email } = this.state.email
+        const { telefono_1 = this.props.auth.user.telefono_1 } = this.state.telefono_1
+        const { telefono_2 = this.props.auth.user.telefono_2 } = this.state.telefono_2
+        const { fax = this.props.auth.user.fax } = this.state.fax
+        const { tipo_negocio = this.props.auth.user.tipo_negocio } = this.state.tipo_negocio
         return (
             <React.Fragment>
 
@@ -158,12 +158,17 @@ class AdminPage extends Component {
                                     </div>
                                     <div className="field-body">
                                         <div className="field">
-                                            <select id="razon_social" onChange={this.onChange} value={razon_social}>
-                                              <option value="SL">SL</option>
-                                              <option value="SA">SA</option>
-                                              <option value="Autonomo">Autonomo</option>
-                                              <option value="SCOOP">SCOOP</option>
-                                            </select>
+
+                                            <div class="control">
+                                                <div class="select">
+                                                    <select id="razon_social" onChange={this.onChange} value={razon_social}>
+                                                        <option value="SL">SL</option>
+                                                        <option value="SA">SA</option>
+                                                        <option value="Autonomo">Autonomo</option>
+                                                        <option value="SCOOP">SCOOP</option>
+                                                    </select>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -297,19 +302,23 @@ class AdminPage extends Component {
                                         <label className="label has-text-left">Tipo</label>
                                     </div>
                                     <div className="field-body">
-                                        <div className="field">
-                                            <select id="razon_social" onChange={this.onChange} value={tipo_negocio}>
-                                              <option value="Bar">Bar</option>
-                                              <option value="Restaurante">Restaurante</option>
-                                              <option value="Hotel">Hotel</option>
-                                              <option value="Discoteca">Discoteca</option>
-                                              <option value="Cafeteria">Cafeteria</option>
-                                              <option value="Catering">Catering</option>
-                                              <option value="Catering">Churreria</option>
-                                              <option value="Pub">Pub</option>
-                                              <option value="Cerveceria">Cerveceria</option>
-                                              <option value="Heladeria">Heladeria</option>
-                                            </select>
+                                        <div class="control">
+                                            <div class="select">
+                                                <select id="razon_social" onChange={this.onChange} value={tipo_negocio}>
+                                                    <option value="Bar">Bar</option>
+                                                    <option value="Restaurante">Restaurante</option>
+                                                    <option value="Hotel">Hotel</option>
+                                                    <option value="Discoteca">Discoteca</option>
+                                                    <option value="Cafeteria">Cafeteria</option>
+                                                    <option value="Catering">Catering</option>
+                                                    <option value="Catering">Churreria</option>
+                                                    <option value="Pub">Pub</option>
+                                                    <option value="Cerveceria">Cerveceria</option>
+                                                    <option value="Heladeria">Heladeria</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div className="field"> 
                                         </div>
                                     </div>
                                 </div>
@@ -324,7 +333,7 @@ class AdminPage extends Component {
                             <div className="field">
                                 <div className="buttons is-centered">
 
-                                    <button className="button" onClick={this.onSubmit} style={{backgroundColor:'#bca466', color: 'white' }}>Guardar Cambios</button>
+                                    <button className="button" onClick={this.onSubmit} style={{ backgroundColor: '#bca466', color: 'white' }}>Guardar Cambios</button>
                                 </div>
                             </div>
                         </div>

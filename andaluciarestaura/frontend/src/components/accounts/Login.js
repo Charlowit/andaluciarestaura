@@ -65,7 +65,7 @@ export class Login extends Component {
                                                     </div>
                                                 </div>
                                                 <div className="has-text-centered">
-                                                    <button type="submit" className="button" style={{backgroundColor:'#bca466'}} onClick={this.onSubmit} >Login</button>
+                                                    <button type="submit" className="button" style={{backgroundColor:'#bca466', color: 'white'}} onClick={this.onSubmit} >Login</button>
                                                 </div>
                                             </form>
                                         </div>
