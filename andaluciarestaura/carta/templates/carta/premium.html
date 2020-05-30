@@ -142,15 +142,48 @@
                               </div>
                                 <div class="columns">
                                   <div class="column is-two-thirds" style="margin-left: 2%">
-                                    <!-- FOR DE ALERGENOS -->
-                                    <img src="http://127.0.0.1:8000/static/frontend/Allergens/huevos.svg" alt="triangle with all three sides equal" width="50"/>
-                                    <img src="http://127.0.0.1:8000/static/frontend/Allergens/lacteos.svg" alt="triangle with all three sides equal" width="50"/>
-                                    <img src="http://127.0.0.1:8000/static/frontend/Allergens/soja.svg" alt="triangle with all three sides equal" width="50"/>
-                                    <img src="http://127.0.0.1:8000/static/frontend/Allergens/cascara.svg" alt="triangle with all three sides equal" width="50"/>
-                                    <img src="http://127.0.0.1:8000/static/frontend/Allergens/moluscos.svg" alt="triangle with all three sides equal" width="50"/>
-                                    <img src="http://127.0.0.1:8000/static/frontend/Allergens/fish.svg" alt="triangle with all three sides equal" width="50"/>
+
+                                      {% if producto.is_apio == True %}
+                                        <img src="http://127.0.0.1:8000/static/frontend/Allergens/alergeno_apio.svg" alt="triangle with all three sides equal" width="50"/>
+                                      {% endif %}
+                                      {% if producto.is_altramuces == True %}
+                                        <img src="http://127.0.0.1:8000/static/frontend/Allergens/alergeno_altramuces.svg" alt="triangle with all three sides equal" width="50"/>
+                                      {% endif %}
+                                      {% if producto.is_cacahuete == True %}
+                                        <img src="http://127.0.0.1:8000/static/frontend/Allergens/alergeno_cacahuete.svg" alt="triangle with all three sides equal" width="50"/>
+                                      {% endif %}
+                                      {% if producto.is_crustaceo == True %}
+                                        <img src="http://127.0.0.1:8000/static/frontend/Allergens/alergeno_crustaceo.svg" alt="triangle with all three sides equal" width="50"/>
+                                      {% endif %}
+                                      {% if producto.is_frutos_con_cascara == True %}
+                                        <img src="http://127.0.0.1:8000/static/frontend/Allergens/alergeno_frutos_con_cascara.svg" alt="triangle with all three sides equal" width="50"/>
+                                      {% endif %}
+                                      {% if producto.is_gluten == True %}
+                                        <img src="http://127.0.0.1:8000/static/frontend/Allergens/alergeno_gluten.svg" alt="triangle with all three sides equal" width="50"/>
+                                      {% endif %}
+                                      {% if producto.is_huevo == True %}
+                                        <img src="http://127.0.0.1:8000/static/frontend/Allergens/alergeno_huevo.svg" alt="triangle with all three sides equal" width="50"/>
+                                      {% endif %}
+                                      {% if producto.is_lacteo == True %}
+                                        <img src="http://127.0.0.1:8000/static/frontend/Allergens/alergeno_lacteo.svg" alt="triangle with all three sides equal" width="50"/>
+                                      {% endif %}
+                                      {% if producto.is_molusco == True %}
+                                        <img src="http://127.0.0.1:8000/static/frontend/Allergens/alergeno_moluscos.svg" alt="triangle with all three sides equal" width="50"/>
+                                      {% endif %}
+                                      {% if producto.is_mostaza == True %}
+                                        <img src="http://127.0.0.1:8000/static/frontend/Allergens/alergeno_mostaza.svg" alt="triangle with all three sides equal" width="50"/>
+                                      {% endif %}
+                                      {% if producto.is_pescado == True %}
+                                        <img src="http://127.0.0.1:8000/static/frontend/Allergens/alergeno_pescado.svg" alt="triangle with all three sides equal" width="50"/>
+                                      {% endif %}
+                                      {% if producto.is_sesamo == True %}
+                                        <img src="http://127.0.0.1:8000/static/frontend/Allergens/alergeno_sesamo.svg" alt="triangle with all three sides equal" width="50"/>
+                                      {% endif %}
+                                      {% if producto.is_soja == True %}
+                                        <img src="http://127.0.0.1:8000/static/frontend/Allergens/alergeno_soja.svg" alt="triangle with all three sides equal" width="50"/>
+                                      {% endif %}
                                 </div>
-                                <div class="column is-3" style="margin-top: 2%">
+                                <div class="column is-3" >
                                   <div class="columns is-mobile" style="text-align: center; margin-bottom: 5%;">
                                       <div class="column">
                                           <div style="width:100%;margin-top:5%;margin-bottom: 6%;">
