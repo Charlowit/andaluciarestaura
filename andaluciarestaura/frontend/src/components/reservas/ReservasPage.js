@@ -302,7 +302,6 @@ export class ReservasPage extends Component {
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
