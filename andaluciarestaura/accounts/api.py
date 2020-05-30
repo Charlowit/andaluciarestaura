@@ -80,15 +80,12 @@ def handle_uploaded_image(image,ruta):
         f.write(encoded_string)
     f.close()
 """""
-class FilePDFApi(APIView):
-    permission_classes = [
-        permissions.AllowAny,
-    ]
+class FilePDFApi(generics.GenericAPIView):
+    serializer_class = RegisterSerializer
     parser_classes = (MultiPartParser, FormParser)
 
     def post(self, request, *args, **kwargs):
-        register_serializer = RegisterSerializer(data=request.data)
-        correo = ''
+        register_serializer = self.get_serializer(data=request.data)
         if register_serializer.is_valid():
             cif_user = request.data["cif"]
             logger.error("CIF_USER: " + cif_user)
@@ -98,7 +95,6 @@ class FilePDFApi(APIView):
                 #logger.error("USUARIO A INSERTAR PDF ENTERO: " + usuarioainsertarpdf[0])
                 #logger.error("EMAIL DESDE EL USUARIO: " +usuarioainsertarpdf[0].email)
                 correo = request.data["email"]
-                #correo = "neozizou@gmail.com"
                 logger.error("EMAIL DESDE LA VARIABLE: " + correo)
                 archivo_pdf = 'free.pdf'
                 archivo_qr = 'qr.jpg'
@@ -131,13 +127,14 @@ class FilePDFApi(APIView):
 
                 # 3 Insertamos la ruta del fichero pdf en el modelo
                 #register_serializer.create(request.data)
+                # logger.error("ANTES: " + register_serializer.marca_comercial)
                 register_serializer.is_valid(raise_exception=True)
-                #logger.error("ANTES: " + register_serializer.marca_comercial)
                 user = register_serializer.save()
                 #logger.error("DESPUES: " + user.marca_comercial)
                 logger.error("USUARIO REGISTRADO!")
 
                 User.objects.filter(cif__exact=request.data["cif"]).update(pdf=ruta_pdf, qr=ruta_qr, logo=ruta_logo, marca_comercial=request.data["marca_comercial"], email=request.data["email"], telefono_1=request.data["telefono_1"])
+                #User.objects.filter(cif__exact=request.data["cif"]).update(pdf=ruta_pdf, qr=ruta_qr)
                 #logger.error(usuarioainsertarpdf[0])
                 #usuarioainsertarpdf[0].pdf = ruta_pdf
                 #usuarioainsertarpdf[0].qr = ruta_qr
@@ -150,13 +147,13 @@ class FilePDFApi(APIView):
                 # ENVIAR EMAIL VERSION 1
                 enviar_email_v1(correo)
                 enviar_email_v2(correo, url_carta, ruta_qr)
-                return Response(register_serializer.data, status=status.HTTP_201_CREATED)
-                """""
+                #return Response(register_serializer.data, status=status.HTTP_201_CREATED)
+
                 return Response({
                     "user": UserSerializer(user, context=self.get_serializer_context()).data,
                     "token": AuthToken.objects.create(user)[1]
                 })
-                """
+
         else:
             print('error', register_serializer.errors)
             return Response(register_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
