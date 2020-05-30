@@ -23,7 +23,6 @@ class AdminPage extends Component {
         telefono_1: "",
         telefono_2: "",
         fax: "",
-        iban: "",
         tipo_negocio: "",
       };
     }
@@ -36,8 +35,8 @@ class AdminPage extends Component {
 
     onSubmit = e => {
         e.preventDefault();
-        const { id, cif, marca_comercial, nombre_fiscal, razon_social, direccion_fiscal, localidad, codigo_postal, provincia, email, telefono_1, telefono_2, fax, iban, tipo_negocio } = this.state;
-        const user = { id, cif, marca_comercial, nombre_fiscal, razon_social, direccion_fiscal, localidad, codigo_postal, provincia, email, telefono_1, telefono_2, fax, iban, tipo_negocio };
+        const { id, cif, marca_comercial, nombre_fiscal, razon_social, direccion_fiscal, localidad, codigo_postal, provincia, email, telefono_1, telefono_2, fax, tipo_negocio } = this.state;
+        const user = { id, cif, marca_comercial, nombre_fiscal, razon_social, direccion_fiscal, localidad, codigo_postal, provincia, email, telefono_1, telefono_2, fax, tipo_negocio };
         console.log("NOMBRE FISCAL: " + user.nombre_fiscal)
         console.log("USUARIO FINAL: " + user.cif)
         this.props.updateuser(user);
@@ -67,7 +66,6 @@ class AdminPage extends Component {
         this.state.telefono_1 = this.props.auth.user.telefono_1
         this.state.telefono_2 = this.props.auth.user.telefono_2
         this.state.fax = this.props.auth.user.fax
-        this.state.iban = this.props.auth.user.iban
         this.state.tipo_negocio = this.props.auth.user.tipo_negocio
         console.log("THIS STATE ID: " + this.state.id)
         console.log("THIS PROPS AUTH USER ID: " + this.props.auth.user.id)
@@ -90,7 +88,6 @@ class AdminPage extends Component {
         const { telefono_1=this.props.auth.user.telefono_1} = this.state.telefono_1
         const { telefono_2=this.props.auth.user.telefono_2} = this.state.telefono_2
         const { fax=this.props.auth.user.fax} = this.state.fax
-        const { iban=this.props.auth.user.iban} = this.state.iban
         const { tipo_negocio=this.props.auth.user.tipo_negocio} = this.state.tipo_negocio
         return (
             <React.Fragment>
@@ -161,12 +158,12 @@ class AdminPage extends Component {
                                     </div>
                                     <div className="field-body">
                                         <div className="field">
-                                            <p className="control has-icons-left">
-                                                <input className="input" type="text" placeholder="" name="razon_social" onChange={this.onChange} defaultValue={razon_social} />
-                                                <span className="icon is-small is-left">
-                                                    <i className="fas fa-id-card-alt"></i>
-                                                </span>
-                                            </p>
+                                            <select id="razon_social" onChange={this.onChange} value={razon_social}>
+                                              <option value="SL">SL</option>
+                                              <option value="SA">SA</option>
+                                              <option value="Autonomo">Autonomo</option>
+                                              <option value="SCOOP">SCOOP</option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -292,34 +289,7 @@ class AdminPage extends Component {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="field ">
-                                    <div className="field-label is-normal">
-                                        <label className="label has-text-left">Tarjeta Crédito</label>
-                                    </div>
-                                    <div className="field-body">
-                                        <div className="field">
-                                            <p className="control has-icons-left">
-                                                <input className="input" type="text" placeholder="" name="iban" onChange={this.onChange} defaultValue={iban} />
-                                                <span className="icon is-small is-left">
-                                                    <i className="fas fa-credit-card"></i>
-                                                </span>
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
                                 <div className="spacing">
-                                    <div className="field is-horizontal"></div>
-                                    <div className="field is-horizontal"></div>
-                                    <div className="field is-horizontal"></div>
-                                    <div className="field is-horizontal"> </div>
-                                    <div className="field is-horizontal"> </div>
-                                    <div className="field is-horizontal"></div>
-                                    <div className="field is-horizontal"> </div>
-                                    <div className="field is-horizontal"></div>
-                                    <div className="field is-horizontal"> </div>
-                                    <div className="field is-horizontal"></div>
-                                    <div className="field is-horizontal"> </div>
-
                                 </div>
 
                                 <div className="field ">
@@ -328,12 +298,18 @@ class AdminPage extends Component {
                                     </div>
                                     <div className="field-body">
                                         <div className="field">
-                                            <p className="control has-icons-left">
-                                                <input className="input" type="text" placeholder="" name="tipo_negocio" onChange={this.onChange} defaultValue={tipo_negocio} />
-                                                <span className="icon is-small is-left">
-                                                    <i className="fas fa-building"></i>
-                                                </span>
-                                            </p>
+                                            <select id="razon_social" onChange={this.onChange} value={tipo_negocio}>
+                                              <option value="Bar">Bar</option>
+                                              <option value="Restaurante">Restaurante</option>
+                                              <option value="Hotel">Hotel</option>
+                                              <option value="Discoteca">Discoteca</option>
+                                              <option value="Cafeteria">Cafeteria</option>
+                                              <option value="Catering">Catering</option>
+                                              <option value="Catering">Churreria</option>
+                                              <option value="Pub">Pub</option>
+                                              <option value="Cerveceria">Cerveceria</option>
+                                              <option value="Heladeria">Heladeria</option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -348,59 +324,13 @@ class AdminPage extends Component {
                             <div className="field">
                                 <div className="buttons is-centered">
 
-                                    <button className="button" onClick={this.onSubmit}>Guardar Cambios</button>
+                                    <button className="button" onClick={this.onSubmit} style={{backgroundColor:'#bca466', color: 'white' }}>Guardar Cambios</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <hr />
                 </div>
-                {/*<div className="section">
-                    <div classNames="container">
-                        <Files
-                            multiple={false} maxSize="2mb" multipleMaxSize="10mb" accept={["application/pdf", "image/jpg", "image/jpeg"]}
-                            onSuccess={this.handleSuccess}
-                            onError={this.handleErrors}>
-                            {({ browseFiles, getDropZoneProps }) => {
-                                return (
-                                    <div>
-                                        <label>Drag and drop files.</label>
-                                        <div
-                                            {...getDropZoneProps({
-                                                style: {
-                                                    width: 600,
-                                                    minHeight: 200,
-                                                    border: "2px lightgray dashed"
-                                                }
-                                            })}>
-                                            <ol>
-                                                {this.state.files.map(file => (
-                                                    <li key={file.name}>{file.name}</li>
-                                                ))}
-                                                {this.state.errors.map(error => (
-                                                    <li key={error.id}>
-                                                        {error.file ? (
-                                                            <span>
-                                                                {error.file.name} - {error.type}
-                                                            </span>
-                                                        ) : (
-                                                                error.type
-                                                            )}
-                                                    </li>
-                                                ))}
-                                            </ol>
-                                        </div>
-                                        <div>
-                                            Dragging not convenient? Click{" "}
-                                            <button onClick={browseFiles}>here</button> to select files.
-                                        </div>
-                                    </div>
-                                );
-                            }}
-                        </Files>
-                    </div>
-                </div>
-                        */}       
             </React.Fragment>
         );
     }
