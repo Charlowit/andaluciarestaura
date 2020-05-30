@@ -17,9 +17,21 @@ import ViewPdf from "./accounts/ViewPdf";
 import { Provider } from 'react-redux';
 import store from '../store';
 import { loadUser, login } from '../actions/auth';
-import CreditCard from './creditcard/CreditCard'
+import CreditCard from './creditcard/CreditCard';
+import Logo from './avatar/Logo'
+import { Provider as AlertProvider } from 'react-alert';
+import AlertTemplate from 'react-alert-template-basic';
 
-{/*"LOCO QUE FALTAN MIS RUTAS"*/}
+
+import Alerts from './alerta/Alerts';
+
+
+//Alert Options
+const alertOptions = {
+    timeout: 3000,
+    position: 'top center'
+}
+
 class App extends Component {
 
   componentDidMount() {
@@ -29,9 +41,11 @@ class App extends Component {
     return (
 
         <Provider store={store}>
+            <AlertProvider template={AlertTemplate} {...alertOptions}>
             <Router>
                 <Fragment>
                     <Navbar />
+                    <Alerts />
                     <Switch>
                         <PrivateRouteLogin exact path="/" component={Login} />
                         <PrivateRoute exact path="/admin-page" component={AdminPage} />
@@ -39,7 +53,7 @@ class App extends Component {
                         <PrivateRoute exact path="/servicios-page" component={ServiciosPage} />
                         <PrivateRoute exact path="/carta-page" component={CartaPage} />
                         <PrivateRoute exact path="/reservas-page" component={ReservasPage} />
-                        <PrivateRoute exact path="/delivery-page" component={DeliveryPage} />
+                         <PrivateRoute exact path="/delivery-page" component={DeliveryPage} />
                         <Route exact path="/pdf-upload" component={FileUpload} />
                         <Route exact path="/view-pdf" component={ViewPdf} />
 
@@ -47,12 +61,14 @@ class App extends Component {
                         {/*<Route exact path="/maps-page" component={Maps2} />*/}
                         {/*<Route exact path="/autocomplete-page" component={Roads} />*/}
                         <PrivateRoute exact path="/creditcard-page" component={CreditCard} />
+                        <PrivateRoute exact path="/avatar-page" component={Logo} />
 
                         
                     </Switch>
                     <Footer />
                 </Fragment>
             </Router>
+            </AlertProvider>
         </Provider>
     );
   }

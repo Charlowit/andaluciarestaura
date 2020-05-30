@@ -6,8 +6,10 @@ import {
     LOGIN_FAIL,
     LOGIN_SUCCESS,
     LOGOUT_SUCCESS,
-    UPDATE_LOADING, UPDATE_SUCCESS, UPDATE_ERROR
+    UPDATE_LOADING, UPDATE_SUCCESS, UPDATE_ERROR, GET_ERRORS
 } from "./types";
+
+import { createMessages } from './messages'
 
 // CHECK TOKEN & LOAD USER
 export const loadUser = () => (dispatch, getState) => {
@@ -39,6 +41,15 @@ export const loadUser = () => (dispatch, getState) => {
             dispatch({
                 type: AUTH_ERROR
             });
+
+            const errors = {
+                msg: err.response.data,
+                status: err.response.status
+            }
+            dispatch({
+                type: GET_ERRORS,
+                payload: errors
+            });
         });
 };
 
@@ -65,6 +76,15 @@ export const login = (cif, password) => dispatch => {
         }).catch(err => {
             dispatch({
                 type: LOGIN_FAIL
+            });
+
+            const errors = {
+                msg: err.response.data,
+                status: err.response.status
+            }
+            dispatch({
+                type: GET_ERRORS,
+                payload: errors
             });
         });
 };
@@ -97,7 +117,7 @@ export const logout = () => (dispatch, getState) => {
         }).catch(err => console.log(err));
 };
 
-// Registro
+// Registro (ESTE NO FUNCIONA EL REGISTRO DE VERDAD ESTA EN EL DEL PDF)
 
 export const registro = (user) => dispatch => {
 
@@ -111,7 +131,18 @@ export const registro = (user) => dispatch => {
     console.log("ESTE ES EL BODY: " + body);
 
     axios.post('/api/auth/register', body, config)
-        .catch(err => console.log(err));
+        .then(res =>{
+            
+        }).catch(err => {
+            const errors = {
+                msg: err.response.data,
+                status: err.response.status
+            }
+            dispatch({
+                type: GET_ERRORS,
+                payload: errors
+            });
+        });
 
 
 
@@ -127,9 +158,18 @@ export const subirpdf = (formdata) => dispatch => {
       console.log("FORM DATA " + formdata.pdf)
       axios.post('api/auth/pdf', formdata, config)
         .then(res => {
-          console.log(res.data);
+            dispatch(createMessages({ datosCambiados: "Registro realizado correctamente."}));
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+            const errors = {
+                msg: err.response.data,
+                status: err.response.status
+            }
+            dispatch({
+                type: GET_ERRORS,
+                payload: errors
+            });
+        });
 
 };
 
@@ -180,9 +220,17 @@ export const updateuser = (user) => (dispatch, getState) => {
 
     axios.put('/api/auth/useract', body, config)
         .then(res =>{
-            console.log(res.data);
-        }).catch(err =>
-            console.log(err));
+            dispatch(createMessages({ datosCambiados: "Datos guardados correctamente."}));
+        }).catch(err => {
+            const errors = {
+                msg: err.response.data,
+                status: err.response.status
+            }
+            dispatch({
+                type: GET_ERRORS,
+                payload: errors
+            });
+        });
 };
 
 

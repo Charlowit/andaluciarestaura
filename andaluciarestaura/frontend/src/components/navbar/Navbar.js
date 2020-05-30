@@ -32,7 +32,7 @@ export class Navbar extends Component {
                         <span className="control" style={{ marginTop: 7 }}>
                             <img className="is-rounded is-square" src={"/static/frontend/1/logo1.jpeg"} alt="Placeholder image" />
                         </span>
-                        <span className="control" style={{ marginTop: 10 }}>
+                        <span className="control" style={{ marginTop: 14 }}>
                             <div className="media-content">
                                 <p className="subtitle is-6">{user ? `Bienvenido ${user.cif}` : ""}</p>
                             </div>
@@ -40,7 +40,8 @@ export class Navbar extends Component {
                         </span>
                         <span className="control">
                             <div className="buttons">
-                                <Link to="/" className="button is-danger" onClick={this.props.logout}>Logout</Link>
+                                <Link to="/" className="button is-danger"  onClick={this.props.logout}>
+                                 <p style={{marginTop: 3}}> Logout </p> </Link>
                             </div>
                         </span>
                     </div>
@@ -81,6 +82,7 @@ export class Navbar extends Component {
                         <Link className="navbar-item" style={{ width: '100%', marginTop: '10px' }} to="/maps-page">Maps</Link>
                         <Link className="navbar-item" style={{ width: '100%', marginTop: '10px' }} to="/creditcard-page">Credit Card</Link>
                         {/*<Link className="navbar-item" style={{ width: '100%', marginTop: '10px' }} to="/autocomplete-page">Roads</Link>*/}
+                        <Link className="navbar-item" style={{ width: '100%', marginTop: '10px' }} to="/avatar-page">Avatar</Link>
 
 
                         

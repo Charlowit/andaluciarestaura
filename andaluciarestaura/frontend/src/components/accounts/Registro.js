@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import { registro, login, subirpdf } from "../../actions/auth";
 import axios from "axios";
 
+
 const image = "https://pngimage.net/wp-content/uploads/2018/06/plato-de-comida-png-5.png";
 var sectionStyle = {
     backgroundSize: 'cover',

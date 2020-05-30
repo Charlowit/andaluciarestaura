@@ -14,4 +14,7 @@ export const GET_DATOS_USUARIO = "GET_DATOS_USUARIO";
 
 /* Aqui cositas de la carta */
 export const GET_CARTA = "GET_CARTA";
+export const GET_ERRORS = "GET_ERRORS";
+export const GET_MESSAGES = "GET_MESSAGES";
+export const CREATE_MESSAGE = "CREATE_MESSAGE";
 

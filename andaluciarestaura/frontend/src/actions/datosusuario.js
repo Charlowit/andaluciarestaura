@@ -1,5 +1,5 @@
 import axios from "axios";
-import {UPDATE_ERROR, UPDATE_LOADING, UPDATE_SUCCESS, GET_DATOS_USUARIO} from "./types";
+import {UPDATE_ERROR, UPDATE_LOADING, UPDATE_SUCCESS, GET_DATOS_USUARIO, GET_ERRORS} from "./types";
 import { tokenConfig } from './auth';
 
 // CHANGE DATA USER METHOD PUT
@@ -30,10 +30,15 @@ export const updateuser = (id, user) => (dispatch, getState) => {
                 type: UPDATE_SUCCESS,
                 payload: res.data
             });
-        }).catch(err =>
-        console.log(err));
-        dispatch({
-            type: UPDATE_ERROR
+        }).catch(err => {
+            const erros = {
+                msg: err.response.data,
+                status: err.response.status
+            }
+            dispatch({
+                type: GET_ERRORS,
+                payload: errors
+            });
         });
 };
 
