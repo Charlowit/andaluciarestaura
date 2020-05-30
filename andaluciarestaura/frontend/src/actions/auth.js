@@ -209,7 +209,7 @@ export const updateuser = (user) => (dispatch, getState) => {
         }
     }
 
-    const body = JSON.stringify({id:user.id, cif:user.cif, nombre_fiscal:user.nombre_fiscal, marca_comercial:user.marca_comercial, razon_social:user.razon_social, direccion_fiscal:user.direccion_fiscal, localidad:user.localidad, codigo_postal:user.codigo_postal, provincia:user.provincia, email:user.email, telefono_1:user.telefono_1, telefono_2:user.telefono_2, fax:user.fax, iban:user.iban, tipo_negocio:user.tipo_negocio})
+    const body = JSON.stringify({id:user.id, cif:user.cif, nombre_fiscal:user.nombre_fiscal, marca_comercial:user.marca_comercial, razon_social:user.razon_social, direccion_fiscal:user.direccion_fiscal, localidad:user.localidad, codigo_postal:user.codigo_postal, provincia:user.provincia, email:user.email, telefono_1:user.telefono_1, telefono_2:user.telefono_2, fax:user.fax, tipo_negocio:user.tipo_negocio})
 
     console.log("ESTE ES EL BODY DEL UPDATE: " + body)
     // If token, add to headers config

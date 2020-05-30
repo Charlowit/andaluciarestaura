@@ -41,8 +41,6 @@ export class Login extends Component {
             <section className="hero is-medium">
                 <div className="hero-body">
                     <div className="container">
-
-
                             <div className="columns is-centered" style={{marginLeft: '-10%'}}>
                                 <div className="column is-one-quarter has-text-centered" style={{marginLeft: '10%', marginBottom:'6%'}}>
 
@@ -67,7 +65,7 @@ export class Login extends Component {
                                                     </div>
                                                 </div>
                                                 <div className="has-text-centered">
-                                                    <button type="submit" className="button" onClick={this.onSubmit} >Login</button>
+                                                    <button type="submit" className="button" style={{backgroundColor:'#bca466'}} onClick={this.onSubmit} >Login</button>
                                                 </div>
                                             </form>
                                         </div>

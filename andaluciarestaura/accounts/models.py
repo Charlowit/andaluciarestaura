@@ -11,7 +11,13 @@ TIPOS_NEGOCIO = (
     ('Bar','Bar'),
     ('Restaurante', 'Restaurante'),
     ('Hotel','Hotel'),
-    ('Ocio Nocturno','Ocio Nocturno'),
+    ('Discoteca','Discoteca'),
+    ('Cafeteria','Cafeteria'),
+    ('Catering','Catering'),
+    ('Churreria','Churreria'),
+    ('Pub','Pub'),
+    ('Cerveceria','Cerveceria'),
+    ('Heladeria','Heladeria'),
     ('Otros', 'Otros'),
 )
 RAZON_SOCIAL = (
