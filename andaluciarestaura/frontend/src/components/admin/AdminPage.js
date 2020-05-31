@@ -24,6 +24,8 @@ class AdminPage extends Component {
             telefono_2: "",
             fax: "",
             tipo_negocio: "",
+            logo: "",
+            qr: "",
         };
     }
     static propTypes = {
@@ -67,8 +69,12 @@ class AdminPage extends Component {
         this.state.telefono_2 = this.props.auth.user.telefono_2
         this.state.fax = this.props.auth.user.fax
         this.state.tipo_negocio = this.props.auth.user.tipo_negocio
+        this.state.logo = this.props.auth.user.logo
+        this.state.qr = this.props.auth.user.qr
         console.log("THIS STATE ID: " + this.state.id)
         console.log("THIS PROPS AUTH USER ID: " + this.props.auth.user.id)
+        console.log("THIS STATE LOGO: " + this.state.logo)
+        console.log("THIS PROPS AUTH LOGO: " + this.props.auth.user.logo)
         console.log("THIS STATE CIF: " + this.state.cif)
         console.log("THIS PROPS AUTH USER CIF: " + this.props.auth.user.cif)
         console.log("LISTA FIN: ")
@@ -89,16 +95,29 @@ class AdminPage extends Component {
         const { telefono_2 = this.props.auth.user.telefono_2 } = this.state.telefono_2
         const { fax = this.props.auth.user.fax } = this.state.fax
         const { tipo_negocio = this.props.auth.user.tipo_negocio } = this.state.tipo_negocio
+        const { logo } = this.props.auth.user.logo
+        const { qr } = this.props.auth.user.qr
         return (
             <React.Fragment>
-
-                <div className="section">
+                ruta
+                <div className="section" style={{ marginTop: '40px' }}>
                     <div className="columns">
                         <div className="column is-2"></div>
                         <div className="column is-one-third">
-                            <h2 className="label is-size-3">DATOS NEGOCIO</h2>
+                            <div>
+                                <h2 className="label is-size-3">DATOS NEGOCIO</h2>
+                            </div>
+
+                            <div>
+                                <figure className="image is-64x64 is-inline-block">
+                                    <img className="is-rounded" src={`/static/clientes/${cif}/logo.jpeg`}></img>
+                                </figure>
+                            </div>
+
                         </div>
-                        <div className="column is-one-third"></div>
+                        <div className="column is-one-third">
+
+                        </div>
                         <div className="column is-one-fifth"></div>
                     </div>
                     <hr />
@@ -114,7 +133,7 @@ class AdminPage extends Component {
                                     <div className="field-body">
                                         <div className="field">
                                             <p className="control has-icons-left">
-                                                <input className="input" type="text" placeholder="" name="cif" onChange={this.onChange} defaultValue={cif} />
+                                                <input className="input" type="text" placeholder="" name="cif" onChange={this.onChange} value={cif} />
                                                 <span className="icon is-small is-left">
                                                     <i className="fas fa-id-card-alt"></i>
                                                 </span>
@@ -281,48 +300,67 @@ class AdminPage extends Component {
                                 </div>
                                 <div className="field ">
                                     <div className="field-label is-normal">
-                                        <label className="label has-text-left">Fax</label>
+                                        <label className="label has-text-left">Eslogan Carta</label>
                                     </div>
                                     <div className="field-body">
                                         <div className="field">
                                             <p className="control has-icons-left">
                                                 <input className="input" type="text" placeholder="" name="fax" onChange={this.onChange} defaultValue={fax} />
                                                 <span className="icon is-small is-left">
-                                                    <i className="fas fa-fax"></i>
+                                                    <i className="fas fa-address-book"></i>
                                                 </span>
                                             </p>
                                         </div>
                                     </div>
                                 </div>
-                                <div className="spacing">
-                                </div>
-
-                                <div className="field ">
-                                    <div className="field-label is-normal">
-                                        <label className="label has-text-left">Tipo</label>
-                                    </div>
-                                    <div className="field-body">
-                                        <div class="control">
-                                            <div class="select">
-                                                <select id="razon_social" onChange={this.onChange} value={tipo_negocio}>
-                                                    <option value="Bar">Bar</option>
-                                                    <option value="Restaurante">Restaurante</option>
-                                                    <option value="Hotel">Hotel</option>
-                                                    <option value="Discoteca">Discoteca</option>
-                                                    <option value="Cafeteria">Cafeteria</option>
-                                                    <option value="Catering">Catering</option>
-                                                    <option value="Catering">Churreria</option>
-                                                    <option value="Pub">Pub</option>
-                                                    <option value="Cerveceria">Cerveceria</option>
-                                                    <option value="Heladeria">Heladeria</option>
-                                                </select>
+                                <div className="columns is-mobile">
+                                    <div className="column">
+                                        <div className="field ">
+                                            <div className="field-label is-normal">
+                                                <label className="label has-text-left">Descarga tu codigo QR</label>
+                                            </div>
+                                            <div className="field-body">
+                                                <div className="field">
+                                                    <a className="button" href={`/static/clientes/${cif}/qr.jpg`} download="Reporte2Mayo2010">Descargar</a>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div className="field"> 
+                                    </div>
+
+                                    <div className="column">
+                                        <div className="field ">
+                                            <div className="field-label is-normal">
+                                                <label className="label has-text-left">Tipo</label>
+                                            </div>
+                                            <div className="field-body">
+                                                <div className="control">
+                                                    <div className="select">
+                                                        <select id="razon_social" onChange={this.onChange} value={tipo_negocio}>
+                                                            <option value="Bar">Bar</option>
+                                                            <option value="Restaurante">Restaurante</option>
+                                                            <option value="Hotel">Hotel</option>
+                                                            <option value="Discoteca">Discoteca</option>
+                                                            <option value="Cafeteria">Cafeteria</option>
+                                                            <option value="Catering">Catering</option>
+                                                            <option value="Catering">Churreria</option>
+                                                            <option value="Pub">Pub</option>
+                                                            <option value="Cerveceria">Cerveceria</option>
+                                                            <option value="Heladeria">Heladeria</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
+
+                                </div>
+                                <div>
+                                    <figure className="image is-128x128 is-inline-block">
+                                        <img className="" src={`/static/clientes/${cif}/qr.jpg`}></img>
+                                    </figure>
                                 </div>
                             </div>
+
                             <div className="column is-one-fifth"></div>
                         </div>
                     </form>

@@ -47,9 +47,9 @@ class App extends Component {
                     <Navbar />
                     <Alerts />
                     <Switch>
-                        <PrivateRouteLogin exact path="/" component={Login} />
+                        <PrivateRouteLogin exact path="/login-page" component={Login} />
                         <PrivateRoute exact path="/admin-page" component={AdminPage} />
-                        <Route exact path="/register-page" component={Registro} />
+                        <Route exact path="/" component={Registro} />
                         <PrivateRoute exact path="/servicios-page" component={ServiciosPage} />
                         <PrivateRoute exact path="/carta-page" component={CartaPage} />
                         <PrivateRoute exact path="/reservas-page" component={ReservasPage} />

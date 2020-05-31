@@ -49,7 +49,7 @@ export class Registro extends Component {
     };
 
     onSubmit = e => {
-        window.alert("Gracias por registrarse, en breve nos pondremos en contacto con usted.")
+        //window.alert("Gracias por registrarse, en breve nos pondremos en contacto con usted.")
         //e.preventDefault();
         //console.log(this.state);
         //this.props.registro(this.state);
@@ -97,7 +97,7 @@ export class Registro extends Component {
                                     <div className="columns">
                                         <div className="column is-centered">
                                             <h1 className="title is-spaced is-size-1-desktop is-size-2-tablet is-size-3-mobile" style={colorBlue}>
-                                                Bienvenid@ a Andalucia Restaura
+                                                Bienvenid@ a Córdoba Restaura
                                                             </h1>
                                             <h2 className="subtitle is-size-4-desktop" style={colorBlue}>
                                                 Algo revolucionario va a pasar en tu negocio a partir de este momento.
@@ -148,13 +148,13 @@ export class Registro extends Component {
                                                                         <div className="field">
                                                                             <label className="label has-text-centered is-size-4">Adjunta tu carta en pdf</label>
                                                                             <div className="control has-icons-left">
-                                                                                <input type="file" id="pdf" accept="application/pdf" onChange={this.handlePDFChange} required />
+                                                                                <input className="button" type="file" id="pdf" accept="application/pdf" onChange={this.handlePDFChange} required />
                                                                             </div>
                                                                         </div>
                                                                         <div className="field">
                                                                             <label className="label has-text-centered is-size-4">Adjunta el logo de tu negocio</label>
                                                                             <div className="control has-icons-left">
-                                                                                <input type="file" id="logo" accept="image/x-png,image/gif,image/jpeg" onChange={this.handleLogoChange} required />
+                                                                                <input className="button" type="file" id="logo" accept="jpeg" onChange={this.handleLogoChange} required />
                                                                             </div>
                                                                         </div>
 

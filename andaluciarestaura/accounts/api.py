@@ -23,28 +23,70 @@ logger = logging.getLogger(__name__)
 
 def enviar_email_v1(correo):
     logger.error("ENTRO EN EMAIL V1")
-    subject = 'Anadalucia Restaura'
+    subject = 'Córdoba Restaura'
     from_email = 'soporte@hotehub.com'
     to = correo
     logger.error("DENTRO DE MAIL V1 EL CORREO ES"+ correo)
-    message = 'Gracias por registrarse en Andalucia Restaura, en breve nos pondremos en contacto con usted para elaborar su carta digital de forma gratuita.'
+    message = 'Gracias por registrarse en Córdoba Restaura, se está creando en estos instantes su carta digital, en breve recibirá otro correo con las instrucciones pertinentes. <br/>' \
+              'Recuerde que su usuario para acceder a la plataforma es el CIF/NIF con el que se registró'
     send_mail(subject, message, from_email, [to])
     logger.error("SALGO EN EMAIL V1")
 
-def enviar_email_v2(correo, url_carta, ruta_qr):
+def enviar_email_v2(correo, url_carta, ruta_qr, url_qr):
     logger.error("ENTRO EN EMAIL V2")
-    subject= 'Tu Carta Online con QR by Andalucia Restaura'
+    subject= 'Tu Carta Online con QR by Córdoba Restaura'
     from_email= 'soporte@hotehub.com'
     to = correo
     logger.error("DENTRO DE MAIL V2 EL CORREO ES" + correo)
-    text_content = 'Gracias por registrarse en Andalucia Restaura.'
-    html_content = '<p>Aquí tienes tu dirección donde tus clientes podrán ver tu carta en PDF:' \
-                   '<a href='+url_carta+'>Pulsa aquí para visualizar tu carta</a</p>'
+    text_content = 'Gracias por registrarse en Córdoba Restaura.'
+    html_content = '<p>Aquí tienes tu dirección donde tus clientes podrán ver tu carta en PDF:<br/>' \
+                   '<a href='+url_carta+'>Pulsa aquí para visualizar tu carta</a</p><br/>' \
+                   '<a href='+url_qr+'>Pulsa aquí para descargar tu código QR</a</p>'
+    """"
+    html_content = '<div class="section"><div class="container has-text-centered"><div class="section">' \
+                   '<img src="https://www.andaluciarestaura.com/static/frontend/logoar.svg" width="400">' \
+                   '<div class="columns is-centered is-marginless" style="width: 100%;">' \
+                   '<div class="column" style="width: 100%; height: 100%;">' \
+                   '<div style="background-position: center; background-image: url("http://www.andaluciarestaura.com/static/frontend/backgroundEmail.jpeg"); height: 650px;  background-repeat: no-repeat; ">' \
+                   '<h1 style="color: white; font-size: 25px; padding-top: 50px"> <b> Bienvenido a cordobarestaura.com </b> </h1>' \
+                   '<div class="section"><h1 style="color: white; font-size: 18px;"> Tu plataforma, la plataforma del sector </h1></div>' \
+                   '<div class="section" style="margin-top: -80px"><h1 style="color: white; font-size: 18px;"> Nuestra voluntad, servirte para servir al cliente </h1></div>' \
+                   '<div class="container" style="margin-top: -60px"><p  style="color: white; font-size: 18px; padding-top: 30px"> Descarga tu carta digital accediendo con el siguiente QR </p>' \
+                   '</div><img src="'+ url_qr +'" width="150px" style="padding-top: 30px;"><p style="color: white; font-size: 50px"> Scan Me! <br/> O también puedes acceder en esta dirección y compartirla con tus contactos: <br/> '+url_carta+'</p>' \
+                   '<p style="color: white; padding-top: 10px"> Gracias. </p></div></div></div><div class="container"><div class="columns">' \
+                   '<div class="column is-centered has-text-centered"><img src="logotipo.jpeg" width="200" >' \
+                   '</div></div></div></div></div></div></div>'
+                   #'</body></html>'
+
+
+                    # '<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">' \
+                    # '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css">' \
+                    # '<script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>' \
+                    # '<title>Córdoba Restaura</title>' \
+                    # '<link href="https://fonts.googleapis.com/css?family=El Messiri" rel="stylesheet"><style> div {font-family: "El Messiri"; } img {font-family: "El Messiri"; } p { font-family: "El Messiri"; } </style>' \
+                    # '</head>' \
+                    # '<body>' \
+                    """
     msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
     msg.attach_alternative(html_content, "text/html")
     msg.attach_file(ruta_qr)
     msg.send()
     logger.error("SALGO EN EMAIL V2")
+    """text_template = get_template('samaritan/email/group_email.txt')
+    html_template = get_template('samaritan/email/group_email.html')
+
+    context = {
+        'recipient_name': recipient_first_name,
+        'message': message,
+        'sender_name': sender_name,
+    }
+    text_content = text_template.render(context)
+    html_content = html_template.render(context)
+
+    msg = EmailMultiAlternatives(subject, text_content, sender_email, [recipient_email])
+    msg.attach_alternative(html_content, "text/html")
+    return msg.send()
+    """
 
 
 def generar_qr_file(directorio, archivo_qr, url_carta):
@@ -100,10 +142,15 @@ class FilePDFApi(generics.GenericAPIView):
                 archivo_qr = 'qr.jpg'
                 archivo_logo = 'logo.jpeg'
                 directorio = './frontend/static/clientes/' + cif_user
+                directorio_bd = './static/clientes/'+ cif_user
                 ruta_pdf = directorio+ '/' + archivo_pdf
                 ruta_qr = directorio + '/' + archivo_qr
                 ruta_logo = directorio + '/' + archivo_logo
+                ruta_logo_bd = directorio_bd + '/' + archivo_logo
+                ruta_qr_bd = directorio_bd + '/' + archivo_qr
                 url_carta = 'https://www.andaluciarestaura.com/cartaestatica/' + cif_user
+                url_qr = 'https://www.andaluciarestaura.com/cartaestatica/' + cif_user + '/'+ archivo_qr
+
                 try:
                     os.mkdir(directorio)
                 except OSError:
@@ -133,7 +180,7 @@ class FilePDFApi(generics.GenericAPIView):
                 #logger.error("DESPUES: " + user.marca_comercial)
                 logger.error("USUARIO REGISTRADO!")
 
-                User.objects.filter(cif__exact=request.data["cif"]).update(pdf=ruta_pdf, qr=ruta_qr, logo=ruta_logo, marca_comercial=request.data["marca_comercial"], email=request.data["email"], telefono_1=request.data["telefono_1"])
+                User.objects.filter(cif__exact=request.data["cif"]).update(pdf=ruta_pdf, qr=ruta_qr_bd, logo=ruta_logo_bd, marca_comercial=request.data["marca_comercial"], email=request.data["email"], telefono_1=request.data["telefono_1"])
                 #User.objects.filter(cif__exact=request.data["cif"]).update(pdf=ruta_pdf, qr=ruta_qr)
                 #logger.error(usuarioainsertarpdf[0])
                 #usuarioainsertarpdf[0].pdf = ruta_pdf
@@ -146,7 +193,7 @@ class FilePDFApi(generics.GenericAPIView):
                 # 6 Creamos el correo electronico y lo enviamos.
                 # ENVIAR EMAIL VERSION 1
                 enviar_email_v1(correo)
-                enviar_email_v2(correo, url_carta, ruta_qr)
+                enviar_email_v2(correo, url_carta, ruta_qr, url_qr)
                 #return Response(register_serializer.data, status=status.HTTP_201_CREATED)
 
                 return Response({

@@ -3,6 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from accounts.models import User
 import requests
+from .models import Carta
 
 #logger = logging.getLogger(__name__)
 
@@ -18,7 +19,7 @@ def react(response,cif):
 
 def index(request,cif_cliente):
     #Traemos el usuario con los atributos que nos interesen.
-    user = User.objects.filter(cif__exact=cif_cliente).values('username','marca_comercial','is_premium')
+    user = User.objects.filter(cif__exact=cif_cliente).values('fax','marca_comercial','is_premium')
     #Transformamos el usuario a una lista
     user = list(user)
     #Se carga el template
@@ -53,4 +54,7 @@ def index(request,cif_cliente):
         'user': user,
         'categories': categories,
     }
+    #FILTRAR EL NOMBRE DE LA CARTA
+    #carta = Carta.objects.filter(cif__exact=cif_cliente)
+
     return HttpResponse(template.render(context, request))

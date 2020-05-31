@@ -82,9 +82,11 @@ class Navbar extends Component {
             <div className="navbar-end">
                 <div className="navbar-item">
                     <div className="field is-grouped">
+                        {/*
                         <span className="control" style={{ marginTop: 7 }}>
                             <img className="is-rounded is-square" src={"/static/frontend/1/logo1.jpeg"} alt="Placeholder image" />
                         </span>
+                        */}
                         <span className="control" style={{ marginTop: 14 }}>
                             <div className="media-content">
                                 <p className="subtitle is-6">{user ? `Bienvenido ${user.cif}` : ""} </p>
@@ -92,7 +94,7 @@ class Navbar extends Component {
                         </span>
                         <span className="control">
                             <div className="buttons">
-                                <Link to="/" className="button is-danger" style={{backgroundColor:'#bca466'}} onClick={this.props.logout}>Logout</Link>
+                                <Link to="/login-page" className="button is-danger" style={{backgroundColor:'#bca466'}} onClick={this.props.logout}>Logout</Link>
                             </div>
                         </span>
                     </div>
@@ -108,12 +110,12 @@ class Navbar extends Component {
                 <div className="navbar-item">
                     <div className="field is-grouped">
                         <span className="control">
-                            <Link to="/register-page">
+                            <Link to="/">
                                 <p className="button is-link" style={{ width: '100%', backgroundColor:'#bca466' }}>Registro</p>
                             </Link>
                         </span>
                         <span className="control">
-                            <Link to="/">
+                            <Link to="/login-page">
                                 <p className="button is-link" style={{ width: '100%', backgroundColor:'#bca466' }}>Login</p>
                             </Link>
                         </span>
@@ -130,10 +132,10 @@ class Navbar extends Component {
         </a>
                     <div className="navbar-dropdown ">
                         <Link className="navbar-item" style={{ width: '100%', marginTop: '10px' }} to="/admin-page">Datos Negocio</Link>
-                        <Link className="navbar-item" style={{ width: '100%', marginTop: '10px' }} to="/maps-page">Maps</Link>
+                        {/*<Link className="navbar-item" style={{ width: '100%', marginTop: '10px' }} to="/maps-page">Maps</Link>
                         <Link className="navbar-item" style={{ width: '100%', marginTop: '10px' }} to="/creditcard-page">Credit Card</Link>
-                        {/*<Link className="navbar-item" style={{ width: '100%', marginTop: '10px' }} to="/autocomplete-page">Roads</Link>*/}
-                        <Link className="navbar-item" style={{ width: '100%', marginTop: '10px' }} to="/avatar-page">Avatar</Link>
+                        <Link className="navbar-item" style={{ width: '100%', marginTop: '10px' }} to="/autocomplete-page">Roads</Link>
+                        <Link className="navbar-item" style={{ width: '100%', marginTop: '10px' }} to="/avatar-page">Avatar</Link>*/}
 
 
                         
@@ -143,6 +145,7 @@ class Navbar extends Component {
                         
                     </div>
                 </div>
+                {/*
                 <div className="navbar-item is-hoverable has-dropdown">
                     <Link className="navbar-link " style={{ width: '100%'}} to="/servicios-page">Servicios</Link>
                 </div>
@@ -158,6 +161,7 @@ class Navbar extends Component {
                 <div className="navbar-item   is-hoverable has-dropdown">
                     <a className="navbar-link" style={{ width: '100%'}} >Aforo</a>
                 </div>
+                */}
             </div>
 
         );
@@ -165,7 +169,7 @@ class Navbar extends Component {
         return (
 
             <div>
-                <nav className="navbar ">
+                <nav className="navbar is-fixed-top">
                     <div className="navbar-brand">
                         <Link to="/" style={{ marginTop: 16 }}>
                             <img src={"/static/frontend/logoar.svg"} width="300" height="125" />

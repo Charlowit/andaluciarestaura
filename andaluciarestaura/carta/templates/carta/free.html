@@ -29,7 +29,7 @@
 </head>
 <body>
   <header>
-    <nav class="navbar" role="navigation" aria-label="main navigation">
+    <nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
         <a class="navbar-item" href="/">
           <img src="{% static 'frontend/logoar.svg' %}" width="300" height="125">
@@ -38,7 +38,7 @@
       </div>
     </nav>
   </header>
-  <section initial-scale=1 class="hero is-info is-bold">
+  <section initial-scale=1 class="hero is-info is-bold" style="margin-top: 40px ">
     <div class="hero-body">
         <div class="container has-text-centered is-clearfix">
             <div class='equal-height'>
@@ -53,14 +53,15 @@
                 </div>
             </div>
             <h1 class="title"> {{user.marca_comercial}} </h1>
-            <h2 class="subtitle"> {{user.username}} <br /></h2>
+            <h2 class="subtitle"> {{ user.fax }} <br /></h2>
             <p class="field">
+                <!--
                 <a href="https://www.facebook.com/patiosmarquesa" class="button is-rounded is-medium">
                     <span class="icon">
                       <i class="fab fa-facebook"></i>
                     </span>
                 </a>
-                <!--
+
                 <a class="button is-rounded is-medium">
                     <span class="icon">
                         <i class="fab fa-tripadvisor"></i>
@@ -75,7 +76,7 @@
             </p>
             <hr/>
             <div class="container">
-                <h1 class="title">Carta de Feria</h1>
+                <h1 class="title">Carta {{ user.marca_comercial }}</h1>
 	    </div>
         </div>
     </div>

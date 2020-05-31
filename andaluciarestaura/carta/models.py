@@ -20,6 +20,7 @@ class Categorias(models.Model):
 class Carta(models.Model):
     name = models.CharField(max_length=100, blank=False, default="cartanegocio")
     propietario = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, on_delete=models.CASCADE, related_name="propietario")
+    #contador_visitas = models.IntegerField(default=0)
 
     def __str__(self):
         return self.name
