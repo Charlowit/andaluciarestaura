@@ -3,6 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from accounts.models import User
 import requests
+from django.conf import settings
 from .models import Carta
 
 #logger = logging.getLogger(__name__)
@@ -20,13 +21,19 @@ def react(response,cif):
 def index(request,cif_cliente):
     #Traemos el usuario con los atributos que nos interesen.
     user = User.objects.filter(cif__exact=cif_cliente).values('fax','marca_comercial','is_premium')
+    server_local = "http://127.0.0.1"
     #Transformamos el usuario a una lista
     user = list(user)
     #Se carga el template
     
     #Traemos la carta del usuario
-    api_to_json = consumir_api("http://127.0.0.1:8000/api/carta/?cif=" + cif_cliente)
-    #api_to_json = consumir_api("http://www.andaluciarestaura.com/api/carta/?cif=" + cif_cliente)
+    if (settings.IN_PRODUCTION):
+        server_local = "https://127.0.0.1"
+    else:
+        server_local = "http://127.0.0.1:8000"
+
+    api_to_json = consumir_api(server_local+"/api/carta/?cif=" + cif_cliente)
+
     data = {}
     categories = []
     #Si hay carta guardamos los datos
@@ -48,11 +55,14 @@ def index(request,cif_cliente):
         print(user)
     else:
         user = {}
+    print("SERVER_LOCAL: " + server_local)
     context = {
         'cif_cliente': cif_cliente,
         'data': data,
         'user': user,
         'categories': categories,
+        'server': server_local,
+
     }
     #FILTRAR EL NOMBRE DE LA CARTA
     #carta = Carta.objects.filter(cif__exact=cif_cliente)

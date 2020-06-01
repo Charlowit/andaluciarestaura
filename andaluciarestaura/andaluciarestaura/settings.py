@@ -25,6 +25,9 @@ SECRET_KEY = '$s=6@kmmhg$yxavb)m*#n-72qk6*gr+s7bnwh@#voxod&ef^p%'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# IMPORTANT: Set True into Production. If you are in local development set to False
+IN_PRODUCTION = False
+
 ALLOWED_HOSTS = ['127.0.0.1','localhost','ec2-52-14-184-104.us-east-2.compute.amazonaws.com','andaluciarestaura.com','www.andaluciarestaura.com']
 
 

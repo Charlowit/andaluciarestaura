@@ -321,7 +321,7 @@ class AdminPage extends Component {
                                             </div>
                                             <div className="field-body">
                                                 <div className="field">
-                                                    <a className="button" href={`/static/clientes/${cif}/qr.jpg`} download="Reporte2Mayo2010">Descargar</a>
+                                                    <a className="button" href={`/static/clientes/${cif}/qr.jpg`} download="QRcode">Descargar</a>
                                                 </div>
                                             </div>
                                         </div>

@@ -112,7 +112,7 @@ export class Registro extends Component {
                             </div>
                         </section>
 
-                        <section className="section has-text-centered " style={{ marginTop: '-250px' }}>
+                        <section className="section has-text-centered " style={{ marginTop: '-150px' }}>
 
                             <div className="container">
                                 <div className="box" style={bkg}>
@@ -148,13 +148,13 @@ export class Registro extends Component {
                                                                         <div className="field">
                                                                             <label className="label has-text-centered is-size-4">Adjunta tu carta en pdf</label>
                                                                             <div className="control has-icons-left">
-                                                                                <input className="button" type="file" id="pdf" accept="application/pdf" onChange={this.handlePDFChange} required />
+                                                                                <input className="input" type="file" id="pdf" accept="application/pdf" onChange={this.handlePDFChange} required />
                                                                             </div>
                                                                         </div>
                                                                         <div className="field">
                                                                             <label className="label has-text-centered is-size-4">Adjunta el logo de tu negocio</label>
                                                                             <div className="control has-icons-left">
-                                                                                <input className="button" type="file" id="logo" accept="jpeg" onChange={this.handleLogoChange} required />
+                                                                                <input className="input" type="file" id="logo" accept="jpeg" onChange={this.handleLogoChange} required />
                                                                             </div>
                                                                         </div>
 

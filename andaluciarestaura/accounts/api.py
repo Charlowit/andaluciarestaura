@@ -15,7 +15,7 @@ import qrcode
 from django.core.mail import EmailMultiAlternatives
 import shutil
 import base64
-
+from django.conf import settings
 logger = logging.getLogger(__name__)
 
 #File pdf Upload
@@ -27,8 +27,8 @@ def enviar_email_v1(correo):
     from_email = 'soporte@hotehub.com'
     to = correo
     logger.error("DENTRO DE MAIL V1 EL CORREO ES"+ correo)
-    message = 'Gracias por registrarse en Córdoba Restaura, se está creando en estos instantes su carta digital, en breve recibirá otro correo con las instrucciones pertinentes. <br/>' \
-              'Recuerde que su usuario para acceder a la plataforma es el CIF/NIF con el que se registró'
+    message = 'Gracias por registrarse en Córdoba Restaura, se está creando en estos instantes su carta digital, en breve recibirá otro correo con las instrucciones pertinentes.' \
+              'Le recordamos que puede acceder a nuestra plataforma para terminar de rellenar sus datos con el CIF/NIF y la constraseña con la que se registró.'
     send_mail(subject, message, from_email, [to])
     logger.error("SALGO EN EMAIL V1")
 
@@ -52,7 +52,7 @@ def enviar_email_v2(correo, url_carta, ruta_qr, url_qr):
                    '<div class="section"><h1 style="color: white; font-size: 18px;"> Tu plataforma, la plataforma del sector </h1></div>' \
                    '<div class="section" style="margin-top: -80px"><h1 style="color: white; font-size: 18px;"> Nuestra voluntad, servirte para servir al cliente </h1></div>' \
                    '<div class="container" style="margin-top: -60px"><p  style="color: white; font-size: 18px; padding-top: 30px"> Descarga tu carta digital accediendo con el siguiente QR </p>' \
-                   '</div><img src="'+ url_qr +'" width="150px" style="padding-top: 30px;"><p style="color: white; font-size: 50px"> Scan Me! <br/> O también puedes acceder en esta dirección y compartirla con tus contactos: <br/> '+url_carta+'</p>' \
+                   '</div><img src="'+ url_qr +'" width="150px" style="padding-top: 30px;"><p style="color: white; font-size: 50px"> Scan Me! <br/> O también puedes acceder en esta dirección y compartirla con tus contactos: <br/> '+url_$
                    '<p style="color: white; padding-top: 10px"> Gracias. </p></div></div></div><div class="container"><div class="columns">' \
                    '<div class="column is-centered has-text-centered"><img src="logotipo.jpeg" width="200" >' \
                    '</div></div></div></div></div></div></div>'
@@ -105,23 +105,7 @@ def handle_uploaded_file(f,ruta):
     with open(ruta, 'wb+') as destination:
         for chunk in f.chunks():
             destination.write(chunk)
-"""""           
-def handle_uploaded_image(ruta):
-    with open( ruta , "rb") as image_file:
-        encoded_string = base64.b64encode(image_file.read())
-    final = str(encoded_string)
-    final.encode("utf-8")
-"""""
-"""""
-def handle_uploaded_image(image,ruta):
-    f = open(ruta, 'wb')
-    logger.error(str(image))
-    for row in image:
-        encoded_string = base64.b64encode(row)
-        #final = str(encoded_string)
-        f.write(encoded_string)
-    f.close()
-"""""
+
 class FilePDFApi(generics.GenericAPIView):
     serializer_class = RegisterSerializer
     parser_classes = (MultiPartParser, FormParser)
@@ -138,18 +122,31 @@ class FilePDFApi(generics.GenericAPIView):
                 #logger.error("EMAIL DESDE EL USUARIO: " +usuarioainsertarpdf[0].email)
                 correo = request.data["email"]
                 logger.error("EMAIL DESDE LA VARIABLE: " + correo)
+
+                #CONSTANTES QUE NUNCA VAN A VARIAR
                 archivo_pdf = 'free.pdf'
                 archivo_qr = 'qr.jpg'
                 archivo_logo = 'logo.jpeg'
-                directorio = './frontend/static/clientes/' + cif_user
-                directorio_bd = './static/clientes/'+ cif_user
-                ruta_pdf = directorio+ '/' + archivo_pdf
-                ruta_qr = directorio + '/' + archivo_qr
-                ruta_logo = directorio + '/' + archivo_logo
+                if settings.IN_PRODUCTION:
+                    # VARIABLES PARA PRODUCCION
+                    directorio = settings.STATIC_ROOT +'/clientes/' + cif_user
+                    directorio_bd = './static/clientes/' + cif_user
+
+                else:
+                    # VARIBALES PARA LOCAL
+                    directorio = './frontend/static/clientes/' + cif_user
+                    directorio_bd = './frontend/static/clientes/' + cif_user
+
                 ruta_logo_bd = directorio_bd + '/' + archivo_logo
                 ruta_qr_bd = directorio_bd + '/' + archivo_qr
+                ruta_pdf = directorio + '/' + archivo_pdf
+                ruta_qr = directorio + '/' + archivo_qr
+                ruta_logo = directorio + '/' + archivo_logo
+
+
+                #ESTO DA IGUAL EN PRODUCCION QUE EN LOCAL NO NOS INTERFIERE
                 url_carta = 'https://www.andaluciarestaura.com/cartaestatica/' + cif_user
-                url_qr = 'https://www.andaluciarestaura.com/cartaestatica/' + cif_user + '/'+ archivo_qr
+                url_qr = 'https://www.andaluciarestaura.com/static/clientes/' + cif_user + '/'+ archivo_qr
 
                 try:
                     os.mkdir(directorio)
@@ -171,7 +168,6 @@ class FilePDFApi(generics.GenericAPIView):
                 logger.error('DESPUES DEL GENERAR EL QR:')
 
 
-
                 # 3 Insertamos la ruta del fichero pdf en el modelo
                 #register_serializer.create(request.data)
                 # logger.error("ANTES: " + register_serializer.marca_comercial)
@@ -183,9 +179,6 @@ class FilePDFApi(generics.GenericAPIView):
                 User.objects.filter(cif__exact=request.data["cif"]).update(pdf=ruta_pdf, qr=ruta_qr_bd, logo=ruta_logo_bd, marca_comercial=request.data["marca_comercial"], email=request.data["email"], telefono_1=request.data["telefono_1"])
                 #User.objects.filter(cif__exact=request.data["cif"]).update(pdf=ruta_pdf, qr=ruta_qr)
                 #logger.error(usuarioainsertarpdf[0])
-                #usuarioainsertarpdf[0].pdf = ruta_pdf
-                #usuarioainsertarpdf[0].qr = ruta_qr
-                #usuarioainsertarpdf[0].save()
                 # 5 Guardamos todos los datos en el modelo usuario
                 logger.error('ANTES DEL SAVE:' + cif_user)
 
@@ -194,7 +187,6 @@ class FilePDFApi(generics.GenericAPIView):
                 # ENVIAR EMAIL VERSION 1
                 enviar_email_v1(correo)
                 enviar_email_v2(correo, url_carta, ruta_qr, url_qr)
-                #return Response(register_serializer.data, status=status.HTTP_201_CREATED)
 
                 return Response({
                     "user": UserSerializer(user, context=self.get_serializer_context()).data,
@@ -247,25 +239,6 @@ class UserApi(generics.RetrieveAPIView):
 
     def get_object(self):
         return self.request.user
-
-
-class UpdateNameApi(generics.GenericAPIView):
-    permission_classes = [
-        permissions.IsAuthenticated,
-    ]
-    serializer_class = UserSerializerActualizar
-    def post(self, request, *args, **kwargs):
-        serializer = self.update_serializer(data=request.data, partial=True)
-        serializer.is_valid(raise_exception=True)
-        logger.error(request.data)
-        logger.error("ANTES DEL SAVE")
-        #user = request.data
-        #serializer.update(request.data)
-        serializer.save()
-        logger.error("DESPUES DEL SAVE")
-        return Response({
-            "Todo Correcto Usuario Actualizado"
-        })
 
 class UserActualizarApi(generics.UpdateAPIView):
     serializer_class = UserSerializerActualizar

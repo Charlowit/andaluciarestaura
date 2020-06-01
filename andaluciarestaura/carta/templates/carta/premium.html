@@ -76,6 +76,7 @@
             <hr/>
             <div class="container">
                 <h1 class="title">{{ data.name }}</h1>
+                <!--
                 {% if cif_cliente %}
                     {% with 'clientes/'|add:cif_cliente|add:'' as url_static %}
                         <a href="#" class="button whatsapp">
@@ -86,6 +87,7 @@
                   </span>
                   <span>Comparte por Whatsapp</span>
                 </a>
+                -->
           </div>
         </div>
     </div>
@@ -94,45 +96,6 @@
 <!-- La carta se pinta aqui-->
 <div class="container">
   <div >
-      <!--
-      <div class="tabs is-centered is-boxed">
-          <ul>
-              <li class="is-active">
-                  <a>
-                      <span class="icon is-small">
-                        <i class="fas fa-clipboard-list" aria-hidden="true"></i></span>
-                      <span>Entrantes</span>
-                  </a>
-              </li>
-              <li>
-                <a>
-                  <span class="icon is-small">
-                    <i class="fas fa-utensils"aria-hidden="true"></i>
-                  </span>
-                  <span>Principales</span>
-                </a>
-              </li>
-              <li>
-                <a>
-                  <span class="icon is-small">
-                    <i class="fas fa-stroopwafel" aria-hidden="true"></i>
-                  </span>
-                  <span>Postres</span>
-                </a>
-              </li>
-              <li>
-                <a>
-                  <span class="icon is-small">
-                    <i class="fas fa-cocktail" aria-hidden="true"></i>
-                  </span>
-                  <span>Bebidas</span>
-                </a>
-              </li>
-          </ul>
-      
-        
-        </div>
-        -->
       <div class="container">
           <div>
               <!-- FOR DE LA CARTA -->   
@@ -160,43 +123,43 @@
                                   <div class="column is-two-thirds" style="margin-left: 2%">
 
                                       {% if producto.is_apio == True %}
-                                        <img src="http://127.0.0.1:8000/static/frontend/Allergens/alergeno_apio.svg" alt="triangle with all three sides equal" width="50"/>
+                                        <img src="{{server}}/static/frontend/Allergens/alergeno_apio.svg" alt="triangle with all three sides equal" width="50"/>
                                       {% endif %}
                                       {% if producto.is_altramuces == True %}
-                                        <img src="http://127.0.0.1:8000/static/frontend/Allergens/alergeno_altramuces.svg" alt="triangle with all three sides equal" width="50"/>
+                                        <img src="{{server}}/static/frontend/Allergens/alergeno_altramuces.svg" alt="triangle with all three sides equal" width="50"/>
                                       {% endif %}
                                       {% if producto.is_cacahuete == True %}
-                                        <img src="http://127.0.0.1:8000/static/frontend/Allergens/alergeno_cacahuete.svg" alt="triangle with all three sides equal" width="50"/>
+                                        <img src="{{server}}/static/frontend/Allergens/alergeno_cacahuete.svg" alt="triangle with all three sides equal" width="50"/>
                                       {% endif %}
                                       {% if producto.is_crustaceo == True %}
-                                        <img src="http://127.0.0.1:8000/static/frontend/Allergens/alergeno_crustaceo.svg" alt="triangle with all three sides equal" width="50"/>
+                                        <img src="{{server}}/static/frontend/Allergens/alergeno_crustaceo.svg" alt="triangle with all three sides equal" width="50"/>
                                       {% endif %}
                                       {% if producto.is_frutos_con_cascara == True %}
-                                        <img src="http://127.0.0.1:8000/static/frontend/Allergens/alergeno_frutos_con_cascara.svg" alt="triangle with all three sides equal" width="50"/>
+                                        <img src="{{server}}/static/frontend/Allergens/alergeno_frutos_con_cascara.svg" alt="triangle with all three sides equal" width="50"/>
                                       {% endif %}
                                       {% if producto.is_gluten == True %}
-                                        <img src="http://127.0.0.1:8000/static/frontend/Allergens/alergeno_gluten.svg" alt="triangle with all three sides equal" width="50"/>
+                                        <img src="{{server}}/static/frontend/Allergens/alergeno_gluten.svg" alt="triangle with all three sides equal" width="50"/>
                                       {% endif %}
                                       {% if producto.is_huevo == True %}
-                                        <img src="http://127.0.0.1:8000/static/frontend/Allergens/alergeno_huevo.svg" alt="triangle with all three sides equal" width="50"/>
+                                        <img src="{{server}}/static/frontend/Allergens/alergeno_huevo.svg" alt="triangle with all three sides equal" width="50"/>
                                       {% endif %}
                                       {% if producto.is_lacteo == True %}
-                                        <img src="http://127.0.0.1:8000/static/frontend/Allergens/alergeno_lacteo.svg" alt="triangle with all three sides equal" width="50"/>
+                                        <img src="{{server}}/static/frontend/Allergens/alergeno_lacteo.svg" alt="triangle with all three sides equal" width="50"/>
                                       {% endif %}
                                       {% if producto.is_molusco == True %}
-                                        <img src="http://127.0.0.1:8000/static/frontend/Allergens/alergeno_moluscos.svg" alt="triangle with all three sides equal" width="50"/>
+                                        <img src="{{server}}/static/frontend/Allergens/alergeno_moluscos.svg" alt="triangle with all three sides equal" width="50"/>
                                       {% endif %}
                                       {% if producto.is_mostaza == True %}
-                                        <img src="http://127.0.0.1:8000/static/frontend/Allergens/alergeno_mostaza.svg" alt="triangle with all three sides equal" width="50"/>
+                                        <img src="{{server}}/static/frontend/Allergens/alergeno_mostaza.svg" alt="triangle with all three sides equal" width="50"/>
                                       {% endif %}
                                       {% if producto.is_pescado == True %}
-                                        <img src="http://127.0.0.1:8000/static/frontend/Allergens/alergeno_pescado.svg" alt="triangle with all three sides equal" width="50"/>
+                                        <img src="{{server}}/static/frontend/Allergens/alergeno_pescado.svg" alt="triangle with all three sides equal" width="50"/>
                                       {% endif %}
                                       {% if producto.is_sesamo == True %}
-                                        <img src="http://127.0.0.1:8000/static/frontend/Allergens/alergeno_sesamo.svg" alt="triangle with all three sides equal" width="50"/>
+                                        <img src="{{server}}/static/frontend/Allergens/alergeno_sesamo.svg" alt="triangle with all three sides equal" width="50"/>
                                       {% endif %}
                                       {% if producto.is_soja == True %}
-                                        <img src="http://127.0.0.1:8000/static/frontend/Allergens/alergeno_soja.svg" alt="triangle with all three sides equal" width="50"/>
+                                        <img src="{{server}}/static/frontend/Allergens/alergeno_soja.svg" alt="triangle with all three sides equal" width="50"/>
                                       {% endif %}
                                 </div>
                                 <div class="column is-3" >
@@ -253,7 +216,7 @@
       <p>
           <img width="200" height="50" src="{% static 'frontend/hotehub.svg' %}"></img>
           <br />
-          <p style="margin-top:1%" > Andalucía Restaura by Hotehub </p>
+          <p style="margin-top:1%" > Córdoba Restaura by Hotehub <br/> </p>
           Copyright@2020 Todos los derechos reservados
       </p>
   </section>
