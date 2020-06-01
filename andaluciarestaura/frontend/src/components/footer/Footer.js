@@ -7,7 +7,7 @@ class Footer extends Component {
         return (
             <React.Fragment>
                 <footer>
-                    <section className="section has-text-centered">
+                    <section className="section has-text-centered" style={{minWidth:"470px"}}>
                         <p>
                             <img width="200" height="50" src={"/static/frontend/hotehub.svg"}></img>
                             <br />

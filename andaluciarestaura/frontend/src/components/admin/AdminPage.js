@@ -45,10 +45,12 @@ class AdminPage extends Component {
         console.log("FIN DEL UPDATE USER")
     };
 
-    onChange = e => this.setState({
 
+
+    onChange = e => this.setState({
         [e.target.name]: e.target.value
     },
+        console.log("TIPO NEGOCIO: " + e.target.value),
         console.log("CIF:" + this.state.cif),
         console.log("MARCA_COMERCIAL: " + this.state.marca_comercial)
     );
@@ -180,7 +182,7 @@ class AdminPage extends Component {
 
                                             <div class="control">
                                                 <div class="select">
-                                                    <select id="razon_social" onChange={this.onChange} value={razon_social}>
+                                                    <select name="razon_social" onChange={this.onChange} defaultValue={razon_social}>
                                                         <option value="SL">SL</option>
                                                         <option value="SA">SA</option>
                                                         <option value="Autonomo">Autonomo</option>
@@ -335,7 +337,7 @@ class AdminPage extends Component {
                                             <div className="field-body">
                                                 <div className="control">
                                                     <div className="select">
-                                                        <select id="razon_social" onChange={this.onChange} value={tipo_negocio}>
+                                                        <select name="tipo_negocio" onChange={this.onChange} defaultValue={tipo_negocio}>
                                                             <option value="Bar">Bar</option>
                                                             <option value="Restaurante">Restaurante</option>
                                                             <option value="Hotel">Hotel</option>

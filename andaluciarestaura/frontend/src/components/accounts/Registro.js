@@ -89,7 +89,7 @@ export class Registro extends Component {
         const { isAuthenticated, user } = this.props.auth;
         return (
             <React.Fragment>
-                <div className="section">
+                <div className="section" style={{minWidth:"470px"}}>
                     <div className="container">
                         <section className="hero is-white has-text-centered " style={less}>
                             <div className="hero-body">
@@ -119,11 +119,11 @@ export class Registro extends Component {
                                     <h1 className="title" style={{ color: 'white', marginTop: '2%' }}>¡Únete a nosotr@s!</h1>
                                     <div className="content">
                                         <div className="columns is-centered is-marginless" style={{ width: '100%' }}>
-                                            <div className="column is-two-fifths">
+                                            <div className="column is-one-third-desktop is-half-widescreen is-half-tablet is-full-mobile">
                                                 <section className="hero has-text-centered">
                                                     <div className="hero-body">
                                                         <div className="container ">
-                                                            <div className="section is-one-third">
+                                                            <div className="section">
                                                                 <div>
                                                                     <form style={{ marginTop: '-60px' }}>
 
@@ -145,16 +145,44 @@ export class Registro extends Component {
                                                                                 </span>
                                                                             </div>
                                                                         </div>
-                                                                        <div className="field">
-                                                                            <label className="label has-text-centered is-size-4">Adjunta tu carta en pdf</label>
-                                                                            <div className="control has-icons-left">
-                                                                                <input className="input" type="file" id="pdf" accept="application/pdf" onChange={this.handlePDFChange} required />
+                                                                        <div className="field ">
+                                                                            <label className="label  is-size-4">Adjunta tu carta en pdf</label>
+
+                                                                            <div className="file has-name">
+                                                                                <label className="file-label">
+                                                                                    <input className="file-input" type="file" id="pdf" accept="application/pdf" onChange={this.handlePDFChange} required/>
+                                                                                        <span className="file-cta">
+                                                                                            <span className="file-icon">
+                                                                                                <i className="fas fa-upload"></i>
+                                                                                            </span>
+                                                                                            <span className="file-label">
+                                                                                                Escoja su carta...
+                                                                                            </span>
+                                                                                        </span>
+                                                                                        <span className="file-name" style={{background: 'white'}}>
+                                                                                            {this.state.pdf ? this.state.pdf.name : 'Ninguna carta seleccionada'}
+                                                                                        </span>
+                                                                                </label>
                                                                             </div>
                                                                         </div>
                                                                         <div className="field">
                                                                             <label className="label has-text-centered is-size-4">Adjunta el logo de tu negocio</label>
-                                                                            <div className="control has-icons-left">
-                                                                                <input className="input" type="file" id="logo" accept="jpeg" onChange={this.handleLogoChange} required />
+
+                                                                            <div className="file has-name">
+                                                                                <label className="file-label">
+                                                                                    <input className="file-input" type="file" id="logo" accept=".jpeg" onChange={this.handleLogoChange} required/>
+                                                                                        <span className="file-cta">
+                                                                                            <span className="file-icon">
+                                                                                                <i className="fas fa-upload"></i>
+                                                                                            </span>
+                                                                                            <span className="file-label">
+                                                                                                Escoge el logo…
+                                                                                            </span>
+                                                                                        </span>
+                                                                                        <span className="file-name" style={{background: 'white'}}>
+                                                                                            {this.state.logo ? this.state.logo.name : 'Ningún logo seleccionado'}
+                                                                                        </span>
+                                                                                </label>
                                                                             </div>
                                                                         </div>
 
