@@ -180,8 +180,8 @@ class AdminPage extends Component {
                                     <div className="field-body">
                                         <div className="field">
 
-                                            <div class="control">
-                                                <div class="select">
+                                            <div className="control">
+                                                <div className="select">
                                                     <select name="razon_social" onChange={this.onChange} defaultValue={razon_social}>
                                                         <option value="SL">SL</option>
                                                         <option value="SA">SA</option>

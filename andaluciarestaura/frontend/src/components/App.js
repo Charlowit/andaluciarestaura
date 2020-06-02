@@ -24,6 +24,7 @@ import AlertTemplate from 'react-alert-template-basic';
 
 
 import Alerts from './alerta/Alerts';
+import PrivateRouteRegister from './privateroute/PrivateRouteRegister';
 
 
 //Alert Options

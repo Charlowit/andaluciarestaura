@@ -49,7 +49,7 @@ export class Login extends Component {
                                                 <div className="field">
                                                     <label className="label has-text-centered is-size-4">CIF/NIF Empresa</label>
                                                     <div className="control has-icons-left">
-                                                        <input type="text" placeholder="e.g. A58818501" className="input" name="cif" onChange={this.onChange} value={cif} />
+                                                        <input type="text" placeholder="e.g. A58818501" className="input" name="cif" onChange={this.onChange} required />
                                                         <span className="icon is-small is-left">
                                                             <i className="fas fa-id-card-alt"></i>
                                                         </span>
@@ -58,7 +58,7 @@ export class Login extends Component {
                                                 <div className="field">
                                                     <label className="label has-text-centered is-size-4">Password</label>
                                                     <div className="control has-icons-left">
-                                                        <input type="password" placeholder="*******" name="password" className="input" onChange={this.onChange} value={password} />
+                                                        <input type="password" placeholder="*******" name="password" className="input" onChange={this.onChange} required />
                                                         <span className="icon is-small is-left">
                                                             <i className="fa fa-lock"></i>
                                                         </span>
@@ -85,6 +85,7 @@ export class Login extends Component {
         );
         const { cif, password } = this.state;
         const { isAuthenticated, user } = this.props.auth;
+        
         return (
             <React.Fragment>
                 {isAuthenticated ? logged : notlogged}
