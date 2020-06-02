@@ -24,6 +24,7 @@ import AlertTemplate from 'react-alert-template-basic';
 
 
 import Alerts from './alerta/Alerts';
+import PrivateRouteCartaPage from './privateroute/PrivateRouteCartaPage';
 
 
 //Alert Options
@@ -51,7 +52,7 @@ class App extends Component {
                         <PrivateRoute exact path="/admin-page" component={AdminPage} />
                         <Route exact path="/" component={Registro} />
                         <PrivateRoute exact path="/servicios-page" component={ServiciosPage} />
-                        <PrivateRoute exact path="/carta-page" component={CartaPage} />
+                        <PrivateRouteCartaPage exact path="/carta-page" component={CartaPage} />
                         <PrivateRoute exact path="/reservas-page" component={ReservasPage} />
                          <PrivateRoute exact path="/delivery-page" component={DeliveryPage} />
                         <Route exact path="/pdf-upload" component={FileUpload} />

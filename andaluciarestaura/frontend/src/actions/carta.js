@@ -1,21 +1,18 @@
 import axios from 'axios';
 import { GET_CARTA } from './types';
+import { tokenConfig } from './auth'
 
-export const getCarta = () => dispatch => {
+export const getCarta = (cif) => (dispatch, getState) => {
 
-    const config = {
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    };
-
-    axios.get('/api/carta/?cif=15516510C')
+    //axios.get(`/api/cartaadmin/?cif=${cif}`)
+    axios.get(`/api/cartaadmin/?cif=${cif}`, tokenConfig(getState))
         .then(res => {
             dispatch({
                 type: GET_CARTA,
                 payload: res.data
             });
-        }).catch(err => console.log(err));
-}
+        })
+        .catch(err => console.log(err));
+};
 
 

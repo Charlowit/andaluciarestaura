@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-
 import { getCarta } from '../../actions/carta';
 
 const div100 = {
@@ -46,39 +45,25 @@ export class CartaPage extends Component {
     constructor() {
         super();
         this.state = {
-            id: "",
-            categoria: "",
-            name: "",
-            descripcion: "",
-            tamanio: "",
-            precio1: 0,
-            precio2: 0,
-            precio3: 0,
-            is_apio: false,
-            is_altramuces: false,
-            is_crustaceo: false,
-            is_frutos_con_cascara: false,
-            is_gluten: false,
-            is_huevo: false,
-            is_lacteo: false,
-            is_molusco: false,
-            is_mostaza: false,
-            is_pescado: false,
-            is_sesamo: false,
-            is_soja: false,
-            carta: "",
+            cif: "",
         };
     }
 
+
     static propTypes = {
-        carta: PropTypes.array.isRequired
+        cartas: PropTypes.array.isRequired,
+        auth: PropTypes.func.isRequired,
+
     };
 
     componentDidMount() {
-        this.props.getCarta();
+        //this.state.arrayCartas = this.props.getCarta();
+        this.state.cif = this.props.auth.user.cif;
+        this.props.getCarta(this.props.auth.user.cif);
     }
 
     render() {
+        const { cif = this.props.auth.user.cif } = this.state.cif;
         return (
             <Fragment>
                 <section className="hero is-info is-primary  hsl(54%, 15%, 143%) is-bold">
@@ -151,34 +136,34 @@ export class CartaPage extends Component {
                     <form>
                         <div className="columns">
                             <div className="column">
-                                <div class="field">
-                                    <label class="label">Nombre</label>
-                                    <div class="control">
-                                        <input class="input" type="text" placeholder="Nombre del Producto" />
+                                <div className="field">
+                                    <label className="label">Nombre</label>
+                                    <div className="control">
+                                        <input className="input" type="text" placeholder="Nombre del Producto" />
                                     </div>
                                 </div>
                                 <div className="columns">
                                     <div className="column">
-                                        <div class="field">
-                                            <label class="label">Precio 1</label>
-                                            <div class="control">
-                                                <input class="input" type="text" placeholder="0" />
+                                        <div className="field">
+                                            <label className="label">Precio 1</label>
+                                            <div className="control">
+                                                <input className="input" type="text" placeholder="0" />
                                             </div>
                                         </div>
                                     </div>
                                     <div className="column">
-                                        <div class="field">
-                                            <label class="label">Precio 2</label>
-                                            <div class="control">
-                                                <input class="input " type="text" placeholder="0" />
+                                        <div className="field">
+                                            <label className="label">Precio 2</label>
+                                            <div className="control">
+                                                <input className="input " type="text" placeholder="0" />
                                             </div>
                                         </div>
                                     </div>
                                     <div className="column">
-                                        <div class="field">
-                                            <label class="label">Precio 3</label>
-                                            <div class="control">
-                                                <input class="input" type="text" placeholder="0" />
+                                        <div className="field">
+                                            <label className="label">Precio 3</label>
+                                            <div className="control">
+                                                <input className="input" type="text" placeholder="0" />
                                             </div>
                                         </div>
                                     </div>
@@ -187,112 +172,112 @@ export class CartaPage extends Component {
                                     <h2 className="subtitle">Alergenos</h2>
                                     <div className="columns">
                                         <div className="column">
-                                            <div class="field">
-                                                <p class="control">
-                                                    <div class="b-checkbox">
-                                                        <input id="checkbox" class="styled" type="checkbox" />
+                                            <div className="field">
+                                                <p className="control">
+                                                    <div className="b-checkbox">
+                                                        <input id="checkbox" className="styled" type="checkbox" />
                                                         <label for="checkbox">  Apio</label>
                                                     </div>
                                                 </p>
                                             </div>
-                                            <div class="field">
-                                                <p class="control">
-                                                    <div class="b-checkbox">
-                                                        <input id="checkbox" class="styled" type="checkbox" />
+                                            <div className="field">
+                                                <p className="control">
+                                                    <div className="b-checkbox">
+                                                        <input id="checkbox" className="styled" type="checkbox" />
                                                         <label for="checkbox">  Altramuces</label>
                                                     </div>
                                                 </p>
                                             </div>
-                                            <div class="field">
-                                                <p class="control">
-                                                    <div class="b-checkbox">
-                                                        <input id="checkbox" class="styled" type="checkbox" />
+                                            <div className="field">
+                                                <p className="control">
+                                                    <div className="b-checkbox">
+                                                        <input id="checkbox" className="styled" type="checkbox" />
                                                         <label for="checkbox">  Cacahuete</label>
                                                     </div>
                                                 </p>
                                             </div>
-                                            <div class="field">
-                                                <p class="control">
-                                                    <div class="b-checkbox">
-                                                        <input id="checkbox" class="styled" type="checkbox" />
+                                            <div className="field">
+                                                <p className="control">
+                                                    <div className="b-checkbox">
+                                                        <input id="checkbox" className="styled" type="checkbox" />
                                                         <label for="checkbox">  Crustaceo</label>
                                                     </div>
                                                 </p>
                                             </div>
                                         </div>
                                         <div className="column">
-                                            <div class="field">
-                                                <p class="control">
-                                                    <div class="b-checkbox">
-                                                        <input id="checkbox" class="styled" type="checkbox" />
+                                            <div className="field">
+                                                <p className="control">
+                                                    <div className="b-checkbox">
+                                                        <input id="checkbox" className="styled" type="checkbox" />
                                                         <label for="checkbox">  Carcara Frutal</label>
                                                     </div>
                                                 </p>
                                             </div>
-                                            <div class="field">
-                                                <p class="control">
-                                                    <div class="b-checkbox">
-                                                        <input id="checkbox" class="styled" type="checkbox" />
+                                            <div className="field">
+                                                <p className="control">
+                                                    <div className="b-checkbox">
+                                                        <input id="checkbox" className="styled" type="checkbox" />
                                                         <label for="checkbox">  Gluten</label>
                                                     </div>
                                                 </p>
                                             </div>
-                                            <div class="field">
-                                                <p class="control">
-                                                    <div class="b-checkbox">
-                                                        <input id="checkbox" class="styled" type="checkbox" />
+                                            <div className="field">
+                                                <p className="control">
+                                                    <div className="b-checkbox">
+                                                        <input id="checkbox" className="styled" type="checkbox" />
                                                         <label for="checkbox">  Huevo</label>
                                                     </div>
                                                 </p>
                                             </div>
-                                            <div class="field">
-                                                <p class="control">
-                                                    <div class="b-checkbox">
-                                                        <input id="checkbox" class="styled" type="checkbox" />
+                                            <div className="field">
+                                                <p className="control">
+                                                    <div className="b-checkbox">
+                                                        <input id="checkbox" className="styled" type="checkbox" />
                                                         <label for="checkbox">  Lacteo</label>
                                                     </div>
                                                 </p>
                                             </div>
                                         </div>
                                         <div className="column">
-                                            <div class="field">
-                                                <p class="control">
-                                                    <div class="b-checkbox">
-                                                        <input id="checkbox" class="styled" type="checkbox" />
+                                            <div className="field">
+                                                <p className="control">
+                                                    <div className="b-checkbox">
+                                                        <input id="checkbox" className="styled" type="checkbox" />
                                                         <label for="checkbox">  Molusco</label>
                                                     </div>
                                                 </p>
                                             </div>
-                                            <div class="field">
-                                                <p class="control">
-                                                    <div class="b-checkbox">
-                                                        <input id="checkbox" class="styled" type="checkbox" />
+                                            <div className="field">
+                                                <p className="control">
+                                                    <div className="b-checkbox">
+                                                        <input id="checkbox" className="styled" type="checkbox" />
                                                         <label for="checkbox">  Mostaza</label>
                                                     </div>
                                                 </p>
                                             </div>
-                                            <div class="field">
-                                                <p class="control">
-                                                    <div class="b-checkbox">
-                                                        <input id="checkbox" class="styled" type="checkbox" />
+                                            <div className="field">
+                                                <p className="control">
+                                                    <div className="b-checkbox">
+                                                        <input id="checkbox" className="styled" type="checkbox" />
                                                         <label for="checkbox">  Pescado</label>
                                                     </div>
                                                 </p>
                                             </div>
-                                            <div class="field">
-                                                <p class="control">
-                                                    <div class="b-checkbox">
-                                                        <input id="checkbox" class="styled" type="checkbox" />
+                                            <div className="field">
+                                                <p className="control">
+                                                    <div className="b-checkbox">
+                                                        <input id="checkbox" className="styled" type="checkbox" />
                                                         <label for="checkbox">  Sesamo</label>
                                                     </div>
                                                 </p>
                                             </div>
                                         </div>
                                         <div className="column">
-                                            <div class="field">
-                                                <p class="control">
-                                                    <div class="b-checkbox">
-                                                        <input id="checkbox" class="styled" type="checkbox" />
+                                            <div className="field">
+                                                <p className="control">
+                                                    <div className="b-checkbox">
+                                                        <input id="checkbox" className="styled" type="checkbox" />
                                                         <label for="checkbox">  Soja</label>
                                                     </div>
                                                 </p>
@@ -303,20 +288,20 @@ export class CartaPage extends Component {
                                 </div>
                             </div>
                             <div className="column">
-                                <div class="field">
-                                    <label class="label">Descripción</label>
-                                    <div class="control">
-                                        <textarea class="textarea" placeholder="Descripción del producto." size="99"></textarea>
+                                <div className="field">
+                                    <label className="label">Descripción</label>
+                                    <div className="control">
+                                        <textarea className="textarea" placeholder="Descripción del producto." size="99"></textarea>
                                     </div>
                                 </div>
                                 <div className="columns">
                                     <div className="column">
                                         <br />
-                                        <div class="field">
-                                            <label class="label">Categoria</label>
-                                            <div class="control">
-                                                <div class="select">
-                                                    <select>
+                                        <div className="field">
+                                            <label className="label">Categoria</label>
+                                            <div className="control">
+                                                <div className="select">
+                                                    <select name="categoria" /*onChange={this.categoriaChange} defaultValue={categoria}*/>
                                                         <option>Categoria 1</option>
                                                         <option>Categoria 2</option>
                                                         <option>...</option>
@@ -327,11 +312,11 @@ export class CartaPage extends Component {
                                     </div>
                                     <div className="column">
                                         <br />
-                                        <div class="field">
-                                            <label class="label">Tamaño</label>
-                                            <div class="control">
-                                                <div class="select">
-                                                    <select>
+                                        <div className="field">
+                                            <label className="label">Tamaño</label>
+                                            <div className="control">
+                                                <div className="select">
+                                                    <select name="tamanio" /*onChange={this.tamanioChange} defaultValue={tamanio}*/>
                                                         <option>S</option>
                                                         <option>M</option>
                                                         <option>L</option>
@@ -342,13 +327,26 @@ export class CartaPage extends Component {
                                             </div>
                                         </div>
                                     </div>
+                                    <div className="column">
+                                        <br />
+                                        <div className="field">
+                                            <label className="label">Carta</label>
+                                            <div className="control">
+                                                <div className="select">
+                                                    <select>
+                                                        <option>Carta 1</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </form>
                     <br />
-                    <div class="control buttons is-centered">
-                        <button class="button">Guardar</button>
+                    <div className="control buttons is-centered">
+                        <button className="button">Guardar</button>
                     </div>
                 </div>
 
@@ -390,73 +388,69 @@ export class CartaPage extends Component {
 
                         <div className="container">
                             <div className="notification">
+                                <div className='card equal-height '>
+                                    <div className="columns">
+                                        <div className="container">
+                                            <div className="column">
+                                                <div className="columns">
+                                                    <div className="column is-two-thirds"
+                                                        style={div2}>
+                                                        <h1 className="title">  </h1>
 
-                                {this.props.carta.map(carta => (
+                                                        <h2 className="subtitle has-text-weight-light">  </h2>
+                                                    </div>
+                                                    <div className="column" style={divtop}>
+                                                        <div className="columns is-mobile" style={divcenter}>
 
-                                    <div className='card equal-height '>
-                                        <div className="columns">
-                                            <div className="container">
-                                                <div className="column">
-                                                    <div className="columns">
-                                                        <div className="column is-two-thirds"
-                                                            style={div2}>
-                                                            <h1 className="title"> {carta.name} </h1>
-
-                                                            <h2 className="subtitle has-text-weight-light">  {carta.productos[0].descripcion}</h2>
-                                                        </div>
-                                                        <div className="column" style={divtop}>
-                                                            <div className="columns is-mobile" style={divcenter}>
-
-                                                                <div className="column">
-                                                                    <div style={div100}>
-                                                                        <span className="icon is-small"
-                                                                            style={divcolor1}><i
-                                                                                className="fas fa-dot-circle"
-                                                                                aria-hidden="true"></i></span>
-                                                                    </div>
-                                                                    <span><b> Media Ración </b></span>
-                                                                    <div style={div100}>
-                                                                        <span> <b style={divcolorred}>  4,50€ </b> </span>
-                                                                    </div>
+                                                            <div className="column">
+                                                                <div style={div100}>
+                                                                    <span className="icon is-small"
+                                                                        style={divcolor1}><i
+                                                                            className="fas fa-dot-circle"
+                                                                            aria-hidden="true"></i></span>
                                                                 </div>
-
-
-                                                                <div className="column"
-                                                                    style={divmargin1}>
-                                                                    <div style={div100}>
-                                                                        <span className="icon is-small"
-                                                                            style={divcolor2}><i
-                                                                                className="fas fa-dot-circle"
-                                                                                aria-hidden="true"></i></span>
-                                                                    </div>
-                                                                    <span> <b> Ración </b></span>
-                                                                    <div style={div100}>
-                                                                        <span> <b style={divcolorred}>  5,50€ </b> </span>
-                                                                    </div>
+                                                                <span><b> Media Ración </b></span>
+                                                                <div style={div100}>
+                                                                    <span> <b style={divcolorred}>  4,50€ </b> </span>
                                                                 </div>
-
                                                             </div>
+
+
+                                                            <div className="column"
+                                                                style={divmargin1}>
+                                                                <div style={div100}>
+                                                                    <span className="icon is-small"
+                                                                        style={divcolor2}><i
+                                                                            className="fas fa-dot-circle"
+                                                                            aria-hidden="true"></i></span>
+                                                                </div>
+                                                                <span> <b> Ración </b></span>
+                                                                <div style={div100}>
+                                                                    <span> <b style={divcolorred}>  5,50€ </b> </span>
+                                                                </div>
+                                                            </div>
+
                                                         </div>
                                                     </div>
-                                                    <div style={divleft}>
-                                                        <img src="static/frontend/Allergens/huevos.svg"
-                                                            alt="triangle with all three sides equal" width="50" />
-                                                        <img src="static/frontend/Allergens/lacteos.svg"
-                                                            alt="triangle with all three sides equal" width="50" />
-                                                        <img src="static/frontend/Allergens/soja.svg"
-                                                            alt="triangle with all three sides equal" width="50" />
-                                                        <img src="static/frontend/Allergens/cascara.svg"
-                                                            alt="triangle with all three sides equal" width="50" />
-                                                        <img src="static/frontend/Allergens/moluscos.svg"
-                                                            alt="triangle with all three sides equal" width="50" />
-                                                        <img src="static/frontend/Allergens/fish.svg"
-                                                            alt="triangle with all three sides equal" width="50" />
-                                                    </div>
+                                                </div>
+                                                <div style={divleft}>
+                                                    <img src="static/frontend/Allergens/huevos.svg"
+                                                        alt="triangle with all three sides equal" width="50" />
+                                                    <img src="static/frontend/Allergens/lacteos.svg"
+                                                        alt="triangle with all three sides equal" width="50" />
+                                                    <img src="static/frontend/Allergens/soja.svg"
+                                                        alt="triangle with all three sides equal" width="50" />
+                                                    <img src="static/frontend/Allergens/cascara.svg"
+                                                        alt="triangle with all three sides equal" width="50" />
+                                                    <img src="static/frontend/Allergens/moluscos.svg"
+                                                        alt="triangle with all three sides equal" width="50" />
+                                                    <img src="static/frontend/Allergens/fish.svg"
+                                                        alt="triangle with all three sides equal" width="50" />
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                ))}
+                                </div>
                                 <div className='card equal-height ' style={divtop2}>
                                     <div className="columns">
                                         <div className="container">
@@ -522,6 +516,12 @@ export class CartaPage extends Component {
                         </div>
                     </div>
                 </div>
+                <div class="has-text-centered">
+                    <h1>Debug</h1>
+                    {this.props.cartas.map(carta =>(
+                        <p>{carta.id}</p>
+                    ))}
+                </div>
             </Fragment>
         )
     }
@@ -529,7 +529,8 @@ export class CartaPage extends Component {
 }
 
 const mapStateToProps = state => ({
-    carta: state.carta.carta
+    cartas: state.cartas.cartas,
+    auth: state.auth,
 });
 
 export default connect(mapStateToProps, { getCarta })(CartaPage);

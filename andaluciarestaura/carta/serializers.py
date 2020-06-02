@@ -19,6 +19,3 @@ class CartaSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Carta
         fields = ('id','name','propietario','productos')
-
-
-

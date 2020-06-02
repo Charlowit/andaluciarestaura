@@ -1,7 +1,7 @@
 import { GET_CARTA } from '../actions/types.js';
 
 const initialState = {
-    carta: []
+    cartas: []
 };
 
 export default function(state = initialState, action) {
@@ -9,7 +9,7 @@ export default function(state = initialState, action) {
         case GET_CARTA:
             return {
                 ...state,
-                carta: action.payload
+                cartas: action.payload
             };
         default:
             return state;
