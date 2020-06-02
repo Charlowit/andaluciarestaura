@@ -44,7 +44,7 @@ export class Registro extends Component {
         password: "",
         submitClick: false,
         terminado: false,
-        primeraVez:false
+        primeraVez: false
     }
 
     static propTypes = {
@@ -120,7 +120,7 @@ export class Registro extends Component {
                         </div>
                     </section>
 
-                        <section className="section has-text-centered " style={{ marginTop: '-150px', minWidth:"470px" }}>
+                    <section className="section has-text-centered " style={{ marginTop: '-150px' }}>
 
                         <div className="container">
                             <div className="box" style={bkg}>
@@ -239,19 +239,21 @@ export class Registro extends Component {
                                                                         </div>
                                                                     </div>
 
-                                                                    <div style={{marginTop: '60px'}}>
+                                                                    <div style={{ marginTop: '60px' }}>
                                                                         {isRegistering ?
                                                                             <div>
-                                                                            <p > Registrando y creando su carta digital </p>
-                                                                            <ProgressBar /> 
+                                                                                 {this.state.primeraVez = false}
+                                                                                <p > Registrando y creando su carta digital </p>
+                                                                                <ProgressBar />
 
-                                                                            {this.state.terminado = true}
+                                                                                {this.state.terminado = true}
+                                                                               
                                                                             </div>
-                                                                            
+
                                                                             :
-                                                                            
+
                                                                             <div className="has-text-centered">
-                                                                                {this.state.terminado ? this.state.primeraVez = true : ""}
+                                                                                {/*this.state.terminado ? this.state.primeraVez = true : ""*/}
                                                                                 <button type="submit" className="button" onClick={this.onSubmit} >Registro</button>
                                                                             </div>
                                                                         }
@@ -276,12 +278,21 @@ export class Registro extends Component {
         );
 
         const logged = (
-            <PrivateRouteLogin to="/login-page" />
+            <div >
+                {/*!this.state.primeraVez ?
+                    <PrivateRouteLogin to="/login-page" />
+                    :
+                    ""
+                */}
+            </div>
         );
 
         return (
             <React.Fragment>
-                {!isAuthenticated ? this.state.primeraVez ? logged : unlogged : <div style={{marginTop: '20px'}}></div> }
+                {console.log("Primera vez--> " + this.state.primeraVez)}
+                {console.log("Authenticated --> " + this.state.primeraVez)}
+                {console.log("terminado --> " + this.state.terminado)}
+                {!isAuthenticated ? this.state.primeraVez ? logged : unlogged : <div style={{ marginTop: '20px' }}></div>}
             </React.Fragment>
 
         );
