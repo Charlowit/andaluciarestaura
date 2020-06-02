@@ -240,10 +240,11 @@ export class Registro extends Component {
                                                                     </div>
 
                                                                     <div style={{marginTop: '60px'}}>
-                                                                        {isRegistering ? 
+                                                                        {isRegistering ?
                                                                             <div>
+                                                                            <p > Registrando y creando su carta digital </p>
                                                                             <ProgressBar /> 
-                                                                            <p style={{marginTop: '-22px'}}> Registrando y creando su carta digital </p>
+
                                                                             {this.state.terminado = true}
                                                                             </div>
                                                                             
@@ -280,7 +281,7 @@ export class Registro extends Component {
 
         return (
             <React.Fragment>
-                {!isAuthenticated ? this.state.primeraVez ? logged : unlogged : <div style={{marginTop: '20px'}}></div> } 
+                {!isAuthenticated ? this.state.primeraVez ? logged : unlogged : <div style={{marginTop: '20px'}}></div> }
             </React.Fragment>
 
         );
