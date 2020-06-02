@@ -6,7 +6,7 @@ import {
     LOGIN_FAIL,
     LOGIN_SUCCESS,
     LOGOUT_SUCCESS,
-    UPDATE_LOADING, UPDATE_SUCCESS, UPDATE_ERROR, GET_ERRORS
+    UPDATE_LOADING, UPDATE_SUCCESS, UPDATE_ERROR, GET_ERRORS, REGISTER_LOADING, REGISTER_FAILED, REGISTER_SUCCESS
 } from "./types";
 
 import { createMessages } from './messages'
@@ -78,14 +78,7 @@ export const login = (cif, password) => dispatch => {
                 type: LOGIN_FAIL
             });
 
-            const errors = {
-                msg: err.response.data,
-                status: err.response.status
-            }
-            dispatch({
-                type: GET_ERRORS,
-                payload: errors
-            });
+            dispatch(createMessages({ loginError: "Credenciales incorrectas."}));
         });
 };
 
@@ -148,8 +141,12 @@ export const registro = (user) => dispatch => {
 
 };
 
-export const subirpdf = (formdata) => dispatch => {
+//Este es el registro
 
+export const subirpdf = (formdata) => dispatch => {
+        dispatch({ 
+            type: REGISTER_LOADING,
+        });
       const config ={
           headers: {
             'content-type': 'multipart/form-data'
@@ -158,13 +155,20 @@ export const subirpdf = (formdata) => dispatch => {
       console.log("FORM DATA " + formdata.pdf)
       axios.post('api/auth/pdf', formdata, config)
         .then(res => {
+            
             dispatch(createMessages({ datosCambiados: "Registro realizado correctamente."}));
+            dispatch({ 
+                type: REGISTER_SUCCESS,
+            });
         })
         .catch(err => {
             const errors = {
                 msg: err.response.data,
                 status: err.response.status
             }
+            dispatch({ 
+                type: REGISTER_FAILED
+            });
             dispatch({
                 type: GET_ERRORS,
                 payload: errors
