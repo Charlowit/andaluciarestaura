@@ -14,8 +14,8 @@ class NavbarLog extends Component {
         return (
             <React.Fragment>
                 <header>
-                    <nav class="navbar is-transparent">
-                        <div class="navbar-brand">
+                    <nav className="navbar is-transparent">
+                        <div className="navbar-brand">
                             <p className="navbar-item " href="#">
                                 <NavLink to="/">
                                     <img src="https://cdn.discordapp.com/attachments/451551902186995713/713100395819434024/WhatsApp_Image_2020-05-21_at_20.42.20_1.jpeg" width="200" height="50" />

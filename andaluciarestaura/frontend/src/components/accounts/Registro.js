@@ -89,7 +89,7 @@ export class Registro extends Component {
         const { isAuthenticated, user } = this.props.auth;
         return (
             <React.Fragment>
-                <div className="section" style={{minWidth:"470px"}}>
+                <div className="section">
                     <div className="container">
                         <section className="hero is-white has-text-centered " style={less}>
                             <div className="hero-body">
@@ -112,7 +112,7 @@ export class Registro extends Component {
                             </div>
                         </section>
 
-                        <section className="section has-text-centered " style={{ marginTop: '-150px' }}>
+                        <section className="section has-text-centered " style={{ marginTop: '-150px', minWidth:"470px" }}>
 
                             <div className="container">
                                 <div className="box" style={bkg}>
