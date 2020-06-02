@@ -135,7 +135,7 @@ class AdminPage extends Component {
                                     <div className="field-body">
                                         <div className="field">
                                             <p className="control has-icons-left">
-                                                <input className="input" type="text" placeholder="" name="cif" onChange={this.onChange} value={cif} />
+                                                <input className="input" type="text" placeholder="" name="cif" value={cif} />
                                                 <span className="icon is-small is-left">
                                                     <i className="fas fa-id-card-alt"></i>
                                                 </span>
@@ -180,8 +180,8 @@ class AdminPage extends Component {
                                     <div className="field-body">
                                         <div className="field">
 
-                                            <div class="control">
-                                                <div class="select">
+                                            <div className="control">
+                                                <div className="select">
                                                     <select name="razon_social" onChange={this.onChange} defaultValue={razon_social}>
                                                         <option value="SL">SL</option>
                                                         <option value="SA">SA</option>
