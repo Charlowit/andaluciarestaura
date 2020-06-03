@@ -204,6 +204,9 @@ export const updateuser = (user) => (dispatch, getState) => {
 
     console.log("USER DENTRO DE ACTION: " + user.id)
     console.log("NOMBRE FISCAL DENTRO DE ACTION: "+ user.nombre_fiscal)
+    dispatch({ 
+        type: UPDATE_LOADING,
+    });
 
     // GET THE TOKE FROM THE STATE
     const token = getState().auth.token;
@@ -227,15 +230,22 @@ export const updateuser = (user) => (dispatch, getState) => {
     axios.put('/api/auth/useract', body, config)
         .then(res =>{
             dispatch(createMessages({ datosCambiados: "Datos guardados correctamente."}));
+            dispatch({ 
+                type: UPDATE_SUCCESS,
+            });
         }).catch(err => {
             const errors = {
                 msg: err.response.data,
                 status: err.response.status
             }
+            dispatch({ 
+                type: UPDATE_ERROR,
+            });
             dispatch({
                 type: GET_ERRORS,
                 payload: errors
             });
+
         });
 };
 

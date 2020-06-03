@@ -31,6 +31,7 @@ export default function(state = initialState, action){
                 isLoading: true,
                 isUpdating: false,
                 isRegistering: false,
+                registerFailed: false
             }
         case USER_LOADED:
             return{
@@ -39,6 +40,7 @@ export default function(state = initialState, action){
                 isLoading: false,
                 isUpdating: false,
                 isRegistering: false,
+                registerFailed: false,
                 user: action.payload
             }
         case LOGIN_SUCCESS:
@@ -49,7 +51,8 @@ export default function(state = initialState, action){
                 isAuthenticated: true,
                 isUpdating: false,
                 isLoading: false,
-                isRegistering: false
+                isRegistering: false,
+                registerFailed: false
             }
         case UPDATE_LOADING:
             return {
@@ -57,7 +60,9 @@ export default function(state = initialState, action){
                 isAuthenticated: true,
                 isLoading: false,
                 isUpdating: true,
-                isRegistering: false
+                isRegistering: false,
+                registerFailed: false,
+                updateFailed: false,
             }
         case UPDATE_SUCCESS:
             return {
@@ -66,7 +71,9 @@ export default function(state = initialState, action){
                 isAuthenticated: true,
                 isLoading: false,
                 isUpdating: false,
-                isRegistering: false
+                isRegistering: false,
+                registerFailed: false,
+                updateFailed: false,
             }
         case REGISTER_SUCCESS:
             return{
@@ -74,21 +81,25 @@ export default function(state = initialState, action){
                 isAuthenticated: false,
                 isLoading: false,
                 isUpdating: false,
-                isRegistering: false
+                isRegistering: false,
+                registerFailed: false
             }
         case REGISTER_LOADING:
             return{
                 ...state,
-                isAuthenticated: true,
+                isAuthenticated: false,
                 isLoading: false,
                 isUpdating: false,
-                isRegistering: true
+                isRegistering: true,
+                registerFailed: false,
             }
         case UPDATE_ERROR:
             return{
                 ...state,
                 isUpdating: false,
-                isRegistering: false
+                isRegistering: false,
+                registerFailed: false,
+                updateFailed: true,
             }
         case REGISTER_FAILED:
         case AUTH_ERROR:
@@ -102,7 +113,9 @@ export default function(state = initialState, action){
                 isAuthenticated: false,
                 isLoading: false,
                 isUpdating: false,
-                isRegistering: false
+                isRegistering: false,
+                registerFailed: true,
+                updateFailed: true,
             }
         default:
             return state;

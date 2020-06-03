@@ -95,7 +95,7 @@ export class Registro extends Component {
     render() {
 
         const { cif, password, marca_comercial, telefono_1, email } = this.state;
-        const { isAuthenticated, user, isRegistering } = this.props.auth;
+        const { isAuthenticated, user, isRegistering, registerFailed } = this.props.auth;
 
         const unlogged = (
             <div className="section">
@@ -245,21 +245,21 @@ export class Registro extends Component {
                                                                             <div>
                                                                                 <p > Registrando y creando su carta digital </p>
                                                                                 <ProgressBar />
-
+                                                                                {registerFailed ? this.state.terminado = false : this.state.terminado = true}
+                                                                            
                                                                             </div>
-
+                                                                            
                                                                             :
                                                                         
                                                                                 <div className="has-text-centered">
+                                                                                    {registerFailed ? this.state.terminado = false : ""}
+                                                                                    {registerFailed ? this.state.primeraVez = false : ""}
+                                                                                    {this.state.terminado ? this.state.primeraVez = true : ""}
                                                                                     <button type="submit" className="button" onClick={this.onSubmit} >Registro</button>
                                                                                 </div>
                                                                             }
 
-                                                                            
-                                                                        
-
                                                                     </div>
-
                                                                 </form>
                                                             </div>
                                                         </div>
@@ -279,7 +279,7 @@ export class Registro extends Component {
 
         const logged = (
             <div >
-                {this.state.primeraVez && !isRegistering && this.state.terminado ?
+                {this.state.primeraVez && this.state.terminado && !isRegistering && !registerFailed ?
                     <PrivateRouteLogin to="/login-page" />
                     :
                     ""
@@ -287,9 +287,19 @@ export class Registro extends Component {
             </div>
         );
 
+        const adminPage = (
+            <div >
+                
+                    <PrivateRouteLogin to="/admin-page" />
+                    :
+                    ""
+               
+            </div>
+        );
+
         return (
             <React.Fragment>
-               {unlogged}
+               {!isAuthenticated  ? !registerFailed && this.state.primeraVez ? logged : unlogged : adminPage} 
             </React.Fragment>
 
         );

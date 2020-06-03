@@ -87,24 +87,21 @@
   </section>
   {% if cif_cliente %}
   {% with 'clientes/'|add:cif_cliente|add:'/free.pdf' as pdf_static %}
-  <object id="demo" style="width:100%;" data="{% static pdf_static %}" type="application/pdf">
 
-  </object>
   <embed id="iphone" src="{% static pdf_static %}" type="application/pdf" width="100%">
 
-  <!--<iframe id="demo" style="height:1200px;width:100%;"
-    src="https://docs.google.com/viewer?url=https://www.andaluciarestaura.com/{% static pdf_static %}&embedded=true">
-  </iframe>-->
+  <iframe id="demo" style="width:100%;"
+    src="{% static pdf_static %}">
+  </iframe>
 
   <script>
     var x = "User-agent header sent: " + navigator.userAgent;
-    if (x.includes("Chrome")) {
-      console.log("M;rialo suprimo que v a afunsionar y to")
-      document.getElementById("demo").height = "900px";
-      document.getElementById("iphone").height = "0px";
-    } else {
-      document.getElementById("iphone").height = "900px";
+    if (x.includes("iPhone")) {
       document.getElementById("demo").height = "0px";
+      document.getElementById("iphone").height = "1200px";
+    } else {
+      document.getElementById("iphone").height = "0";
+      document.getElementById("demo").height = "1200px";
     }
   </script>
 
