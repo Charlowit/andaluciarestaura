@@ -44,7 +44,8 @@ export class Registro extends Component {
         password: "",
         submitClick: false,
         terminado: false,
-        primeraVez: false
+        primeraVez: false,
+        otro: false
     }
 
     static propTypes = {
@@ -242,20 +243,29 @@ export class Registro extends Component {
                                                                     <div style={{ marginTop: '60px' }}>
                                                                         {isRegistering ?
                                                                             <div>
-                                                                                 {this.state.primeraVez = false}
                                                                                 <p > Registrando y creando su carta digital </p>
                                                                                 <ProgressBar />
 
                                                                                 {this.state.terminado = true}
-                                                                               
+
                                                                             </div>
 
                                                                             :
+                                                                                <div>
+                                                                            {this.state.terminado ?                         
+                                                                                <div>
+                                                                                    {this.state.terminado ? this.state.primeraVez = true : ""}
+                                                                                </div>
+                                                                                :
+                                                                                <div className="has-text-centered">
+                                                                                    {this.state.primeraVez = false}
+                                                                                    {this.state.terminado = false}
+                                                                                    <button type="submit" className="button" onClick={this.onSubmit} >Registro</button>
+                                                                                </div>
+                                                                            }
 
-                                                                            <div className="has-text-centered">
-                                                                                {/*this.state.terminado ? this.state.primeraVez = true : ""*/}
-                                                                                <button type="submit" className="button" onClick={this.onSubmit} >Registro</button>
                                                                             </div>
+                                                                            
                                                                         }
 
                                                                     </div>
@@ -279,19 +289,17 @@ export class Registro extends Component {
 
         const logged = (
             <div >
-                {/*!this.state.primeraVez ?
+                {this.state.primeraVez && !isRegistering && this.state.terminado ?
                     <PrivateRouteLogin to="/login-page" />
                     :
                     ""
-                */}
+                }
             </div>
         );
 
         return (
             <React.Fragment>
-                {console.log("Primera vez--> " + this.state.primeraVez)}
-                {console.log("Authenticated --> " + this.state.primeraVez)}
-                {console.log("terminado --> " + this.state.terminado)}
+                {console.log("isRegistering --> " +  isRegistering)}
                 {!isAuthenticated ? this.state.primeraVez ? logged : unlogged : <div style={{ marginTop: '20px' }}></div>}
             </React.Fragment>
 

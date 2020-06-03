@@ -108,7 +108,7 @@ celerybeat-schedule
 .env
 .venv
 env/
-venv/
+andaluciarestaura/venv/
 _ar.38/
 _ar.37/
 ENV/

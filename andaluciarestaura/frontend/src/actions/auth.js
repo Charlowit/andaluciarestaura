@@ -153,7 +153,9 @@ export const subirpdf = (formdata) => dispatch => {
           }
       }
       console.log("FORM DATA " + formdata.pdf)
-      axios.post('api/auth/pdf', formdata, config)
+      axios.post('api/auth/pdf', formdata, config).then(
+
+        )
         .then(res => {
             
             dispatch(createMessages({ datosCambiados: "Registro realizado correctamente."}));

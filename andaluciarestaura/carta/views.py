@@ -25,7 +25,7 @@ def index(request,cif_cliente):
     #Transformamos el usuario a una lista
     user = list(user)
     #Se carga el template
-    
+
     #Traemos la carta del usuario
     if (settings.IN_PRODUCTION):
         server_local = "https://127.0.0.1"
@@ -62,7 +62,6 @@ def index(request,cif_cliente):
         'user': user,
         'categories': categories,
         'server': server_local,
-
     }
     #FILTRAR EL NOMBRE DE LA CARTA
     #carta = Carta.objects.filter(cif__exact=cif_cliente)
