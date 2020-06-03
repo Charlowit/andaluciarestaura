@@ -16,6 +16,15 @@ class ProductosSerializer(serializers.HyperlinkedModelSerializer):
 class CartaSerializer(serializers.HyperlinkedModelSerializer):
     productos = ProductosSerializer(many=True, read_only=True)
     propietario = serializers.CharField(source='propietario.cif')
+
     class Meta:
         model = Carta
         fields = ('id','name','propietario','productos')
+
+
+#PRODUCTO SERIALIZER ACTUALIZAR
+class ProductoSerializerActualizar(serializers.ModelSerializer):
+    class Meta:
+        model = Productos
+        fields = '__all__'
+

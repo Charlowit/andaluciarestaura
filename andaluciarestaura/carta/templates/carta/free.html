@@ -1,32 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
 {% load static %}
+
 <head>
-    <link href='https://fonts.googleapis.com/css?family=El Messiri' rel='stylesheet'>
-        <style>
-            div {
-                font-family: 'El Messiri';
-            }
+  <link href='https://fonts.googleapis.com/css?family=El Messiri' rel='stylesheet'>
+  <style>
+    div {
+      font-family: 'El Messiri';
+    }
 
-            input {
-                font-family: 'El Messiri';
-            }
+    input {
+      font-family: 'El Messiri';
+    }
 
-            button {
-                font-family: 'El Messiri';
-            }
-      </style>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, user-scalable=no">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css">
-    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
-    <title>Córdoba Restaura by Hotehub</title>
-    <style>
-        @media (min-width: 668px) {
-            .whatsapp { display: none }
-        }
-    </style>
+    button {
+      font-family: 'El Messiri';
+    }
+  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css">
+  <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+  <title>Córdoba Restaura by Hotehub</title>
+  <style>
+    @media (min-width: 668px) {
+      .whatsapp {
+        display: none
+      }
+    }
+  </style>
 </head>
+
 <body>
   <header>
     <nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
@@ -40,22 +44,22 @@
   </header>
   <section initial-scale=1 class="hero is-info is-bold" style="margin-top: 40px; min-width:470px">
     <div class="hero-body">
-        <div class="container has-text-centered is-clearfix">
-            <div class='equal-height'>
-                <div class="card-image has-text-centered">
-                    <figure class="image is-128x128 is-inline-block">
-                      {% if cif_cliente %}
-                          {% with 'clientes/'|add:cif_cliente|add:'/logo.jpeg' as img_static %}
-                          <img class="is-rounded"src="{% static img_static %}"></img>
-                          {% endwith %}
-                      {% endif %}
-                    </figure>
-                </div>
-            </div>
-            <h1 class="title"> {{user.marca_comercial}} </h1>
-            <h2 class="subtitle"> {{ user.fax }} <br /></h2>
-            <p class="field">
-                <!--
+      <div class="container has-text-centered is-clearfix">
+        <div class='equal-height'>
+          <div class="card-image has-text-centered">
+            <figure class="image is-128x128 is-inline-block">
+              {% if cif_cliente %}
+              {% with 'clientes/'|add:cif_cliente|add:'/logo.jpeg' as img_static %}
+              <img class="is-rounded" src="{% static img_static %}"></img>
+              {% endwith %}
+              {% endif %}
+            </figure>
+          </div>
+        </div>
+        <h1 class="title"> {{user.marca_comercial}} </h1>
+        <h2 class="subtitle"> {{ user.fax }} <br /></h2>
+        <p class="field">
+          <!--
                 <a href="https://www.facebook.com/patiosmarquesa" class="button is-rounded is-medium">
                     <span class="icon">
                       <i class="fab fa-facebook"></i>
@@ -73,37 +77,48 @@
                     </span>
                 </a>
                 -->
-            </p>
-            <hr/>
-            <div class="container">
-                <h1 class="title">Carta {{ user.marca_comercial }}</h1>
-	    </div>
+        </p>
+        <hr />
+        <div class="container">
+          <h1 class="title">Carta {{ user.marca_comercial }}</h1>
         </div>
+      </div>
     </div>
-</section>
-{% if cif_cliente %}
-    {% with 'clientes/'|add:cif_cliente|add:'/free.pdf' as pdf_static %}
+  </section>
+  {% if cif_cliente %}
+  {% with 'clientes/'|add:cif_cliente|add:'/free.pdf' as pdf_static %}
 
-      <object style="width:100%;height:100vh;" data="{% static pdf_static %}" type="application/pdf">
-        <iframe style="height:1200px;width:100%;"
-          src="https://docs.google.com/viewer?url=https://www.andaluciarestaura.com/{% static pdf_static %}&embedded=true">
-        </iframe>
-      </object>
-      
+  <embed id="iphone" src="{% static pdf_static %}" type="application/pdf" width="100%">
 
-    {% endwith %}
-{% endif %}
+  <iframe id="demo" style="width:100%;"
+    src="{% static pdf_static %}">
+  </iframe>
+
+  <script>
+    var x = "User-agent header sent: " + navigator.userAgent;
+    if (x.includes("iPhone")) {
+      document.getElementById("demo").height = "0px";
+      document.getElementById("iphone").height = "1200px";
+    } else {
+      document.getElementById("iphone").height = "0";
+      document.getElementById("demo").height = "1200px";
+    }
+  </script>
+
+  {% endwith %}
+  {% endif %}
   <footer>
-        <section class="section has-text-centered" style="min-width:470px">
-            <p>
-                <img width="200" height="50" src="{% static 'frontend/hotehub.svg' %}"></img>
-                <br />
-            <p style="margin-top:1%" > Córdoba Restaura by Hotehub </br> </p>
-                Copyright@2020 Todos los derechos reservados
-            </p>
-        </section>
+    <section class="section has-text-centered" style="min-width:470px">
+      <p>
+        <img width="200" height="50" src="{% static 'frontend/hotehub.svg' %}"></img>
+        <br />
+      <p style="margin-top:1%"> Córdoba Restaura by Hotehub </br> </p>
+      Copyright@2020 Todos los derechos reservados
+      </p>
+    </section>
   </footer>
 </body>
+
 </html>
 <!--<object data="http://127.0.0.1:8000/static/free.pdf" type="application/pdf">
   <object data="{% static 'clientes/{ id_carta }/free.pdf'%}" type="application/pdf">-->

@@ -94,7 +94,7 @@ class Navbar extends Component {
                         </span>
                         <span className="control">
                             <div className="buttons">
-                                <Link to="/login-page" className="button is-danger" style={{backgroundColor:'#bca466'}} onClick={this.props.logout}>Logout</Link>
+                                <Link to="/" className="button is-danger" style={{backgroundColor:'#bca466'}} onClick={this.props.logout}>Logout</Link>
                             </div>
                         </span>
                     </div>
@@ -110,12 +110,12 @@ class Navbar extends Component {
                 <div className="navbar-item">
                     <div className="field is-grouped">
                         <span className="control">
-                            <Link to="/">
+                            <Link to="/register-page">
                                 <p className="button is-link" style={{ width: '100%', backgroundColor:'#bca466' }}>Registro</p>
                             </Link>
                         </span>
                         <span className="control">
-                            <Link to="/login-page">
+                            <Link to="/">
                                 <p className="button is-link" style={{ width: '100%', backgroundColor:'#bca466' }}>Login</p>
                             </Link>
                         </span>

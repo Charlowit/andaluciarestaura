@@ -3,12 +3,16 @@ import { connect } from 'react-redux';
 import PropTypes from "prop-types";
 import { updateuser } from '../../actions/auth';
 import Files from "react-butterfiles";
+import ProgressBar from '../progressbar/ProgressBar'
+import PrivateRouteLogin from "../privateroute/PrivateRouteLogin";
+import { Redirect } from 'react-router-dom';
 
 
 class AdminPage extends Component {
 
     constructor() {
         super();
+        console.log("Cargando pagina v1")
         this.state = {
             id: "",
             cif: "",
@@ -26,6 +30,7 @@ class AdminPage extends Component {
             tipo_negocio: "",
             logo: "",
             qr: "",
+            guardado: false,
         };
     }
     static propTypes = {
@@ -56,6 +61,7 @@ class AdminPage extends Component {
     );
 
     componentDidMount() {
+        console.log("Cargando pagina ")
         console.log("LISTA INICIO: ")
         this.state.id = this.props.auth.user.id
         this.state.cif = this.props.auth.user.cif
@@ -99,6 +105,8 @@ class AdminPage extends Component {
         const { tipo_negocio = this.props.auth.user.tipo_negocio } = this.state.tipo_negocio
         const { logo } = this.props.auth.user.logo
         const { qr } = this.props.auth.user.qr
+        const { isUpdating, updateFailed } = this.props.auth;
+
         return (
             <React.Fragment>
                 ruta
@@ -135,7 +143,7 @@ class AdminPage extends Component {
                                     <div className="field-body">
                                         <div className="field">
                                             <p className="control has-icons-left">
-                                                <input className="input" type="text" placeholder="" name="cif" value={cif} />
+                                                <input className="input" type="text" placeholder="" name="cif" value={cif} readOnly />
                                                 <span className="icon is-small is-left">
                                                     <i className="fas fa-id-card-alt"></i>
                                                 </span>
@@ -373,7 +381,30 @@ class AdminPage extends Component {
                             <div className="field">
                                 <div className="buttons is-centered">
 
-                                    <button className="button" onClick={this.onSubmit} style={{ backgroundColor: '#bca466', color: 'white' }}>Guardar Cambios</button>
+                                    {console.log("DEBUG[isUpdating] --> " + isUpdating)}
+                                    {isUpdating ?
+                                        <div>
+                                            <p > Guardando sus datos... </p>
+                                            <ProgressBar />
+                                            {this.state.guardado = true}
+                                        </div>
+
+                                        :
+
+                                        <div className="has-text-centered">
+                                            
+                                            <button className="button" onClick={this.onSubmit} style={{ backgroundColor: '#bca466', color: 'white' }}>Guardar Cambios</button>
+                                        </div>
+                                    }
+
+                                    {updateFailed ? this.state.guardado = false : ""}
+
+                                    {!isUpdating && !updateFailed && this.state.guardado ?
+
+                                        <Redirect to="/" />
+                                        :
+                                        ""
+                                    }
                                 </div>
                             </div>
                         </div>

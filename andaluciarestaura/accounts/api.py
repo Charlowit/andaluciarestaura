@@ -13,6 +13,10 @@ import logging
 import os
 import qrcode
 from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
+from django.core import mail
+from django.utils.html import strip_tags
+from django.template import Context
 import shutil
 import base64
 from django.conf import settings
@@ -31,6 +35,17 @@ def enviar_email_v1(correo):
               'Le recordamos que puede acceder a nuestra plataforma para terminar de rellenar sus datos con el CIF/NIF y la constraseña con la que se registró.'
     send_mail(subject, message, from_email, [to])
     logger.error("SALGO EN EMAIL V1")
+
+
+def enviar_email_v3(correo, url_carta, ruta_qr, url_qr):
+    subject= 'Tu Carta Online con QR by Córdoba Restaura'
+    from_email= 'soporte@hotehub.com'
+    to = correo
+    html_message = render_to_string('./accounts/mail_template.html', { 'url_carta': url_carta, 'url_qr':url_qr })
+    plain_message = strip_tags(html_message)
+
+    mail.send_mail(subject, plain_message, from_email, [to], html_message=html_message)
+    logger.error("Enviao! V3")
 
 def enviar_email_v2(correo, url_carta, ruta_qr, url_qr):
     logger.error("ENTRO EN EMAIL V2")
@@ -186,7 +201,7 @@ class FilePDFApi(generics.GenericAPIView):
                 # 6 Creamos el correo electronico y lo enviamos.
                 # ENVIAR EMAIL VERSION 1
                 enviar_email_v1(correo)
-                enviar_email_v2(correo, url_carta, ruta_qr, url_qr)
+                enviar_email_v3(correo, url_carta, ruta_qr, url_qr)
 
                 return Response({
                     "user": UserSerializer(user, context=self.get_serializer_context()).data,
@@ -224,6 +239,7 @@ class LoginApi(generics.GenericAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data
+
         return Response({
             "user": UserSerializer(user,context=self.get_serializer_context()).data,"token": AuthToken.objects.create(user)[1]
         })
