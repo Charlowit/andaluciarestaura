@@ -250,32 +250,7 @@ export const updateuser = (user) => (dispatch, getState) => {
 };
 
 
-export const deleteproducto = id => (dispatch, getState) => {
-    
-    // GET THE TOKE FROM THE STATE
-    const token = getState().auth.token;
 
-    //Headers
-    const config = {
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    }
-
-    // If token, add to headers config
-    if (token) {
-        config.headers['Authorization'] = `Token ${token}`;
-    }
-
-    axios.delete(`/api/productact/${id}`, config)
-        .then(res => {
-            dispatch({
-                type: DELETE_PRODUCTO,
-                payload: id
-            });
-        })
-        .catch(err => console.log(err));
-}
 
 
 // CHANGE DATA PRODUCTO METHOD PUT

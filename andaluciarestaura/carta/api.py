@@ -62,18 +62,17 @@ class CartaAuthViewSet(viewsets.ModelViewSet):
 
 class ProductoActualizarApi(viewsets.ModelViewSet):
     
-    permission_classes = (permissions.AllowAny,) 
+    permission_classes = [
+        permissions.AllowAny
+    ]    
     serializer_class = ProductoSerializerActualizar
 
     
     def get_queryset(self):
-        return self.queryset.Productos.all()
+        productoID = self.request.query_params.get('id', None)
+        producto = Productos.objects.filter(id__exact=productoID)
+        producto.delete()
     
-    
-    def perform_create(self, serializer):
-        serializer.save(carta=self.request.data["carta"], categoria=self.request.data["categoria"])
-
-
     """
     def update(self, request, *args, **kwargs):
         serializer = self.serializer_class(request.user, data=request.data, partial=True)

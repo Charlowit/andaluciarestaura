@@ -1,7 +1,8 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { getCarta } from '../../actions/carta';
+import { getCarta, deleteproducto } from '../../actions/carta';
+
 
 const div100 = {
     width: '100%',
@@ -47,6 +48,7 @@ export class CartaPage extends Component {
         this.state = {
             cif: "",
             categories: [],
+            deleted: false,
         };
     }
 
@@ -536,6 +538,9 @@ export class CartaPage extends Component {
                                                                                                 </span>
                                                                                             </div>
                                                                                         </div>
+                                                                                        <div>
+                                                                                            <button className="button" onClick={this.props.deleteproducto.bind(this, producto.id)}>Button</button>
+                                                                                        </div>
                                                                                     </div>
 
                                                                                 </div>
@@ -570,4 +575,4 @@ const mapStateToProps = state => ({
     auth: state.auth,
 });
 
-export default connect(mapStateToProps, { getCarta })(CartaPage);
+export default connect(mapStateToProps, { getCarta, deleteproducto })(CartaPage);
