@@ -246,27 +246,17 @@ export class Registro extends Component {
                                                                                 <p > Registrando y creando su carta digital </p>
                                                                                 <ProgressBar />
 
-                                                                                {this.state.terminado = true}
-
                                                                             </div>
 
                                                                             :
-                                                                                <div>
-                                                                            {this.state.terminado ?                         
-                                                                                <div>
-                                                                                    {this.state.terminado ? this.state.primeraVez = true : ""}
-                                                                                </div>
-                                                                                :
+                                                                        
                                                                                 <div className="has-text-centered">
-                                                                                    {this.state.primeraVez = false}
-                                                                                    {this.state.terminado = false}
                                                                                     <button type="submit" className="button" onClick={this.onSubmit} >Registro</button>
                                                                                 </div>
                                                                             }
 
-                                                                            </div>
                                                                             
-                                                                        }
+                                                                        
 
                                                                     </div>
 
@@ -299,8 +289,7 @@ export class Registro extends Component {
 
         return (
             <React.Fragment>
-                {console.log("isRegistering --> " +  isRegistering)}
-                {!isAuthenticated ? this.state.primeraVez ? logged : unlogged : <div style={{ marginTop: '20px' }}></div>}
+               {unlogged}
             </React.Fragment>
 
         );
