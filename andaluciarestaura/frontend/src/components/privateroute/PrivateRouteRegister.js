@@ -8,10 +8,10 @@ const PrivateRouteRegister = ({ auth, ...rest }) => (
         {...rest}
         render={props =>{
             if(!auth.isAuthenticated){
-                return <Redirect to="/" />
+                return <Redirect to="/register-page" />
 
             } else {
-                return <Redirect to="/login-page" />
+                return <Redirect to="/" />
             }
         }}
     />

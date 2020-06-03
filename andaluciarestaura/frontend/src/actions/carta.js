@@ -15,4 +15,16 @@ export const getCarta = (cif) => (dispatch, getState) => {
         .catch(err => console.log(err));
 };
 
+export const deleteproducto = id => (dispatch, getState) => {
+    
+    axios.delete(`/api/productact/${id}`, tokenConfig(getState))
+        .then(res => {
+            dispatch({
+                type: DELETE_PRODUCTO,
+                payload: id
+            });
+        })
+        .catch(err => console.log(err));
+}
+
 

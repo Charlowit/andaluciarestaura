@@ -46,6 +46,7 @@ export class CartaPage extends Component {
         super();
         this.state = {
             cif: "",
+            categories: [],
         };
     }
 
@@ -66,7 +67,7 @@ export class CartaPage extends Component {
         const { cif = this.props.auth.user.cif } = this.state.cif;
         return (
             <Fragment>
-                <section className="hero is-info is-primary  hsl(54%, 15%, 143%) is-bold">
+                <section className="hero is-info is-primary  hsl(54%, 15%, 143%) is-bold" style={{ marginTop: '40px' }}>
                     <div className="hero-body hsl(90%, 159%, 79%)">
                         <div className="container has-text-centered">
 
@@ -130,6 +131,7 @@ export class CartaPage extends Component {
                         </div>
                     </div>
                 </section>
+                {/* FORMULARIO PARA INSERTAR PRODUCTOS*/}
                 <div className="container box">
                     <hr />
                     <h1 className="title has-text-centered">Añadir Producto a la Carta</h1>
@@ -349,179 +351,214 @@ export class CartaPage extends Component {
                         <button className="button">Guardar</button>
                     </div>
                 </div>
+                {/* FIN FORMULARIO PARA INSERTAR PRODUCTOS*/}
+                {/* MOSTRAR PRODUCTOS DE UNA CARTA*/}
+                {this.props.cartas.map(carta => (
+                    <div class="debug">
+                        {carta.productos.map(producto => (
+                            <div>
+                                <div>
+                                    {!this.state.categories.includes(producto.category_name) ? this.state.categories.push(producto.category_name) : ""}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                ))}
 
 
                 <div className="container">
-                    <div className="notification">
-                        <div className="tabs is-centered is-boxed">
-                            <ul>
-                                <li className="is-active">
-                                    <a>
-                                        <span className="icon is-small"><i className="fas fa-clipboard-list"
-                                            aria-hidden="true"></i></span>
-                                        <span>Entrantes</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a>
-                                        <span className="icon is-small"><i className="fas fa-utensils"
-                                            aria-hidden="true"></i></span>
-                                        <span>Principales</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a>
-                                        <span className="icon is-small"><i className="fas fa-stroopwafel"
-                                            aria-hidden="true"></i></span>
-                                        <span>Postres</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a>
-                                        <span className="icon is-small"><i className="fas fa-cocktail"
-                                            aria-hidden="true"></i></span>
-                                        <span>Bebidas</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-
+                    <div>
                         <div className="container">
-                            <div className="notification">
-                                <div className='card equal-height '>
-                                    <div className="columns">
-                                        <div className="container">
-                                            <div className="column">
-                                                <div className="columns">
-                                                    <div className="column is-two-thirds"
-                                                        style={div2}>
-                                                        <h1 className="title">  </h1>
-
-                                                        <h2 className="subtitle has-text-weight-light">  </h2>
-                                                    </div>
-                                                    <div className="column" style={divtop}>
-                                                        <div className="columns is-mobile" style={divcenter}>
-
-                                                            <div className="column">
-                                                                <div style={div100}>
-                                                                    <span className="icon is-small"
-                                                                        style={divcolor1}><i
-                                                                            className="fas fa-dot-circle"
-                                                                            aria-hidden="true"></i></span>
-                                                                </div>
-                                                                <span><b> Media Ración </b></span>
-                                                                <div style={div100}>
-                                                                    <span> <b style={divcolorred}>  4,50€ </b> </span>
-                                                                </div>
-                                                            </div>
-
-
-                                                            <div className="column"
-                                                                style={divmargin1}>
-                                                                <div style={div100}>
-                                                                    <span className="icon is-small"
-                                                                        style={divcolor2}><i
-                                                                            className="fas fa-dot-circle"
-                                                                            aria-hidden="true"></i></span>
-                                                                </div>
-                                                                <span> <b> Ración </b></span>
-                                                                <div style={div100}>
-                                                                    <span> <b style={divcolorred}>  5,50€ </b> </span>
-                                                                </div>
-                                                            </div>
-
-                                                        </div>
+                            <div>
+                                {this.props.cartas.map(carta => (
+                                    <div class="debug">
+                                        {this.state.categories.map(categoryName => (
+                                            <div style={{marginTop: '60px'}}>
+                                                <div className='card equal-height' style={{ backgroundColor: '#d5c69f', height: '60px' }}>
+                                                    <div className="container">
+                                                        <h1 className="title has-text-centered" style={{paddingTop: '15px'}}>{categoryName}</h1>
                                                     </div>
                                                 </div>
-                                                <div style={divleft}>
-                                                    <img src="static/frontend/Allergens/huevos.svg"
-                                                        alt="triangle with all three sides equal" width="50" />
-                                                    <img src="static/frontend/Allergens/lacteos.svg"
-                                                        alt="triangle with all three sides equal" width="50" />
-                                                    <img src="static/frontend/Allergens/soja.svg"
-                                                        alt="triangle with all three sides equal" width="50" />
-                                                    <img src="static/frontend/Allergens/cascara.svg"
-                                                        alt="triangle with all three sides equal" width="50" />
-                                                    <img src="static/frontend/Allergens/moluscos.svg"
-                                                        alt="triangle with all three sides equal" width="50" />
-                                                    <img src="static/frontend/Allergens/fish.svg"
-                                                        alt="triangle with all three sides equal" width="50" />
-                                                </div>
+                                                {carta.productos.map(producto => (
+                                                    <div style={{marginTop: '20px'}} key={producto.id}>
+                                                        {categoryName == producto.category_name ?
+                                                            <div className='card equal-height'>
+                                                                <div className="columns">
+                                                                    <div className="container">
+                                                                        <div className="column">
+                                                                            <div className="columns">
+                                                                                <div className="column is-two-thirds"
+                                                                                    style={{marginLeft: '2%', marginTop: '2%'}}>
+                                                                                    <h1 className="title"> {producto.name} </h1>
+                                                                                    <h2 className="subtitle has-text-weight-light">  {producto.descripcion}</h2>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div className="columns">
+                                                                                <div className="column is-two-thirds" style={{marginLeft: '2%'}}>
+
+                                                                                    {producto.is_apio ?
+                                                                                        <img
+                                                                                            src="/static/frontend/Allergens/alergeno_apio.svg"
+                                                                                            alt="triangle with all three sides equal" width="50" />
+                                                                                        :
+                                                                                        ""
+                                                                                    }
+
+                                                                                    {producto.is_altramuces ?
+
+                                                                                        <img
+                                                                                            src="{{server}}/static/frontend/Allergens/alergeno_altramuces.svg"
+                                                                                            alt="triangle with all three sides equal" width="50" />
+                                                                                        :
+                                                                                        ""
+                                                                                    }
+
+
+                                                                                    {producto.is_cacahuete ?
+                                                                                        <img
+                                                                                            src="{{server}}/static/frontend/Allergens/alergeno_cacahuete.svg"
+                                                                                            alt="triangle with all three sides equal" width="50" />
+                                                                                        :
+                                                                                        ""
+                                                                                    }
+
+                                                                                    {producto.is_crustaceo ?
+                                                                                        <img
+                                                                                            src="{{server}}/static/frontend/Allergens/alergeno_crustaceo.svg"
+                                                                                            alt="triangle with all three sides equal" width="50" />
+                                                                                        :
+                                                                                        ""
+                                                                                    }
+
+                                                                                    {producto.is_frutos_con_cascara ?
+                                                                                        <img
+                                                                                            src="{{server}}/static/frontend/Allergens/alergeno_frutos_con_cascara.svg"
+                                                                                            alt="triangle with all three sides equal" width="50" />
+                                                                                        :
+                                                                                        ""
+                                                                                    }
+
+                                                                                    {producto.is_gluten ?
+                                                                                        <img
+                                                                                            src="{{server}}/static/frontend/Allergens/alergeno_gluten.svg"
+                                                                                            alt="triangle with all three sides equal" width="50" />
+                                                                                        :
+                                                                                        ""
+                                                                                    }
+
+                                                                                    {producto.is_huevo ?
+                                                                                        <img
+                                                                                            src="{{server}}/static/frontend/Allergens/alergeno_huevo.svg"
+                                                                                            alt="triangle with all three sides equal" width="50" />
+                                                                                        :
+                                                                                        ""
+                                                                                    }
+
+                                                                                    {producto.is_lacteo ?
+                                                                                        <img
+                                                                                            src="{{server}}/static/frontend/Allergens/alergeno_lacteo.svg"
+                                                                                            alt="triangle with all three sides equal" width="50" />
+                                                                                        :
+                                                                                        ""
+                                                                                    }
+
+                                                                                    {producto.is_molusco ?
+                                                                                        <img
+                                                                                            src="{{server}}/static/frontend/Allergens/alergeno_moluscos.svg"
+                                                                                            alt="triangle with all three sides equal" width="50" />
+                                                                                        :
+                                                                                        ""
+                                                                                    }
+
+
+                                                                                    {producto.is_mostaza ?
+                                                                                        <img
+                                                                                            src="{{server}}/static/frontend/Allergens/alergeno_mostaza.svg"
+                                                                                            alt="triangle with all three sides equal" width="50" />
+                                                                                        :
+                                                                                        ""
+                                                                                    }
+                                                                                    {producto.is_pescado ?
+                                                                                        <img
+                                                                                            src="{{server}}/static/frontend/Allergens/alergeno_pescado.svg"
+                                                                                            alt="triangle with all three sides equal" width="50" />
+                                                                                        :
+                                                                                        ""
+                                                                                    }
+                                                                                    {producto.is_sesamo ?
+                                                                                        <img
+                                                                                            src="{{server}}/static/frontend/Allergens/alergeno_sesamo.svg"
+                                                                                            alt="triangle with all three sides equal" width="50" />
+                                                                                        :
+                                                                                        ""
+                                                                                    }
+                                                                                    {producto.is_soja ?
+                                                                                        <img
+                                                                                            src="{{server}}/static/frontend/Allergens/alergeno_soja.svg"
+                                                                                            alt="triangle with all three sides equal" width="50" />
+                                                                                        :
+                                                                                        ""
+                                                                                    }
+                                                                                </div>
+                                                                                <div className="column is-3">
+                                                                                    <div className="columns is-mobile has-text-centered"
+                                                                                        style={{marginBottom: '5%'}}>
+                                                                                        <div className="column">
+                                                                                            <div
+                                                                                                style={{width:'100%', marginTop: '5%', marginBottom: '6%'}}>
+                                                                                                <span className="icon is-small" style={{color: 'rgb(51, 153, 255)'}}>
+                                                                                                    <i className="fas fa-dot-circle" aria-hidden="true"></i>
+                                                                                                </span>
+                                                                                            </div>
+                                                                                            <span>
+                                                                                                <b> Media Ración </b>
+                                                                                            </span>
+                                                                                            <div style={{width:'100%'}}>
+                                                                                                <span>
+                                                                                                    <b style={{color: 'red'}}>  {!producto.precio1 == "" ? producto.precio1 : ""}€</b>
+                                                                                                </span>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div className="column"
+                                                                                            style={{marginLeft: '4%', marginTop: '2%'}}>
+                                                                                            <div style={{width:'100%'}}>
+                                                                                                <span className="icon is-small"
+                                                                                                    style={{fontSize:' 36px', color: 'rgb(51, 153, 255)'}}>
+                                                                                                    <i className="fas fa-dot-circle" aria-hidden="true"></i>
+                                                                                                </span>
+                                                                                            </div>
+                                                                                            <span>
+                                                                                                <b> Ración </b>
+                                                                                            </span>
+                                                                                            <div style={{width:'100%'}}>
+                                                                                                <span>
+                                                                                                    <b style={{color: 'red'}}>  {!producto.precio2 == "" ? producto.precio2 : ""}€</b>
+                                                                                                </span>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            :
+                                                            ""
+                                                        }
+                                                    </div>
+                                                ))}
                                             </div>
-                                        </div>
+                                        ))}
+
                                     </div>
-                                </div>
-                                <div className='card equal-height ' style={divtop2}>
-                                    <div className="columns">
-                                        <div className="container">
-                                            <div className="column">
-                                                <div className="columns">
-                                                    <div className="column is-two-thirds"
-                                                        style={div2}>
-                                                        <h1 className="title">Ensalada Mixta</h1>
-                                                        <h2 className="subtitle has-text-weight-light">Mezclum de
-                                                        lechugas, cherry, pepino, cebolla,
-                                                        remolacha, zanahoria, espárragos, maíz, huevo, atún,
-                                                            pepinillos, aceitunas y picos </h2>
-                                                    </div>
-                                                    <div className="column" style={divtop}>
-                                                        <div className="columns is-mobile" style={divcenter}>
-
-                                                            <div className="column">
-                                                                <div style={div100}>
-                                                                    <span className="icon is-small"
-                                                                        style={divcolor1}><i
-                                                                            className="fas fa-dot-circle"
-                                                                            aria-hidden="true"></i></span>
-                                                                </div>
-                                                                <span><b> Media Ración </b></span>
-                                                                <div style={div100}>
-                                                                    <span> <b style={divcolorred}>  4,50€ </b> </span>
-                                                                </div>
-                                                            </div>
-
-
-                                                            <div className="column"
-                                                                style={divmargin1}>
-                                                                <div style={div100}>
-                                                                    <span className="icon is-small"
-                                                                        style={divcolor2}><i
-                                                                            className="fas fa-dot-circle"
-                                                                            aria-hidden="true"></i></span>
-                                                                </div>
-                                                                <span> <b> Ración </b></span>
-                                                                <div style={div100}>
-                                                                    <span> <b style={divcolorred}>  5,50€ </b> </span>
-                                                                </div>
-                                                            </div>
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div style={divleft}>
-                                                    <img src="static/frontend/Allergens/gluten.svg"
-                                                        alt="triangle with all three sides equal" width="50" />
-                                                    <img src="static/frontend/Allergens/fish.svg"
-                                                        alt="triangle with all three sides equal" width="50" />
-                                                    <img src="static/frontend/Allergens/moluscos.svg"
-                                                        alt="triangle with all three sides equal" width="50" />
-                                                    <img src="static/frontend/Allergens/crustaceos.svg"
-                                                        alt="triangle with all three sides equal" width="50" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                ))}
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="has-text-centered">
-                    <h1>Debug</h1>
-                    {this.props.cartas.map(carta =>(
-                        <p>{carta.id}</p>
-                    ))}
-                </div>
+                {/* FIN MOSTRAR PRODUCTOS DE UNA CARTA*/}
             </Fragment>
         )
     }

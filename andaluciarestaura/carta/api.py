@@ -1,4 +1,4 @@
-from .serializers import CartaSerializer, ProductosSerializer
+from .serializers import CartaSerializer, ProductosSerializer, ProductoSerializerActualizar
 from rest_framework import viewsets, permissions, generics
 from .models import Carta, Productos, Categorias
 
@@ -57,3 +57,30 @@ class CartaAuthViewSet(viewsets.ModelViewSet):
             if all_enable is not False:
                 queryset = Carta.objects.all()
         return queryset
+
+
+
+class ProductoActualizarApi(viewsets.ModelViewSet):
+    
+    permission_classes = (permissions.AllowAny,) 
+    serializer_class = ProductoSerializerActualizar
+
+    
+    def get_queryset(self):
+        return self.queryset.Productos.all()
+    
+    
+    def perform_create(self, serializer):
+        serializer.save(carta=self.request.data["carta"], categoria=self.request.data["categoria"])
+
+
+    """
+    def update(self, request, *args, **kwargs):
+        serializer = self.serializer_class(request.user, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    """
+
+

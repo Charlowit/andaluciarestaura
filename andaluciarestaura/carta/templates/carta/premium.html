@@ -1,32 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
 {% load static %}
+
 <head>
-    <link href='https://fonts.googleapis.com/css?family=El Messiri' rel='stylesheet'>
-    <style>
-        div {
-            font-family: 'El Messiri';
-        }
+  <link href='https://fonts.googleapis.com/css?family=El Messiri' rel='stylesheet'>
+  <style>
+    div {
+      font-family: 'El Messiri';
+    }
 
-        input {
-            font-family: 'El Messiri';
-        }
+    input {
+      font-family: 'El Messiri';
+    }
 
-        button {
-            font-family: 'El Messiri';
-        }
+    button {
+      font-family: 'El Messiri';
+    }
   </style>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, user-scalable=no">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css">
-    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
-    <title>Andalucia Restaura by Hotehub</title>
-    <style>
-        @media (min-width: 668px) {
-            .whatsapp { display: none }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css">
+  <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+  <title>Andalucia Restaura by Hotehub</title>
+  <style>
+    @media (min-width: 668px) {
+      .whatsapp {
+        display: none
+      }
+    }
+  </style>
 </head>
+
 <body initial-scale=1 style="min-width:470px">
   <header>
     <nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
@@ -40,22 +44,22 @@
   </header>
   <section class="hero is-info is-bold" style="margin-top: 40px ">
     <div class="hero-body">
-        <div class="container has-text-centered is-clearfix">
-            <div class='equal-height'>
-                <div class="card-image has-text-centered">
-                    <figure class="image is-128x128 is-inline-block">
-                      {% if cif_cliente %}
-                          {% with 'clientes/'|add:cif_cliente|add:'/logo.jpeg' as img_static %}
-                          <img class="is-rounded"src="{% static img_static %}"></img>
-                          {% endwith %}
-                      {% endif %}
-                    </figure>
-                </div>
-            </div>
-            <h1 class="title"> {{user.marca_comercial}} </h1>
-            <h2 class="subtitle"> {{user.fax}} <br /></h2>
-            <p class="field">
-                <!--
+      <div class="container has-text-centered is-clearfix">
+        <div class='equal-height'>
+          <div class="card-image has-text-centered">
+            <figure class="image is-128x128 is-inline-block">
+              {% if cif_cliente %}
+              {% with 'clientes/'|add:cif_cliente|add:'/logo.jpeg' as img_static %}
+              <img class="is-rounded" src="{% static img_static %}"></img>
+              {% endwith %}
+              {% endif %}
+            </figure>
+          </div>
+        </div>
+        <h1 class="title"> {{user.marca_comercial}} </h1>
+        <h2 class="subtitle"> {{user.fax}} <br /></h2>
+        <p class="field">
+          <!--
                 <a href="#" class="button is-rounded is-medium">
                     <span class="icon">
                       <i class="fab fa-facebook"></i>
@@ -72,11 +76,11 @@
                     </span>
                 </a>
                 -->
-            </p>
-            <hr/>
-            <div class="container">
-                <h1 class="title">{{ data.name }}</h1>
-                <!--
+        </p>
+        <hr />
+        <div class="container">
+          <h1 class="title">{{ data.name }}</h1>
+          <!--
                 {% if cif_cliente %}
                     {% with 'clientes/'|add:cif_cliente|add:'' as url_static %}
                         <a href="#" class="button whatsapp">
@@ -88,17 +92,17 @@
                   <span>Comparte por Whatsapp</span>
                 </a>
                 -->
-          </div>
         </div>
+      </div>
     </div>
-</section>
-<p>{{username}}</p>
-<!-- La carta se pinta aqui-->
-<div class="container">
-  <div >
+  </section>
+  <p>{{username}}</p>
+  <!-- La carta se pinta aqui-->
+  <div class="container">
+    <div>
       <div class="container">
-          <div>
-              <!-- FOR DE LA CARTA -->   
+        <div>
+          <!-- FOR DE LA CARTA -->
           {% for categoria in categories %}
           <div class='card equal-height ' style="background-color: #d5c69f;">
             <div class="container">
@@ -107,123 +111,136 @@
               <br />
             </div>
           </div>
-            {% for producto in data.productos %}
-              {% if categoria == producto.category_name %}
-              <div class='card equal-height '>
+          {% for producto in data.productos %}
+          {% if categoria == producto.category_name %}
+          <div class='card equal-height '>
+            <div class="columns">
+              <div class="container">
+                <div class="column">
                   <div class="columns">
-                      <div class="container">
-                          <div class="column">
-                              <div class="columns">
-                                  <div class="column is-two-thirds" style="margin-left: 2%;margin-top: 2%">
-                                      <h1 class="title"> {{ producto.name }} </h1>
-                                      <h2 class="subtitle has-text-weight-light">  {{ producto.descripcion }}</h2>
-                                  </div>
-                              </div>
-                                <div class="columns">
-                                  <div class="column is-two-thirds" style="margin-left: 2%">
-
-                                      {% if producto.is_apio == True %}
-                                        <img src="{{server}}/static/frontend/Allergens/alergeno_apio.svg" alt="triangle with all three sides equal" width="50"/>
-                                      {% endif %}
-                                      {% if producto.is_altramuces == True %}
-                                        <img src="{{server}}/static/frontend/Allergens/alergeno_altramuces.svg" alt="triangle with all three sides equal" width="50"/>
-                                      {% endif %}
-                                      {% if producto.is_cacahuete == True %}
-                                        <img src="{{server}}/static/frontend/Allergens/alergeno_cacahuete.svg" alt="triangle with all three sides equal" width="50"/>
-                                      {% endif %}
-                                      {% if producto.is_crustaceo == True %}
-                                        <img src="{{server}}/static/frontend/Allergens/alergeno_crustaceo.svg" alt="triangle with all three sides equal" width="50"/>
-                                      {% endif %}
-                                      {% if producto.is_frutos_con_cascara == True %}
-                                        <img src="{{server}}/static/frontend/Allergens/alergeno_frutos_con_cascara.svg" alt="triangle with all three sides equal" width="50"/>
-                                      {% endif %}
-                                      {% if producto.is_gluten == True %}
-                                        <img src="{{server}}/static/frontend/Allergens/alergeno_gluten.svg" alt="triangle with all three sides equal" width="50"/>
-                                      {% endif %}
-                                      {% if producto.is_huevo == True %}
-                                        <img src="{{server}}/static/frontend/Allergens/alergeno_huevo.svg" alt="triangle with all three sides equal" width="50"/>
-                                      {% endif %}
-                                      {% if producto.is_lacteo == True %}
-                                        <img src="{{server}}/static/frontend/Allergens/alergeno_lacteo.svg" alt="triangle with all three sides equal" width="50"/>
-                                      {% endif %}
-                                      {% if producto.is_molusco == True %}
-                                        <img src="{{server}}/static/frontend/Allergens/alergeno_moluscos.svg" alt="triangle with all three sides equal" width="50"/>
-                                      {% endif %}
-                                      {% if producto.is_mostaza == True %}
-                                        <img src="{{server}}/static/frontend/Allergens/alergeno_mostaza.svg" alt="triangle with all three sides equal" width="50"/>
-                                      {% endif %}
-                                      {% if producto.is_pescado == True %}
-                                        <img src="{{server}}/static/frontend/Allergens/alergeno_pescado.svg" alt="triangle with all three sides equal" width="50"/>
-                                      {% endif %}
-                                      {% if producto.is_sesamo == True %}
-                                        <img src="{{server}}/static/frontend/Allergens/alergeno_sesamo.svg" alt="triangle with all three sides equal" width="50"/>
-                                      {% endif %}
-                                      {% if producto.is_soja == True %}
-                                        <img src="{{server}}/static/frontend/Allergens/alergeno_soja.svg" alt="triangle with all three sides equal" width="50"/>
-                                      {% endif %}
-                                </div>
-                                <div class="column is-3" >
-                                  <div class="columns is-mobile" style="text-align: center; margin-bottom: 5%;">
-                                      <div class="column">
-                                          <div style="width:100%;margin-top:5%;margin-bottom: 6%;">
-                                              <span class="icon is-small" style="color: rgb(51, 153, 255)">
-                                                <i class="fas fa-dot-circle" aria-hidden="true"></i>
-                                              </span>
-                                          </div>
-                                          <span>
-                                            <b > Media Ración </b>
-                                          </span>
-                                          <div style="width:100%;">
-                                              <span>
-                                                <b style="color: red">  {{ producto.precio1 }}€</b>
-                                              </span>
-                                          </div>
-                                      </div>
-                                      <div class="column"
-                                          style="margin-left: 4%; margin-top: 2%">
-                                          <div style="width:100%;">
-                                              <span class="icon is-small" style="font-size:36px;color: rgb(51, 153, 255)">
-                                                <i class="fas fa-dot-circle" aria-hidden="true"></i>
-                                              </span>
-                                          </div>
-                                          <span>
-                                            <b> Ración </b>
-                                          </span>
-                                          <div style="width:100%;">
-                                              <span>
-                                                <b style="color: red">  {{ producto.precio2 }}€</b>
-                                              </span>
-                                          </div>
-                                      </div>
-                                  </div>
-                                  
-                              </div>
-                            </div>
-                        </div>
+                    <div class="column is-two-thirds" style="margin-left: 2%;margin-top: 2%">
+                      <h1 class="title"> {{ producto.name }} </h1>
+                      <h2 class="subtitle has-text-weight-light"> {{ producto.descripcion }}</h2>
                     </div>
                   </div>
-              </div>
+                  <div class="columns">
+                    <div class="column is-two-thirds" style="margin-left: 2%">
 
-              {% endif %}
-            {% endfor %}
-          {% endfor %}
+                      {% if producto.is_apio == True %}
+                      <img src="{{server}}/static/frontend/Allergens/alergeno_apio.svg"
+                        alt="triangle with all three sides equal" width="50" />
+                      {% endif %}
+                      {% if producto.is_altramuces == True %}
+                      <img src="{{server}}/static/frontend/Allergens/alergeno_altramuces.svg"
+                        alt="triangle with all three sides equal" width="50" />
+                      {% endif %}
+                      {% if producto.is_cacahuete == True %}
+                      <img src="{{server}}/static/frontend/Allergens/alergeno_cacahuete.svg"
+                        alt="triangle with all three sides equal" width="50" />
+                      {% endif %}
+                      {% if producto.is_crustaceo == True %}
+                      <img src="{{server}}/static/frontend/Allergens/alergeno_crustaceo.svg"
+                        alt="triangle with all three sides equal" width="50" />
+                      {% endif %}
+                      {% if producto.is_frutos_con_cascara == True %}
+                      <img src="{{server}}/static/frontend/Allergens/alergeno_frutos_con_cascara.svg"
+                        alt="triangle with all three sides equal" width="50" />
+                      {% endif %}
+                      {% if producto.is_gluten == True %}
+                      <img src="{{server}}/static/frontend/Allergens/alergeno_gluten.svg"
+                        alt="triangle with all three sides equal" width="50" />
+                      {% endif %}
+                      {% if producto.is_huevo == True %}
+                      <img src="{{server}}/static/frontend/Allergens/alergeno_huevo.svg"
+                        alt="triangle with all three sides equal" width="50" />
+                      {% endif %}
+                      {% if producto.is_lacteo == True %}
+                      <img src="{{server}}/static/frontend/Allergens/alergeno_lacteo.svg"
+                        alt="triangle with all three sides equal" width="50" />
+                      {% endif %}
+                      {% if producto.is_molusco == True %}
+                      <img src="{{server}}/static/frontend/Allergens/alergeno_moluscos.svg"
+                        alt="triangle with all three sides equal" width="50" />
+                      {% endif %}
+                      {% if producto.is_mostaza == True %}
+                      <img src="{{server}}/static/frontend/Allergens/alergeno_mostaza.svg"
+                        alt="triangle with all three sides equal" width="50" />
+                      {% endif %}
+                      {% if producto.is_pescado == True %}
+                      <img src="{{server}}/static/frontend/Allergens/alergeno_pescado.svg"
+                        alt="triangle with all three sides equal" width="50" />
+                      {% endif %}
+                      {% if producto.is_sesamo == True %}
+                      <img src="{{server}}/static/frontend/Allergens/alergeno_sesamo.svg"
+                        alt="triangle with all three sides equal" width="50" />
+                      {% endif %}
+                      {% if producto.is_soja == True %}
+                      <img src="{{server}}/static/frontend/Allergens/alergeno_soja.svg"
+                        alt="triangle with all three sides equal" width="50" />
+                      {% endif %}
+                    </div>
+                    <div class="column is-3">
+                      <div class="columns is-mobile" style="text-align: center; margin-bottom: 5%;">
+                        <div class="column">
+                          <div style="width:100%;margin-top:5%;margin-bottom: 6%;">
+                            <span class="icon is-small" style="color: rgb(51, 153, 255)">
+                              <i class="fas fa-dot-circle" aria-hidden="true"></i>
+                            </span>
+                          </div>
+                          <span>
+                            <b> Media Ración </b>
+                          </span>
+                          <div style="width:100%;">
+                            <span>
+                              <b style="color: red"> {{ producto.precio1 }}€</b>
+                            </span>
+                          </div>
+                        </div>
+                        <div class="column" style="margin-left: 4%; margin-top: 2%">
+                          <div style="width:100%;">
+                            <span class="icon is-small" style="font-size:36px;color: rgb(51, 153, 255)">
+                              <i class="fas fa-dot-circle" aria-hidden="true"></i>
+                            </span>
+                          </div>
+                          <span>
+                            <b> Ración </b>
+                          </span>
+                          <div style="width:100%;">
+                            <span>
+                              <b style="color: red"> {{ producto.precio2 }}€</b>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
+
+          {% endif %}
+          {% endfor %}
+          {% endfor %}
+        </div>
       </div>
+    </div>
   </div>
-</div>
-<footer>
-  <section class="section has-text-centered">
+  <footer>
+    <section class="section has-text-centered">
       <p>
-          <img width="200" height="50" src="{% static 'frontend/hotehub.svg' %}"></img>
-          <br />
-          <p style="margin-top:1%" > Córdoba Restaura by Hotehub <br/> </p>
-          Copyright@2020 Todos los derechos reservados
+        <img width="200" height="50" src="{% static 'frontend/hotehub.svg' %}"></img>
+        <br />
+      <p style="margin-top:1%"> Córdoba Restaura by Hotehub <br /> </p>
+      Copyright@2020 Todos los derechos reservados
       </p>
-  </section>
-</footer>
+    </section>
+  </footer>
 
 
 </body>
+
 </html>
 <!--<object data="http://127.0.0.1:8000/static/free.pdf" type="application/pdf">
   <object data="{% static 'clientes/{ id_carta }/free.pdf'%}" type="application/pdf">-->
