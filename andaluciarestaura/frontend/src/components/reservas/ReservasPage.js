@@ -73,7 +73,7 @@ export class ReservasPage extends Component {
     render() {
         return (
             <Fragment>
-                <section class="section">
+                <section class="section" style={{marginTop: '40px'}}>
                     <div class="container">
                         <div class="columns" >
                             <div class="column">

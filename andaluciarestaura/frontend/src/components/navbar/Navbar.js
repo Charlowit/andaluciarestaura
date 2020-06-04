@@ -132,10 +132,10 @@ class Navbar extends Component {
         </a>
                     <div className="navbar-dropdown ">
                         <Link className="navbar-item" style={{ width: '100%', marginTop: '10px' }} to="/admin-page">Datos Negocio</Link>
-                        {/*<Link className="navbar-item" style={{ width: '100%', marginTop: '10px' }} to="/maps-page">Maps</Link>
-                        <Link className="navbar-item" style={{ width: '100%', marginTop: '10px' }} to="/creditcard-page">Credit Card</Link>
-                        <Link className="navbar-item" style={{ width: '100%', marginTop: '10px' }} to="/autocomplete-page">Roads</Link>
-                        <Link className="navbar-item" style={{ width: '100%', marginTop: '10px' }} to="/avatar-page">Avatar</Link>*/}
+                        {/*<Link className="navbar-item" style={{ width: '100%', marginTop: '10px' }} to="/maps-page">Maps</Link>*/}
+                        <Link className="navbar-item" style={{ width: '100%', marginTop: '10px' }} to="/creditcard-page">Tárjeta de crédito</Link>
+                        {/*<Link className="navbar-item" style={{ width: '100%', marginTop: '10px' }} to="/autocomplete-page">Roads</Link>*/}
+                        {/*<Link className="navbar-item" style={{ width: '100%', marginTop: '10px' }} to="/avatar-page">Avatar</Link>*/}
 
 
                         
@@ -145,7 +145,7 @@ class Navbar extends Component {
                         
                     </div>
                 </div>
-                {/*
+
                 <div className="navbar-item is-hoverable has-dropdown">
                     <Link className="navbar-link " style={{ width: '100%'}} to="/servicios-page">Servicios</Link>
                 </div>
@@ -161,7 +161,7 @@ class Navbar extends Component {
                 <div className="navbar-item   is-hoverable has-dropdown">
                     <a className="navbar-link" style={{ width: '100%'}} >Aforo</a>
                 </div>
-                */}
+
             </div>
 
         );

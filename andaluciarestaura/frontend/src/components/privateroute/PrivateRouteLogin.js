@@ -8,7 +8,7 @@ const PrivateRouteLogin = ({ auth, ...rest }) => (
         {...rest}
         render={props =>{
             if(!auth.isAuthenticated){
-                return <Redirect to="/login-page" />
+                return <Redirect to="/" />
 
             } else {
                 return <Redirect to="/admin-page" />

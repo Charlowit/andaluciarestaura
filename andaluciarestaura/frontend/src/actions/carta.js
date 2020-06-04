@@ -45,7 +45,7 @@ export const deleteproducto = (id, id_carta) => (dispatch, getState) => {
         .catch(err => console.log("Esto ta mal? "  + err));
 }
 
-
+/*
 export const deleteproducto = producto => (dispatch, getState) => {
     
     axios.get(`/api/productact/?carta=${id_carta}&id=${id}`, tokenConfig(getState))
@@ -57,3 +57,4 @@ export const deleteproducto = producto => (dispatch, getState) => {
         })
         .catch(err => console.log("Esto ta mal? "  + err));
 }
+*/
