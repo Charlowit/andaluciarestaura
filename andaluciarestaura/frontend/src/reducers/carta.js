@@ -1,7 +1,8 @@
 import { GET_CARTA, DELETE_PRODUCTO, ADD_PRODUCTO } from '../actions/types.js';
 
 const initialState = {
-    cartas: []
+    cartas: [],
+    needReload: false
 };
 
 export default function(state = initialState, action) {
@@ -9,7 +10,8 @@ export default function(state = initialState, action) {
         case GET_CARTA:
             return {
                 ...state,
-                cartas: action.payload
+                cartas: action.payload,
+                needReload: false
             };
         case DELETE_PRODUCTO:
             return {
@@ -20,10 +22,7 @@ export default function(state = initialState, action) {
         case ADD_PRODUCTO:
             return {
                 ...state,
-                //cartas: [...state.cartas, action.payload]
-                cartas: state.cartas.map(carta => {
-                    carta.productos.push(action.payload)
-                })
+                needReload: true
             };
         default:
             return state;
