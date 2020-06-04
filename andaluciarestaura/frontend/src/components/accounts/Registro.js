@@ -280,7 +280,7 @@ export class Registro extends Component {
         const logged = (
             <div >
                 {this.state.primeraVez && this.state.terminado && !isRegistering && !registerFailed ?
-                    <PrivateRouteLogin to="/login-page" />
+                    <PrivateRouteLogin to="/" />
                     :
                     ""
                 }

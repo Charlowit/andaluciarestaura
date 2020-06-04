@@ -14,9 +14,11 @@ export default function(state = initialState, action) {
         case DELETE_PRODUCTO:
             return {
                 ...state,
-                cartas: state.cartas.filter(productos.filter(producto => producto.id)) 
-            }
+                cartas: state.cartas.filter(carta => carta.productos.filter(producto => producto.id !==
+                action.payload)),
+            };
         default:
             return state;
     }
+    
 }
