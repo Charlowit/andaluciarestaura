@@ -84,4 +84,7 @@ class ProductosApi(viewsets.ModelViewSet):
         return queryset
 
 
-
+    def perform_create(self, serializer): 
+        serializer_class.save(owner=self.request.carta)
+        signals.user_registered.send(sender=self.__class__, user=user, request=self.request)
+        
