@@ -67,11 +67,14 @@ class ProductoActualizarApi(viewsets.ModelViewSet):
     ]    
     serializer_class = ProductoSerializerActualizar
 
-    
     def get_queryset(self):
-        productoID = self.request.query_params.get('id', None)
-        producto = Productos.objects.filter(id__exact=productoID)
-        producto.delete()
+        idCarta = self.request.query_params.get('id', None)
+        queryset = {}
+        if idCarta is not None:
+            queryset = Productos.objects.filter(carta__exact=idCarta)
+        else:
+            queryset = {"none"}
+        return queryset
     
     """
     def update(self, request, *args, **kwargs):
@@ -81,5 +84,18 @@ class ProductoActualizarApi(viewsets.ModelViewSet):
 
         return Response(serializer.data, status=status.HTTP_200_OK)
     """
+class ProductosGetApi(viewsets.ModelViewSet):
 
+    permission_classes = [
+        permissions.AllowAny
+    ]
+    serializer_class = ProductoSerializerActualizar
+
+    def get_queryset(self):
+        productoID = self.request.query_params.get('id', None)
+        if productoID is not None:
+            producto = Productos.objects.filter(id__exact=productoID)
+        else:
+            producto = "none"
+        return producto
 

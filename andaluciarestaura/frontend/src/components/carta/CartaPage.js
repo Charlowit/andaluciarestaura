@@ -69,11 +69,7 @@ export class CartaPage extends Component {
         const { cif = this.props.auth.user.cif } = this.state.cif;
         return (
             <Fragment>
-<<<<<<< HEAD
-                <section className="hero is-info is-primary  hsl(54%, 15%, 143%) is-bold" style={{marginTop:'40px'}}>
-=======
                 <section className="hero is-info is-primary  hsl(54%, 15%, 143%) is-bold" style={{ marginTop: '40px' }}>
->>>>>>> 784e7b437b6d45c4ee8d78aa333cc074f4912e1e
                     <div className="hero-body hsl(90%, 159%, 79%)">
                         <div className="container has-text-centered">
 
@@ -359,8 +355,6 @@ export class CartaPage extends Component {
                 </div>
                 {/* FIN FORMULARIO PARA INSERTAR PRODUCTOS*/}
                 {/* MOSTRAR PRODUCTOS DE UNA CARTA*/}
-<<<<<<< HEAD
-=======
                 {this.props.cartas.map(carta => (
                     <div class="debug">
                         {carta.productos.map(producto => (
@@ -374,148 +368,10 @@ export class CartaPage extends Component {
                 ))}
 
 
->>>>>>> 784e7b437b6d45c4ee8d78aa333cc074f4912e1e
                 <div className="container">
                     <div>
                         <div className="container">
                             <div>
-<<<<<<< HEAD
-                                {this.props.cartas.map(carta =>(
-
-                                {{% for categoria in categories %}
-                                <div className='card equal-height ' style="background-color: #d5c69f;">
-                                    <div className="container">
-                                        <br/>
-                                        <h1 className="title has-text-centered">{{categoria}}</h1>
-                                        <br/>
-                                    </div>
-                                </div>
-                                {% for producto in data.productos %}
-                                {% if categoria == producto.category_name %}
-                                <div className='card equal-height '>
-                                    <div className="columns">
-                                        <div className="container">
-                                            <div className="column">
-                                                <div className="columns">
-                                                    <div className="column is-two-thirds"
-                                                         style="margin-left: 2%;margin-top: 2%">
-                                                        <h1 className="title"> {{producto.name}} </h1>
-                                                        <h2 className="subtitle has-text-weight-light">  {{
-                                                            producto
-                                                            .descripcion
-                                                        }}</h2>
-                                                    </div>
-                                                </div>
-                                                <div className="columns">
-                                                    <div className="column is-two-thirds" style="margin-left: 2%">
-
-                                                        {% if producto.is_apio == True %}
-                                                        <img
-                                                            src="{{server}}/static/frontend/Allergens/alergeno_apio.svg"
-                                                            alt="triangle with all three sides equal" width="50"/>
-                                                        {% endif %}
-                                                        {% if producto.is_altramuces == True %}
-                                                        <img
-                                                            src="{{server}}/static/frontend/Allergens/alergeno_altramuces.svg"
-                                                            alt="triangle with all three sides equal" width="50"/>
-                                                        {% endif %}
-                                                        {% if producto.is_cacahuete == True %}
-                                                        <img
-                                                            src="{{server}}/static/frontend/Allergens/alergeno_cacahuete.svg"
-                                                            alt="triangle with all three sides equal" width="50"/>
-                                                        {% endif %}
-                                                        {% if producto.is_crustaceo == True %}
-                                                        <img
-                                                            src="{{server}}/static/frontend/Allergens/alergeno_crustaceo.svg"
-                                                            alt="triangle with all three sides equal" width="50"/>
-                                                        {% endif %}
-                                                        {% if producto.is_frutos_con_cascara == True %}
-                                                        <img
-                                                            src="{{server}}/static/frontend/Allergens/alergeno_frutos_con_cascara.svg"
-                                                            alt="triangle with all three sides equal" width="50"/>
-                                                        {% endif %}
-                                                        {% if producto.is_gluten == True %}
-                                                        <img
-                                                            src="{{server}}/static/frontend/Allergens/alergeno_gluten.svg"
-                                                            alt="triangle with all three sides equal" width="50"/>
-                                                        {% endif %}
-                                                        {% if producto.is_huevo == True %}
-                                                        <img
-                                                            src="{{server}}/static/frontend/Allergens/alergeno_huevo.svg"
-                                                            alt="triangle with all three sides equal" width="50"/>
-                                                        {% endif %}
-                                                        {% if producto.is_lacteo == True %}
-                                                        <img
-                                                            src="{{server}}/static/frontend/Allergens/alergeno_lacteo.svg"
-                                                            alt="triangle with all three sides equal" width="50"/>
-                                                        {% endif %}
-                                                        {% if producto.is_molusco == True %}
-                                                        <img
-                                                            src="{{server}}/static/frontend/Allergens/alergeno_moluscos.svg"
-                                                            alt="triangle with all three sides equal" width="50"/>
-                                                        {% endif %}
-                                                        {% if producto.is_mostaza == True %}
-                                                        <img
-                                                            src="{{server}}/static/frontend/Allergens/alergeno_mostaza.svg"
-                                                            alt="triangle with all three sides equal" width="50"/>
-                                                        {% endif %}
-                                                        {% if producto.is_pescado == True %}
-                                                        <img
-                                                            src="{{server}}/static/frontend/Allergens/alergeno_pescado.svg"
-                                                            alt="triangle with all three sides equal" width="50"/>
-                                                        {% endif %}
-                                                        {% if producto.is_sesamo == True %}
-                                                        <img
-                                                            src="{{server}}/static/frontend/Allergens/alergeno_sesamo.svg"
-                                                            alt="triangle with all three sides equal" width="50"/>
-                                                        {% endif %}
-                                                        {% if producto.is_soja == True %}
-                                                        <img
-                                                            src="{{server}}/static/frontend/Allergens/alergeno_soja.svg"
-                                                            alt="triangle with all three sides equal" width="50"/>
-                                                        {% endif %}
-                                                    </div>
-                                                    <div className="column is-3">
-                                                        <div className="columns is-mobile"
-                                                             style="text-align: center; margin-bottom: 5%;">
-                                                            <div className="column">
-                                                                <div
-                                                                    style="width:100%;margin-top:5%;margin-bottom: 6%;">
-                                              <span className="icon is-small" style="color: rgb(51, 153, 255)">
-                                                <i className="fas fa-dot-circle" aria-hidden="true"></i>
-                                              </span>
-                                                                </div>
-                                                                <span>
-                                            <b> Media Ración </b>
-                                          </span>
-                                                                <div style="width:100%;">
-                                              <span>
-                                                <b style="color: red">  {{producto.precio1}}€</b>
-                                              </span>
-                                                                </div>
-                                                            </div>
-                                                            <div className="column"
-                                                                 style="margin-left: 4%; margin-top: 2%">
-                                                                <div style="width:100%;">
-                                              <span className="icon is-small"
-                                                    style="font-size:36px;color: rgb(51, 153, 255)">
-                                                <i className="fas fa-dot-circle" aria-hidden="true"></i>
-                                              </span>
-                                                                </div>
-                                                                <span>
-                                            <b> Ración </b>
-                                          </span>
-                                                                <div style="width:100%;">
-                                              <span>
-                                                <b style="color: red">  {{producto.precio2}}€</b>
-                                              </span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-=======
                                 {this.props.cartas.map(carta => (
                                     <div class="debug">
                                         {this.state.categories.map(categoryName => (
@@ -698,37 +554,17 @@ export class CartaPage extends Component {
                                                         }
                                                     </div>
                                                 ))}
->>>>>>> 784e7b437b6d45c4ee8d78aa333cc074f4912e1e
                                             </div>
                                         ))}
 
                                     </div>
-<<<<<<< HEAD
-                                </div>
-
-                                {% endif %}
-                                {% endfor %}
-                                {% endfor %}
-=======
                                 ))}
->>>>>>> 784e7b437b6d45c4ee8d78aa333cc074f4912e1e
                             </div>
                         </div>
                         ))}
                     </div>
                 </div>
-<<<<<<< HEAD
-
                 {/* FIN MOSTRAR PRODUCTOS DE UNA CARTA*/}
-                <div class="has-text-centered">
-                    <h1>Debug</h1>
-                    {this.props.cartas.map(carta =>(
-                        <p>{carta.id}</p>
-                    ))}
-                </div>
-=======
-                {/* FIN MOSTRAR PRODUCTOS DE UNA CARTA*/}
->>>>>>> 784e7b437b6d45c4ee8d78aa333cc074f4912e1e
             </Fragment>
         )
     }
