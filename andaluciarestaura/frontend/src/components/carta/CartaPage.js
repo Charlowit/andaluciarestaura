@@ -56,7 +56,7 @@ export class CartaPage extends Component {
     static propTypes = {
         cartas: PropTypes.array.isRequired,
         auth: PropTypes.func.isRequired,
-
+        deleteproducto: PropTypes.func.isRequired
     };
 
     componentDidMount() {
@@ -539,7 +539,7 @@ export class CartaPage extends Component {
                                                                                             </div>
                                                                                         </div>
                                                                                         <div>
-                                                                                            <button className="button" onClick={this.props.deleteproducto.bind(this, producto.id)}>Button</button>
+                                                                                            <button className="button" onClick={this.props.deleteproducto.bind(this, producto.id, producto.carta_id)}>Button</button>
                                                                                         </div>
                                                                                     </div>
 

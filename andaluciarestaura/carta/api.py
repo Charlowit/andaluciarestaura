@@ -41,7 +41,7 @@ class CartaAuthViewSet(viewsets.ModelViewSet):
         #Enable all cartas with True or False
         all_enable = False
         cartaID = self.request.query_params.get('carta', None)
-        cif = self.request.query_params.get('cif', None)
+        cif = self.request.query_params.get('cif', None)    
         queryset = {}
         if cartaID is not None:
             if cif is not None:
@@ -59,32 +59,29 @@ class CartaAuthViewSet(viewsets.ModelViewSet):
         return queryset
 
 
-
-class ProductoActualizarApi(viewsets.ModelViewSet):
-    
+class CartasApi(viewsets.ModelViewSet):
     permission_classes = [
         permissions.AllowAny
-    ]    
-    serializer_class = ProductoSerializerActualizar
+    ]
+
+    serializer_class = CartaSerializer
 
     def get_queryset(self):
-        idCarta = self.request.query_params.get('id', None)
-        queryset = {}
-        if idCarta is not None:
-            queryset = Productos.objects.filter(carta__exact=idCarta)
-        else:
-            queryset = {"none"}
-        return queryset
-    
-    """
-    def update(self, request, *args, **kwargs):
-        serializer = self.serializer_class(request.user, data=request.data, partial=True)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
+        cif = self.request.query_params.get('cif', None)
+        return Carta.objects.filter(propietario__cif__exact=cif)
 
-        return Response(serializer.data, status=status.HTTP_200_OK)
-    """
-class ProductosGetApi(viewsets.ModelViewSet):
+
+class ProductosApi(viewsets.ModelViewSet):
+    
+    serializer_class = ProductosSerializer
+    permission_classes = [
+        permissions.AllowAny
+    ]
+
+    def get_queryset(self):
+        cartaID = self.request.query_params.get('carta', None)
+        queryset = Productos.objects.filter(carta__exact=cartaID)    
+        return queryset
 
     permission_classes = [
         permissions.AllowAny
@@ -99,3 +96,7 @@ class ProductosGetApi(viewsets.ModelViewSet):
             producto = "none"
         return producto
 
+    def perform_create(self, serializer): 
+        serializer_class.save(owner=self.request.carta)
+        signals.user_registered.send(sender=self.__class__, user=user, request=self.request)
+        

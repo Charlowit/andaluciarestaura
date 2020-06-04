@@ -17,7 +17,7 @@ export const getCarta = (cif) => (dispatch, getState) => {
 
 
 //FUNCIONA EL DELETE
-
+/*
 export const deleteproducto = id => (dispatch, getState) => {
     
     axios.get(`/api/productact/?id=${id}`, tokenConfig(getState))
@@ -25,6 +25,34 @@ export const deleteproducto = id => (dispatch, getState) => {
             dispatch({
                 type: DELETE_PRODUCTO,
                 payload: res.data
+            });
+        })
+        .catch(err => console.log("Esto ta mal? "  + err));
+}
+*/
+
+//FUNCIONA EL DELETE
+
+export const deleteproducto = (id, id_carta) => (dispatch, getState) => {
+    
+    axios.get(`/api/productact/?carta=${id_carta}&id=${id}`, tokenConfig(getState))
+        .then(res => {
+            dispatch({
+                type: DELETE_PRODUCTO,
+                payload: id_carta
+            });
+        })
+        .catch(err => console.log("Esto ta mal? "  + err));
+}
+
+
+export const deleteproducto = producto => (dispatch, getState) => {
+    
+    axios.get(`/api/productact/?carta=${id_carta}&id=${id}`, tokenConfig(getState))
+        .then(res => {
+            dispatch({
+                type: DELETE_PRODUCTO,
+                payload: id_carta
             });
         })
         .catch(err => console.log("Esto ta mal? "  + err));
