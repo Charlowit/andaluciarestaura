@@ -1,6 +1,7 @@
-from .serializers import CartaSerializer, ProductosSerializer, ProductoSerializerActualizar
+from .serializers import CartaSerializer, ProductosSerializer, ProductoSerializerActualizar, CategoriasSerializer
 from rest_framework import viewsets, permissions, generics
 from .models import Carta, Productos, Categorias
+from rest_framework.parsers import MultiPartParser, FormParser
 
 #Carta Viewset
 
@@ -70,21 +71,38 @@ class CartasApi(viewsets.ModelViewSet):
         cif = self.request.query_params.get('cif', None)
         return Carta.objects.filter(propietario__cif__exact=cif)
 
-
-class ProductosApi(viewsets.ModelViewSet):
-    
-    serializer_class = ProductosSerializer
+class CategoriasApi(viewsets.ModelViewSet):
     permission_classes = [
         permissions.AllowAny
     ]
+
+    serializer_class = CategoriasSerializer
+
+    def get_queryset(self):
+        return Categorias.objects.all()
+
+
+
+class ProductosApi(viewsets.ModelViewSet):
+    
+    permission_classes = [
+        permissions.AllowAny
+    ]
+    serializer_class = ProductoSerializerActualizar
+    #parser_classes = (MultiPartParser, FormParser)
 
     def get_queryset(self):
         cartaID = self.request.query_params.get('carta', None)
         queryset = Productos.objects.filter(carta__exact=cartaID)    
         return queryset
 
-
-    def perform_create(self, serializer): 
-        serializer_class.save(owner=self.request.carta)
-        signals.user_registered.send(sender=self.__class__, user=user, request=self.request)
+    """
+    def post(self, request, *args, **kwargs):
+        producto_register_serializer = self.get_serializer(data=request.data)
         
+        if producto_register_serializer.is_valid():
+
+            producto_register_serializer.is_valid(raise_exception=True)
+            producto_register_serializer.save()
+        
+    """
