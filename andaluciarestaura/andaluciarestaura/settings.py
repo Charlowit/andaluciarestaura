@@ -26,7 +26,7 @@ SECRET_KEY = '$s=6@kmmhg$yxavb)m*#n-72qk6*gr+s7bnwh@#voxod&ef^p%'
 DEBUG = True
 
 # IMPORTANT: Set True into Production. If you are in local development set to False
-IN_PRODUCTION = False
+IN_PRODUCTION = True
 
 ALLOWED_HOSTS = ['127.0.0.1','localhost','ec2-52-14-184-104.us-east-2.compute.amazonaws.com','andaluciarestaura.com','www.andaluciarestaura.com']
 
@@ -87,7 +87,7 @@ WSGI_APPLICATION = 'andaluciarestaura.wsgi.application'
 
 # Database PRODUCCION
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
-"""
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -98,17 +98,17 @@ DATABASES = {
         'PORT': '',
     }
 }
-"""
+
 # Database DEV
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
-
+"""
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
+"""
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 

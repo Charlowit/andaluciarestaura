@@ -53,10 +53,10 @@ def enviar_email_v2(correo, url_carta, ruta_qr, url_qr):
     from_email= 'soporte@hotehub.com'
     to = correo
     logger.error("DENTRO DE MAIL V2 EL CORREO ES" + correo)
-    text_content = 'Gracias por registrarse en Córdoba Restaura.'
-    html_content = '<p>Aquí tienes tu dirección donde tus clientes podrán ver tu carta en PDF:<br/>' \
-                   '<a href='+url_carta+'>Pulsa aquí para visualizar tu carta</a</p><br/>' \
-                   '<a href='+url_qr+'>Pulsa aquí para descargar tu código QR</a</p>'
+    text_content = 'Gracias por registrarse en Córdoba Restaura. '
+    html_content = '<p> Aquí tienes tu dirección donde tus clientes podrán ver tu carta en PDF: <br/>' \
+                   '<a href='+url_carta+'> Pulsa aquí para visualizar tu carta </a</p><br/>' \
+                   '<a href='+url_qr+'> Pulsa aquí para descargar tu código QR </a</p>'
     """"
     html_content = '<div class="section"><div class="container has-text-centered"><div class="section">' \
                    '<img src="https://www.andaluciarestaura.com/static/frontend/logoar.svg" width="400">' \
@@ -201,7 +201,7 @@ class FilePDFApi(generics.GenericAPIView):
                 # 6 Creamos el correo electronico y lo enviamos.
                 # ENVIAR EMAIL VERSION 1
                 enviar_email_v1(correo)
-                enviar_email_v3(correo, url_carta, ruta_qr, url_qr)
+                enviar_email_v2(correo, url_carta, ruta_qr, url_qr)
 
                 return Response({
                     "user": UserSerializer(user, context=self.get_serializer_context()).data,

@@ -28,7 +28,7 @@ def index(request,cif_cliente):
 
     #Traemos la carta del usuario
     if (settings.IN_PRODUCTION):
-        server_local = "https://127.0.0.1"
+        server_local = "https://www.andaluciarestaura.com"
     else:
         server_local = "http://127.0.0.1:8000"
 
