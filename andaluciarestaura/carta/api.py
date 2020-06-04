@@ -1,6 +1,7 @@
-from .serializers import CartaSerializer, ProductosSerializer, ProductoSerializerActualizar
+from .serializers import CartaSerializer, ProductosSerializer, ProductoSerializerActualizar, CategoriasSerializer
 from rest_framework import viewsets, permissions, generics
 from .models import Carta, Productos, Categorias
+from rest_framework.parsers import MultiPartParser, FormParser
 
 #Carta Viewset
 
@@ -70,33 +71,27 @@ class CartasApi(viewsets.ModelViewSet):
         cif = self.request.query_params.get('cif', None)
         return Carta.objects.filter(propietario__cif__exact=cif)
 
-
-class ProductosApi(viewsets.ModelViewSet):
-    
-    serializer_class = ProductosSerializer
+class CategoriasApi(viewsets.ModelViewSet):
     permission_classes = [
         permissions.AllowAny
     ]
+
+    serializer_class = CategoriasSerializer
+
+    def get_queryset(self):
+        return Categorias.objects.all()
+
+
+
+class ProductosApi(viewsets.ModelViewSet):
+    
+    permission_classes = [
+        permissions.AllowAny
+    ]
+    serializer_class = ProductoSerializerActualizar
+    #parser_classes = (MultiPartParser, FormParser)
 
     def get_queryset(self):
         cartaID = self.request.query_params.get('carta', None)
         queryset = Productos.objects.filter(carta__exact=cartaID)    
         return queryset
-
-    permission_classes = [
-        permissions.AllowAny
-    ]
-    serializer_class = ProductoSerializerActualizar
-
-    def get_queryset(self):
-        productoID = self.request.query_params.get('id', None)
-        if productoID is not None:
-            producto = Productos.objects.filter(id__exact=productoID)
-        else:
-            producto = "none"
-        return producto
-
-    def perform_create(self, serializer): 
-        serializer_class.save(owner=self.request.carta)
-        signals.user_registered.send(sender=self.__class__, user=user, request=self.request)
-        
