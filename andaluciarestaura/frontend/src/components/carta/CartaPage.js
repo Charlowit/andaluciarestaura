@@ -92,11 +92,13 @@ export class CartaPage extends Component {
 
     };
 
-    onSubmitDelete = e => {
+    onSubmitDelete = (productoID, cartaID) => {
 
-       
+        console.log("ProductoID --> " + productoID)
+        console.log("CartaID --> " + cartaID)
+        //this.props.deleteproducto.bind(this, productoID, cartaID)
 
-        window.location.reload(false);
+        //window.location.reload(false);
 
     };
 
@@ -676,9 +678,9 @@ export class CartaPage extends Component {
                                                                                                 </span>
                                                                                             </div>
                                                                                         </div>
-                                                                                       {/* <div>
-                                                                                            <button className="button" onClick={this.props.deleteproducto.bind(this, producto.id, producto.carta_id)}>Button</button>
-                                                                                       </div>*/}
+                                                                                        <div>
+                                                                                            <button className="button" onClick={this.onSubmitDelete(this, producto.id, producto.carta_id)}>Button</button>
+                                                                                       </div>
                                                                                     </div>
 
                                                                                 </div>
