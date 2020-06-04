@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { getCarta, deleteproducto, subirproducto } from '../../actions/carta';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 
 
 const div100 = {
@@ -71,7 +71,7 @@ export class CartaPage extends Component {
             is_pescado: false,
             is_sesamo: false,
             is_soja: false,
-            carta: 1,
+            carta: -1,
         };
     }
 
@@ -85,10 +85,22 @@ export class CartaPage extends Component {
         const { categoria, name, descripcion, tamanio, precio1, precio2, precio3, is_apio, is_altramuces, is_cacahuete, is_crustaceo, is_frutos_con_cascara, is_gluten, is_huevo, is_lacteo, is_molusco, is_mostaza, is_pescado, is_sesamo, is_soja, carta
         } = this.state;
         const producto = { categoria, name, descripcion, tamanio, precio1, precio2, precio3, is_apio, is_altramuces, is_cacahuete, is_crustaceo, is_frutos_con_cascara, is_gluten, is_huevo, is_lacteo, is_molusco, is_mostaza, is_pescado, is_sesamo, is_soja, carta };
-        
+
         this.props.subirproducto(producto);
 
+        window.location.reload(false);
+
     };
+
+    onSubmitDelete = e => {
+
+       
+
+        window.location.reload(false);
+
+    };
+
+
 
     onChange = e => this.setState({ [e.target.name]: e.target.value });
 
@@ -186,19 +198,13 @@ export class CartaPage extends Component {
 
     render() {
         const { categoria, name, descripcion, tamanio, precio1, precio2, precio3, is_apio, is_altramuces, is_cacahuete, is_crustaceo, is_frutos_con_cascara, is_gluten, is_huevo, is_lacteo, is_molusco, is_mostaza, is_pescado, is_sesamo, is_soja, carta
-         } = this.state;
+        } = this.state;
         const { cif = this.props.auth.user.cif } = this.state.cif;
+        const { needReload } = this.props.auth
         return (
             <Fragment>
-                { this.state.added ? 
-                    <div>
-                        {console.log("Ha entrao ")}
-                        <Redirect to="/carta-page" />
-                    </div>
-                    
-                    :
-                    ""
-                }
+
+
                 <section className="hero is-info is-primary  hsl(54%, 15%, 143%) is-bold" style={{ marginTop: '40px' }}>
                     <div className="hero-body hsl(90%, 159%, 79%)">
                         <div className="container has-text-centered">
@@ -289,7 +295,7 @@ export class CartaPage extends Component {
                                         <div className="field">
                                             <label className="label">Precio 2</label>
                                             <div className="control">
-                                                <input className="input " name="precio2" type="text" placeholder="0" onChange={this.onChange} defaultValue={precio2}/>
+                                                <input className="input " name="precio2" type="text" placeholder="0" onChange={this.onChange} defaultValue={precio2} />
                                             </div>
                                         </div>
                                     </div>
@@ -297,7 +303,7 @@ export class CartaPage extends Component {
                                         <div className="field">
                                             <label className="label">Precio 3</label>
                                             <div className="control">
-                                                <input className="input"name="precio3"  type="text" placeholder="0" onChange={this.onChange} defaultValue={precio3} />
+                                                <input className="input" name="precio3" type="text" placeholder="0" onChange={this.onChange} defaultValue={precio3} />
                                             </div>
                                         </div>
                                     </div>
@@ -309,7 +315,7 @@ export class CartaPage extends Component {
                                             <div className="field">
                                                 <p className="control">
                                                     <div className="b-checkbox">
-                                                        <input id="checkbox" name="is_apio" className="styled" type="checkbox" onChange={this.handleApioChange} defaultValue={is_apio}/>
+                                                        <input id="checkbox" name="is_apio" className="styled" type="checkbox" onChange={this.handleApioChange} defaultValue={is_apio} />
                                                         <label for="checkbox">  Apio</label>
                                                     </div>
                                                 </p>
@@ -325,7 +331,7 @@ export class CartaPage extends Component {
                                             <div className="field">
                                                 <p className="control">
                                                     <div className="b-checkbox">
-                                                        <input id="checkbox" name="is_cacahuete" className="styled" type="checkbox" onChange={this.handleCacahueteChange} defaultValue={is_cacahuete}/>
+                                                        <input id="checkbox" name="is_cacahuete" className="styled" type="checkbox" onChange={this.handleCacahueteChange} defaultValue={is_cacahuete} />
                                                         <label for="checkbox">  Cacahuete</label>
                                                     </div>
                                                 </p>
@@ -333,7 +339,7 @@ export class CartaPage extends Component {
                                             <div className="field">
                                                 <p className="control">
                                                     <div className="b-checkbox">
-                                                        <input id="checkbox" name="is_custaceo" className="styled" type="checkbox" onChange={this.handleCrustaceoChange} defaultValue={is_crustaceo}/>
+                                                        <input id="checkbox" name="is_custaceo" className="styled" type="checkbox" onChange={this.handleCrustaceoChange} defaultValue={is_crustaceo} />
                                                         <label for="checkbox">  Crustaceo</label>
                                                     </div>
                                                 </p>
@@ -343,7 +349,7 @@ export class CartaPage extends Component {
                                             <div className="field">
                                                 <p className="control">
                                                     <div className="b-checkbox">
-                                                        <input id="checkbox" name="is_frutas_con_cascara" className="styled" type="checkbox" onChange={this.handleCascaraChange} defaultValue={is_frutos_con_cascara}/>
+                                                        <input id="checkbox" name="is_frutas_con_cascara" className="styled" type="checkbox" onChange={this.handleCascaraChange} defaultValue={is_frutos_con_cascara} />
                                                         <label for="checkbox">  Cascara Frutal</label>
                                                     </div>
                                                 </p>
@@ -351,7 +357,7 @@ export class CartaPage extends Component {
                                             <div className="field">
                                                 <p className="control">
                                                     <div className="b-checkbox">
-                                                        <input id="checkbox"  name="is_gluten" className="styled" type="checkbox" onChange={this.handleGlutenChange} defaultValue={is_gluten}/>
+                                                        <input id="checkbox" name="is_gluten" className="styled" type="checkbox" onChange={this.handleGlutenChange} defaultValue={is_gluten} />
                                                         <label for="checkbox">  Gluten</label>
                                                     </div>
                                                 </p>
@@ -359,7 +365,7 @@ export class CartaPage extends Component {
                                             <div className="field">
                                                 <p className="control">
                                                     <div className="b-checkbox">
-                                                        <input id="checkbox" name="is_huevo" className="styled" type="checkbox" onChange={this.handleHuevoChange} defaultValue={is_huevo}/>
+                                                        <input id="checkbox" name="is_huevo" className="styled" type="checkbox" onChange={this.handleHuevoChange} defaultValue={is_huevo} />
                                                         <label for="checkbox">  Huevo</label>
                                                     </div>
                                                 </p>
@@ -367,7 +373,7 @@ export class CartaPage extends Component {
                                             <div className="field">
                                                 <p className="control">
                                                     <div className="b-checkbox">
-                                                        <input id="checkbox" name="is_lacteo" className="styled" type="checkbox" onChange={this.handleLacteoChange} defaultValue={is_lacteo}/>
+                                                        <input id="checkbox" name="is_lacteo" className="styled" type="checkbox" onChange={this.handleLacteoChange} defaultValue={is_lacteo} />
                                                         <label for="checkbox">  Lacteo</label>
                                                     </div>
                                                 </p>
@@ -377,7 +383,7 @@ export class CartaPage extends Component {
                                             <div className="field">
                                                 <p className="control">
                                                     <div className="b-checkbox">
-                                                        <input id="checkbox" name="is_molusco" className="styled" type="checkbox" onChange={this.handleMoluscoChange} defaultValue={is_molusco}/>
+                                                        <input id="checkbox" name="is_molusco" className="styled" type="checkbox" onChange={this.handleMoluscoChange} defaultValue={is_molusco} />
                                                         <label for="checkbox">  Molusco</label>
                                                     </div>
                                                 </p>
@@ -385,7 +391,7 @@ export class CartaPage extends Component {
                                             <div className="field">
                                                 <p className="control">
                                                     <div className="b-checkbox">
-                                                        <input id="checkbox" name="is_mostaza" className="styled" type="checkbox" onChange={this.handleMostazaChange} defaultValue={is_mostaza}/>
+                                                        <input id="checkbox" name="is_mostaza" className="styled" type="checkbox" onChange={this.handleMostazaChange} defaultValue={is_mostaza} />
                                                         <label for="checkbox">  Mostaza</label>
                                                     </div>
                                                 </p>
@@ -393,7 +399,7 @@ export class CartaPage extends Component {
                                             <div className="field">
                                                 <p className="control">
                                                     <div className="b-checkbox">
-                                                        <input id="checkbox" name="is_pescado" className="styled" type="checkbox" onChange={this.handlePescadoChange} defaultValue={is_pescado}/>
+                                                        <input id="checkbox" name="is_pescado" className="styled" type="checkbox" onChange={this.handlePescadoChange} defaultValue={is_pescado} />
                                                         <label for="checkbox">  Pescado</label>
                                                     </div>
                                                 </p>
@@ -401,7 +407,7 @@ export class CartaPage extends Component {
                                             <div className="field">
                                                 <p className="control">
                                                     <div className="b-checkbox">
-                                                        <input id="checkbox" name="is_sesamo" className="styled" type="checkbox" onChange={this.handleSesamoChange} defaultValue={is_sesamo}/>
+                                                        <input id="checkbox" name="is_sesamo" className="styled" type="checkbox" onChange={this.handleSesamoChange} defaultValue={is_sesamo} />
                                                         <label for="checkbox">  Sesamo</label>
                                                     </div>
                                                 </p>
@@ -411,7 +417,7 @@ export class CartaPage extends Component {
                                             <div className="field">
                                                 <p className="control">
                                                     <div className="b-checkbox">
-                                                        <input id="checkbox" name="is_soja" className="styled" type="checkbox" onChange={this.handleSojaChange} defaultValue={is_soja}/>
+                                                        <input id="checkbox" name="is_soja" className="styled" type="checkbox" onChange={this.handleSojaChange} defaultValue={is_soja} />
                                                         <label for="checkbox">  Soja</label>
                                                     </div>
                                                 </p>
@@ -480,13 +486,14 @@ export class CartaPage extends Component {
                     </form>
                     <br />
                     <div className="control buttons is-centered">
-                        <button className="button" onClick={this.onSubmit}>Guardar</button>
+                        <button className="button">Guardar</button>         
                     </div>
                 </div>
                 {/* FIN FORMULARIO PARA INSERTAR PRODUCTOS*/}
                 {/* MOSTRAR PRODUCTOS DE UNA CARTA*/}
                 {this.props.cartas.map(carta => (
                     <div class="debug">
+                        {this.state.carta = carta.id}
                         {carta.productos.map(producto => (
                             <div>
                                 <div>
@@ -495,6 +502,7 @@ export class CartaPage extends Component {
                             </div>
                         ))}
                     </div>
+
                 ))}
 
 
@@ -505,14 +513,14 @@ export class CartaPage extends Component {
                                 {this.props.cartas.map(carta => (
                                     <div class="debug">
                                         {this.state.categories.map(categoryName => (
-                                            <div style={{marginTop: '60px'}}>
+                                            <div style={{ marginTop: '60px' }}>
                                                 <div className='card equal-height' style={{ backgroundColor: '#d5c69f', height: '60px' }}>
                                                     <div className="container">
-                                                        <h1 className="title has-text-centered" style={{paddingTop: '15px'}}>{categoryName}</h1>
+                                                        <h1 className="title has-text-centered" style={{ paddingTop: '15px' }}>{categoryName}</h1>
                                                     </div>
                                                 </div>
                                                 {carta.productos.map(producto => (
-                                                    <div style={{marginTop: '20px'}} key={producto.id}>
+                                                    <div style={{ marginTop: '20px' }} key={producto.id}>
                                                         {categoryName == producto.category_name ?
                                                             <div className='card equal-height'>
                                                                 <div className="columns">
@@ -520,17 +528,17 @@ export class CartaPage extends Component {
                                                                         <div className="column">
                                                                             <div className="columns">
                                                                                 <div className="column is-two-thirds"
-                                                                                    style={{marginLeft: '2%', marginTop: '2%'}}>
+                                                                                    style={{ marginLeft: '2%', marginTop: '2%' }}>
                                                                                     <h1 className="title"> {producto.name} </h1>
                                                                                     <h2 className="subtitle has-text-weight-light">  {producto.descripcion}</h2>
                                                                                 </div>
                                                                             </div>
                                                                             <div className="columns">
-                                                                                <div className="column is-two-thirds" style={{marginLeft: '2%'}}>
+                                                                                <div className="column is-two-thirds" style={{ marginLeft: '2%' }}>
 
                                                                                     {producto.is_apio ?
                                                                                         <img
-                                                                                            src="/static/frontend/Allergens/alergeno_apio.svg"
+                                                                                            src="{{server}}/static/frontend/Allergens/alergeno_apio.svg"
                                                                                             alt="triangle with all three sides equal" width="50" />
                                                                                         :
                                                                                         ""
@@ -634,43 +642,43 @@ export class CartaPage extends Component {
                                                                                 </div>
                                                                                 <div className="column is-3">
                                                                                     <div className="columns is-mobile has-text-centered"
-                                                                                        style={{marginBottom: '5%'}}>
+                                                                                        style={{ marginBottom: '5%' }}>
                                                                                         <div className="column">
                                                                                             <div
-                                                                                                style={{width:'100%', marginTop: '5%', marginBottom: '6%'}}>
-                                                                                                <span className="icon is-small" style={{color: 'rgb(51, 153, 255)'}}>
+                                                                                                style={{ width: '100%', marginTop: '5%', marginBottom: '6%' }}>
+                                                                                                <span className="icon is-small" style={{ color: 'rgb(51, 153, 255)' }}>
                                                                                                     <i className="fas fa-dot-circle" aria-hidden="true"></i>
                                                                                                 </span>
                                                                                             </div>
                                                                                             <span>
                                                                                                 <b> Media Ración </b>
                                                                                             </span>
-                                                                                            <div style={{width:'100%'}}>
+                                                                                            <div style={{ width: '100%' }}>
                                                                                                 <span>
-                                                                                                    <b style={{color: 'red'}}>  {!producto.precio1 == "" ? producto.precio1 : ""}€</b>
+                                                                                                    <b style={{ color: 'red' }}>  {!producto.precio1 == "" ? producto.precio1 : ""}€</b>
                                                                                                 </span>
                                                                                             </div>
                                                                                         </div>
                                                                                         <div className="column"
-                                                                                            style={{marginLeft: '4%', marginTop: '2%'}}>
-                                                                                            <div style={{width:'100%'}}>
+                                                                                            style={{ marginLeft: '4%', marginTop: '2%' }}>
+                                                                                            <div style={{ width: '100%' }}>
                                                                                                 <span className="icon is-small"
-                                                                                                    style={{fontSize:' 36px', color: 'rgb(51, 153, 255)'}}>
+                                                                                                    style={{ fontSize: ' 36px', color: 'rgb(51, 153, 255)' }}>
                                                                                                     <i className="fas fa-dot-circle" aria-hidden="true"></i>
                                                                                                 </span>
                                                                                             </div>
                                                                                             <span>
                                                                                                 <b> Ración </b>
                                                                                             </span>
-                                                                                            <div style={{width:'100%'}}>
+                                                                                            <div style={{ width: '100%' }}>
                                                                                                 <span>
-                                                                                                    <b style={{color: 'red'}}>  {!producto.precio2 == "" ? producto.precio2 : ""}€</b>
+                                                                                                    <b style={{ color: 'red' }}>  {!producto.precio2 == "" ? producto.precio2 : ""}€</b>
                                                                                                 </span>
                                                                                             </div>
                                                                                         </div>
-                                                                                        <div>
+                                                                                       {/* <div>
                                                                                             <button className="button" onClick={this.props.deleteproducto.bind(this, producto.id, producto.carta_id)}>Button</button>
-                                                                                        </div>
+                                                                                       </div>*/}
                                                                                     </div>
 
                                                                                 </div>
@@ -705,4 +713,4 @@ const mapStateToProps = state => ({
     auth: state.auth,
 });
 
-export default connect(mapStateToProps, {subirproducto, getCarta, deleteproducto })(CartaPage);
+export default connect(mapStateToProps, { subirproducto, getCarta, deleteproducto })(CartaPage);

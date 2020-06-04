@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GET_CARTA, DELETE_PRODUCTO, ADD_PRODUCTO } from './types';
+import { GET_CARTA, DELETE_PRODUCTO, ADD_PRODUCTO, ADD_PRODUCTO_SUCCESS } from './types';
 import { tokenConfig } from './auth'
 
 export const getCarta = (cif) => (dispatch, getState) => {
@@ -35,7 +35,7 @@ export const deleteproducto = id => (dispatch, getState) => {
 
 export const deleteproducto = (id, id_carta) => (dispatch, getState) => {
     
-    axios.get(`/api/productact/?carta=${id_carta}&id=${id}`, tokenConfig(getState))
+    axios.get(`/api/productact/${id}/?carta=${id_carta}`, tokenConfig(getState))
         .then(res => {
             dispatch({
                 type: DELETE_PRODUCTO,
@@ -59,10 +59,14 @@ export const subirproducto = (producto) => (dispatch, getState) => {
     //console.log(body)
     console.log("mira el json -> " + body)
 
+    dispatch({
+        type: ADD_PRODUCTO        
+    });
+
     axios.post(`/api/productact/`, body, config)
         .then(res => {
             dispatch({
-                type: ADD_PRODUCTO,
+                type: ADD_PRODUCTO_SUCCESS,
                 payload: res.data,
                 
             });

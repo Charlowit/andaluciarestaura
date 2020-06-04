@@ -291,8 +291,6 @@ export class Registro extends Component {
             <div >
                 
                     <PrivateRouteLogin to="/admin-page" />
-                    :
-                    ""
                
             </div>
         );
