@@ -41,3 +41,11 @@ class CategoriasSerializer(serializers.ModelSerializer):
     class Meta:
         model = Categorias
         fields = '__all__'
+
+
+class CartaSerializerActualizar(serializers.ModelSerializer):
+    class Meta:
+        model = Carta
+        fields = '__all__'
+
+
