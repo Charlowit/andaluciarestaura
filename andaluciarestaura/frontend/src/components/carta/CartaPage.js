@@ -71,7 +71,7 @@ export class CartaPage extends Component {
             is_pescado: false,
             is_sesamo: false,
             is_soja: false,
-            carta: -1,
+            carta: 1,
         };
     }
 
@@ -488,7 +488,7 @@ export class CartaPage extends Component {
                     </form>
                     <br />
                     <div className="control buttons is-centered">
-                        <button className="button">Guardar</button>         
+                        <button className="button" onClick={this.onSubmit}>Guardar</button>
                     </div>
                 </div>
                 {/* FIN FORMULARIO PARA INSERTAR PRODUCTOS*/}
@@ -540,7 +540,7 @@ export class CartaPage extends Component {
 
                                                                                     {producto.is_apio ?
                                                                                         <img
-                                                                                            src="{{server}}/static/frontend/Allergens/alergeno_apio.svg"
+                                                                                            src="/static/frontend/Allergens/alergeno_apio.svg"
                                                                                             alt="triangle with all three sides equal" width="50" />
                                                                                         :
                                                                                         ""
@@ -549,7 +549,7 @@ export class CartaPage extends Component {
                                                                                     {producto.is_altramuces ?
 
                                                                                         <img
-                                                                                            src="{{server}}/static/frontend/Allergens/alergeno_altramuces.svg"
+                                                                                            src="/static/frontend/Allergens/alergeno_altramuces.svg"
                                                                                             alt="triangle with all three sides equal" width="50" />
                                                                                         :
                                                                                         ""
@@ -558,7 +558,7 @@ export class CartaPage extends Component {
 
                                                                                     {producto.is_cacahuete ?
                                                                                         <img
-                                                                                            src="{{server}}/static/frontend/Allergens/alergeno_cacahuete.svg"
+                                                                                            src="/static/frontend/Allergens/alergeno_cacahuete.svg"
                                                                                             alt="triangle with all three sides equal" width="50" />
                                                                                         :
                                                                                         ""
@@ -566,7 +566,7 @@ export class CartaPage extends Component {
 
                                                                                     {producto.is_crustaceo ?
                                                                                         <img
-                                                                                            src="{{server}}/static/frontend/Allergens/alergeno_crustaceo.svg"
+                                                                                            src="/static/frontend/Allergens/alergeno_crustaceo.svg"
                                                                                             alt="triangle with all three sides equal" width="50" />
                                                                                         :
                                                                                         ""
@@ -574,7 +574,7 @@ export class CartaPage extends Component {
 
                                                                                     {producto.is_frutos_con_cascara ?
                                                                                         <img
-                                                                                            src="{{server}}/static/frontend/Allergens/alergeno_frutos_con_cascara.svg"
+                                                                                            src="/static/frontend/Allergens/alergeno_frutos_con_cascara.svg"
                                                                                             alt="triangle with all three sides equal" width="50" />
                                                                                         :
                                                                                         ""
@@ -582,7 +582,7 @@ export class CartaPage extends Component {
 
                                                                                     {producto.is_gluten ?
                                                                                         <img
-                                                                                            src="{{server}}/static/frontend/Allergens/alergeno_gluten.svg"
+                                                                                            src="/static/frontend/Allergens/alergeno_gluten.svg"
                                                                                             alt="triangle with all three sides equal" width="50" />
                                                                                         :
                                                                                         ""
@@ -590,7 +590,7 @@ export class CartaPage extends Component {
 
                                                                                     {producto.is_huevo ?
                                                                                         <img
-                                                                                            src="{{server}}/static/frontend/Allergens/alergeno_huevo.svg"
+                                                                                            src="/static/frontend/Allergens/alergeno_huevo.svg"
                                                                                             alt="triangle with all three sides equal" width="50" />
                                                                                         :
                                                                                         ""
@@ -598,7 +598,7 @@ export class CartaPage extends Component {
 
                                                                                     {producto.is_lacteo ?
                                                                                         <img
-                                                                                            src="{{server}}/static/frontend/Allergens/alergeno_lacteo.svg"
+                                                                                            src="/static/frontend/Allergens/alergeno_lacteo.svg"
                                                                                             alt="triangle with all three sides equal" width="50" />
                                                                                         :
                                                                                         ""
@@ -606,7 +606,7 @@ export class CartaPage extends Component {
 
                                                                                     {producto.is_molusco ?
                                                                                         <img
-                                                                                            src="{{server}}/static/frontend/Allergens/alergeno_moluscos.svg"
+                                                                                            src="/static/frontend/Allergens/alergeno_moluscos.svg"
                                                                                             alt="triangle with all three sides equal" width="50" />
                                                                                         :
                                                                                         ""
@@ -615,28 +615,28 @@ export class CartaPage extends Component {
 
                                                                                     {producto.is_mostaza ?
                                                                                         <img
-                                                                                            src="{{server}}/static/frontend/Allergens/alergeno_mostaza.svg"
+                                                                                            src="/static/frontend/Allergens/alergeno_mostaza.svg"
                                                                                             alt="triangle with all three sides equal" width="50" />
                                                                                         :
                                                                                         ""
                                                                                     }
                                                                                     {producto.is_pescado ?
                                                                                         <img
-                                                                                            src="{{server}}/static/frontend/Allergens/alergeno_pescado.svg"
+                                                                                            src="/static/frontend/Allergens/alergeno_pescado.svg"
                                                                                             alt="triangle with all three sides equal" width="50" />
                                                                                         :
                                                                                         ""
                                                                                     }
                                                                                     {producto.is_sesamo ?
                                                                                         <img
-                                                                                            src="{{server}}/static/frontend/Allergens/alergeno_sesamo.svg"
+                                                                                            src="/static/frontend/Allergens/alergeno_sesamo.svg"
                                                                                             alt="triangle with all three sides equal" width="50" />
                                                                                         :
                                                                                         ""
                                                                                     }
                                                                                     {producto.is_soja ?
                                                                                         <img
-                                                                                            src="{{server}}/static/frontend/Allergens/alergeno_soja.svg"
+                                                                                            src="/static/frontend/Allergens/alergeno_soja.svg"
                                                                                             alt="triangle with all three sides equal" width="50" />
                                                                                         :
                                                                                         ""
@@ -679,7 +679,7 @@ export class CartaPage extends Component {
                                                                                             </div>
                                                                                         </div>
                                                                                         <div>
-                                                                                            <button className="button" onClick={this.onSubmitDelete(this, producto.id, producto.carta_id)}>Button</button>
+                                                                                            <button className="button" onClick={this.props.deleteproducto.bind(this, producto.id, producto.carta_id)}>Borrar</button>
                                                                                        </div>
                                                                                     </div>
 

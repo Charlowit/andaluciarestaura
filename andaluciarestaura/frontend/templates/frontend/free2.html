@@ -67,8 +67,11 @@
   </section>
   {% if cif_cliente %}
   {% with 'clientes/'|add:cif_cliente|add:'/free.pdf' as pdf_static %}
-    <div id="root"></div>
+    <!-- ESTO CARGA EL COMPONENTE DE REACT! -->
 
+      <div id="root" style="width:100%; height:100%; margin-top: 30px"></div>
+
+    <!-- FIN DE COMPONENTE DE REACT! -->
   {% endwith %}
   {% endif %}
   <footer>
@@ -82,5 +85,13 @@
     </section>
   </footer>
 </body>
+     <script>
+      //Aqui podemos extraer variables del contexto de django, que seran almacenadas de forma global en la memoria de javascript, estando por lo tanto disponibles globalmente
+      //y por lo tanto se pueden utilizar a modo de inicializacion de cualquier componente react cargado posteriormente.
+      // REDUX AL CUADRADO BY JAIME QUE TE QUIERE MUCHO
+      window.django = {
+        cif_cliente: "{{ cif_cliente }}",
+      };
+     </script>
   <script src="{% static 'frontend/prueba.js' %}"></script>
 </html>

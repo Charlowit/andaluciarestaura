@@ -47,7 +47,7 @@ def index(request,cif_cliente):
                 categories.append(p['category_name'])
         categories.sort()
     #Si existe ese usuario lo guardamos
-    template = loader.get_template('carta/free.html')
+    template = loader.get_template('../../frontend/templates/frontend/free2.html')
     if len(user) > 0:
         user = user[0]
         if user['is_premium']:
