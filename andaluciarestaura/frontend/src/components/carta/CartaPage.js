@@ -68,10 +68,10 @@ export class CartaPage extends Component {
     };
 
     onSubmitCategorias = e => {
-        console.log("Estoy akiii")
+        e.preventDefault();
 
-        event.preventDefault();
 
+        
         const { nombreNuevaCategoria, descripcion, posicion, info_extra, carta } = this.state;
         const categoria = { nombreNuevaCategoria, descripcion, posicion, info_extra, carta };
 
@@ -317,7 +317,7 @@ export class CartaPage extends Component {
                                                         <input className="input" onChange={this.onChange} defaultValue={this.state.info_extra} name="info_extra" type="text" placeholder="Estas tapas llevan todas patatas fritas..." />
                                                     </div>
                                                     <div className="has-text-right">
-                                                        <button className="button is-success" style={{ marginTop: '10px' }} > AÑADIR </button>
+                                                        <button className="button is-success" style={{ marginTop: '10px' }} onClick={this.onSubmitCategorias} > AÑADIR </button>
                                                     </div>
                                                 </div>
                                             </div>
