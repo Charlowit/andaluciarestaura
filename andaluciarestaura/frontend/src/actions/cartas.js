@@ -24,7 +24,7 @@ export const nuevaCarta = (carta) => (dispatch, getState) => {
         }
     };
 
-    const body = JSON.stringify({ name: carta.nombreNuevaCarta, propietario: carta.propietario });
+    const body = JSON.stringify({ name: carta.nombreNuevaCarta, propietario: carta.propietario, url_facebook: carta.url_facebook, url_instagram : carta.url_instagram , url_tripadvisor: carta.url_tripadvisor, eslogan: carta.eslogan, plantilla: carta.plantilla });
 
     //axios.get(`/api/cartaadmin/?cif=${cif}`)
     axios.post(`/api/getcartas/?cif=${carta.propietario}`, body, config)

@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import ReactDOM from 'react-dom';
 import Navbar from './navbar/Navbar';
 import Footer from './footer/Footer';
-import {HashRouter as Router, Route, Switch, Redirect, Link} from "react-router-dom";
+import {HashRouter as Router, Route, Switch, Redirect, Link } from "react-router-dom";
 import Login from "./accounts/Login";
 import AdminPage from "./admin/AdminPage";
 import ServiciosPage from "./servicios/ServiciosPage";

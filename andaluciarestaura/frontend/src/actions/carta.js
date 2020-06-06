@@ -87,7 +87,23 @@ export const addCategoria = (categoria) => (dispatch, getState) => {
         }
     };
 
-    const body = JSON.stringify({ name: categoria.nombreNuevaCategoria, descripcion: categoria.descripcion, posicion: categoria.posicion, info_extra: categoria.info_extra, carta: categoria.carta});
+    axios.get(`/api/damelascategorias/?carta=${categoria.carta}`, tokenConfig(getState))
+        .then(res => {
+
+            res.data.posicion.sort();
+            tienenLaMismaPosicion = -1;
+            index = 0;
+            res.data.map((categoriaMapeada, index) => (
+                
+                categoriaMapeada.posicion == categoria.posicion ? tienenLaMismaPosicion = index : ""
+
+            ));
+
+        
+        })
+        .catch(err => console.log(err));
+
+    /*const body = JSON.stringify({ name: categoria.nombreNuevaCategoria, descripcion: categoria.descripcion, posicion: categoria.posicion, info_extra: categoria.info_extra, carta: categoria.carta});
     console.log("Mira el body de la categoria --> " + body)
     axios.post(`/api/damelascategorias/?carta=${categoria.carta}`, body, config)
         .then(res => {
@@ -96,5 +112,5 @@ export const addCategoria = (categoria) => (dispatch, getState) => {
                 payload: res.data
             });
         })
-        .catch(err => console.log("Esto ta mal? " + err));
+        .catch(err => console.log("Esto ta mal? " + err));*/
 }

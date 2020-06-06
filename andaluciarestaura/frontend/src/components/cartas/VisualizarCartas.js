@@ -3,6 +3,7 @@ import { getCartas, nuevaCarta, deleteCarta } from '../../actions/cartas';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { updateuser } from '../../actions/auth';
+import { CartaPage } from '../carta/CartaPage'
 
 
 export class VisualizarCartas extends Component {
@@ -46,7 +47,7 @@ export class VisualizarCartas extends Component {
         console.log("Categoria seleccionada: " + e.target.value),
     );
 
-    
+
 
     onSubmitDelete = e => {
         event.preventDefault();
@@ -83,11 +84,11 @@ export class VisualizarCartas extends Component {
             <div className="section" style={{ marginTop: '100px' }}>
                 <div className="container">
                     <div className="container">
-                        <div className="container box">
+                        <div className="container box is-half">
                             <h1 className="title has-text-centered">Crear nueva carta</h1>
                             <form>
-                                <div className="columns">
-                                    <div className="column">
+                                <div className="columns ">
+                                    <div className="column ">
                                         <div className="field">
                                             <label className="label">Nombre</label>
                                             <div className="control">
@@ -121,8 +122,9 @@ export class VisualizarCartas extends Component {
                                         <div className="field">
                                             <label className="label">Plantilla</label>
                                             <div className="control">
-                                                <div class="select">
+                                                <div className="select">
                                                     <select name="plantilla" onChange={this.onChange} defaultValue={this.state.plantilla}>
+                                                        <option>Ninguna plantilla seleccionada</option>
                                                         <option value="Plantilla1">Plantilla 1</option>
                                                         <option value="Plantilla2">Plantilla 2</option>
                                                         <option value="Plantilla3">Plantilla 3</option>
@@ -131,8 +133,8 @@ export class VisualizarCartas extends Component {
                                             </div>
                                         </div>
                                         <hr />
-                                         
-                                        
+
+
                                     </div>
                                 </div>
                             </form>
@@ -143,20 +145,31 @@ export class VisualizarCartas extends Component {
                         </div>
                     </div>
                     <div className="columns is-centered" style={{ marginTop: '40px' }}>
-                        <div className="column is-half is-full-mobile">
+                        <div className="column is-full-mobile">
                             <table className="table is-striped">
                                 <thead>
-                                    <th>Identificador del sistema</th>
-                                    <th>Nombre de la carta</th>
-                                    <th>QR</th>
-                                    <th></th>
-                                    <th></th>
+                                    <tr>
+                                        <th>Identificador del sistema</th>
+                                        <th>Nombre de la carta</th>
+                                        <th>URL_Facebook</th>
+                                        <th>URL_Instagram</th>
+                                        <th>URL_Tripadvisor</th>
+                                        <th>Eslogan</th>
+                                        <th>Plantilla</th>
+                                        <th>QR</th>
+                                       
+                                    </tr>
                                 </thead>
                                 <tbody>
                                     {this.props.cartas.map(carta => (
                                         <tr key={carta.id}>
                                             <td>{carta.id}</td>
                                             <td>{carta.name}</td>
+                                            <td>{carta.url_facebook}</td>
+                                            <td>{carta.url_instagram}</td>
+                                            <td>{carta.url_tripadvisor}</td>
+                                            <td>{carta.eslogan}</td>
+                                            <td>{carta.plantilla}</td>
                                             <td>QR</td>
                                             <td><button className="button is-warning">Editar</button></td>
                                             <td><button className="button is-danger" onClick={this.props.deleteCarta.bind(this, carta.id, 1)}>Borrar</button></td>

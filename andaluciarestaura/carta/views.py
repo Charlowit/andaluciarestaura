@@ -5,6 +5,8 @@ from accounts.models import User
 import requests
 from django.conf import settings
 from .models import Carta
+import operator
+
 
 #logger = logging.getLogger(__name__)
 
@@ -32,21 +34,30 @@ def index(request,cif_cliente):
     else:
         server_local = "http://127.0.0.1:8000"
 
-    api_to_json = consumir_api(server_local+"/api/carta/?cif=" + cif_cliente)
+    cartas = consumir_api(server_local+"/api/getcartas/?cif=" + cif_cliente)
+    carta = cartas[0]
 
-    data = {}
-    categories = []
-    #Si hay carta guardamos los datos
-    if len(api_to_json) > 0:
-        data = api_to_json[0]
-        print(data['productos'])
-        aux = {}
-        for p in data['productos']:
-            print(p['category_name'])
-            if p['category_name'] not in categories:
-                categories.append(p['category_name'])
-        categories.sort()
-    #Si existe ese usuario lo guardamos
+    url_facebook = carta['url_facebook']            
+    url_instagram = carta['url_instagram']
+    url_tripadvisor = carta['url_tripadvisor']
+    eslogan = carta['eslogan']
+    plantilla = carta['plantilla']
+
+    categorias = []
+    categoriasRaw = consumir_api(server_local+"/api/damelascategorias/?carta=", carta['id'])
+    categoriasRaw.sort(key=lambda k:k['posicion'])
+
+    productos = []
+    for categoria in categoriasRaw:
+        categoriaID = str(categoria['id'])
+        data = consumir_api(server_local+"/api/productact/?categoria=" + categoriaID)
+        if len(data) > 0:
+            for p in data:
+                productos.append(p)
+
+     
+    print("Productos --> ", productos)
+    
     template = loader.get_template('carta/free.html')
     if len(user) > 0:
         user = user[0]
@@ -58,12 +69,18 @@ def index(request,cif_cliente):
     print("SERVER_LOCAL: " + server_local)
     context = {
         'cif_cliente': cif_cliente,
-        'data': data,
         'user': user,
-        'categories': categories,
+        'categorias': categoriasRaw,
+        'productos': productos,
         'server': server_local,
+        'plantilla': plantilla,
+        'url_facebook': url_facebook,
+        'url_instagram': url_instagram,
+        'url_tripadvisor': url_tripadvisor,
+        'eslogan': eslogan,
     }
     #FILTRAR EL NOMBRE DE LA CARTA
     #carta = Carta.objects.filter(cif__exact=cif_cliente)
+    
 
     return HttpResponse(template.render(context, request))

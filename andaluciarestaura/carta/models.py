@@ -25,8 +25,8 @@ class Carta(models.Model):
     eslogan = models.CharField(max_length=50, default=' ')
     plantilla = models.CharField(max_length=50, default=' ')
     
+    contador_visitas = models.IntegerField(default=0)
     
-    #contador_visitas = models.IntegerField(default=0)
     def __str__(self):
         return self.name
 

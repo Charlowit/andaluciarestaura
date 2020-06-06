@@ -6,39 +6,6 @@ import { getCategorias, deleteproducto, subirproducto, addCategoria, deleteCateg
 const div100 = {
     width: '100%',
 };
-const div2 = {
-    marginLeft: '2%',
-    marginTop: '2%'
-};
-const divtop = {
-    marginTop: '2%'
-};
-const divleft = {
-    marginLeft: '2%',
-};
-
-const divcenter = {
-    textAlign: 'center'
-};
-const divcolor1 = {
-    color: 'rgb(51, 153, 255)'
-};
-const divcolorred = {
-    color: 'red'
-};
-const divcolor2 = {
-    fontSize: '36px',
-    color: 'rgb(51, 153, 255)'
-};
-const divmargin1 = {
-    marginLeft: '4%',
-    marginTop: '2%'
-};
-const divtop2 = {
-    marginTop: '60px'
-};
-
-
 
 export class CartaPage extends Component {
 
