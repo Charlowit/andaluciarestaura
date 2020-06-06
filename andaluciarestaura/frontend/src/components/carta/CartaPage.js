@@ -71,7 +71,7 @@ export class CartaPage extends Component {
             is_pescado: false,
             is_sesamo: false,
             is_soja: false,
-            carta: -1,
+            carta: 1,
         };
     }
 
@@ -92,11 +92,13 @@ export class CartaPage extends Component {
 
     };
 
-    onSubmitDelete = e => {
+    onSubmitDelete = (productoID, cartaID) => {
 
-       
+        console.log("ProductoID --> " + productoID)
+        console.log("CartaID --> " + cartaID)
+        //this.props.deleteproducto.bind(this, productoID, cartaID)
 
-        window.location.reload(false);
+        //window.location.reload(false);
 
     };
 
@@ -486,7 +488,7 @@ export class CartaPage extends Component {
                     </form>
                     <br />
                     <div className="control buttons is-centered">
-                        <button className="button">Guardar</button>         
+                        <button className="button" onClick={this.onSubmit}>Guardar</button>
                     </div>
                 </div>
                 {/* FIN FORMULARIO PARA INSERTAR PRODUCTOS*/}
@@ -539,6 +541,7 @@ export class CartaPage extends Component {
                                                                                     {producto.is_apio ?
                                                                                         <img
                                                                                             src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_apio.svg"
+
                                                                                             alt="triangle with all three sides equal" width="50" />
                                                                                         :
                                                                                         ""
@@ -547,7 +550,9 @@ export class CartaPage extends Component {
                                                                                     {producto.is_altramuces ?
 
                                                                                         <img
+
                                                                                             src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_altramuces.svg"
+
                                                                                             alt="triangle with all three sides equal" width="50" />
                                                                                         :
                                                                                         ""
@@ -556,7 +561,9 @@ export class CartaPage extends Component {
 
                                                                                     {producto.is_cacahuete ?
                                                                                         <img
+
                                                                                             src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_cacahuete.svg"
+
                                                                                             alt="triangle with all three sides equal" width="50" />
                                                                                         :
                                                                                         ""
@@ -564,6 +571,7 @@ export class CartaPage extends Component {
 
                                                                                     {producto.is_crustaceo ?
                                                                                         <img
+
                                                                                             src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_crustaceo.svg"
                                                                                             alt="triangle with all three sides equal" width="50" />
                                                                                         :
@@ -572,7 +580,9 @@ export class CartaPage extends Component {
 
                                                                                     {producto.is_frutos_con_cascara ?
                                                                                         <img
-                                                                                            src="https://www.andaluciarestaura.com/frontend/Allergens/alergeno_frutos_con_cascara.svg"
+
+                                                                                            src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_frutos_con_cascara.svg"
+
                                                                                             alt="triangle with all three sides equal" width="50" />
                                                                                         :
                                                                                         ""
@@ -580,7 +590,9 @@ export class CartaPage extends Component {
 
                                                                                     {producto.is_gluten ?
                                                                                         <img
+
                                                                                             src="https://www.andaluciarestaura.com//static/frontend/Allergens/alergeno_gluten.svg"
+
                                                                                             alt="triangle with all three sides equal" width="50" />
                                                                                         :
                                                                                         ""
@@ -588,6 +600,7 @@ export class CartaPage extends Component {
 
                                                                                     {producto.is_huevo ?
                                                                                         <img
+
                                                                                             src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_huevo.svg"
                                                                                             alt="triangle with all three sides equal" width="50" />
                                                                                         :
@@ -596,7 +609,9 @@ export class CartaPage extends Component {
 
                                                                                     {producto.is_lacteo ?
                                                                                         <img
+
                                                                                             src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_lacteo.svg"
+
                                                                                             alt="triangle with all three sides equal" width="50" />
                                                                                         :
                                                                                         ""
@@ -604,6 +619,7 @@ export class CartaPage extends Component {
 
                                                                                     {producto.is_molusco ?
                                                                                         <img
+
                                                                                             src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_moluscos.svg"
                                                                                             alt="triangle with all three sides equal" width="50" />
                                                                                         :
@@ -613,6 +629,7 @@ export class CartaPage extends Component {
 
                                                                                     {producto.is_mostaza ?
                                                                                         <img
+
                                                                                             src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_mostaza.svg"
                                                                                             alt="triangle with all three sides equal" width="50" />
                                                                                         :
@@ -620,6 +637,7 @@ export class CartaPage extends Component {
                                                                                     }
                                                                                     {producto.is_pescado ?
                                                                                         <img
+
                                                                                             src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_pescado.svg"
                                                                                             alt="triangle with all three sides equal" width="50" />
                                                                                         :
@@ -627,6 +645,7 @@ export class CartaPage extends Component {
                                                                                     }
                                                                                     {producto.is_sesamo ?
                                                                                         <img
+
                                                                                             src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_sesamo.svg"
                                                                                             alt="triangle with all three sides equal" width="50" />
                                                                                         :
@@ -676,9 +695,9 @@ export class CartaPage extends Component {
                                                                                                 </span>
                                                                                             </div>
                                                                                         </div>
-                                                                                       {/* <div>
-                                                                                            <button className="button" onClick={this.props.deleteproducto.bind(this, producto.id, producto.carta_id)}>Button</button>
-                                                                                       </div>*/}
+                                                                                        <div>
+                                                                                            <button className="button" onClick={this.props.deleteproducto.bind(this, producto.id, producto.carta_id)}>Borrar</button>
+                                                                                       </div>
                                                                                     </div>
 
                                                                                 </div>

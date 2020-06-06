@@ -35,7 +35,7 @@ export const deleteproducto = id => (dispatch, getState) => {
 
 export const deleteproducto = (id, id_carta) => (dispatch, getState) => {
     
-    axios.get(`/api/productact/${id}/?carta=${id_carta}`, tokenConfig(getState))
+    axios.delete(`/api/productact/${id}/?carta=${id_carta}`, tokenConfig(getState))
         .then(res => {
             dispatch({
                 type: DELETE_PRODUCTO,

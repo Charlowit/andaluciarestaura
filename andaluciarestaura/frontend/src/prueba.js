@@ -1,1 +1,1 @@
-import componente_react from "./components/componente_react";
+import Render from './components/cargarpdf/Render'
