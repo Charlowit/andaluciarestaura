@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import ReactDOM from 'react-dom';
 import Navbar from './navbar/Navbar';
 import Footer from './footer/Footer';
-import {HashRouter as Router, Route, Switch, Redirect, Link} from "react-router-dom";
+import {HashRouter as Router, Route, Switch, Redirect, Link } from "react-router-dom";
 import Login from "./accounts/Login";
 import AdminPage from "./admin/AdminPage";
 import ServiciosPage from "./servicios/ServiciosPage";
@@ -21,6 +21,7 @@ import CreditCard from './creditcard/CreditCard';
 import Logo from './avatar/Logo'
 import { Provider as AlertProvider } from 'react-alert';
 import AlertTemplate from 'react-alert-template-basic';
+import VisualizarCartas from './cartas/VisualizarCartas'
 
 
 import Alerts from './alerta/Alerts';
@@ -54,7 +55,7 @@ class App extends Component {
                         <PrivateRoute exact path="/servicios-page" component={ServiciosPage} />
                         <PrivateRouteCartaPage exact path="/carta-page" component={CartaPage} />
                         <PrivateRoute exact path="/reservas-page" component={ReservasPage} />
-                         <PrivateRoute exact path="/delivery-page" component={DeliveryPage} />
+                        <PrivateRoute exact path="/delivery-page" component={DeliveryPage} />
                         <Route exact path="/pdf-upload" component={FileUpload} />
                         <Route exact path="/view-pdf" component={ViewPdf} />
 
@@ -63,6 +64,7 @@ class App extends Component {
                         {/*<Route exact path="/autocomplete-page" component={Roads} />*/}
                         <PrivateRoute exact path="/creditcard-page" component={CreditCard} />
                         <PrivateRoute exact path="/avatar-page" component={Logo} />
+                        <Route exact path="/visualizar" component={VisualizarCartas} />
 
                         
                     </Switch>

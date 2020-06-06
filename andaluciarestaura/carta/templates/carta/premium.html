@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es-ES">
 {% load static %}
 
 <head>
@@ -22,13 +22,50 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css">
   <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
   <title>Andalucia Restaura by Hotehub</title>
+  {% if plantilla == "Plantilla 1" %}
   <style>
     @media (min-width: 668px) {
       .whatsapp {
         display: none
       }
     }
+
+    #cardColour {
+      background-color: #d5c69f;
+    }
+
+    #priceColour{
+      color: red;
+    }
+
+    #simbolsColour{
+      color: rgb(51, 153, 255);
+    }
   </style>
+  {% endif %}
+
+  {% if plantilla == "Plantilla 2" %}
+  <style>
+    @media (min-width: 668px) {
+      .whatsapp {
+        display: none
+      }
+    }
+
+    #cardColour {
+      background-color: #009933;
+    }
+
+    #priceColour{
+      color:red;
+    }
+
+    #simbolsColour{
+      color: #009933;
+    }
+
+  </style>
+  {% endif %}
 </head>
 
 <body initial-scale=1 style="min-width:470px">
@@ -59,27 +96,31 @@
         <h1 class="title"> {{user.marca_comercial}} </h1>
         <h2 class="subtitle"> {{user.fax}} <br /></h2>
         <p class="field">
-          <!--
-                <a href="#" class="button is-rounded is-medium">
+               {% if url_facebook != "-" %}
+                <a href={{url_facebook}} class="button is-rounded is-medium">
                     <span class="icon">
                       <i class="fab fa-facebook"></i>
                     </span>
                 </a>
-                <a href="#" class="button is-rounded is-medium">
-                    <span class="icon">
-                        <i class="fab fa-tripadvisor"></i>
-                    </span>
-                </a>
-                <a href="#" class="button is-rounded is-medium">
+                {% endif %}
+                {% if url_instagram != "-" %}
+                <a href={{url_instagram}} class="button is-rounded is-medium">
                     <span class="icon">
                       <i class="fab fa-instagram"></i>
                     </span>
                 </a>
-                -->
+                {% endif %}
+                {% if url_tripadvisor != "-" %}
+                <a href={{url_tripadvisor}} class="button is-rounded is-medium">
+                    <span class="icon">
+                      <i class="fab fa-tripadvisor"></i>
+                    </span>
+                </a>
+                {% endif %}
         </p>
         <hr />
         <div class="container">
-          <h1 class="title">{{ data.name }}</h1>
+          <h1 class="title">{{ carta.name }}</h1>
           <!--
                 {% if cif_cliente %}
                     {% with 'clientes/'|add:cif_cliente|add:'' as url_static %}
@@ -98,28 +139,37 @@
   </section>
   <p>{{username}}</p>
   <!-- La carta se pinta aqui-->
+  <div id="google_translate_element"></div>
+
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({pageLanguage: 'es'}, 'google_translate_element');
+}
+</script>
+
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
   <div class="container">
     <div>
       <div class="container">
-        <div>
+        <div style="margin-top: 40px">
           <!-- FOR DE LA CARTA -->
-          {% for categoria in categories %}
-          <div class='card equal-height ' style="background-color: #d5c69f;">
+          {% for categoria in categorias %}
+          <div class='card equal-height ' id="cardColour"  style="margin-top: 40px">
             <div class="container">
               <br />
-              <h1 class="title has-text-centered">{{categoria}}</h1>
+              <h1 class="title has-text-centered">{{categoria.name}}</h1>
               <br />
             </div>
           </div>
-          {% for producto in data.productos %}
-          {% if categoria == producto.category_name %}
-          <div class='card equal-height '>
+          {% for producto in productos %}
+          {% if categoria.id == producto.categoria %}
+          <div class='card equal-height' style="margin-top: 20px"> 
             <div class="columns">
               <div class="container">
                 <div class="column">
                   <div class="columns">
                     <div class="column is-two-thirds" style="margin-left: 2%;margin-top: 2%">
-                      <h1 class="title"> {{ producto.name }} </h1>
+                      <h1 class="title">{{ producto.name }} </h1>
                       <h2 class="subtitle has-text-weight-light"> {{ producto.descripcion }}</h2>
                     </div>
                   </div>
@@ -183,7 +233,7 @@
                       <div class="columns is-mobile" style="text-align: center; margin-bottom: 5%;">
                         <div class="column">
                           <div style="width:100%;margin-top:5%;margin-bottom: 6%;">
-                            <span class="icon is-small" style="color: rgb(51, 153, 255)">
+                            <span class="icon is-small" id="simbolsColour">
                               <i class="fas fa-dot-circle" aria-hidden="true"></i>
                             </span>
                           </div>
@@ -192,13 +242,13 @@
                           </span>
                           <div style="width:100%;">
                             <span>
-                              <b style="color: red"> {{ producto.precio1 }}€</b>
+                              <b id="priceColour"> {{ producto.precio1 }}€</b>
                             </span>
                           </div>
                         </div>
                         <div class="column" style="margin-left: 4%; margin-top: 2%">
                           <div style="width:100%;">
-                            <span class="icon is-small" style="font-size:36px;color: rgb(51, 153, 255)">
+                            <span class="icon is-small" id="simbolsColour" style="font-size:36px;">
                               <i class="fas fa-dot-circle" aria-hidden="true"></i>
                             </span>
                           </div>
@@ -207,7 +257,7 @@
                           </span>
                           <div style="width:100%;">
                             <span>
-                              <b style="color: red"> {{ producto.precio2 }}€</b>
+                              <b id="priceColour"> {{ producto.precio2 }}€</b>
                             </span>
                           </div>
                         </div>
@@ -223,6 +273,7 @@
           {% endif %}
           {% endfor %}
           {% endfor %}
+          
         </div>
       </div>
     </div>
@@ -236,11 +287,11 @@
       Copyright@2020 Todos los derechos reservados
       </p>
     </section>
+
+
   </footer>
 
 
 </body>
 
 </html>
-<!--<object data="http://127.0.0.1:8000/static/free.pdf" type="application/pdf">
-  <object data="{% static 'clientes/{ id_carta }/free.pdf'%}" type="application/pdf">-->

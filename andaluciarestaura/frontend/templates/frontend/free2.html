@@ -68,9 +68,11 @@
   {% if cif_cliente %}
   {% with 'clientes/'|add:cif_cliente|add:'/free.pdf' as pdf_static %}
     <!-- ESTO CARGA EL COMPONENTE DE REACT! -->
-
-      <div id="root" style="width:100%; height:100%; margin-top: 30px"></div>
-
+      <div class="columns is-mobile">
+        <div class="column">
+            <div id="root" style="width:100%; height:100%; margin-top: 30px"></div>
+        </div>
+      </div>
     <!-- FIN DE COMPONENTE DE REACT! -->
   {% endwith %}
   {% endif %}
