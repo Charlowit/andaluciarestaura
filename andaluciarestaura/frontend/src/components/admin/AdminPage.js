@@ -5,7 +5,7 @@ import { updateuser } from '../../actions/auth';
 import Files from "react-butterfiles";
 import ProgressBar from '../progressbar/ProgressBar'
 import PrivateRouteLogin from "../privateroute/PrivateRouteLogin";
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 
 
 class AdminPage extends Component {
@@ -401,7 +401,7 @@ class AdminPage extends Component {
 
                                     {!isUpdating && !updateFailed && this.state.guardado ?
 
-                                        <Redirect to="/" />
+                                        <Link to="/" refresh="true" />
                                         :
                                         ""
                                     }

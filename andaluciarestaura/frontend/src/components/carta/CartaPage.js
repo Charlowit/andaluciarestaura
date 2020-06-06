@@ -1,7 +1,9 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { getCarta } from '../../actions/carta';
+import { getCarta, deleteproducto, subirproducto } from '../../actions/carta';
+import { Redirect, Link } from 'react-router-dom';
+
 
 const div100 = {
     width: '100%',
@@ -45,15 +47,147 @@ export class CartaPage extends Component {
     constructor() {
         super();
         this.state = {
+            cartas: [],
             cif: "",
+            categories: [],
+            deleted: false,
+            categoria: 1,
+            name: "",
+            descripcion: "",
+            tamanio: "S",
+            precio1: "",
+            precio2: "",
+            precio3: "",
+            is_apio: false,
+            is_altramuces: false,
+            is_cacahuete: false,
+            is_crustaceo: false,
+            is_frutos_con_cascara: false,
+            is_gluten: false,
+            is_huevo: false,
+            is_lacteo: false,
+            is_molusco: false,
+            is_mostaza: false,
+            is_pescado: false,
+            is_sesamo: false,
+            is_soja: false,
+            carta: -1,
         };
     }
+
+    onSubmit = e => {
+
+        e.preventDefault();
+
+        this.setState({
+            added: true
+        })
+        const { categoria, name, descripcion, tamanio, precio1, precio2, precio3, is_apio, is_altramuces, is_cacahuete, is_crustaceo, is_frutos_con_cascara, is_gluten, is_huevo, is_lacteo, is_molusco, is_mostaza, is_pescado, is_sesamo, is_soja, carta
+        } = this.state;
+        const producto = { categoria, name, descripcion, tamanio, precio1, precio2, precio3, is_apio, is_altramuces, is_cacahuete, is_crustaceo, is_frutos_con_cascara, is_gluten, is_huevo, is_lacteo, is_molusco, is_mostaza, is_pescado, is_sesamo, is_soja, carta };
+
+        this.props.subirproducto(producto);
+
+        window.location.reload(false);
+
+    };
+
+    onSubmitDelete = e => {
+
+       
+
+        window.location.reload(false);
+
+    };
+
+
+
+    onChange = e => this.setState({ [e.target.name]: e.target.value });
+
+    handleApioChange = (e) => {
+        this.setState({
+            is_apio: !this.state.is_apio
+        })
+    };
+
+    handleAltramucesChange = (e) => {
+        this.setState({
+            is_altramuces: !this.state.is_altramuces
+        })
+    };
+
+    handleCacahueteChange = (e) => {
+        this.setState({
+            is_cacahuete: !this.state.is_cacahuete
+        })
+    };
+
+    handleCrustaceoChange = (e) => {
+        this.setState({
+            is_crustaceo: !this.state.is_crustaceo
+        })
+    };
+
+    handleCascaraChange = (e) => {
+        this.setState({
+            is_frutos_con_cascara: !this.state.is_frutos_con_cascara
+        })
+    };
+
+    handleGlutenChange = (e) => {
+        this.setState({
+            is_gluten: !this.state.is_gluten
+        })
+    };
+
+    handleHuevoChange = (e) => {
+        this.setState({
+            is_huevo: !this.state.is_huevo
+        })
+    };
+
+    handleLacteoChange = (e) => {
+        this.setState({
+            is_lacteo: !this.state.is_lacteo
+        })
+    };
+
+    handleMoluscoChange = (e) => {
+        this.setState({
+            is_molusco: !this.state.is_molusco
+        })
+    };
+
+    handleMostazaChange = (e) => {
+        this.setState({
+            is_mostaza: !this.state.is_mostaza
+        })
+    };
+
+    handlePescadoChange = (e) => {
+        this.setState({
+            is_pescado: !this.state.is_pescado
+        })
+    };
+
+    handleSesamoChange = (e) => {
+        this.setState({
+            is_sesamo: !this.state.is_sesamo
+        })
+    };
+
+    handleSojaChange = (e) => {
+        this.setState({
+            is_soja: !this.state.is_soja
+        })
+    };
 
 
     static propTypes = {
         cartas: PropTypes.array.isRequired,
         auth: PropTypes.func.isRequired,
-
+        deleteproducto: PropTypes.func.isRequired,
+        subirproducto: PropTypes.func.isRequired
     };
 
     componentDidMount() {
@@ -63,10 +197,15 @@ export class CartaPage extends Component {
     }
 
     render() {
+        const { categoria, name, descripcion, tamanio, precio1, precio2, precio3, is_apio, is_altramuces, is_cacahuete, is_crustaceo, is_frutos_con_cascara, is_gluten, is_huevo, is_lacteo, is_molusco, is_mostaza, is_pescado, is_sesamo, is_soja, carta
+        } = this.state;
         const { cif = this.props.auth.user.cif } = this.state.cif;
+        const { needReload } = this.props.auth
         return (
             <Fragment>
-                <section className="hero is-info is-primary  hsl(54%, 15%, 143%) is-bold">
+
+
+                <section className="hero is-info is-primary  hsl(54%, 15%, 143%) is-bold" style={{ marginTop: '40px' }}>
                     <div className="hero-body hsl(90%, 159%, 79%)">
                         <div className="container has-text-centered">
 
@@ -130,6 +269,7 @@ export class CartaPage extends Component {
                         </div>
                     </div>
                 </section>
+                {/* FORMULARIO PARA INSERTAR PRODUCTOS*/}
                 <div className="container box">
                     <hr />
                     <h1 className="title has-text-centered">Añadir Producto a la Carta</h1>
@@ -139,7 +279,7 @@ export class CartaPage extends Component {
                                 <div className="field">
                                     <label className="label">Nombre</label>
                                     <div className="control">
-                                        <input className="input" type="text" placeholder="Nombre del Producto" />
+                                        <input className="input" name="name" type="text" placeholder="Nombre del Producto" onChange={this.onChange} defaultValue={name} required />
                                     </div>
                                 </div>
                                 <div className="columns">
@@ -147,7 +287,7 @@ export class CartaPage extends Component {
                                         <div className="field">
                                             <label className="label">Precio 1</label>
                                             <div className="control">
-                                                <input className="input" type="text" placeholder="0" />
+                                                <input className="input" name="precio1" type="text" placeholder="0" onChange={this.onChange} defaultValue={precio1} required />
                                             </div>
                                         </div>
                                     </div>
@@ -155,7 +295,7 @@ export class CartaPage extends Component {
                                         <div className="field">
                                             <label className="label">Precio 2</label>
                                             <div className="control">
-                                                <input className="input " type="text" placeholder="0" />
+                                                <input className="input " name="precio2" type="text" placeholder="0" onChange={this.onChange} defaultValue={precio2} />
                                             </div>
                                         </div>
                                     </div>
@@ -163,7 +303,7 @@ export class CartaPage extends Component {
                                         <div className="field">
                                             <label className="label">Precio 3</label>
                                             <div className="control">
-                                                <input className="input" type="text" placeholder="0" />
+                                                <input className="input" name="precio3" type="text" placeholder="0" onChange={this.onChange} defaultValue={precio3} />
                                             </div>
                                         </div>
                                     </div>
@@ -175,7 +315,7 @@ export class CartaPage extends Component {
                                             <div className="field">
                                                 <p className="control">
                                                     <div className="b-checkbox">
-                                                        <input id="checkbox" className="styled" type="checkbox" />
+                                                        <input id="checkbox" name="is_apio" className="styled" type="checkbox" onChange={this.handleApioChange} defaultValue={is_apio} />
                                                         <label for="checkbox">  Apio</label>
                                                     </div>
                                                 </p>
@@ -183,7 +323,7 @@ export class CartaPage extends Component {
                                             <div className="field">
                                                 <p className="control">
                                                     <div className="b-checkbox">
-                                                        <input id="checkbox" className="styled" type="checkbox" />
+                                                        <input id="checkbox" name="is_altramuces" className="styled" type="checkbox" onChange={this.handleAltramucesChange} defaultValue={is_altramuces} />
                                                         <label for="checkbox">  Altramuces</label>
                                                     </div>
                                                 </p>
@@ -191,7 +331,7 @@ export class CartaPage extends Component {
                                             <div className="field">
                                                 <p className="control">
                                                     <div className="b-checkbox">
-                                                        <input id="checkbox" className="styled" type="checkbox" />
+                                                        <input id="checkbox" name="is_cacahuete" className="styled" type="checkbox" onChange={this.handleCacahueteChange} defaultValue={is_cacahuete} />
                                                         <label for="checkbox">  Cacahuete</label>
                                                     </div>
                                                 </p>
@@ -199,7 +339,7 @@ export class CartaPage extends Component {
                                             <div className="field">
                                                 <p className="control">
                                                     <div className="b-checkbox">
-                                                        <input id="checkbox" className="styled" type="checkbox" />
+                                                        <input id="checkbox" name="is_custaceo" className="styled" type="checkbox" onChange={this.handleCrustaceoChange} defaultValue={is_crustaceo} />
                                                         <label for="checkbox">  Crustaceo</label>
                                                     </div>
                                                 </p>
@@ -209,15 +349,15 @@ export class CartaPage extends Component {
                                             <div className="field">
                                                 <p className="control">
                                                     <div className="b-checkbox">
-                                                        <input id="checkbox" className="styled" type="checkbox" />
-                                                        <label for="checkbox">  Carcara Frutal</label>
+                                                        <input id="checkbox" name="is_frutas_con_cascara" className="styled" type="checkbox" onChange={this.handleCascaraChange} defaultValue={is_frutos_con_cascara} />
+                                                        <label for="checkbox">  Cascara Frutal</label>
                                                     </div>
                                                 </p>
                                             </div>
                                             <div className="field">
                                                 <p className="control">
                                                     <div className="b-checkbox">
-                                                        <input id="checkbox" className="styled" type="checkbox" />
+                                                        <input id="checkbox" name="is_gluten" className="styled" type="checkbox" onChange={this.handleGlutenChange} defaultValue={is_gluten} />
                                                         <label for="checkbox">  Gluten</label>
                                                     </div>
                                                 </p>
@@ -225,7 +365,7 @@ export class CartaPage extends Component {
                                             <div className="field">
                                                 <p className="control">
                                                     <div className="b-checkbox">
-                                                        <input id="checkbox" className="styled" type="checkbox" />
+                                                        <input id="checkbox" name="is_huevo" className="styled" type="checkbox" onChange={this.handleHuevoChange} defaultValue={is_huevo} />
                                                         <label for="checkbox">  Huevo</label>
                                                     </div>
                                                 </p>
@@ -233,7 +373,7 @@ export class CartaPage extends Component {
                                             <div className="field">
                                                 <p className="control">
                                                     <div className="b-checkbox">
-                                                        <input id="checkbox" className="styled" type="checkbox" />
+                                                        <input id="checkbox" name="is_lacteo" className="styled" type="checkbox" onChange={this.handleLacteoChange} defaultValue={is_lacteo} />
                                                         <label for="checkbox">  Lacteo</label>
                                                     </div>
                                                 </p>
@@ -243,7 +383,7 @@ export class CartaPage extends Component {
                                             <div className="field">
                                                 <p className="control">
                                                     <div className="b-checkbox">
-                                                        <input id="checkbox" className="styled" type="checkbox" />
+                                                        <input id="checkbox" name="is_molusco" className="styled" type="checkbox" onChange={this.handleMoluscoChange} defaultValue={is_molusco} />
                                                         <label for="checkbox">  Molusco</label>
                                                     </div>
                                                 </p>
@@ -251,7 +391,7 @@ export class CartaPage extends Component {
                                             <div className="field">
                                                 <p className="control">
                                                     <div className="b-checkbox">
-                                                        <input id="checkbox" className="styled" type="checkbox" />
+                                                        <input id="checkbox" name="is_mostaza" className="styled" type="checkbox" onChange={this.handleMostazaChange} defaultValue={is_mostaza} />
                                                         <label for="checkbox">  Mostaza</label>
                                                     </div>
                                                 </p>
@@ -259,7 +399,7 @@ export class CartaPage extends Component {
                                             <div className="field">
                                                 <p className="control">
                                                     <div className="b-checkbox">
-                                                        <input id="checkbox" className="styled" type="checkbox" />
+                                                        <input id="checkbox" name="is_pescado" className="styled" type="checkbox" onChange={this.handlePescadoChange} defaultValue={is_pescado} />
                                                         <label for="checkbox">  Pescado</label>
                                                     </div>
                                                 </p>
@@ -267,7 +407,7 @@ export class CartaPage extends Component {
                                             <div className="field">
                                                 <p className="control">
                                                     <div className="b-checkbox">
-                                                        <input id="checkbox" className="styled" type="checkbox" />
+                                                        <input id="checkbox" name="is_sesamo" className="styled" type="checkbox" onChange={this.handleSesamoChange} defaultValue={is_sesamo} />
                                                         <label for="checkbox">  Sesamo</label>
                                                     </div>
                                                 </p>
@@ -277,7 +417,7 @@ export class CartaPage extends Component {
                                             <div className="field">
                                                 <p className="control">
                                                     <div className="b-checkbox">
-                                                        <input id="checkbox" className="styled" type="checkbox" />
+                                                        <input id="checkbox" name="is_soja" className="styled" type="checkbox" onChange={this.handleSojaChange} defaultValue={is_soja} />
                                                         <label for="checkbox">  Soja</label>
                                                     </div>
                                                 </p>
@@ -291,7 +431,7 @@ export class CartaPage extends Component {
                                 <div className="field">
                                     <label className="label">Descripción</label>
                                     <div className="control">
-                                        <textarea className="textarea" placeholder="Descripción del producto." size="99"></textarea>
+                                        <textarea name="descripcion" className="textarea" placeholder="Descripción del producto." size="99" onChange={this.onChange} defaultValue={descripcion}></textarea>
                                     </div>
                                 </div>
                                 <div className="columns">
@@ -317,11 +457,11 @@ export class CartaPage extends Component {
                                             <div className="control">
                                                 <div className="select">
                                                     <select name="tamanio" /*onChange={this.tamanioChange} defaultValue={tamanio}*/>
-                                                        <option>S</option>
-                                                        <option>M</option>
-                                                        <option>L</option>
-                                                        <option>XL</option>
-                                                        <option>XXL</option>
+                                                        <option value="S">S</option>
+                                                        <option value="M">M</option>
+                                                        <option value="L">L</option>
+                                                        <option value="XL">XL</option>
+                                                        <option value="XXL">XXL</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -346,182 +486,222 @@ export class CartaPage extends Component {
                     </form>
                     <br />
                     <div className="control buttons is-centered">
-                        <button className="button">Guardar</button>
+                        <button className="button">Guardar</button>         
                     </div>
                 </div>
+                {/* FIN FORMULARIO PARA INSERTAR PRODUCTOS*/}
+                {/* MOSTRAR PRODUCTOS DE UNA CARTA*/}
+                {this.props.cartas.map(carta => (
+                    <div class="debug">
+                        {this.state.carta = carta.id}
+                        {carta.productos.map(producto => (
+                            <div>
+                                <div>
+                                    {!this.state.categories.includes(producto.category_name) ? this.state.categories.push(producto.category_name) : ""}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                ))}
 
 
                 <div className="container">
-                    <div className="notification">
-                        <div className="tabs is-centered is-boxed">
-                            <ul>
-                                <li className="is-active">
-                                    <a>
-                                        <span className="icon is-small"><i className="fas fa-clipboard-list"
-                                            aria-hidden="true"></i></span>
-                                        <span>Entrantes</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a>
-                                        <span className="icon is-small"><i className="fas fa-utensils"
-                                            aria-hidden="true"></i></span>
-                                        <span>Principales</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a>
-                                        <span className="icon is-small"><i className="fas fa-stroopwafel"
-                                            aria-hidden="true"></i></span>
-                                        <span>Postres</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a>
-                                        <span className="icon is-small"><i className="fas fa-cocktail"
-                                            aria-hidden="true"></i></span>
-                                        <span>Bebidas</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-
+                    <div>
                         <div className="container">
-                            <div className="notification">
-                                <div className='card equal-height '>
-                                    <div className="columns">
-                                        <div className="container">
-                                            <div className="column">
-                                                <div className="columns">
-                                                    <div className="column is-two-thirds"
-                                                        style={div2}>
-                                                        <h1 className="title">  </h1>
-
-                                                        <h2 className="subtitle has-text-weight-light">  </h2>
-                                                    </div>
-                                                    <div className="column" style={divtop}>
-                                                        <div className="columns is-mobile" style={divcenter}>
-
-                                                            <div className="column">
-                                                                <div style={div100}>
-                                                                    <span className="icon is-small"
-                                                                        style={divcolor1}><i
-                                                                            className="fas fa-dot-circle"
-                                                                            aria-hidden="true"></i></span>
-                                                                </div>
-                                                                <span><b> Media Ración </b></span>
-                                                                <div style={div100}>
-                                                                    <span> <b style={divcolorred}>  4,50€ </b> </span>
-                                                                </div>
-                                                            </div>
-
-
-                                                            <div className="column"
-                                                                style={divmargin1}>
-                                                                <div style={div100}>
-                                                                    <span className="icon is-small"
-                                                                        style={divcolor2}><i
-                                                                            className="fas fa-dot-circle"
-                                                                            aria-hidden="true"></i></span>
-                                                                </div>
-                                                                <span> <b> Ración </b></span>
-                                                                <div style={div100}>
-                                                                    <span> <b style={divcolorred}>  5,50€ </b> </span>
-                                                                </div>
-                                                            </div>
-
-                                                        </div>
+                            <div>
+                                {this.props.cartas.map(carta => (
+                                    <div class="debug">
+                                        {this.state.categories.map(categoryName => (
+                                            <div style={{ marginTop: '60px' }}>
+                                                <div className='card equal-height' style={{ backgroundColor: '#d5c69f', height: '60px' }}>
+                                                    <div className="container">
+                                                        <h1 className="title has-text-centered" style={{ paddingTop: '15px' }}>{categoryName}</h1>
                                                     </div>
                                                 </div>
-                                                <div style={divleft}>
-                                                    <img src="static/frontend/Allergens/huevos.svg"
-                                                        alt="triangle with all three sides equal" width="50" />
-                                                    <img src="static/frontend/Allergens/lacteos.svg"
-                                                        alt="triangle with all three sides equal" width="50" />
-                                                    <img src="static/frontend/Allergens/soja.svg"
-                                                        alt="triangle with all three sides equal" width="50" />
-                                                    <img src="static/frontend/Allergens/cascara.svg"
-                                                        alt="triangle with all three sides equal" width="50" />
-                                                    <img src="static/frontend/Allergens/moluscos.svg"
-                                                        alt="triangle with all three sides equal" width="50" />
-                                                    <img src="static/frontend/Allergens/fish.svg"
-                                                        alt="triangle with all three sides equal" width="50" />
-                                                </div>
+                                                {carta.productos.map(producto => (
+                                                    <div style={{ marginTop: '20px' }} key={producto.id}>
+                                                        {categoryName == producto.category_name ?
+                                                            <div className='card equal-height'>
+                                                                <div className="columns">
+                                                                    <div className="container">
+                                                                        <div className="column">
+                                                                            <div className="columns">
+                                                                                <div className="column is-two-thirds"
+                                                                                    style={{ marginLeft: '2%', marginTop: '2%' }}>
+                                                                                    <h1 className="title"> {producto.name} </h1>
+                                                                                    <h2 className="subtitle has-text-weight-light">  {producto.descripcion}</h2>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div className="columns">
+                                                                                <div className="column is-two-thirds" style={{ marginLeft: '2%' }}>
+
+                                                                                    {producto.is_apio ?
+                                                                                        <img
+                                                                                            src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_apio.svg"
+                                                                                            alt="triangle with all three sides equal" width="50" />
+                                                                                        :
+                                                                                        ""
+                                                                                    }
+
+                                                                                    {producto.is_altramuces ?
+
+                                                                                        <img
+                                                                                            src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_altramuces.svg"
+                                                                                            alt="triangle with all three sides equal" width="50" />
+                                                                                        :
+                                                                                        ""
+                                                                                    }
+
+
+                                                                                    {producto.is_cacahuete ?
+                                                                                        <img
+                                                                                            src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_cacahuete.svg"
+                                                                                            alt="triangle with all three sides equal" width="50" />
+                                                                                        :
+                                                                                        ""
+                                                                                    }
+
+                                                                                    {producto.is_crustaceo ?
+                                                                                        <img
+                                                                                            src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_crustaceo.svg"
+                                                                                            alt="triangle with all three sides equal" width="50" />
+                                                                                        :
+                                                                                        ""
+                                                                                    }
+
+                                                                                    {producto.is_frutos_con_cascara ?
+                                                                                        <img
+                                                                                            src="https://www.andaluciarestaura.com/frontend/Allergens/alergeno_frutos_con_cascara.svg"
+                                                                                            alt="triangle with all three sides equal" width="50" />
+                                                                                        :
+                                                                                        ""
+                                                                                    }
+
+                                                                                    {producto.is_gluten ?
+                                                                                        <img
+                                                                                            src="https://www.andaluciarestaura.com//static/frontend/Allergens/alergeno_gluten.svg"
+                                                                                            alt="triangle with all three sides equal" width="50" />
+                                                                                        :
+                                                                                        ""
+                                                                                    }
+
+                                                                                    {producto.is_huevo ?
+                                                                                        <img
+                                                                                            src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_huevo.svg"
+                                                                                            alt="triangle with all three sides equal" width="50" />
+                                                                                        :
+                                                                                        ""
+                                                                                    }
+
+                                                                                    {producto.is_lacteo ?
+                                                                                        <img
+                                                                                            src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_lacteo.svg"
+                                                                                            alt="triangle with all three sides equal" width="50" />
+                                                                                        :
+                                                                                        ""
+                                                                                    }
+
+                                                                                    {producto.is_molusco ?
+                                                                                        <img
+                                                                                            src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_moluscos.svg"
+                                                                                            alt="triangle with all three sides equal" width="50" />
+                                                                                        :
+                                                                                        ""
+                                                                                    }
+
+
+                                                                                    {producto.is_mostaza ?
+                                                                                        <img
+                                                                                            src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_mostaza.svg"
+                                                                                            alt="triangle with all three sides equal" width="50" />
+                                                                                        :
+                                                                                        ""
+                                                                                    }
+                                                                                    {producto.is_pescado ?
+                                                                                        <img
+                                                                                            src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_pescado.svg"
+                                                                                            alt="triangle with all three sides equal" width="50" />
+                                                                                        :
+                                                                                        ""
+                                                                                    }
+                                                                                    {producto.is_sesamo ?
+                                                                                        <img
+                                                                                            src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_sesamo.svg"
+                                                                                            alt="triangle with all three sides equal" width="50" />
+                                                                                        :
+                                                                                        ""
+                                                                                    }
+                                                                                    {producto.is_soja ?
+                                                                                        <img
+                                                                                            src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_soja.svg"
+                                                                                            alt="triangle with all three sides equal" width="50" />
+                                                                                        :
+                                                                                        ""
+                                                                                    }
+                                                                                </div>
+                                                                                <div className="column is-3">
+                                                                                    <div className="columns is-mobile has-text-centered"
+                                                                                        style={{ marginBottom: '5%' }}>
+                                                                                        <div className="column">
+                                                                                            <div
+                                                                                                style={{ width: '100%', marginTop: '5%', marginBottom: '6%' }}>
+                                                                                                <span className="icon is-small" style={{ color: 'rgb(51, 153, 255)' }}>
+                                                                                                    <i className="fas fa-dot-circle" aria-hidden="true"></i>
+                                                                                                </span>
+                                                                                            </div>
+                                                                                            <span>
+                                                                                                <b> Media Ración </b>
+                                                                                            </span>
+                                                                                            <div style={{ width: '100%' }}>
+                                                                                                <span>
+                                                                                                    <b style={{ color: 'red' }}>  {!producto.precio1 == "" ? producto.precio1 : ""}€</b>
+                                                                                                </span>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div className="column"
+                                                                                            style={{ marginLeft: '4%', marginTop: '2%' }}>
+                                                                                            <div style={{ width: '100%' }}>
+                                                                                                <span className="icon is-small"
+                                                                                                    style={{ fontSize: ' 36px', color: 'rgb(51, 153, 255)' }}>
+                                                                                                    <i className="fas fa-dot-circle" aria-hidden="true"></i>
+                                                                                                </span>
+                                                                                            </div>
+                                                                                            <span>
+                                                                                                <b> Ración </b>
+                                                                                            </span>
+                                                                                            <div style={{ width: '100%' }}>
+                                                                                                <span>
+                                                                                                    <b style={{ color: 'red' }}>  {!producto.precio2 == "" ? producto.precio2 : ""}€</b>
+                                                                                                </span>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                       {/* <div>
+                                                                                            <button className="button" onClick={this.props.deleteproducto.bind(this, producto.id, producto.carta_id)}>Button</button>
+                                                                                       </div>*/}
+                                                                                    </div>
+
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            :
+                                                            ""
+                                                        }
+                                                    </div>
+                                                ))}
                                             </div>
-                                        </div>
+                                        ))}
+
                                     </div>
-                                </div>
-                                <div className='card equal-height ' style={divtop2}>
-                                    <div className="columns">
-                                        <div className="container">
-                                            <div className="column">
-                                                <div className="columns">
-                                                    <div className="column is-two-thirds"
-                                                        style={div2}>
-                                                        <h1 className="title">Ensalada Mixta</h1>
-                                                        <h2 className="subtitle has-text-weight-light">Mezclum de
-                                                        lechugas, cherry, pepino, cebolla,
-                                                        remolacha, zanahoria, espárragos, maíz, huevo, atún,
-                                                            pepinillos, aceitunas y picos </h2>
-                                                    </div>
-                                                    <div className="column" style={divtop}>
-                                                        <div className="columns is-mobile" style={divcenter}>
-
-                                                            <div className="column">
-                                                                <div style={div100}>
-                                                                    <span className="icon is-small"
-                                                                        style={divcolor1}><i
-                                                                            className="fas fa-dot-circle"
-                                                                            aria-hidden="true"></i></span>
-                                                                </div>
-                                                                <span><b> Media Ración </b></span>
-                                                                <div style={div100}>
-                                                                    <span> <b style={divcolorred}>  4,50€ </b> </span>
-                                                                </div>
-                                                            </div>
-
-
-                                                            <div className="column"
-                                                                style={divmargin1}>
-                                                                <div style={div100}>
-                                                                    <span className="icon is-small"
-                                                                        style={divcolor2}><i
-                                                                            className="fas fa-dot-circle"
-                                                                            aria-hidden="true"></i></span>
-                                                                </div>
-                                                                <span> <b> Ración </b></span>
-                                                                <div style={div100}>
-                                                                    <span> <b style={divcolorred}>  5,50€ </b> </span>
-                                                                </div>
-                                                            </div>
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div style={divleft}>
-                                                    <img src="static/frontend/Allergens/gluten.svg"
-                                                        alt="triangle with all three sides equal" width="50" />
-                                                    <img src="static/frontend/Allergens/fish.svg"
-                                                        alt="triangle with all three sides equal" width="50" />
-                                                    <img src="static/frontend/Allergens/moluscos.svg"
-                                                        alt="triangle with all three sides equal" width="50" />
-                                                    <img src="static/frontend/Allergens/crustaceos.svg"
-                                                        alt="triangle with all three sides equal" width="50" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                ))}
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="has-text-centered">
-                    <h1>Debug</h1>
-                    {this.props.cartas.map(carta =>(
-                        <p>{carta.id}</p>
-                    ))}
-                </div>
+                {/* FIN MOSTRAR PRODUCTOS DE UNA CARTA*/}
             </Fragment>
         )
     }
@@ -533,4 +713,4 @@ const mapStateToProps = state => ({
     auth: state.auth,
 });
 
-export default connect(mapStateToProps, { getCarta })(CartaPage);
+export default connect(mapStateToProps, { subirproducto, getCarta, deleteproducto })(CartaPage);

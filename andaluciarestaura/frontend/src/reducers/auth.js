@@ -11,6 +11,8 @@ import {
     REGISTER_LOADING,
     REGISTER_FAILED,
     REGISTER_SUCCESS,
+    ADD_PRODUCTO,
+    ADD_PRODUCTO_SUCCESS
 } from '../actions/types';
 
 const initialState = {
@@ -20,6 +22,7 @@ const initialState = {
     user: null,
     isUpdating: false,
     isRegistering: false,
+    needReload: false
 }
 
 export default function(state = initialState, action){
@@ -31,7 +34,8 @@ export default function(state = initialState, action){
                 isLoading: true,
                 isUpdating: false,
                 isRegistering: false,
-                registerFailed: false
+                registerFailed: false,
+                needReload: false
             }
         case USER_LOADED:
             return{
@@ -41,6 +45,7 @@ export default function(state = initialState, action){
                 isUpdating: false,
                 isRegistering: false,
                 registerFailed: false,
+                needReload: false,
                 user: action.payload
             }
         case LOGIN_SUCCESS:
@@ -52,7 +57,9 @@ export default function(state = initialState, action){
                 isUpdating: false,
                 isLoading: false,
                 isRegistering: false,
-                registerFailed: false
+                registerFailed: false,
+                needReload: false
+
             }
         case UPDATE_LOADING:
             return {
@@ -63,6 +70,8 @@ export default function(state = initialState, action){
                 isRegistering: false,
                 registerFailed: false,
                 updateFailed: false,
+                needReload: false
+
             }
         case UPDATE_SUCCESS:
             return {
@@ -74,6 +83,8 @@ export default function(state = initialState, action){
                 isRegistering: false,
                 registerFailed: false,
                 updateFailed: false,
+                needReload: false
+
             }
         case REGISTER_SUCCESS:
             return{
@@ -82,7 +93,9 @@ export default function(state = initialState, action){
                 isLoading: false,
                 isUpdating: false,
                 isRegistering: false,
-                registerFailed: false
+                registerFailed: false,
+                needReload: false
+
             }
         case REGISTER_LOADING:
             return{
@@ -92,7 +105,28 @@ export default function(state = initialState, action){
                 isUpdating: false,
                 isRegistering: true,
                 registerFailed: false,
+                needReload: false
             }
+        case ADD_PRODUCTO:
+            return {
+                ...state,
+                isAuthenticated: false,
+                isLoading: false,
+                isUpdating: false,
+                isRegistering: false,
+                registerFailed: false,
+                needReload: true
+            };
+        case ADD_PRODUCTO_SUCCESS:
+            return {
+                ...state,
+                isAuthenticated: false,
+                isLoading: false,
+                isUpdating: false,
+                isRegistering: false,
+                registerFailed: false,
+                needReload: false
+            };
         case UPDATE_ERROR:
             return{
                 ...state,
@@ -100,6 +134,7 @@ export default function(state = initialState, action){
                 isRegistering: false,
                 registerFailed: false,
                 updateFailed: true,
+                needReload: false
             }
         case REGISTER_FAILED:
         case AUTH_ERROR:
@@ -116,6 +151,7 @@ export default function(state = initialState, action){
                 isRegistering: false,
                 registerFailed: true,
                 updateFailed: true,
+                needReload: false,
             }
         default:
             return state;

@@ -30,10 +30,10 @@ RAZON_SOCIAL = (
 class User(AbstractUser, PermissionsMixin):
     username = models.CharField(max_length=100, blank=True, null=True, default="hotehubclient")
     cif = models.CharField(max_length=100, unique=True)
-    razon_social = models.CharField(max_length=100, choices=RAZON_SOCIAL)
+    razon_social = models.CharField(max_length=100, choices=RAZON_SOCIAL, default="SL")
     marca_comercial = models.CharField(max_length=100)
     nombre_fiscal = models.CharField(max_length=100)
-    tipo_negocio = models.CharField(max_length=100, choices=TIPOS_NEGOCIO)
+    tipo_negocio = models.CharField(max_length=100, choices=TIPOS_NEGOCIO, default="Bar")
     tipo_via = models.CharField(max_length=100)
     direccion_fiscal = models.CharField(max_length=100)
     localidad = models.CharField(max_length=100)

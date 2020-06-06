@@ -94,7 +94,7 @@ class Navbar extends Component {
                         </span>
                         <span className="control">
                             <div className="buttons">
-                                <Link to="/login-page" className="button is-danger" style={{backgroundColor:'#bca466'}} onClick={this.props.logout}>Logout</Link>
+                                <Link to="/" className="button is-danger" style={{backgroundColor:'#bca466'}} onClick={this.props.logout}>Logout</Link>
                             </div>
                         </span>
                     </div>
@@ -110,12 +110,12 @@ class Navbar extends Component {
                 <div className="navbar-item">
                     <div className="field is-grouped">
                         <span className="control">
-                            <Link to="/">
+                            <Link to="/register-page">
                                 <p className="button is-link" style={{ width: '100%', backgroundColor:'#bca466' }}>Registro</p>
                             </Link>
                         </span>
                         <span className="control">
-                            <Link to="/login-page">
+                            <Link to="/">
                                 <p className="button is-link" style={{ width: '100%', backgroundColor:'#bca466' }}>Login</p>
                             </Link>
                         </span>
@@ -132,10 +132,10 @@ class Navbar extends Component {
         </a>
                     <div className="navbar-dropdown ">
                         <Link className="navbar-item" style={{ width: '100%', marginTop: '10px' }} to="/admin-page">Datos Negocio</Link>
-                        {/*<Link className="navbar-item" style={{ width: '100%', marginTop: '10px' }} to="/maps-page">Maps</Link>
-                        <Link className="navbar-item" style={{ width: '100%', marginTop: '10px' }} to="/creditcard-page">Credit Card</Link>
-                        <Link className="navbar-item" style={{ width: '100%', marginTop: '10px' }} to="/autocomplete-page">Roads</Link>
-                        <Link className="navbar-item" style={{ width: '100%', marginTop: '10px' }} to="/avatar-page">Avatar</Link>*/}
+                        {/*<Link className="navbar-item" style={{ width: '100%', marginTop: '10px' }} to="/maps-page">Maps</Link>*/}
+                        <Link className="navbar-item" style={{ width: '100%', marginTop: '10px' }} to="/creditcard-page">Tárjeta de crédito</Link>
+                        {/*<Link className="navbar-item" style={{ width: '100%', marginTop: '10px' }} to="/autocomplete-page">Roads</Link>*/}
+                        {/*<Link className="navbar-item" style={{ width: '100%', marginTop: '10px' }} to="/avatar-page">Avatar</Link>*/}
 
 
                         
@@ -145,7 +145,7 @@ class Navbar extends Component {
                         
                     </div>
                 </div>
-                {/*
+
                 <div className="navbar-item is-hoverable has-dropdown">
                     <Link className="navbar-link " style={{ width: '100%'}} to="/servicios-page">Servicios</Link>
                 </div>
@@ -161,7 +161,7 @@ class Navbar extends Component {
                 <div className="navbar-item   is-hoverable has-dropdown">
                     <a className="navbar-link" style={{ width: '100%'}} >Aforo</a>
                 </div>
-                */}
+
             </div>
 
         );

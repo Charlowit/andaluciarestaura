@@ -11,7 +11,6 @@ from rest_framework.response import Response
 from rest_framework import status
 import logging
 import os
-import qrcode
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.core import mail
@@ -20,10 +19,12 @@ from django.template import Context
 import shutil
 import base64
 from django.conf import settings
-logger = logging.getLogger(__name__)
+from PIL import Image, ImageOps, ImageDraw
+import qrcode
 
 #File pdf Upload
 
+logger = logging.getLogger(__name__)
 
 def enviar_email_v1(correo):
     logger.error("ENTRO EN EMAIL V1")
@@ -104,17 +105,28 @@ def enviar_email_v2(correo, url_carta, ruta_qr, url_qr):
     """
 
 
-def generar_qr_file(directorio, archivo_qr, url_carta):
+def generar_qr_file(directorio, archivo_qr, url_carta, ruta_back, ruta_logo):
     qr = qrcode.QRCode(
         version=1,
         error_correction=qrcode.constants.ERROR_CORRECT_L,
-        box_size=10,
+        box_size=12,
         border=4,)
     qr.add_data(url_carta)
     qr.make(fit=True)
-    img = qr.make_image(fill_color="black", back_color="white")
-    logger.error("Antes de salvar imagen qr:" + directorio + '/' + archivo_qr)
-    img.save(directorio + '/' + archivo_qr)
+    img_qr = qr.make_image(fill_color="black", back_color="white")
+    logger.error("Antes de salvar imagen qrs:" + directorio + '/' + archivo_qr)
+
+    img_bg = Image.open(ruta_back)
+    img_logo = Image.open(ruta_logo)
+    img_logo = img_logo.resize((128, 128), Image.ANTIALIAS)
+
+    pos_qr = ((int(img_bg.size[0] / 2) - int(img_qr.size[0] / 2)), (img_bg.size[1] - img_qr.size[1]))
+    pos_logo = (500 - 64, 150)
+
+    img_bg.paste(img_qr, pos_qr)
+    img_bg.paste(img_logo, pos_logo)
+
+    img_bg.save(directorio + '/' + archivo_qr)
 
 def handle_uploaded_file(f,ruta):
     with open(ruta, 'wb+') as destination:
@@ -142,22 +154,26 @@ class FilePDFApi(generics.GenericAPIView):
                 archivo_pdf = 'free.pdf'
                 archivo_qr = 'qr.jpg'
                 archivo_logo = 'logo.jpeg'
+                archivo_back = 'emailback.jpeg'
+
                 if settings.IN_PRODUCTION:
                     # VARIABLES PARA PRODUCCION
                     directorio = settings.STATIC_ROOT +'/clientes/' + cif_user
                     directorio_bd = './static/clientes/' + cif_user
+                    directorio_back = settings.STATIC_ROOT + '/frontend/'
 
                 else:
                     # VARIBALES PARA LOCAL
                     directorio = './frontend/static/clientes/' + cif_user
                     directorio_bd = './frontend/static/clientes/' + cif_user
+                    directorio_back = './frontend/static/frontend/'
 
                 ruta_logo_bd = directorio_bd + '/' + archivo_logo
                 ruta_qr_bd = directorio_bd + '/' + archivo_qr
                 ruta_pdf = directorio + '/' + archivo_pdf
                 ruta_qr = directorio + '/' + archivo_qr
                 ruta_logo = directorio + '/' + archivo_logo
-
+                ruta_back = directorio_back + archivo_back
 
                 #ESTO DA IGUAL EN PRODUCCION QUE EN LOCAL NO NOS INTERFIERE
                 url_carta = 'https://www.andaluciarestaura.com/cartaestatica/' + cif_user
@@ -179,7 +195,7 @@ class FilePDFApi(generics.GenericAPIView):
 
                 #4 Generamos el qr
                 logger.error('ANTES DEL GENERAR EL QR:')
-                generar_qr_file(directorio, archivo_qr, url_carta)
+                generar_qr_file(directorio, archivo_qr, url_carta, ruta_back, ruta_logo)
                 logger.error('DESPUES DEL GENERAR EL QR:')
 
 
