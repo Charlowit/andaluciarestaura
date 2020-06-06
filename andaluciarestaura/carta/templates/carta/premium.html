@@ -34,11 +34,11 @@
       background-color: #d5c69f;
     }
 
-    #priceColour{
+    #priceColour {
       color: red;
     }
 
-    #simbolsColour{
+    #simbolsColour {
       color: rgb(51, 153, 255);
     }
   </style>
@@ -56,14 +56,13 @@
       background-color: #009933;
     }
 
-    #priceColour{
-      color:red;
+    #priceColour {
+      color: red;
     }
 
-    #simbolsColour{
+    #simbolsColour {
       color: #009933;
     }
-
   </style>
   {% endif %}
 </head>
@@ -96,33 +95,44 @@
         <h1 class="title"> {{user.marca_comercial}} </h1>
         <h2 class="subtitle"> {{user.fax}} <br /></h2>
         <p class="field">
-               {% if url_facebook != "-" %}
-                <a href={{url_facebook}} class="button is-rounded is-medium">
-                    <span class="icon">
-                      <i class="fab fa-facebook"></i>
-                    </span>
-                </a>
-                {% endif %}
-                {% if url_instagram != "-" %}
-                <a href={{url_instagram}} class="button is-rounded is-medium">
-                    <span class="icon">
-                      <i class="fab fa-instagram"></i>
-                    </span>
-                </a>
-                {% endif %}
-                {% if url_tripadvisor != "-" %}
-                <a href={{url_tripadvisor}} class="button is-rounded is-medium">
-                    <span class="icon">
-                      <i class="fab fa-tripadvisor"></i>
-                    </span>
-                </a>
-                {% endif %}
+          {% if url_facebook != "-" %}
+          <a href={{url_facebook}} class="button is-rounded is-medium">
+            <span class="icon">
+              <i class="fab fa-facebook"></i>
+            </span>
+          </a>
+          {% endif %}
+          {% if url_instagram != "-" %}
+          <a href={{url_instagram}} class="button is-rounded is-medium">
+            <span class="icon">
+              <i class="fab fa-instagram"></i>
+            </span>
+          </a>
+          {% endif %}
+          {% if url_tripadvisor != "-" %}
+          <a href={{url_tripadvisor}} class="button is-rounded is-medium">
+            <span class="icon">
+              <i class="fab fa-tripadvisor"></i>
+            </span>
+          </a>
+          {% endif %}
         </p>
         <hr />
         <div class="container">
-          <h1 class="title">{{ carta.name }}</h1>
-          <!--
-                {% if cif_cliente %}
+          <div class="columns">
+            <div class="column">
+              <div id="google_translate_element" style="margin-top: 7px"></div>
+            </div>
+            <div class="column">
+              <h1 class="title">{{ carta.name }}</h1>
+            </div>
+            <div class="column">
+
+            </div>
+          </div>
+
+
+          <!--   {% if cif_cliente %}
                     {% with 'clientes/'|add:cif_cliente|add:'' as url_static %}
                         <a href="#" class="button whatsapp">
                     {% endwith %}
@@ -131,30 +141,49 @@
                       <i class="fab fa-whatsapp"></i>
                   </span>
                   <span>Comparte por Whatsapp</span>
-                </a>
-                -->
+                </a>-->
+
         </div>
       </div>
     </div>
   </section>
   <p>{{username}}</p>
   <!-- La carta se pinta aqui-->
-  <div id="google_translate_element"></div>
 
-<script type="text/javascript">
-function googleTranslateElementInit() {
-  new google.translate.TranslateElement({pageLanguage: 'es'}, 'google_translate_element');
-}
-</script>
 
-<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({ pageLanguage: 'es', layout: google.translate.TranslateElement.InlineLayout.SIMPLE }, 'google_translate_element');
+    }
+  </script>
+
+  <script type="text/javascript"
+    src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+
+
+
+  <style>
+    div#google_translate_element div.goog-te-gadget-simple {
+      background-color: white;
+    }
+
+    div#google_translate_element div.goog-te-gadget-simple a.goog-te-menu-value span {
+      color: black
+    }
+
+    div#google_translate_element div.goog-te-gadget-simple a.goog-te-menu-value span:hover {
+      color: blue
+    }
+  </style>
+
   <div class="container">
     <div>
       <div class="container">
         <div style="margin-top: 40px">
           <!-- FOR DE LA CARTA -->
           {% for categoria in categorias %}
-          <div class='card equal-height ' id="cardColour"  style="margin-top: 40px">
+          <div class='card equal-height ' id="cardColour" style="margin-top: 40px">
             <div class="container">
               <br />
               <h1 class="title has-text-centered">{{categoria.name}}</h1>
@@ -163,120 +192,147 @@ function googleTranslateElementInit() {
           </div>
           {% for producto in productos %}
           {% if categoria.id == producto.categoria %}
-          <div class='card equal-height' style="margin-top: 20px"> 
+          <div class='card equal-height' style="margin-top: 20px">
             <div class="columns">
               <div class="container">
                 <div class="column">
                   <div class="columns">
-                    <div class="column is-two-thirds" style="margin-left: 2%;margin-top: 2%">
-                      <h1 class="title">{{ producto.name }} </h1>
-                      <h2 class="subtitle has-text-weight-light"> {{ producto.descripcion }}</h2>
+                    <!--
+                    <div class="column">
+                       <h1></h1>
                     </div>
-                  </div>
-                  <div class="columns">
-                    <div class="column is-two-thirds" style="margin-left: 2%">
-
-                      {% if producto.is_apio == True %}
-                      <img src="{{server}}/static/frontend/Allergens/alergeno_apio.svg"
-                        alt="triangle with all three sides equal" width="50" />
-                      {% endif %}
-                      {% if producto.is_altramuces == True %}
-                      <img src="{{server}}/static/frontend/Allergens/alergeno_altramuces.svg"
-                        alt="triangle with all three sides equal" width="50" />
-                      {% endif %}
-                      {% if producto.is_cacahuete == True %}
-                      <img src="{{server}}/static/frontend/Allergens/alergeno_cacahuete.svg"
-                        alt="triangle with all three sides equal" width="50" />
-                      {% endif %}
-                      {% if producto.is_crustaceo == True %}
-                      <img src="{{server}}/static/frontend/Allergens/alergeno_crustaceo.svg"
-                        alt="triangle with all three sides equal" width="50" />
-                      {% endif %}
-                      {% if producto.is_frutos_con_cascara == True %}
-                      <img src="{{server}}/static/frontend/Allergens/alergeno_frutos_con_cascara.svg"
-                        alt="triangle with all three sides equal" width="50" />
-                      {% endif %}
-                      {% if producto.is_gluten == True %}
-                      <img src="{{server}}/static/frontend/Allergens/alergeno_gluten.svg"
-                        alt="triangle with all three sides equal" width="50" />
-                      {% endif %}
-                      {% if producto.is_huevo == True %}
-                      <img src="{{server}}/static/frontend/Allergens/alergeno_huevo.svg"
-                        alt="triangle with all three sides equal" width="50" />
-                      {% endif %}
-                      {% if producto.is_lacteo == True %}
-                      <img src="{{server}}/static/frontend/Allergens/alergeno_lacteo.svg"
-                        alt="triangle with all three sides equal" width="50" />
-                      {% endif %}
-                      {% if producto.is_molusco == True %}
-                      <img src="{{server}}/static/frontend/Allergens/alergeno_moluscos.svg"
-                        alt="triangle with all three sides equal" width="50" />
-                      {% endif %}
-                      {% if producto.is_mostaza == True %}
-                      <img src="{{server}}/static/frontend/Allergens/alergeno_mostaza.svg"
-                        alt="triangle with all three sides equal" width="50" />
-                      {% endif %}
-                      {% if producto.is_pescado == True %}
-                      <img src="{{server}}/static/frontend/Allergens/alergeno_pescado.svg"
-                        alt="triangle with all three sides equal" width="50" />
-                      {% endif %}
-                      {% if producto.is_sesamo == True %}
-                      <img src="{{server}}/static/frontend/Allergens/alergeno_sesamo.svg"
-                        alt="triangle with all three sides equal" width="50" />
-                      {% endif %}
-                      {% if producto.is_soja == True %}
-                      <img src="{{server}}/static/frontend/Allergens/alergeno_soja.svg"
-                        alt="triangle with all three sides equal" width="50" />
-                      {% endif %}
-                    </div>
-                    <div class="column is-3">
-                      <div class="columns is-mobile" style="text-align: center; margin-bottom: 5%;">
-                        <div class="column">
-                          <div style="width:100%;margin-top:5%;margin-bottom: 6%;">
-                            <span class="icon is-small" id="simbolsColour">
-                              <i class="fas fa-dot-circle" aria-hidden="true"></i>
-                            </span>
-                          </div>
-                          <span>
-                            <b> Media Ración </b>
-                          </span>
-                          <div style="width:100%;">
-                            <span>
-                              <b id="priceColour"> {{ producto.precio1 }}€</b>
-                            </span>
-                          </div>
-                        </div>
-                        <div class="column" style="margin-left: 4%; margin-top: 2%">
-                          <div style="width:100%;">
-                            <span class="icon is-small" id="simbolsColour" style="font-size:36px;">
-                              <i class="fas fa-dot-circle" aria-hidden="true"></i>
-                            </span>
-                          </div>
-                          <span>
-                            <b> Ración </b>
-                          </span>
-                          <div style="width:100%;">
-                            <span>
-                              <b id="priceColour"> {{ producto.precio2 }}€</b>
-                            </span>
-                          </div>
+                    -->
+                    <div class="column">
+                      <div class="columns">
+                        <div class="column is-two-thirds" style="margin-left: 2%;margin-top: 2%">
+                          <h1 class="title">{{ producto.name }} </h1>
+                          <h2 class="subtitle has-text-weight-light"> {{ producto.descripcion }}</h2>
                         </div>
                       </div>
+                      <div class="columns">
+                        <div class="column is-two-thirds" style="margin-left: 2%">
 
+                          {% if producto.is_apio == True %}
+                          <img src="{{server}}/static/frontend/Allergens/alergeno_apio.svg"
+                            alt="triangle with all three sides equal" width="50" />
+                          {% endif %}
+                          {% if producto.is_altramuces == True %}
+                          <img src="{{server}}/static/frontend/Allergens/alergeno_altramuces.svg"
+                            alt="triangle with all three sides equal" width="50" />
+                          {% endif %}
+                          {% if producto.is_cacahuete == True %}
+                          <img src="{{server}}/static/frontend/Allergens/alergeno_cacahuete.svg"
+                            alt="triangle with all three sides equal" width="50" />
+                          {% endif %}
+                          {% if producto.is_crustaceo == True %}
+                          <img src="{{server}}/static/frontend/Allergens/alergeno_crustaceo.svg"
+                            alt="triangle with all three sides equal" width="50" />
+                          {% endif %}
+                          {% if producto.is_frutos_con_cascara == True %}
+                          <img src="{{server}}/static/frontend/Allergens/alergeno_frutos_con_cascara.svg"
+                            alt="triangle with all three sides equal" width="50" />
+                          {% endif %}
+                          {% if producto.is_gluten == True %}
+                          <img src="{{server}}/static/frontend/Allergens/alergeno_gluten.svg"
+                            alt="triangle with all three sides equal" width="50" />
+                          {% endif %}
+                          {% if producto.is_huevo == True %}
+                          <img src="{{server}}/static/frontend/Allergens/alergeno_huevo.svg"
+                            alt="triangle with all three sides equal" width="50" />
+                          {% endif %}
+                          {% if producto.is_lacteo == True %}
+                          <img src="{{server}}/static/frontend/Allergens/alergeno_lacteo.svg"
+                            alt="triangle with all three sides equal" width="50" />
+                          {% endif %}
+                          {% if producto.is_molusco == True %}
+                          <img src="{{server}}/static/frontend/Allergens/alergeno_moluscos.svg"
+                            alt="triangle with all three sides equal" width="50" />
+                          {% endif %}
+                          {% if producto.is_mostaza == True %}
+                          <img src="{{server}}/static/frontend/Allergens/alergeno_mostaza.svg"
+                            alt="triangle with all three sides equal" width="50" />
+                          {% endif %}
+                          {% if producto.is_pescado == True %}
+                          <img src="{{server}}/static/frontend/Allergens/alergeno_pescado.svg"
+                            alt="triangle with all three sides equal" width="50" />
+                          {% endif %}
+                          {% if producto.is_sesamo == True %}
+                          <img src="{{server}}/static/frontend/Allergens/alergeno_sesamo.svg"
+                            alt="triangle with all three sides equal" width="50" />
+                          {% endif %}
+                          {% if producto.is_soja == True %}
+                          <img src="{{server}}/static/frontend/Allergens/alergeno_soja.svg"
+                            alt="triangle with all three sides equal" width="50" />
+                          {% endif %}
+                        </div>
+                        <div class="column is-3">
+                          <div class="columns is-mobile" style="text-align: center; margin-bottom: 5%;">
+                            <div class="column">
+                              <div style="width:100%;margin-top:5%;margin-bottom: 6%;">
+                                <span class="icon is-small" id="simbolsColour">
+                                  <i class="fas fa-dot-circle" aria-hidden="true"></i>
+                                </span>
+                              </div>
+                              <span>
+                                <b> {{producto.titulo_precio1}} </b>
+                              </span>
+                              <div style="width:100%;">
+                                <span>
+                                  <b id="priceColour"> {{ producto.precio1 }}€</b>
+                                </span>
+                              </div>
+                            </div>
+                            <div class="column" style="margin-left: 4%; margin-top: 2%">
+                              <div style="width:100%;">
+                                <span class="icon is-small" id="simbolsColour" style="font-size:36px;">
+                                  <i class="fas fa-dot-circle" aria-hidden="true"></i>
+                                </span>
+                              </div>
+                              <span>
+                                <b> {{producto.titulo_precio2}}</b>
+                              </span>
+                              <div style="width:100%;">
+                                <span>
+                                  <b id="priceColour"> {{ producto.precio2 }}€</b>
+                                </span>
+                              </div>
+                            </div>
+                            <div class="column" style="margin-left: 4%; margin-top: 2%">
+                              <div style="width:100%;">
+                                <span class="icon is-small" id="simbolsColour" style="font-size:36px;">
+                                  <i class="fas fa-dot-circle" aria-hidden="true"></i>
+                                </span>
+                              </div>
+                              <span>
+                                <b> {{producto.titulo_precio3}}</b>
+                              </span>
+                              <div style="width:100%;">
+                                <span>
+                                  <b id="priceColour"> {{ producto.precio3 }}€</b>
+                                </span>
+                              </div>
+                            </div>
+
+                          </div>
+
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
+
               </div>
             </div>
           </div>
-
-          {% endif %}
-          {% endfor %}
-          {% endfor %}
-          
         </div>
+
+        {% endif %}
+        {% endfor %}
+        {% endfor %}
+
       </div>
     </div>
+  </div>
   </div>
   <footer>
     <section class="section has-text-centered">

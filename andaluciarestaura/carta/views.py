@@ -6,7 +6,7 @@ import requests
 from django.conf import settings
 from .models import Carta
 import operator
-
+from django.db.models import F
 
 #logger = logging.getLogger(__name__)
 
@@ -43,10 +43,13 @@ def index(request,cif_cliente):
     url_tripadvisor = ""
     eslogan = ""
     plantilla = ""
+
     
     if len(cartas) > 0:
 
         carta = cartas[0]
+
+        Carta.objects.filter(id=carta['id']).update(contador_visitas=F('contador_visitas') + 1)
 
         url_facebook = carta['url_facebook']            
         url_instagram = carta['url_instagram']
@@ -87,6 +90,7 @@ def index(request,cif_cliente):
         'url_instagram': url_instagram,
         'url_tripadvisor': url_tripadvisor,
         'eslogan': eslogan,
+        'carta': carta
     }
     #FILTRAR EL NOMBRE DE LA CARTA
     #carta = Carta.objects.filter(cif__exact=cif_cliente)
