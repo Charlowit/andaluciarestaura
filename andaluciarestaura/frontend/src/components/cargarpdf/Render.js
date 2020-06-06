@@ -52,7 +52,7 @@ class App extends Component {
                     onLoadSuccess={this.onDocumentLoadSuccess}
                     loading={"Cargando PDF..."}
                   >
-                    <Page pageNumber={pageNumber} height={600} width={600} scale={1.5} loading={"Cargando pagina..."}  />
+                    <Page pageNumber={pageNumber} scale={0.50} loading={"Cargando pagina..."}  />
                   </Document>
                 </div>
                 <div className="columns is-centered">
