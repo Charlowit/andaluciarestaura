@@ -1,9 +1,12 @@
-from .serializers import CartaSerializer, ProductosSerializer, ProductoSerializerActualizar, CategoriasSerializer, CartaSerializerActualizar, CartaSerializerV3
+from .serializers import CartaSerializer, ProductosSerializer, ProductoSerializerActualizar, CategoriasSerializer, CartaSerializerActualizar
 from rest_framework import viewsets, permissions, generics
 from rest_framework.response import Response
 from .models import Carta, Productos, Categorias
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.decorators import action
+from rest_framework import status
+
+
 
 #Carta Viewset
 
@@ -64,20 +67,43 @@ class CartaAuthViewSet(viewsets.ModelViewSet):
 
 class CartasApi(viewsets.ModelViewSet):
     permission_classes = [
-        permissions.IsAuthenticated
+        permissions.AllowAny
     ]
 
     serializer_class = CartaSerializerActualizar
+
     def get_queryset(self):
         cif = self.request.query_params.get('cif', None)
-        return Carta.objects.filter(propietario__cif__exact=cif)
+        cartaID = self.request.query_params.get('carta', None)
+        response = ""
+
+        if cif is not None:
+            response = Carta.objects.filter(propietario__cif__exact=cif)
+
+        if cartaID is not None:
+            response = Carta.objects.filter(id__exact=cartaID)
+
+        return response
+
+    def create(self, request, *args, **kwargs):
+        cartaP = self.request.data
+        print(cartaP)
+              
+        serializer = self.get_serializer(data=request.data, partial=True)
+        serializer.propietario = request.data['propietario']
+        serializer.is_valid(raise_exception=True)
+        """
+        carta = serializer.save()
+        print("Estamos en el create -->" , carta)
+        """
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
         
 
 
 class CategoriasApi(viewsets.ModelViewSet):
     permission_classes = [
-        permissions.IsAuthenticated
+        permissions.AllowAny
     ]
 
     serializer_class = CategoriasSerializer
@@ -91,10 +117,9 @@ class CategoriasApi(viewsets.ModelViewSet):
 class ProductosApi(viewsets.ModelViewSet):
     
     permission_classes = [
-        permissions.IsAuthenticated
+        permissions.AllowAny
     ]
     serializer_class = ProductoSerializerActualizar
-    #parser_classes = (MultiPartParser, FormParser)
 
     def get_queryset(self):
         categoriaID = self.request.query_params.get('categoria', None)

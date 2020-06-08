@@ -232,18 +232,12 @@ export const updateuser = (user) => (dispatch, getState) => {
             dispatch(createMessages({ datosCambiados: "Datos guardados correctamente." }));
             dispatch({
                 type: UPDATE_SUCCESS,
+                payload: res.data
             });
         }).catch(err => {
-            const errors = {
-                msg: err.response.data,
-                status: err.response.status
-            }
+           
             dispatch({
-                type: UPDATE_ERROR,
-            });
-            dispatch({
-                type: GET_ERRORS,
-                payload: errors
+                type: UPDATE_ERROR
             });
 
         });

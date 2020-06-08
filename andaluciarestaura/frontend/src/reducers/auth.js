@@ -75,7 +75,7 @@ export default function(state = initialState, action){
         case UPDATE_SUCCESS:
             return {
                 ...state,
-                ...action.payload,
+                user: state.user.map(item => item.id === action.payload.id ? action.payload : item ),
                 isAuthenticated: true,
                 isLoading: false,
                 isUpdating: false,
@@ -83,7 +83,6 @@ export default function(state = initialState, action){
                 registerFailed: false,
                 updateFailed: false,
                 needReload: false
-
             }
         case REGISTER_SUCCESS:
             return{

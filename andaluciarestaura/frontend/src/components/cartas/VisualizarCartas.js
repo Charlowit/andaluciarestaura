@@ -3,6 +3,7 @@ import { getCartas, nuevaCarta, deleteCarta } from '../../actions/cartas';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { CartaPage } from '../carta/CartaPage'
+import { Link } from 'react-router-dom';
 
 
 export class VisualizarCartas extends Component {
@@ -14,7 +15,7 @@ export class VisualizarCartas extends Component {
             categoriasParaNuevaCartaObjs: [],
             categoriasParaNuevaCarta: [],
             nombreNuevaCarta: "",
-            propietario: 38, //Es el id del usuario "1" deberiamos de traer el id
+            propietario: -1, //Es el id del usuario "1" deberiamos de traer el id
             url_facebook: "",
             url_instagram: "",
             url_tripadvisor: "",
@@ -26,7 +27,8 @@ export class VisualizarCartas extends Component {
             posiciones: [],
             posicion: -1,
             info_extra: "",
-            eslogan: ""
+            eslogan: "",
+            addingCarta: false
         };
     }
 
@@ -37,7 +39,9 @@ export class VisualizarCartas extends Component {
     };
 
     componentDidMount() {
-        this.props.getCartas(1);
+        this.state.cif = this.props.auth.user.cif
+        this.state.propietario = this.props.auth.user.id
+        this.props.getCartas(this.state.cif);
     }
 
     onChange = e => this.setState({
@@ -71,107 +75,133 @@ export class VisualizarCartas extends Component {
         }
     }
 
+    addingCarta = e => {
+        this.setState({
+            addingCarta: !this.state.addingCarta
+        })
+    }
+
     onSubmit = e => {
         event.preventDefault();
-        if (this.state.url_facebook == ""){
+        if (this.state.url_facebook == "") {
             this.state.url_facebook = "-"
-        } 
+        }
 
-        if (this.state.url_instagram == ""){
+        if (this.state.url_instagram == "") {
             this.state.url_instagram = "-"
         }
 
-        if (this.state.url_tripadvisor == ""){
+        if (this.state.url_tripadvisor == "") {
             this.state.url_tripadvisor = "-"
         }
 
-        if (this.state.eslogan == ""){
+        if (this.state.eslogan == "") {
             this.state.eslogan = "-"
         }
 
         const { nombreNuevaCarta, propietario, url_facebook, url_instagram, url_tripadvisor, eslogan, plantilla } = this.state;
         const carta = { nombreNuevaCarta, propietario, url_facebook, url_instagram, url_tripadvisor, eslogan, plantilla };
+        this.setState({
+            addingCarta: !this.state.addingCarta
+        })
         this.props.nuevaCarta(carta)
     }
 
     render() {
         return (
+
             <div className="section" style={{ marginTop: '100px' }}>
                 <div className="container">
-                    <div className="container">
+                    <div className={this.state.addingCarta ? "modal is-active" : "modal"}>
+                        <div class="modal-background"></div>
+                        <div class="modal-content">
+                            <div className="container box">
+                                <div className="has-text-right">
+                                    <button class="button is-danger" onClick={this.addingCarta}>
+                                        <span class="icon is-small">
+                                            <i class="fas fa-times"></i>
+                                        </span>
+                                    </button>
+                                </div>
+                                <div className="columns is-centered">
+                                    <div className="column is-half">
+                                        <div className="container">
 
-                        <div className="columns is-centered">
-                            <div className="column is-one-third">
-                                <div className="container box">
-                                    <h1 className="title has-text-centered">Crear nueva carta</h1>
-                                    <form>
-                                        <div className="columns ">
-                                            <div className="column ">
-                                                <div className="field">
-                                                    <label className="label">Nombre</label>
-                                                    <div className="control">
-                                                        <input className="input" onChange={this.onChange} name="nombreNuevaCarta" defaultValue={this.state.nombreNuevaCarta} type="text" placeholder="Nombre para la carta" />
-                                                    </div>
-                                                </div>
-                                                <div className="field">
-                                                    <label className="label">URL Facebook</label>
-                                                    <div className="control">
-                                                        <input className="input" onChange={this.onChange} name="url_facebook" defaultValue={this.state.url_facebook} type="text" placeholder="https://www.facebook.com/" />
-                                                    </div>
-                                                </div>
-                                                <div className="field">
-                                                    <label className="label">URL Instagram</label>
-                                                    <div className="control">
-                                                        <input className="input" onChange={this.onChange} name="url_instagram" defaultValue={this.state.url_instagram} type="text" placeholder="https://www.instagram.com/instagram/?hl=es" />
-                                                    </div>
-                                                </div>
-                                                <div className="field">
-                                                    <label className="label">URL TripAdvisor</label>
-                                                    <div className="control">
-                                                        <input className="input" onChange={this.onChange} name="url_tripadvisor" defaultValue={this.state.url_tripadvisor} type="text" placeholder="https://www.tripadvisor.es/" />
-                                                    </div>
-                                                </div>
-                                                <div className="field">
-                                                    <label className="label">Eslogan</label>
-                                                    <div className="control">
-                                                        <input className="input" onChange={this.onChange} name="eslogan" defaultValue={this.state.eslogan} type="text" placeholder="El mejor restaurante de la zona!" />
-                                                    </div>
-                                                </div>
-                                                <div className="field">
-                                                    <label className="label">Plantilla</label>
-                                                    <div className="control">
-                                                        <div className="select">
-                                                            <select name="plantilla" onChange={this.onChange} defaultValue={this.state.plantilla}>
-                                                                <option>Ninguna plantilla seleccionada</option>
-                                                                <option value="Plantilla1">Plantilla 1</option>
-                                                                <option value="Plantilla2">Plantilla 2</option>
-                                                                <option value="Plantilla3">Plantilla 3</option>
-                                                            </select>
+                                            <h1 className="title has-text-centered">Crear nueva carta</h1>
+                                            <form>
+                                                <div className="columns ">
+                                                    <div className="column ">
+                                                        <div className="field">
+                                                            <label className="label">Nombre</label>
+                                                            <div className="control">
+                                                                <input className="input" onChange={this.onChange} name="nombreNuevaCarta" defaultValue={this.state.nombreNuevaCarta} type="text" placeholder="Nombre para la carta" />
+                                                            </div>
                                                         </div>
+                                                        <div className="field">
+                                                            <label className="label">URL Facebook</label>
+                                                            <div className="control">
+                                                                <input className="input" onChange={this.onChange} name="url_facebook" defaultValue={this.state.url_facebook} type="text" placeholder="https://www.facebook.com/" />
+                                                            </div>
+                                                        </div>
+                                                        <div className="field">
+                                                            <label className="label">URL Instagram</label>
+                                                            <div className="control">
+                                                                <input className="input" onChange={this.onChange} name="url_instagram" defaultValue={this.state.url_instagram} type="text" placeholder="https://www.instagram.com/instagram/?hl=es" />
+                                                            </div>
+                                                        </div>
+                                                        <div className="field">
+                                                            <label className="label">URL TripAdvisor</label>
+                                                            <div className="control">
+                                                                <input className="input" onChange={this.onChange} name="url_tripadvisor" defaultValue={this.state.url_tripadvisor} type="text" placeholder="https://www.tripadvisor.es/" />
+                                                            </div>
+                                                        </div>
+                                                        <div className="field">
+                                                            <label className="label">Eslogan</label>
+                                                            <div className="control">
+                                                                <input className="input" onChange={this.onChange} name="eslogan" defaultValue={this.state.eslogan} type="text" placeholder="El mejor restaurante de la zona!" />
+                                                            </div>
+                                                        </div>
+                                                        <div className="field">
+                                                            <label className="label">Plantilla</label>
+                                                            <div className="control">
+                                                                <div className="select">
+                                                                    <select name="plantilla" onChange={this.onChange} defaultValue={this.state.plantilla}>
+                                                                        <option>Ninguna plantilla seleccionada</option>
+                                                                        <option value="Plantilla1">Plantilla 1</option>
+                                                                        <option value="Plantilla2">Plantilla 2</option>
+                                                                        <option value="Plantilla3">Plantilla 3</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <hr />
                                                     </div>
                                                 </div>
-                                                <hr />
+                                            </form>
+                                            <div className="control buttons is-centered">
+                                                {/* onClick={this.onSubmit}*/}
+                                                <button className="button is-success">Guardar carta y categorias</button>
                                             </div>
                                         </div>
-                                    </form>
-                                    <div className="control buttons is-centered">
-                                        <button className="button is-success" onClick={this.onSubmit}>Guardar carta y categorias</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div className="columns is-centered" style={{ marginTop: '40px' }}>
-                        <div className="column is-full-mobile">
+
+                    <button className="button is-success" onClick={this.addingCarta}>
+                        <span class="icon is-small">
+                            <i class="fas fa-plus-circle"></i>
+                        </span>
+                        <p style={{ marginTop: '4px' }}>Añadir carta</p>
+                    </button>
+                    <div className="columns has-text-centered" style={{ marginTop: '40px' }}>
+                        <div className="column">
                             <table className="table is-striped">
                                 <thead>
                                     <tr>
                                         <th>Identificador del sistema</th>
                                         <th>Nombre de la carta</th>
-                                        <th>URL_Facebook</th>
-                                        <th>URL_Instagram</th>
-                                        <th>URL_Tripadvisor</th>
-                                        <th>Eslogan</th>
                                         <th>Plantilla</th>
                                         <th>QR</th>
 
@@ -182,14 +212,27 @@ export class VisualizarCartas extends Component {
                                         <tr key={carta.id}>
                                             <td>{carta.id}</td>
                                             <td>{carta.name}</td>
-                                            <td>{carta.url_facebook}</td>
-                                            <td>{carta.url_instagram}</td>
-                                            <td>{carta.url_tripadvisor}</td>
-                                            <td>{carta.eslogan}</td>
                                             <td>{carta.plantilla}</td>
-                                            <td>QR</td>
-                                            <td><button className="button is-warning">Editar</button></td>
-                                            <td><button className="button is-danger" onClick={this.props.deleteCarta.bind(this, carta.id, 1)}>Borrar</button></td>
+                                            <td>
+                                                <div>
+                                                    <figure className="image is-128x128 is-inline-block">
+                                                        <img className="" src={`/static/clientes/${this.props.auth.user.cif}/qr.jpg`}></img>
+                                                    </figure>
+                                                </div>
+                                            </td>
+                                            {/*<td><button className="button is-warning">Editar</button></td>*/}
+                                            <td>
+                                                <div>
+                                                    <Link className="navbar-link" style={{ width: '100%' }} to={`/carta-page/${carta.id}`}>Ver carta</Link>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <button class="button is-danger" onClick={this.props.deleteCarta.bind(this, carta.id, this.props.auth.user.cif)}>
+                                                    <span class="icon is-small">
+                                                        <i class="fas fa-trash"></i>
+                                                    </span>
+                                                </button>
+                                            </td>
                                         </tr>
                                     ))}
                                 </tbody>

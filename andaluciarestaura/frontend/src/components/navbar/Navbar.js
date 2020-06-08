@@ -150,7 +150,7 @@ class Navbar extends Component {
                     <Link className="navbar-link " style={{ width: '100%'}} to="/servicios-page">Servicios</Link>
                 </div>
                 <div className="navbar-item  is-hoverable has-dropdown">
-                    <Link className="navbar-link" style={{ width: '100%'}} to="/carta-page">Carta</Link>
+                    <Link className="navbar-link" style={{ width: '100%'}} to="/visualizar">Cartas</Link>
                 </div>
                 <div className="navbar-item  is-hoverable has-dropdown">
                     <Link className="navbar-link" style={{ width: '100%'}} to="/reservas-page">Reservas</Link>

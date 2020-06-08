@@ -32,7 +32,8 @@ export default function(state = initialState, action) {
         case GET_CATEGORIAS:
             return {
                 ...state,
-                categorias: action.payload
+                categorias: action.payload,
+                cartas: []
             };
         case DELETE_CATEGORIA:
             return {

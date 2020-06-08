@@ -25,7 +25,7 @@ const less = {
 
 const bkg = {
     backgroundColor: '#bca466',
-    marginTop: '20%'
+    marginTop: '20px'
 }
 
 const colorBlue = {
@@ -43,9 +43,15 @@ export class Registro extends Component {
         telefono_1: "",
         password: "",
         submitClick: false,
+        submitClick2: false,
         terminado: false,
         primeraVez: false,
-        otro: false
+        otro: false,
+        cifVacio: false,
+        marcaComercialVacia: false,
+        correoVacio: false,
+        telefonoVacio: false,
+        passVacia: false
     }
 
     static propTypes = {
@@ -61,21 +67,64 @@ export class Registro extends Component {
         //console.log(this.state);
         //this.props.registro(this.state);
         //console.log("Registro realizado");
-        if (this.state.pdf == null && this.state.logo == null) {
+        if (this.state.pdf == null) {
             this.setState({ submitClick: true })
+        } else {
+            this.setState({ submitClick: false })
         }
 
-        e.preventDefault();
-        let form_data = new FormData();
-        form_data.append('cif', this.state.cif);
-        form_data.append('marca_comercial', this.state.marca_comercial);
-        form_data.append('pdf', this.state.pdf);
-        form_data.append('logo', this.state.logo);
-        form_data.append('email', this.state.email);
-        form_data.append('telefono_1', this.state.telefono_1);
-        form_data.append('password', this.state.password);
-        this.props.subirpdf(form_data);
-        console.log("PDF subido Correctamente");
+        if (this.state.logo == null) {
+            this.setState({ submitClick2: true })
+        } else {
+            this.setState({ submitClick2: false })
+        }
+
+        if (this.state.cif == "") {
+            this.setState({ cifVacio: true })
+        } else {
+            this.setState({ cifVacio: false })
+        }
+
+        if (this.state.marca_comercial == "") {
+            this.setState({ marcaComercialVacia: true })
+        } else {
+            this.setState({ marcaComercialVacia: false })
+        }
+
+        if (this.state.email == "") {
+            this.setState({ correoVacio: true })
+        } else {
+            this.setState({ correoVacio: false })
+        }
+
+        if (this.state.telefono_1 == "") {
+            this.setState({ telefonoVacio: true })
+        } else {
+            this.setState({ telefonoVacio: false })
+        }
+
+        if (this.state.password == "") {
+            this.setState({ passVacia: true })
+        } else {
+            this.setState({ passVacia: false })
+        }
+
+        if (this.state.pdf != null && this.state.logo != null && this.state.cif != "" && this.state.marca_comercial != "" && this.state.email != ""
+            && this.state.telefono_1 != "" && this.state.passVacia != "") {
+            e.preventDefault();
+            let form_data = new FormData();
+            form_data.append('cif', this.state.cif);
+            form_data.append('marca_comercial', this.state.marca_comercial);
+            form_data.append('pdf', this.state.pdf);
+            form_data.append('logo', this.state.logo);
+            form_data.append('email', this.state.email);
+            form_data.append('telefono_1', this.state.telefono_1);
+            form_data.append('password', this.state.password);
+            this.props.subirpdf(form_data);
+            console.log("PDF subido Correctamente");
+        }
+
+
 
     };
 
@@ -121,38 +170,64 @@ export class Registro extends Component {
                         </div>
                     </section>
 
-                    <section className="section has-text-centered " style={{ marginTop: '-150px' }}>
+                    <section className="section has-text-centered " style={{ marginTop: '-100px' }}>
 
                         <div className="container">
-                            <div className="box" style={bkg}>
-                                <h1 className="title" style={{ color: 'white', marginTop: '2%' }}>¡Únete a nosotr@s!</h1>
+                            <div className="box is-paddingless" style={bkg} >
+                                <h1 className="title" style={{ color: 'white', paddingTop: '20px' }}>¡Únete a nosotr@s!</h1>
                                 <div className="content">
                                     <div className="columns is-centered is-marginless" style={{ width: '100%' }}>
-                                        <div className="column is-one-third-desktop is-half-widescreen is-half-tablet">
+                                        <div className="column is-two-fifths is-half-tablet is-full-mobile">
                                             <section className="hero has-text-centered">
                                                 <div className="hero-body">
-                                                    <div className="container ">
-                                                        <div className="section">
-                                                            <div>
+                                                    <div className="container is-paddingless">
+                                                        <div className="section is-paddingless">
+                                                            <div >
                                                                 <form style={{ marginTop: '-60px' }}>
 
                                                                     <div className="field">
                                                                         <label className="label has-text-centered is-size-4">CIF/NIF Empresa</label>
-                                                                        <div className="control has-icons-left">
-                                                                            <input type="text" placeholder="e.g. A58818501" className="input" name="cif" onChange={this.onChange} value={cif} required />
-                                                                            <span className="icon is-small is-left">
-                                                                                <i className="fas fa-id-card-alt"></i>
-                                                                            </span>
-                                                                        </div>
+
+                                                                        {this.state.cifVacio ?
+                                                                            <div>
+                                                                                <div className="control has-icons-left">
+                                                                                    <input type="text" placeholder="e.g. A58818501" className="input is-danger" name="cif" onChange={this.onChange} value={cif} required />
+                                                                                    <span className="icon is-small is-left">
+                                                                                        <i className="fas fa-id-card-alt"></i>
+                                                                                    </span>
+                                                                                </div>
+                                                                                <p className="help is-danger" style={{ fontSize: '15px' }}>El campo CIF/NIF está vacío</p>
+                                                                            </div>
+                                                                            :
+                                                                            <div className="control has-icons-left">
+                                                                                <input type="text" placeholder="e.g. A58818501" className="input" name="cif" onChange={this.onChange} value={cif} required />
+                                                                                <span className="icon is-small is-left">
+                                                                                    <i className="fas fa-id-card-alt"></i>
+                                                                                </span>
+                                                                            </div>
+                                                                        }
                                                                     </div>
                                                                     <div className="field">
                                                                         <label className="label has-text-centered is-size-4">Marca Comercial</label>
-                                                                        <div className="control has-icons-left">
-                                                                            <input type="text" placeholder="Marca Comercial" name="marca_comercial" className="input" onChange={this.onChange} value={marca_comercial} required />
-                                                                            <span className="icon is-small is-left">
-                                                                                <i className="fa fa-copyright"></i>
-                                                                            </span>
-                                                                        </div>
+
+                                                                        {this.state.marcaComercialVacia ?
+                                                                            <div>
+                                                                                <div className="control has-icons-left">
+                                                                                    <input class="input is-danger" type="text" placeholder="Marca Comercial" name="marca_comercial" onChange={this.onChange} value={marca_comercial} required/>
+                                                                                    <span className="icon is-small is-left">
+                                                                                        <i className="fa fa-copyright"></i>
+                                                                                    </span>
+                                                                                </div>
+                                                                                <p className="help is-danger" style={{ fontSize: '15px' }}>El campo Marca Comercial está vacío</p>
+                                                                            </div>
+                                                                            :
+                                                                            <div className="control has-icons-left">
+                                                                                <input className="input" type="text" placeholder="Marca Comercial" name="marca_comercial" onChange={this.onChange} value={marca_comercial} required />
+                                                                                <span className="icon is-small is-left">
+                                                                                    <i className="fa fa-copyright"></i>
+                                                                                </span>
+                                                                            </div>
+                                                                        }
                                                                     </div>
                                                                     <div className="field ">
                                                                         <label className="label  is-size-4">Adjunta tu carta en pdf</label>
@@ -179,7 +254,6 @@ export class Registro extends Component {
                                                                                     <span className="file-name" style={{ background: 'white' }}>
                                                                                         {this.state.pdf ? this.state.pdf.name : 'Ninguna carta seleccionada'}
                                                                                     </span>}
-
                                                                             </label>
                                                                         </div>
                                                                     </div>
@@ -197,7 +271,7 @@ export class Registro extends Component {
                                                                                         Escoge el logo…
                                                                                     </span>
                                                                                 </span>
-                                                                                {this.state.submitClick ?
+                                                                                {this.state.submitClick2 ?
                                                                                     <span className="file-name" style={{ background: 'red' }}>
                                                                                         {this.state.logo ? this.state.logo.name : 'Ningún logo seleccionado'}
                                                                                     </span>
@@ -212,32 +286,75 @@ export class Registro extends Component {
 
                                                                     <div className="field">
                                                                         <label className="label has-text-centered is-size-4">Correo Electrónico</label>
-                                                                        <div className="control has-icons-left">
-                                                                            <input type="email" placeholder="correo@hotehub.com" name="email" className="input" onChange={this.onChange} value={email} required />
-                                                                            <span className="icon is-small is-left">
-                                                                                <i className="fa fa-envelope"></i>
-                                                                            </span>
-                                                                        </div>
+
+                                                                        {this.state.correoVacio ?
+                                                                            <div>
+                                                                                <div className="control has-icons-left">
+                                                                                    <input type="email" placeholder="correo@hotehub.com" name="email" className="input is-danger" onChange={this.onChange} value={email} required />
+                                                                                    <span className="icon is-small is-left">
+                                                                                        <i className="fa fa-envelope"></i>
+                                                                                    </span>
+                                                                                </div>
+                                                                                <p className="help is-danger" style={{ fontSize: '15px' }}>El campo Correo Electrónico está vacío</p>
+
+                                                                            </div>
+                                                                            :
+                                                                            <div className="control has-icons-left">
+                                                                                <input type="email" placeholder="correo@hotehub.com" name="email" className="input" onChange={this.onChange} value={email} required />
+                                                                                <span className="icon is-small is-left">
+                                                                                    <i className="fa fa-envelope"></i>
+                                                                                </span>
+                                                                            </div>
+                                                                        }
                                                                     </div>
 
                                                                     <div className="field">
                                                                         <label className="label has-text-centered is-size-4">Teléfono de contacto</label>
-                                                                        <div className="control has-icons-left">
-                                                                            <input type="text" placeholder="6969696969" name="telefono_1" className="input" onChange={this.onChange} value={telefono_1} required />
-                                                                            <span className="icon is-small is-left">
-                                                                                <i className="fa fa-phone"></i>
-                                                                            </span>
-                                                                        </div>
+
+                                                                        {this.state.telefonoVacio ?
+                                                                            <div>
+                                                                                <div className="control has-icons-left">
+                                                                                    <input type="text" placeholder="6969696969" name="telefono_1" className="input is-danger" onChange={this.onChange} value={telefono_1} required />
+                                                                                    <span className="icon is-small is-left">
+                                                                                        <i className="fa fa-phone"></i>
+                                                                                    </span>
+                                                                                </div>
+                                                                                <p className="help is-danger" style={{ fontSize: '15px' }}>El campo Teléfono de contacto está vacío</p>
+
+                                                                            </div>
+                                                                            :
+                                                                            <div className="control has-icons-left">
+                                                                                <input type="text" placeholder="6969696969" name="telefono_1" className="input" onChange={this.onChange} value={telefono_1} required />
+                                                                                <span className="icon is-small is-left">
+                                                                                    <i className="fa fa-phone"></i>
+                                                                                </span>
+                                                                            </div>
+                                                                        }
                                                                     </div>
                                                                     <div className="field">
                                                                         <label className="label has-text-centered is-size-4">Contraseña</label>
-                                                                        <div className="control has-icons-left">
-                                                                            <input type="password" placeholder="******" name="password" className="input" onChange={this.onChange} value={password} required />
-                                                                            <span className="icon is-small is-left">
-                                                                                <i className="fa fa-lock"></i>
 
-                                                                            </span>
-                                                                        </div>
+                                                                        {this.state.passVacia ?
+                                                                            <div>
+                                                                                <div className="control has-icons-left">
+                                                                                    <input type="password" placeholder="******" name="password" className="input is-danger" onChange={this.onChange} value={password} required />
+                                                                                    <span className="icon is-small is-left">
+                                                                                        <i className="fa fa-lock"></i>
+
+                                                                                    </span>
+                                                                                </div>
+                                                                                <p className="help is-danger" style={{ fontSize: '15px' }}>El campo Contraseña está vacío</p>
+
+                                                                            </div>
+                                                                            :
+                                                                            <div className="control has-icons-left">
+                                                                                <input type="password" placeholder="******" name="password" className="input" onChange={this.onChange} value={password} required />
+                                                                                <span className="icon is-small is-left">
+                                                                                    <i className="fa fa-lock"></i>
+
+                                                                                </span>
+                                                                            </div>
+                                                                        }
                                                                     </div>
 
                                                                     <div style={{ marginTop: '60px' }}>
@@ -246,18 +363,18 @@ export class Registro extends Component {
                                                                                 <p > Registrando y creando su carta digital </p>
                                                                                 <ProgressBar />
                                                                                 {registerFailed ? this.state.terminado = false : this.state.terminado = true}
-                                                                            
+
                                                                             </div>
-                                                                            
+
                                                                             :
-                                                                        
-                                                                                <div className="has-text-centered">
-                                                                                    {registerFailed ? this.state.terminado = false : ""}
-                                                                                    {registerFailed ? this.state.primeraVez = false : ""}
-                                                                                    {this.state.terminado ? this.state.primeraVez = true : ""}
-                                                                                    <button type="submit" className="button" onClick={this.onSubmit} >Registro</button>
-                                                                                </div>
-                                                                            }
+
+                                                                            <div className="has-text-centered">
+                                                                                {registerFailed ? this.state.terminado = false : ""}
+                                                                                {registerFailed ? this.state.primeraVez = false : ""}
+                                                                                {this.state.terminado ? this.state.primeraVez = true : ""}
+                                                                                <button type="submit" className="button" onClick={this.onSubmit} >Registro</button>
+                                                                            </div>
+                                                                        }
 
                                                                     </div>
                                                                 </form>
@@ -289,15 +406,15 @@ export class Registro extends Component {
 
         const adminPage = (
             <div >
-                
-                    <PrivateRouteLogin to="/admin-page" />
-               
+
+                <PrivateRouteLogin to="/admin-page" />
+
             </div>
         );
 
         return (
             <React.Fragment>
-               {!isAuthenticated  ? !registerFailed && this.state.primeraVez ? logged : unlogged : adminPage} 
+                {!isAuthenticated ? !registerFailed && this.state.primeraVez ? logged : unlogged : adminPage}
             </React.Fragment>
 
         );

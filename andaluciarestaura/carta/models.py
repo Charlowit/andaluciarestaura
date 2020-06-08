@@ -16,9 +16,10 @@ TAMANIOS = (
     ('XXL','XXL'),
 )
 
+
 class Carta(models.Model):
     name = models.CharField(max_length=100, blank=False, default="cartanegocio")
-    propietario = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, on_delete=models.CASCADE, related_name="propietario")
+    propietario = models.ForeignKey(settings.AUTH_USER_MODEL, null=False, on_delete=models.CASCADE, related_name="propietario")
 
     url_facebook = models.CharField(max_length=50, default='-', null=True)
     url_instagram = models.CharField(max_length=50, default='-', null=True)

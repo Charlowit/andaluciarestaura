@@ -48,7 +48,7 @@ def index(request,cif_cliente):
     if len(cartas) > 0:
 
         carta = cartas[0]
-
+        
         Carta.objects.filter(id=carta['id']).update(contador_visitas=F('contador_visitas') + 1)
 
         url_facebook = carta['url_facebook']            
@@ -58,7 +58,7 @@ def index(request,cif_cliente):
         plantilla = carta['plantilla']
 
         categorias = []
-        categoriasRaw = consumir_api(server_local+"/api/damelascategorias/?carta=", carta['id'])
+        categoriasRaw = consumir_api(server_local+"/api/damelascategorias/?carta=" + str(carta['id']))
         categoriasRaw.sort(key=lambda k:k['posicion'])
 
         for categoria in categoriasRaw:
@@ -67,7 +67,6 @@ def index(request,cif_cliente):
             if len(data) > 0:
                 for p in data:
                     productos.append(p)
-
          
     template = loader.get_template('../../frontend/templates/frontend/free2.html')
 

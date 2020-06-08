@@ -19,7 +19,8 @@ export class Login extends Component {
     state = {
         cif: "",
         password: "",
-
+        cifVacio: false,
+        passVacia: false,
     }
 
     static propTypes = {
@@ -30,7 +31,22 @@ export class Login extends Component {
     onSubmit = e => {
         console.log("");
         e.preventDefault();
-        this.props.login(this.state.cif, this.state.password);
+
+        if(this.state.cif == ""){
+            this.setState({ cifVacio: true })
+        } else {
+            this.setState({ cifVacio: false })
+        }
+
+        if(this.state.password == ""){
+            this.setState({ passVacia: true })
+        } else {
+            this.setState({ passVacia: false })
+        }
+
+        if(this.state.cif != "" && this.state.password != ""){
+            this.props.login(this.state.cif, this.state.password);
+        }
     };
 
     onChange = e => this.setState({ [e.target.name]: e.target.value });
@@ -46,7 +62,7 @@ export class Login extends Component {
 
 
                 <div className="hero-body">
-                    <div className="has-text-centered" style={{paddingTop: '30px'}}>
+                    <div className="has-text-centered" style={{ paddingTop: '30px' }}>
                         <h1 className="title is-spaced is-size-1-desktop is-size-2-tablet is-size-3-mobile" style={colorBlue}>
                             Bienvenid@ a Córdoba Restaura
                                                     </h1>
@@ -55,7 +71,7 @@ export class Login extends Component {
                                                     </h2>
 
                     </div>
-                    <div className="container" style={{marginTop: '10%'}}>
+                    <div className="container" style={{ marginTop: '10%' }}>
                         <div className="columns is-centered" style={{ marginLeft: '-10%' }}>
 
 
@@ -71,6 +87,12 @@ export class Login extends Component {
                                                     <i className="fas fa-id-card-alt"></i>
                                                 </span>
                                             </div>
+                                            {this.state.cifVacio ?
+
+                                                <p className="help is-danger" style={{ fontSize: '15px' }}>El campo CIF/NIF Empresa está vacío</p>
+                                                :
+                                                ""
+                                            }
                                         </div>
                                         <div className="field">
                                             <label className="label has-text-centered is-size-4">Password</label>
@@ -80,6 +102,12 @@ export class Login extends Component {
                                                     <i className="fa fa-lock"></i>
                                                 </span>
                                             </div>
+                                            {this.state.passVacia ?
+
+                                                <p className="help is-danger" style={{ fontSize: '15px' }}>El campo Password está vacío</p>
+                                                :
+                                                ""
+                                            }
                                         </div>
                                         <div className="has-text-centered">
                                             <button type="submit is-outlined" className="button" style={{ backgroundColor: '#bca466', color: 'white', display: 'inline' }} onClick={this.onSubmit} >Login</button>

@@ -34,6 +34,16 @@ const alertOptions = {
     position: 'top center'
 }
 
+/*const AlertTemplate = ({ style, options, message, close }) => (
+    <div style={{backgroundColor: 'white', color: 'black'}}>
+      {options.type === 'info' && '!'}
+      {options.type === 'success' && ':)'}
+      {options.type === 'error' && ':('}
+      {message}
+      <button onClick={close}>X</button>
+    </div>
+  )*/
+
 class App extends Component {
 
   componentDidMount() {
@@ -53,7 +63,7 @@ class App extends Component {
                         <PrivateRoute exact path="/admin-page" component={AdminPage} />
                         <Route exact path="/register-page" component={Registro} />
                         <PrivateRoute exact path="/servicios-page" component={ServiciosPage} />
-                        <PrivateRouteCartaPage exact path="/carta-page" component={CartaPage} />
+                        <Route exact path="/carta-page/:id" component={CartaPage} />
                         <PrivateRoute exact path="/reservas-page" component={ReservasPage} />
                         <PrivateRoute exact path="/delivery-page" component={DeliveryPage} />
                         <Route exact path="/pdf-upload" component={FileUpload} />

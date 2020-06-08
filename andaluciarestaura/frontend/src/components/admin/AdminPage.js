@@ -109,7 +109,6 @@ class AdminPage extends Component {
 
         return (
             <React.Fragment>
-                ruta
                 <div className="section" style={{ marginTop: '40px' }}>
                     <div className="columns">
                         <div className="column is-2"></div>
