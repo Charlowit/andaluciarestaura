@@ -50,3 +50,11 @@ class CartaSerializerActualizar(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class CartaSerializerV3(serializers.ModelSerializer):
+    class Meta:
+        model = Carta
+        fields = ('name', 'propietario', 'url_facebook', 'url_instagram', 'url_tripadvisor', 'eslogan', 'plantilla', 'contador_visitas')
+
+    def create(self, validated_data):
+        carta = Carta.objects.create(validated_data['name'], validated_data['propietario'],validated_data['url_facebook'],validated_data['url_instagram'],validated_data['url_tripadvisor'],validated_data['eslogan'], validated_data['plantilla'],validated_data['contador_visitas'] )    
+        return carta

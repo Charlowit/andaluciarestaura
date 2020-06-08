@@ -191,6 +191,7 @@ export class CartaPage extends Component {
         deleteproducto: PropTypes.func.isRequired,
         subirproducto: PropTypes.func.isRequired,
         deleteCategoria: PropTypes.func.isRequired,
+        auth: PropTypes.func.isRequired,
         addCategoria: PropTypes.func.isRequired
     };
 
@@ -622,230 +623,235 @@ export class CartaPage extends Component {
                                                             {categoria.id == producto.categoria ?
 
                                                                 <div className='card'>
+                                                                    <div class="card-image">
+                                                                        <figure class="image is-4by3">
+                                                                        <img
+                                                                                                src="static/frontend/cerverzaP2.png"></img>
+    </figure>
+  </div>
+                                                                        <div className="columns">
 
-                                                                    <div className="columns">
-                                                                        {/** 
-                                                                        <div className="column is-full-mobile is-one-fifth">
-                                                                            <div className="columns" style={{ height: '100%', width: '100%' }}>
-                                                                                <div className="column is-centered" >
-                                                                                    <figure className="image is-inline-block" style={{ marginTop: '20px', marginLeft: '20px' }}>
-                                                                                        <img className="is-rounded"
-                                                                                            src="static/frontend/cerverzaP2.png"></img>
-                                                                                    </figure>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>*/}
-                                                                        <div className="column">
-                                                                            <div className="container">
-                                                                                <div className="column is-full">
-                                                                                    <div className="columns">
-
-                                                                                        <div className="column is-two-thirds"
-                                                                                            style={{ marginLeft: '2%', marginTop: '2%' }}>
-                                                                                            <h1 className="title"> {producto.name} </h1>
-                                                                                            <h2 className="subtitle has-text-weight-light">  {producto.descripcion}</h2>
-                                                                                        </div>
-                                                                                        <div className="column has-text-centered">
-                                                                                            <div
-                                                                                                style={{ width: '100%', marginTop: '5%', marginBottom: '6%' }}>
-                                                                                                <span className="icon is-small" style={{ color: 'rgb(51, 153, 255)' }}>
-                                                                                                    <i className="fas fa-dot-circle" aria-hidden="true"></i>
-                                                                                                </span>
-                                                                                            </div>
-                                                                                            <span>
-                                                                                                <b> {producto.titulo_precio1} </b>
-                                                                                            </span>
-                                                                                            <div style={{ width: '100%' }}>
-                                                                                                <span>
-                                                                                                    <b style={{ color: 'red' }}>  {!producto.precio1 == "" ? producto.precio1 : ""}€</b>
-                                                                                                </span>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <div className="column has-text-centered"
-                                                                                            style={{ marginLeft: '4%'}}>
-                                                                                            <div style={{ width: '100%' }}>
-                                                                                                <span className="icon is-small"
-                                                                                                    style={{ fontSize: ' 36px', color: 'rgb(51, 153, 255)' }}>
-                                                                                                    <i className="fas fa-dot-circle" aria-hidden="true"></i>
-                                                                                                </span>
-                                                                                            </div>
-                                                                                            <span>
-                                                                                                <b> {producto.titulo_precio2} </b>
-                                                                                            </span>
-                                                                                            <div style={{ width: '100%' }}>
-                                                                                                <span>
-                                                                                                    <b style={{ color: 'red' }}>  {!producto.precio2 == "" ? producto.precio2 : ""}€</b>
-                                                                                                </span>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <div className="column has-text-centered"
-                                                                                            style={{ marginLeft: '4%'}}>
-                                                                                            <div style={{ width: '100%' }}>
-                                                                                                <span className="icon is-small"
-                                                                                                    style={{ fontSize: ' 36px', color: 'rgb(51, 153, 255)' }}>
-                                                                                                    <i className="fas fa-dot-circle" aria-hidden="true"></i>
-                                                                                                </span>
-                                                                                            </div>
-                                                                                            <span>
-                                                                                                <b> {producto.titulo_precio3} </b>
-                                                                                            </span>
-                                                                                            <div style={{ width: '100%' }}>
-                                                                                                <span>
-                                                                                                    <b style={{ color: 'red' }}>  {!producto.precio3 == "" ? producto.precio3 : ""}€</b>
-                                                                                                </span>
-                                                                                            </div>
-                                                                                        </div>
+                                                                            <div className="column is-full-mobile is-one-fifth">
+                                                                                <div className="columns" style={{ height: '100%', width: '100%' }}>
+                                                                                    <div className="column is-centered" >
+                                                                                        <figure className="image is-inline-block" style={{ marginTop: '20px', marginLeft: '20px' }}>
+                                                                                            <img
+                                                                                                src="static/frontend/cerverzaP2.png"></img>
+                                                                                        </figure>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
+                                                                            <div className="column">
+                                                                                <div className="container">
+                                                                                    <div className="column is-full">
+                                                                                        <div className="columns ">
 
-                                                                            <div className="columns is-full" style={{ marginTop: '-20px' }}>
-                                                                                <div className="column is-two-thirds is-full-mobile">
-                                                                                    <div className="columns is-mobile">
-                                                                                        <div className="column has-text-centered" style={{ marginLeft: '2%' }}>
-
-                                                                                            {producto.is_apio ?
-                                                                                                <img
-                                                                                                    src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_apio.svg"
-                                                                                                    alt="triangle with all three sides equal" width="50" />
-                                                                                                :
-                                                                                                ""
-                                                                                            }
-
-                                                                                            {producto.is_altramuces ?
-
-                                                                                                <img
-                                                                                                    src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_altramuces.svg"
-                                                                                                    alt="triangle with all three sides equal" width="50" />
-                                                                                                :
-                                                                                                ""
-                                                                                            }
-
-
-                                                                                            {producto.is_cacahuete ?
-                                                                                                <img
-                                                                                                    src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_cacahuete.svg"
-                                                                                                    alt="triangle with all three sides equal" width="50" />
-                                                                                                :
-                                                                                                ""
-                                                                                            }
-
-                                                                                            {producto.is_crustaceo ?
-                                                                                                <img
-                                                                                                    src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_crustaceo.svg"
-                                                                                                    alt="triangle with all three sides equal" width="50" />
-                                                                                                :
-                                                                                                ""
-                                                                                            }
-
-                                                                                            {producto.is_frutos_con_cascara ?
-                                                                                                <img
-                                                                                                    src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_frutos_con_cascara.svg"
-                                                                                                    alt="triangle with all three sides equal" width="50" />
-                                                                                                :
-                                                                                                ""
-                                                                                            }
-
-                                                                                            {producto.is_gluten ?
-                                                                                                <img
-                                                                                                    src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_gluten.svg"
-                                                                                                    alt="triangle with all three sides equal" width="50" />
-                                                                                                :
-                                                                                                ""
-                                                                                            }
-
-                                                                                            {producto.is_huevo ?
-                                                                                                <img
-                                                                                                    src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_huevo.svg"
-                                                                                                    alt="triangle with all three sides equal" width="50" />
-                                                                                                :
-                                                                                                ""
-                                                                                            }
-
-                                                                                            {producto.is_lacteo ?
-                                                                                                <img
-                                                                                                    src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_lacteo.svg"
-                                                                                                    alt="triangle with all three sides equal" width="50" />
-                                                                                                :
-                                                                                                ""
-                                                                                            }
-
-                                                                                            {producto.is_molusco ?
-                                                                                                <img
-                                                                                                    src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_moluscos.svg"
-                                                                                                    alt="triangle with all three sides equal" width="50" />
-                                                                                                :
-                                                                                                ""
-                                                                                            }
-
-
-                                                                                            {producto.is_mostaza ?
-                                                                                                <img
-                                                                                                    src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_mostaza.svg"
-                                                                                                    alt="triangle with all three sides equal" width="50" />
-                                                                                                :
-                                                                                                ""
-                                                                                            }
-                                                                                            {producto.is_pescado ?
-                                                                                                <img
-                                                                                                    src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_pescado.svg"
-                                                                                                    alt="triangle with all three sides equal" width="50" />
-                                                                                                :
-                                                                                                ""
-                                                                                            }
-                                                                                            {producto.is_sesamo ?
-                                                                                                <img
-                                                                                                    src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_sesamo.svg"
-                                                                                                    alt="triangle with all three sides equal" width="50" />
-                                                                                                :
-                                                                                                ""
-                                                                                            }
-                                                                                            {producto.is_soja ?
-                                                                                                <img
-                                                                                                    src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_soja.svg"
-                                                                                                    alt="triangle with all three sides equal" width="50" />
-                                                                                                :
-                                                                                                ""
-                                                                                            }
+                                                                                            <div className="column is-two-thirds"
+                                                                                                style={{ marginLeft: '2%', marginTop: '2%' }}>
+                                                                                                <h1 className="title"> {producto.name} </h1>
+                                                                                                <h2 className="subtitle has-text-weight-light">  {producto.descripcion}</h2>
+                                                                                            </div>
+                                                                                            <div className="column has-text-centered">
+                                                                                                <div
+                                                                                                    style={{ width: '100%', marginTop: '5%', marginBottom: '6%' }}>
+                                                                                                    <span className="icon is-small" style={{ color: 'rgb(51, 153, 255)' }}>
+                                                                                                        <i className="fas fa-dot-circle" aria-hidden="true"></i>
+                                                                                                    </span>
+                                                                                                </div>
+                                                                                                <span>
+                                                                                                    <b> {producto.titulo_precio1} </b>
+                                                                                                </span>
+                                                                                                <div style={{ width: '100%' }}>
+                                                                                                    <span>
+                                                                                                        <b style={{ color: 'red' }}>  {!producto.precio1 == "" ? producto.precio1 : ""}€</b>
+                                                                                                    </span>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div className="column has-text-centered"
+                                                                                                style={{ marginLeft: '4%' }}>
+                                                                                                <div style={{ width: '100%' }}>
+                                                                                                    <span className="icon is-small"
+                                                                                                        style={{ fontSize: ' 36px', color: 'rgb(51, 153, 255)' }}>
+                                                                                                        <i className="fas fa-dot-circle" aria-hidden="true"></i>
+                                                                                                    </span>
+                                                                                                </div>
+                                                                                                <span>
+                                                                                                    <b> {producto.titulo_precio2} </b>
+                                                                                                </span>
+                                                                                                <div style={{ width: '100%' }}>
+                                                                                                    <span>
+                                                                                                        <b style={{ color: 'red' }}>  {!producto.precio2 == "" ? producto.precio2 : ""}€</b>
+                                                                                                    </span>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div className="column has-text-centered"
+                                                                                                style={{ marginLeft: '4%' }}>
+                                                                                                <div style={{ width: '100%' }}>
+                                                                                                    <span className="icon is-small"
+                                                                                                        style={{ fontSize: ' 36px', color: 'rgb(51, 153, 255)' }}>
+                                                                                                        <i className="fas fa-dot-circle" aria-hidden="true"></i>
+                                                                                                    </span>
+                                                                                                </div>
+                                                                                                <span>
+                                                                                                    <b> {producto.titulo_precio3} </b>
+                                                                                                </span>
+                                                                                                <div style={{ width: '100%' }}>
+                                                                                                    <span>
+                                                                                                        <b style={{ color: 'red' }}>  {!producto.precio3 == "" ? producto.precio3 : ""}€</b>
+                                                                                                    </span>
+                                                                                                </div>
+                                                                                            </div>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
-                                                                                <div className="column is-full-mobile">
-                                                                                    <div className="columns is-mobile has-text-centered">
-                                                                                        <div className="column">
-                                                                                            <button className="button is-warning"> Editar </button>
+
+                                                                                <div className="columns is-full" style={{ marginTop: '-20px' }}>
+                                                                                    <div className="column is-two-thirds is-full-mobile">
+                                                                                        <div className="columns is-mobile">
+                                                                                            <div className="column has-text-centered" style={{ marginLeft: '2%' }}>
+
+                                                                                                {producto.is_apio ?
+                                                                                                    <img
+                                                                                                        src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_apio.svg"
+                                                                                                        alt="triangle with all three sides equal" width="50" />
+                                                                                                    :
+                                                                                                    ""
+                                                                                                }
+
+                                                                                                {producto.is_altramuces ?
+
+                                                                                                    <img
+                                                                                                        src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_altramuces.svg"
+                                                                                                        alt="triangle with all three sides equal" width="50" />
+                                                                                                    :
+                                                                                                    ""
+                                                                                                }
+
+
+                                                                                                {producto.is_cacahuete ?
+                                                                                                    <img
+                                                                                                        src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_cacahuete.svg"
+                                                                                                        alt="triangle with all three sides equal" width="50" />
+                                                                                                    :
+                                                                                                    ""
+                                                                                                }
+
+                                                                                                {producto.is_crustaceo ?
+                                                                                                    <img
+                                                                                                        src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_crustaceo.svg"
+                                                                                                        alt="triangle with all three sides equal" width="50" />
+                                                                                                    :
+                                                                                                    ""
+                                                                                                }
+
+                                                                                                {producto.is_frutos_con_cascara ?
+                                                                                                    <img
+                                                                                                        src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_frutos_con_cascara.svg"
+                                                                                                        alt="triangle with all three sides equal" width="50" />
+                                                                                                    :
+                                                                                                    ""
+                                                                                                }
+
+                                                                                                {producto.is_gluten ?
+                                                                                                    <img
+                                                                                                        src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_gluten.svg"
+                                                                                                        alt="triangle with all three sides equal" width="50" />
+                                                                                                    :
+                                                                                                    ""
+                                                                                                }
+
+                                                                                                {producto.is_huevo ?
+                                                                                                    <img
+                                                                                                        src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_huevo.svg"
+                                                                                                        alt="triangle with all three sides equal" width="50" />
+                                                                                                    :
+                                                                                                    ""
+                                                                                                }
+
+                                                                                                {producto.is_lacteo ?
+                                                                                                    <img
+                                                                                                        src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_lacteo.svg"
+                                                                                                        alt="triangle with all three sides equal" width="50" />
+                                                                                                    :
+                                                                                                    ""
+                                                                                                }
+
+                                                                                                {producto.is_molusco ?
+                                                                                                    <img
+                                                                                                        src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_moluscos.svg"
+                                                                                                        alt="triangle with all three sides equal" width="50" />
+                                                                                                    :
+                                                                                                    ""
+                                                                                                }
+
+
+                                                                                                {producto.is_mostaza ?
+                                                                                                    <img
+                                                                                                        src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_mostaza.svg"
+                                                                                                        alt="triangle with all three sides equal" width="50" />
+                                                                                                    :
+                                                                                                    ""
+                                                                                                }
+                                                                                                {producto.is_pescado ?
+                                                                                                    <img
+                                                                                                        src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_pescado.svg"
+                                                                                                        alt="triangle with all three sides equal" width="50" />
+                                                                                                    :
+                                                                                                    ""
+                                                                                                }
+                                                                                                {producto.is_sesamo ?
+                                                                                                    <img
+                                                                                                        src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_sesamo.svg"
+                                                                                                        alt="triangle with all three sides equal" width="50" />
+                                                                                                    :
+                                                                                                    ""
+                                                                                                }
+                                                                                                {producto.is_soja ?
+                                                                                                    <img
+                                                                                                        src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_soja.svg"
+                                                                                                        alt="triangle with all three sides equal" width="50" />
+                                                                                                    :
+                                                                                                    ""
+                                                                                                }
+                                                                                            </div>
                                                                                         </div>
-                                                                                        <div className="column">
-                                                                                            <button className="button is-danger" onClick={this.props.deleteproducto.bind(this, producto.id, producto.categoria)}> Borrar </button>
+                                                                                    </div>
+                                                                                    <div className="column is-full-mobile">
+                                                                                        <div className="columns is-mobile has-text-centered">
+                                                                                            <div className="column">
+                                                                                                <button className="button is-warning"> Editar </button>
+                                                                                            </div>
+                                                                                            <div className="column">
+                                                                                                <button className="button is-danger" onClick={this.props.deleteproducto.bind(this, producto.id, producto.categoria)}> Borrar </button>
+                                                                                            </div>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
+
                                                                             </div>
 
                                                                         </div>
 
                                                                     </div>
 
-                                                                </div>
-
                                                                 :
                                                                 <div>
-                                                                    {this.state.vacio = false}
-                                                                </div>
+                                                                        {this.state.vacio = false}
+                                                                    </div>
                                                             }
                                                         </div>
                                                     ))}
-                                                </div>
-                                            ))}
+                                                        </div>
+                                                    ))}
 
-                                        </div>
+                                                </div>
+                                    </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                {/* FIN MOSTRAR PRODUCTOS DE UNA CARTA*/}
+                    {/* FIN MOSTRAR PRODUCTOS DE UNA CARTA*/}
             </Fragment >
         )
     }
@@ -853,10 +859,11 @@ export class CartaPage extends Component {
 }
 
 const mapStateToProps = state => ({
-    cartas: state.cartas.cartas,
+                    cartas: state.cartas.cartas,
     categorias: state.cartas.categorias,
     canGetProducts: state.cartas.canGetProducts,
     is_active: state.cartas.is_active,
+    auth: state.auth,
 });
 
-export default connect(mapStateToProps, { subirproducto, addCategoria, getCategorias, deleteproducto, deleteCategoria })(CartaPage);
+export default connect(mapStateToProps, { subirproducto, addCategoria, getCategorias, deleteproducto, deleteCategoria})(CartaPage);

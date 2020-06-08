@@ -8,6 +8,7 @@ TAMANIOS = (
     ('Racion', 'Racion'),
     ('Plato', 'Plato'),
     ('Bandeja', 'Bandeja'),
+    ('Tamanio Unico', 'Tamanio Unico'),
     ('S','S'),
     ('M', 'M'),
     ('L','L'),
@@ -19,11 +20,11 @@ class Carta(models.Model):
     name = models.CharField(max_length=100, blank=False, default="cartanegocio")
     propietario = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, on_delete=models.CASCADE, related_name="propietario")
 
-    url_facebook = models.CharField(max_length=50, default=' ')
-    url_instagram = models.CharField(max_length=50, default=' ')
-    url_tripadvisor = models.CharField(max_length=50, default=' ')
-    eslogan = models.CharField(max_length=50, default=' ')
-    plantilla = models.CharField(max_length=50, default=' ')
+    url_facebook = models.CharField(max_length=50, default='-', null=True)
+    url_instagram = models.CharField(max_length=50, default='-', null=True)
+    url_tripadvisor = models.CharField(max_length=50, default='-', null=True)
+    eslogan = models.CharField(max_length=50, default='-', null=True)
+    plantilla = models.CharField(max_length=50, default='-', null=True)
     
     contador_visitas = models.IntegerField(default=0)
     

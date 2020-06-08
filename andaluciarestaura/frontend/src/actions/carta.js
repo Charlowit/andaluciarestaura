@@ -25,7 +25,7 @@ export const subirproducto = (producto) => (dispatch, getState) => {
 
     const body = JSON.stringify({categoria: producto.categoriaParaProducto, name: producto.name, descripcion: producto.descripcion, titulo_precio1: producto.tamanio, titulo_precio2: producto.tamanio2, titulo_precio3: producto.tamanio3, precio1: producto.precio1, precio2: producto.precio2, precio3: producto.precio3, is_apio: producto.is_apio, is_altramuces: producto.is_altramuces, is_cacahuete: producto.is_cacahuete, is_crustaceo: producto.is_crustaceo, is_frutos_con_cascara: producto.is_frutos_con_cascara, is_gluten: producto.is_gluten, is_huevo: producto.is_huevo, is_lacteo: producto.is_lacteo, is_molusco: producto.is_molusco, is_mostaza: producto.is_mostaza, is_pescado: producto.is_pescado, is_sesamo: producto.is_sesamo, is_soja: producto.is_soja, carta: producto.carta });
 
-    axios.post(`/api/productact/?categoria=${producto.categoriaParaProducto}`, body, config)
+    axios.post(`/api/productact/?categoria=${producto.categoriaParaProducto}`, body, tokenConfig(getState))
         .then(res => {
             dispatch({
                 type: ADD_PRODUCTO,
@@ -90,7 +90,7 @@ export const addCategoria = (categoria) => (dispatch, getState) => {
     console.log("Añado la categoria o klk")
 
     const body = JSON.stringify({ name: categoria.nombreNuevaCategoria, descripcion: categoria.descripcion, posicion: categoria.posicion, info_extra: categoria.info_extra, carta: categoria.carta});
-    axios.post(`/api/damelascategorias/?carta=${categoria.carta}`, body, config)
+    axios.post(`/api/damelascategorias/?carta=${categoria.carta}`, body, tokenConfig(getState))
         .then(res => {
             dispatch({
                 type: ADD_CATEGORIA,

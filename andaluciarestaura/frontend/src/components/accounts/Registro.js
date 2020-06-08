@@ -128,7 +128,7 @@ export class Registro extends Component {
                                 <h1 className="title" style={{ color: 'white', marginTop: '2%' }}>¡Únete a nosotr@s!</h1>
                                 <div className="content">
                                     <div className="columns is-centered is-marginless" style={{ width: '100%' }}>
-                                        <div className="column is-one-third-desktop is-half-widescreen is-half-tablet is-full-mobile">
+                                        <div className="column is-one-third-desktop is-half-widescreen is-half-tablet">
                                             <section className="hero has-text-centered">
                                                 <div className="hero-body">
                                                     <div className="container ">
