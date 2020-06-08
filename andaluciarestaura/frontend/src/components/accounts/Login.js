@@ -14,6 +14,20 @@ const colorBlue = {
     color: '#0F1C93'
 }
 
+const bkg = {
+    marginBottom: '6%',
+    backgroundPosition: 'center',
+    backgroundImage: "url('https://www.dev.andaluciarestaura.com/static/frontend/backLogin.png')",
+    backgroundRepeat: 'no-repeat',
+    marginTop: '0px',
+    backgroundSize: 'cover'
+
+}
+
+const colorWhite = {
+    color: 'white'
+}
+
 export class Login extends Component {
 
     state = {
@@ -32,19 +46,19 @@ export class Login extends Component {
         console.log("");
         e.preventDefault();
 
-        if(this.state.cif == ""){
+        if (this.state.cif == "") {
             this.setState({ cifVacio: true })
         } else {
             this.setState({ cifVacio: false })
         }
 
-        if(this.state.password == ""){
+        if (this.state.password == "") {
             this.setState({ passVacia: true })
         } else {
             this.setState({ passVacia: false })
         }
 
-        if(this.state.cif != "" && this.state.password != ""){
+        if (this.state.cif != "" && this.state.password != "") {
             this.props.login(this.state.cif, this.state.password);
         }
     };
@@ -58,29 +72,33 @@ export class Login extends Component {
             <Redirect to="/admin-page" />
         );
         const notlogged = (
-            <section className="hero is-medium" >
-
-
-                <div className="hero-body">
-                    <div className="has-text-centered" style={{ paddingTop: '30px' }}>
-                        <h1 className="title is-spaced is-size-1-desktop is-size-2-tablet is-size-3-mobile" style={colorBlue}>
-                            Bienvenid@ a Córdoba Restaura
+            <section className="hero" style={{ marginBottom: "-30px" }} >
+                <div className="has-text-centered" style={{ paddingTop: '150px' }}>
+                    <h1 className="title is-spaced is-size-1-desktop is-size-2-tablet is-size-3-mobile" style={colorBlue}>
+                        Bienvenid@ a Córdoba Restaura
                                                     </h1>
-                        <h2 className="subtitle is-size-4-desktop" style={colorBlue}>
-                            Algo revolucionario va a pasar en tu negocio a partir de este momento.
+                    <h2 className="subtitle is-size-4-desktop" style={colorBlue}>
+                        Algo revolucionario va a pasar en tu negocio a partir de este momento.
                                                     </h2>
 
-                    </div>
-                    <div className="container" style={{ marginTop: '10%' }}>
-                        <div className="columns is-centered" style={{ marginLeft: '-10%' }}>
+                </div>
+                <div className="has-text-centered">
+                    <img src={"https://www.dev.andaluciarestaura.com/static/frontend/image004.png"} width="400" height="175" style={{ marginTop: '80px' }} />
+
+                </div>
+
+                <div className="hero-body" style={bkg}>
+
+                    <div className="container" width="100%" >
+                        <div className="columns is-centered"   >
 
 
-                            <div className="column is-one-quarter has-text-centered" style={{ marginLeft: '10%', marginBottom: '6%' }}>
+                            <div className="column is-one-quarter has-text-centered">
 
-                                <div>
+                                <div className="section" >
                                     <form style={{ marginTop: '10%' }}>
                                         <div className="field">
-                                            <label className="label has-text-centered is-size-4">CIF/NIF Empresa</label>
+                                            <label className="label has-text-centered is-size-4" style={colorWhite}>CIF/NIF Empresa</label>
                                             <div className="control has-icons-left">
                                                 <input type="text" placeholder="e.g. A58818501" className="input" name="cif" onChange={this.onChange} required />
                                                 <span className="icon is-small is-left">
@@ -95,7 +113,7 @@ export class Login extends Component {
                                             }
                                         </div>
                                         <div className="field">
-                                            <label className="label has-text-centered is-size-4">Password</label>
+                                            <label className="label has-text-centered is-size-4" style={colorWhite}>Password</label>
                                             <div className="control has-icons-left">
                                                 <input type="password" placeholder="*******" name="password" className="input" onChange={this.onChange} required />
                                                 <span className="icon is-small is-left">
@@ -119,10 +137,10 @@ export class Login extends Component {
                                 </div>
 
                             </div>
-                            <div className="column is-one-quarter has-text-centered" style={{ marginLeft: '10%' }}>
+                            <div className="column is-one-quarter has-text-centered" style={{ marginTop: '30px' }}>
                                 <div className="centered">
                                     <img className="is-centered" src={image} />
-                                    <p className="has-text-centered">Tapa de Diseño ofrecida by Bar Los Cármenes</p>
+                                    <p className="has-text-centered" style={colorWhite}>Tapa de Diseño ofrecida by Bar Los Cármenes</p>
                                 </div>
 
                             </div>
