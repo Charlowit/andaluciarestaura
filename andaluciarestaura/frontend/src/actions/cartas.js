@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GET_ALL_CARTAS, ADD_CARTA, DELETE_CARTA, GET_EXPECIFIC_CARTA, GET_CARTA, GET_CATEGORIAS} from './types';
+import { GET_ALL_CARTAS, ADD_CARTA, DELETE_CARTA, GET_EXPECIFIC_CARTA, GET_CARTA, GET_CATEGORIAS } from './types';
 import { tokenConfig } from './auth'
 
 export const getCartas = (cif) => (dispatch, getState) => {
@@ -11,8 +11,45 @@ export const getCartas = (cif) => (dispatch, getState) => {
                 type: GET_ALL_CARTAS,
                 payload: res.data
             });
-        })
-        .catch(err => console.log(err));
+
+            res.data.map(carta => (
+
+                axios.get(`/api/getcartas/?carta=${carta.id}`, tokenConfig(getState))
+                    .then(res => {
+                        console.log("Me traigo la carta o que" + res.data[0].id)
+                        dispatch({
+                            type: GET_EXPECIFIC_CARTA,
+                            payload: res.data
+                        });
+
+                        axios.get(`/api/damelascategorias/?carta=${carta.id}`, tokenConfig(getState))
+                            .then(res => {
+                                dispatch({
+                                    type: GET_CATEGORIAS,
+                                    payload: res.data
+                                });
+
+                                res.data.map(categoria => (
+                                    axios.get(`/api/productact/?categoria=${categoria.id}`, tokenConfig(getState))
+                                        .then(res => {
+                                            dispatch({
+                                                type: GET_CARTA,
+                                                payload: res.data
+                                            });
+                                        })
+                                        .catch(err => console.log(err))
+                                ));
+                            })
+                            .catch(err => console.log(err));
+                    })
+                    .catch(err => console.log(err))
+
+
+
+            ));
+
+})
+        .catch (err => console.log(err));
 };
 
 export const getCartaExpecifica = (id) => (dispatch, getState) => {

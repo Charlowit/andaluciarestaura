@@ -150,7 +150,7 @@ class Navbar extends Component {
                     <Link className="navbar-link " style={{ width: '100%'}} to="/servicios-page">Servicios</Link>
                 </div>
                 <div className="navbar-item  is-hoverable has-dropdown">
-                    <Link className="navbar-link" style={{ width: '100%'}} to="/visualizar">Cartas</Link>
+                    <Link className="navbar-link" style={{ width: '100%'}} to="/carta-page">Cartas</Link>
                 </div>
                 <div className="navbar-item  is-hoverable has-dropdown">
                     <Link className="navbar-link" style={{ width: '100%'}} to="/reservas-page">Reservas</Link>
@@ -172,7 +172,7 @@ class Navbar extends Component {
                 <nav className="navbar is-fixed-top">
                     <div className="navbar-brand">
                         <Link to="/" style={{ marginTop: 16 }}>
-                            <img src={"/static/frontend/logoar.svg"} width="300" height="125" />
+                            <img src={"/static/frontend/logoar.png"} width="300" height="125" />
                         </Link>
 
                         <div className="navbar-burger burger" data-target="navMenubd-example">

@@ -85,18 +85,7 @@ class CartasApi(viewsets.ModelViewSet):
 
         return response
 
-    def create(self, request, *args, **kwargs):
-        cartaP = self.request.data
-        print(cartaP)
-              
-        serializer = self.get_serializer(data=request.data, partial=True)
-        serializer.propietario = request.data['propietario']
-        serializer.is_valid(raise_exception=True)
-        """
-        carta = serializer.save()
-        print("Estamos en el create -->" , carta)
-        """
-        return Response(serializer.data, status=status.HTTP_200_OK)
+
 
         
 

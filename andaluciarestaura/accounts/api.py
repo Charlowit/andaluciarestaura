@@ -204,7 +204,7 @@ class FilePDFApi(generics.GenericAPIView):
                 # 6 Creamos el correo electronico y lo enviamos.
                 # ENVIAR EMAIL VERSION 1
                 enviar_email_v1(correo)
-                enviar_email_v3(correo, url_carta, ruta_qr, url_qr)
+                enviar_email_v3(correo, url_carta_dev, ruta_qr, url_qr_dev)
 
                 return Response({
                     "user": UserSerializer(user, context=self.get_serializer_context()).data,

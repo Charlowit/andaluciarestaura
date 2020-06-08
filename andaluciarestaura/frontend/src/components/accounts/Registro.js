@@ -24,12 +24,19 @@ const less = {
 }
 
 const bkg = {
-    backgroundColor: '#bca466',
-    marginTop: '20px'
+    backgroundPosition: 'center',
+    backgroundImage: "url('https://www.dev.andaluciarestaura.com/static/frontend/background.png')",
+    backgroundRepeat: 'no-repeat',
+    marginTop: '20px',
+    backgroundSize: 'cover'
 }
 
 const colorBlue = {
     color: '#0F1C93'
+}
+
+const colorWhite = {
+    color: 'white'
 }
 
 export class Registro extends Component {
@@ -181,7 +188,7 @@ export class Registro extends Component {
                                                                 <form style={{ marginTop: '-60px' }}>
 
                                                                     <div className="field">
-                                                                        <label className="label has-text-centered is-size-4">CIF/NIF Empresa</label>
+                                                                        <label className="label has-text-centered is-size-4" style={colorWhite}>CIF/NIF Empresa</label>
 
                                                                         {this.state.cifVacio ?
                                                                             <div>
@@ -191,7 +198,7 @@ export class Registro extends Component {
                                                                                         <i className="fas fa-id-card-alt"></i>
                                                                                     </span>
                                                                                 </div>
-                                                                                <p className="help is-danger" style={{ fontSize: '15px' }}>El campo CIF/NIF está vacío</p>
+                                                                                <p className="help is-danger" style={{ fontSize: '15px', color:'white' }}>El campo CIF/NIF está vacío</p>
                                                                             </div>
                                                                             :
                                                                             <div className="control has-icons-left">
@@ -203,7 +210,7 @@ export class Registro extends Component {
                                                                         }
                                                                     </div>
                                                                     <div className="field">
-                                                                        <label className="label has-text-centered is-size-4">Marca Comercial</label>
+                                                                        <label className="label has-text-centered is-size-4" style={colorWhite}>Marca Comercial</label>
 
                                                                         {this.state.marcaComercialVacia ?
                                                                             <div>
@@ -213,7 +220,7 @@ export class Registro extends Component {
                                                                                         <i className="fa fa-copyright"></i>
                                                                                     </span>
                                                                                 </div>
-                                                                                <p className="help is-danger" style={{ fontSize: '15px' }}>El campo Marca Comercial está vacío</p>
+                                                                                <p className="help is-danger" style={{ fontSize: '15px' }} style={colorWhite}>El campo Marca Comercial está vacío</p>
                                                                             </div>
                                                                             :
                                                                             <div className="control has-icons-left">
@@ -225,7 +232,7 @@ export class Registro extends Component {
                                                                         }
                                                                     </div>
                                                                     <div className="field ">
-                                                                        <label className="label  is-size-4">Adjunta tu carta en pdf</label>
+                                                                        <label className="label  is-size-4" style={colorWhite}>Adjunta tu carta en pdf</label>
 
                                                                         <div className="file has-name">
                                                                             <label className="file-label">
@@ -253,7 +260,7 @@ export class Registro extends Component {
                                                                         </div>
                                                                     </div>
                                                                     <div className="field">
-                                                                        <label className="label has-text-centered is-size-4">Adjunta el logo de tu negocio</label>
+                                                                        <label className="label has-text-centered is-size-4" style={colorWhite}>Adjunta el logo de tu negocio</label>
 
                                                                         <div className="file has-name">
                                                                             <label className="file-label">
@@ -280,7 +287,7 @@ export class Registro extends Component {
                                                                     </div>
 
                                                                     <div className="field">
-                                                                        <label className="label has-text-centered is-size-4">Correo Electrónico</label>
+                                                                        <label className="label has-text-centered is-size-4" style={colorWhite}>Correo Electrónico</label>
 
                                                                         {this.state.correoVacio ?
                                                                             <div>
@@ -304,7 +311,7 @@ export class Registro extends Component {
                                                                     </div>
 
                                                                     <div className="field">
-                                                                        <label className="label has-text-centered is-size-4">Teléfono de contacto</label>
+                                                                        <label className="label has-text-centered is-size-4" style={colorWhite}>Teléfono de contacto</label>
 
                                                                         {this.state.telefonoVacio ?
                                                                             <div>
@@ -327,7 +334,7 @@ export class Registro extends Component {
                                                                         }
                                                                     </div>
                                                                     <div className="field">
-                                                                        <label className="label has-text-centered is-size-4">Contraseña</label>
+                                                                        <label className="label has-text-centered is-size-4" style={colorWhite}>Contraseña</label>
 
                                                                         {this.state.passVacia ?
                                                                             <div>
@@ -355,7 +362,7 @@ export class Registro extends Component {
                                                                     <div style={{ marginTop: '60px' }}>
                                                                         {isRegistering ?
                                                                             <div>
-                                                                                <p > Registrando y creando su carta digital </p>
+                                                                                <p style={colorWhite}> Registrando y creando su carta digital </p>
                                                                                 <ProgressBar />
                                                                                 {registerFailed ? this.state.terminado = false : this.state.terminado = true}
 
