@@ -161,7 +161,10 @@ class FilePDFApi(generics.GenericAPIView):
 
                 #ESTO DA IGUAL EN PRODUCCION QUE EN LOCAL NO NOS INTERFIERE
                 url_carta = 'https://www.andaluciarestaura.com/cartaestatica/' + cif_user
+                url_carta_dev = 'https://www.dev.andaluciarestaura.com/cartaestatica/' + cif_user
+
                 url_qr = 'https://www.andaluciarestaura.com/static/clientes/' + cif_user + '/'+ archivo_qr
+                url_qr_dev = 'https://www.dev.andaluciarestaura.com/static/clientes/' + cif_user + '/'+ archivo_qr
 
                 try:
                     os.mkdir(directorio)
@@ -179,7 +182,7 @@ class FilePDFApi(generics.GenericAPIView):
 
                 #4 Generamos el qr
                 logger.error('ANTES DEL GENERAR EL QR:')
-                generar_qr_file(directorio, archivo_qr, url_carta)
+                generar_qr_file(directorio, archivo_qr, url_carta_dev)
                 logger.error('DESPUES DEL GENERAR EL QR:')
 
 

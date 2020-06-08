@@ -286,7 +286,7 @@ export class CartaPage extends Component {
                                                         <span className="icon">
                                                             <i className=" fas fa-file-pdf"></i>
                                                         </span>
-                                                        <span>Descarga Carta en PDF</span>
+                                                        <span>Ver visualización de la Carta</span>
                                                     </button>
                                                 </div>
                                                 <div className="column">

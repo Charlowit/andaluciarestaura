@@ -108,23 +108,18 @@ export class Registro extends Component {
         } else {
             this.setState({ passVacia: false })
         }
-
-        if (this.state.pdf != null && this.state.logo != null && this.state.cif != "" && this.state.marca_comercial != "" && this.state.email != ""
-            && this.state.telefono_1 != "" && this.state.passVacia != "") {
-            e.preventDefault();
-            let form_data = new FormData();
-            form_data.append('cif', this.state.cif);
-            form_data.append('marca_comercial', this.state.marca_comercial);
-            form_data.append('pdf', this.state.pdf);
-            form_data.append('logo', this.state.logo);
-            form_data.append('email', this.state.email);
-            form_data.append('telefono_1', this.state.telefono_1);
-            form_data.append('password', this.state.password);
-            this.props.subirpdf(form_data);
-            console.log("PDF subido Correctamente");
-        }
-
-
+    
+        e.preventDefault();
+        let form_data = new FormData();
+        form_data.append('cif', this.state.cif);
+        form_data.append('marca_comercial', this.state.marca_comercial);
+        form_data.append('pdf', this.state.pdf);
+        form_data.append('logo', this.state.logo);
+        form_data.append('email', this.state.email);
+        form_data.append('telefono_1', this.state.telefono_1);
+        form_data.append('password', this.state.password);
+        this.props.subirpdf(form_data);
+        console.log("PDF subido Correctamente");     
 
     };
 
