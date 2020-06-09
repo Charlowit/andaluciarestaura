@@ -5,6 +5,7 @@ from .models import Carta, Productos, Categorias
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.decorators import action
 from rest_framework import status
+from accounts.models import User
 
 
 
@@ -86,17 +87,29 @@ class CartasApi(viewsets.ModelViewSet):
         return response
 
     def create(self, request, *args, **kwargs):
-        cartaP = self.request.data
-        print(cartaP)
-              
+        
+        carta_data = request.data
+        user = User.objects.filter(id__exact=carta_data['propietario'])
+        for p in user:
+            print(p)
+
+        """"
+        new_carta = Carta.objects.create(name=carta_data['name'], propietario=user.data,
+                    url_facebook=carta_data['url_facebook'], url_instagram=carta_data['url_instagram'],
+                    url_tripadvisor=carta_data['url_tripadvisor'], eslogan=carta_data['eslogan'],
+                    plantilla=carta_data['plantilla'])
+        new_carta.save()
+        
+        serializer = CartaSerializerActualizar(new_carta)
+         
         serializer = self.get_serializer(data=request.data, partial=True)
         serializer.propietario = request.data['propietario']
         serializer.is_valid(raise_exception=True)
-        """
+        
         carta = serializer.save()
         print("Estamos en el create -->" , carta)
         """
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_200_OK)
 
         
 
