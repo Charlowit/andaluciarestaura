@@ -25,7 +25,7 @@ const less = {
 
 const bkg = {
     backgroundPosition: 'center',
-    backgroundImage: "url('https://www.dev.andaluciarestaura.com/static/frontend/background.png')",
+    backgroundImage: "url('https://www.dev.andaluciarestaura.com/static/frontend/backLogin.png')",
     backgroundRepeat: 'no-repeat',
     marginTop: '20px',
     backgroundSize: 'cover'
@@ -149,7 +149,7 @@ export class Registro extends Component {
         const { isAuthenticated, user, isRegistering, registerFailed } = this.props.auth;
 
         const unlogged = (
-            <div className="section">
+            <div className="section is-paddingless">
                 <div className="container">
                     <section className="hero is-white has-text-centered " style={less}>
                         <div className="hero-body">
@@ -171,17 +171,16 @@ export class Registro extends Component {
                             </div>
                         </div>
                     </section>
+                </div>    
+                    <section className="hero has-text-centered ">
 
-                    <section className="section has-text-centered " style={{ marginTop: '-100px' }}>
-
-                        <div className="container">
-                            <div className="box is-paddingless" style={bkg} >
-                                <h1 className="title" style={{ color: 'white', paddingTop: '20px' }}>¡Únete a nosotr@s!</h1>
-                                <div className="content">
-                                    <div className="columns is-centered is-marginless" style={{ width: '100%' }}>
-                                        <div className="column is-two-fifths is-half-tablet is-full-mobile">
+                        <div className="hero-body is-paddingless"  style={bkg}>
+                                <h1 className="title" style={{ color: 'white', paddingTop: '20px', paddingBottom: '60px' }}>¡Únete a nosotr@s!</h1>
+                                <div className="content is-paddingless">
+                                    <div className="columns is-centered is-marginless is-paddingless" style={{ width: '100%' }}>
+                                        <div className="column is-one-third is-half-tablet is-full-mobile">
                                             <section className="hero has-text-centered">
-                                                <div className="hero-body">
+                                                <div className="hero-body is-paddingless" >
                                                     <div className="container is-paddingless">
                                                         <div className="section is-paddingless">
                                                             <div >
@@ -359,7 +358,7 @@ export class Registro extends Component {
                                                                         }
                                                                     </div>
 
-                                                                    <div style={{ marginTop: '60px' }}>
+                                                                    <div style={{ marginTop: '30px', paddingBottom: '30px' }}>
                                                                         {isRegistering ?
                                                                             <div>
                                                                                 <p style={colorWhite}> Registrando y creando su carta digital </p>
@@ -388,12 +387,9 @@ export class Registro extends Component {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
                         </div>
                     </section>
                 </div>
-            </div>
-
         );
 
         const logged = (

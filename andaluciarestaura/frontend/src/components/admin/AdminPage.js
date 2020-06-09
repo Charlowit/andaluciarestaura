@@ -7,7 +7,16 @@ import ProgressBar from '../progressbar/ProgressBar'
 import PrivateRouteLogin from "../privateroute/PrivateRouteLogin";
 import { Redirect, Link } from 'react-router-dom';
 
-
+const bkg = {
+    backgroundPosition: 'center',
+    backgroundImage: "url('https://www.dev.andaluciarestaura.com/static/frontend/backLogin.png')",
+    backgroundRepeat: 'no-repeat',
+    marginTop: '20px',
+    backgroundSize: 'cover'
+}
+const colorWhite = {
+    color: 'white'
+}
 class AdminPage extends Component {
 
     constructor() {
@@ -109,7 +118,7 @@ class AdminPage extends Component {
 
         return (
             <React.Fragment>
-                <div className="section" style={{ marginTop: '40px' }}>
+                <div className="section is-paddingless" style={{ marginTop: '40px' }}>
                     <div className="columns">
                         <div className="column is-2"></div>
                         <div className="column is-one-third">
@@ -129,286 +138,284 @@ class AdminPage extends Component {
                         </div>
                         <div className="column is-one-fifth"></div>
                     </div>
-                    <hr />
+                    <div style={bkg}>
+                        <form style={{paddingTop: '70px'}} >
+                            <div className="columns" >
+                                <div className="column is-2"></div>
+                                <div className="column is-one-third">
+                                    <div className="field">
+                                        <div className="field-label has-text-left">
+                                            <label className="label" style={colorWhite}>CIF/NIF Empresa</label>
+                                        </div>
+                                        <div className="field-body">
+                                            <div className="field">
+                                                <p className="control has-icons-left">
+                                                    <input className="input" type="text" placeholder="" name="cif" value={cif} readOnly />
+                                                    <span className="icon is-small is-left">
+                                                        <i className="fas fa-id-card-alt"></i>
+                                                    </span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="field ">
+                                        <div className="field-label has-text-left">
+                                            <label className="label" style={colorWhite}>Marca Comercial</label>
+                                        </div>
+                                        <div className="field-body">
+                                            <div className="field">
+                                                <p className="control has-icons-left">
+                                                    <input className="input" type="text" placeholder="" name="marca_comercial" onChange={this.onChange} defaultValue={marca_comercial} />
+                                                    <span className="icon is-small is-left">
+                                                        <i className="fas fa-id-card-alt"></i>
+                                                    </span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="field ">
+                                        <div className="field-label has-text-left">
+                                            <label className="label" style={colorWhite}>Nombre Fiscal</label>
+                                        </div>
+                                        <div className="field-body">
+                                            <div className="field">
+                                                <p className="control has-icons-left">
+                                                    <input className="input" type="text" placeholder="" name="nombre_fiscal" onChange={this.onChange} defaultValue={nombre_fiscal} />
+                                                    <span className="icon is-small is-left">
+                                                        <i className="fas fa-id-card-alt"></i>
+                                                    </span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="field ">
+                                        <div className="field-label has-text-left">
+                                            <label className="label" style={colorWhite}>Razón Social</label>
+                                        </div>
+                                        <div className="field-body">
+                                            <div className="field">
 
-                    <form>
-                        <div className="columns">
-                            <div className="column is-2"></div>
-                            <div className="column is-one-third">
-                                <div className="field">
-                                    <div className="field-label has-text-left">
-                                        <label className="label">CIF/NIF Empresa</label>
-                                    </div>
-                                    <div className="field-body">
-                                        <div className="field">
-                                            <p className="control has-icons-left">
-                                                <input className="input" type="text" placeholder="" name="cif" value={cif} readOnly />
-                                                <span className="icon is-small is-left">
-                                                    <i className="fas fa-id-card-alt"></i>
-                                                </span>
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="field ">
-                                    <div className="field-label has-text-left">
-                                        <label className="label">Marca Comercial</label>
-                                    </div>
-                                    <div className="field-body">
-                                        <div className="field">
-                                            <p className="control has-icons-left">
-                                                <input className="input" type="text" placeholder="" name="marca_comercial" onChange={this.onChange} defaultValue={marca_comercial} />
-                                                <span className="icon is-small is-left">
-                                                    <i className="fas fa-id-card-alt"></i>
-                                                </span>
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="field ">
-                                    <div className="field-label has-text-left">
-                                        <label className="label">Nombre Fiscal</label>
-                                    </div>
-                                    <div className="field-body">
-                                        <div className="field">
-                                            <p className="control has-icons-left">
-                                                <input className="input" type="text" placeholder="" name="nombre_fiscal" onChange={this.onChange} defaultValue={nombre_fiscal} />
-                                                <span className="icon is-small is-left">
-                                                    <i className="fas fa-id-card-alt"></i>
-                                                </span>
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="field ">
-                                    <div className="field-label has-text-left">
-                                        <label className="label">Razón Social</label>
-                                    </div>
-                                    <div className="field-body">
-                                        <div className="field">
-
-                                            <div className="control">
-                                                <div className="select">
-                                                    <select name="razon_social" onChange={this.onChange} defaultValue={razon_social}>
-                                                        <option value="SL">SL</option>
-                                                        <option value="SA">SA</option>
-                                                        <option value="Autonomo">Autonomo</option>
-                                                        <option value="SCOOP">SCOOP</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="field ">
-                                    <div className="field-label has-text-left">
-                                        <label className="label">Dirección fiscal</label>
-                                    </div>
-                                    <div className="field-body">
-                                        <div className="field">
-                                            <p className="control has-icons-left">
-                                                <input className="input" type="text" placeholder="" name="direccion_fiscal" onChange={this.onChange} defaultValue={direccion_fiscal} />
-                                                <span className="icon is-small is-left">
-                                                    <i className="fas fa-address-book"></i>
-                                                </span>
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="field ">
-                                    <div className="field-label has-text-left">
-                                        <label className="label">Localidad</label>
-                                    </div>
-                                    <div className="field-body">
-                                        <div className="field">
-                                            <p className="control has-icons-left">
-                                                <input className="input" type="text" placeholder="" name="localidad" onChange={this.onChange} defaultValue={localidad} />
-                                                <span className="icon is-small is-left">
-                                                    <i className="fas fa-address-book"></i>
-                                                </span>
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="field ">
-                                    <div className="field-label has-text-left">
-                                        <label className="label">Código postal</label>
-                                    </div>
-                                    <div className="field-body">
-                                        <div className="field">
-                                            <p className="control has-icons-left">
-                                                <input className="input" type="text" placeholder="" name="codigo_postal" onChange={this.onChange} defaultValue={codigo_postal} />
-                                                <span className="icon is-small is-left">
-                                                    <i className="fas fa-address-book"></i>
-                                                </span>
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="field ">
-                                    <div className="field-label has-text-left">
-                                        <label className="label">Provincia</label>
-                                    </div>
-                                    <div className="field-body">
-                                        <div className="field">
-                                            <p className="control has-icons-left">
-                                                <input className="input" type="text" placeholder="" name="provincia" onChange={this.onChange} defaultValue={provincia} />
-                                                <span className="icon is-small is-left">
-                                                    <i className="fas fa-address-book"></i>
-                                                </span>
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="column is-one-third">
-                                <div className="field ">
-                                    <div className="field-label is-normal">
-                                        <label className="label has-text-left">Correo Electronico</label>
-                                    </div>
-                                    <div className="field-body">
-                                        <div className="field">
-                                            <p className="control has-icons-left">
-                                                <input className="input" type="text" placeholder="" name="email" onChange={this.onChange} defaultValue={email} />
-                                                <span className="icon is-small is-left">
-                                                    <i className="fas fa-envelope-square"></i>
-                                                </span>
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="field ">
-                                    <div className="field-label is-normal">
-                                        <label className="label has-text-left">Teléfono 1</label>
-                                    </div>
-                                    <div className="field-body">
-                                        <div className="field">
-                                            <p className="control has-icons-left">
-                                                <input className="input" type="text" placeholder="" name="telefono_1" onChange={this.onChange} defaultValue={telefono_1} />
-                                                <span className="icon is-small is-left">
-                                                    <i className="fas fa-phone-square-alt"></i>
-                                                </span>
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="field ">
-                                    <div className="field-label is-normal">
-                                        <label className="label has-text-left">Teléfono 2</label>
-                                    </div>
-                                    <div className="field-body">
-                                        <div className="field">
-                                            <p className="control has-icons-left">
-                                                <input className="input" type="text" placeholder="" name="telefono_2" onChange={this.onChange} defaultValue={telefono_2} />
-                                                <span className="icon is-small is-left">
-                                                    <i className="fas fa-phone-square-alt"></i>
-                                                </span>
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="field ">
-                                    <div className="field-label is-normal">
-                                        <label className="label has-text-left">Eslogan Carta</label>
-                                    </div>
-                                    <div className="field-body">
-                                        <div className="field">
-                                            <p className="control has-icons-left">
-                                                <input className="input" type="text" placeholder="" name="fax" onChange={this.onChange} defaultValue={fax} />
-                                                <span className="icon is-small is-left">
-                                                    <i className="fas fa-address-book"></i>
-                                                </span>
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="columns is-mobile">
-                                    <div className="column">
-                                        <div className="field ">
-                                            <div className="field-label is-normal">
-                                                <label className="label has-text-left">Descarga tu codigo QR</label>
-                                            </div>
-                                            <div className="field-body">
-                                                <div className="field">
-                                                    <a className="button" href={`/static/clientes/${cif}/qr.jpg`} download="QRcode">Descargar</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className="column">
-                                        <div className="field ">
-                                            <div className="field-label is-normal">
-                                                <label className="label has-text-left">Tipo</label>
-                                            </div>
-                                            <div className="field-body">
                                                 <div className="control">
                                                     <div className="select">
-                                                        <select name="tipo_negocio" onChange={this.onChange} defaultValue={tipo_negocio}>
-                                                            <option value="Bar">Bar</option>
-                                                            <option value="Restaurante">Restaurante</option>
-                                                            <option value="Hotel">Hotel</option>
-                                                            <option value="Discoteca">Discoteca</option>
-                                                            <option value="Cafeteria">Cafeteria</option>
-                                                            <option value="Catering">Catering</option>
-                                                            <option value="Catering">Churreria</option>
-                                                            <option value="Pub">Pub</option>
-                                                            <option value="Cerveceria">Cerveceria</option>
-                                                            <option value="Heladeria">Heladeria</option>
+                                                        <select name="razon_social" onChange={this.onChange} defaultValue={razon_social}>
+                                                            <option value="SL">SL</option>
+                                                            <option value="SA">SA</option>
+                                                            <option value="Autonomo">Autonomo</option>
+                                                            <option value="SCOOP">SCOOP</option>
                                                         </select>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                    <div className="field ">
+                                        <div className="field-label has-text-left">
+                                            <label className="label" style={colorWhite}>Dirección fiscal</label>
+                                        </div>
+                                        <div className="field-body">
+                                            <div className="field">
+                                                <p className="control has-icons-left">
+                                                    <input className="input" type="text" placeholder="" name="direccion_fiscal" onChange={this.onChange} defaultValue={direccion_fiscal} />
+                                                    <span className="icon is-small is-left">
+                                                    <i class="fas fa-road"></i>
+                                                    </span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="field ">
+                                        <div className="field-label has-text-left">
+                                            <label className="label" style={colorWhite}>Localidad</label>
+                                        </div>
+                                        <div className="field-body">
+                                            <div className="field">
+                                                <p className="control has-icons-left">
+                                                    <input className="input" type="text" placeholder="" name="localidad" onChange={this.onChange} defaultValue={localidad} />
+                                                    <span className="icon is-small is-left">
+                                                    <i class="fas fa-map-marker-alt"></i>
+                                                    </span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="field ">
+                                        <div className="field-label has-text-left">
+                                            <label className="label" style={colorWhite}>Código postal</label>
+                                        </div>
+                                        <div className="field-body">
+                                            <div className="field">
+                                                <p className="control has-icons-left">
+                                                    <input className="input" type="text" placeholder="" name="codigo_postal" onChange={this.onChange} defaultValue={codigo_postal} />
+                                                    <span className="icon is-small is-left">
+                                                    <i class="fas fa-map-marker-alt"></i>
+                                                    </span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="field ">
+                                        <div className="field-label has-text-left">
+                                            <label className="label" style={colorWhite}>Provincia</label>
+                                        </div>
+                                        <div className="field-body">
+                                            <div className="field">
+                                                <p className="control has-icons-left">
+                                                    <input className="input" type="text" placeholder="" name="provincia" onChange={this.onChange} defaultValue={provincia} />
+                                                    <span className="icon is-small is-left">
+                                                    <i class="fas fa-map-marker-alt"></i>
+                                                    </span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="column is-one-third">
+                                    <div className="field ">
+                                        <div className="field-label is-normal">
+                                            <label className="label has-text-left" style={colorWhite}>Correo Electronico</label>
+                                        </div>
+                                        <div className="field-body">
+                                            <div className="field">
+                                                <p className="control has-icons-left">
+                                                    <input className="input" type="text" placeholder="" name="email" onChange={this.onChange} defaultValue={email} />
+                                                    <span className="icon is-small is-left">
+                                                        <i className="fas fa-envelope-square"></i>
+                                                    </span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="field ">
+                                        <div className="field-label is-normal">
+                                            <label className="label has-text-left" style={colorWhite}>Teléfono 1</label>
+                                        </div>
+                                        <div className="field-body">
+                                            <div className="field">
+                                                <p className="control has-icons-left">
+                                                    <input className="input" type="text" placeholder="" name="telefono_1" onChange={this.onChange} defaultValue={telefono_1} />
+                                                    <span className="icon is-small is-left">
+                                                        <i className="fa fa-phone"></i>
+                                                    </span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="field ">
+                                        <div className="field-label is-normal">
+                                            <label className="label has-text-left" style={colorWhite}>Teléfono 2</label>
+                                        </div>
+                                        <div className="field-body">
+                                            <div className="field">
+                                                <p className="control has-icons-left">
+                                                    <input className="input" type="text" placeholder="" name="telefono_2" onChange={this.onChange} defaultValue={telefono_2} />
+                                                    <span className="icon is-small is-left">
+                                                        <i className="fa fa-phone"></i>
+                                                    </span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="field ">
+                                        <div className="field-label is-normal">
+                                            <label className="label has-text-left" style={colorWhite}>Eslogan Carta</label>
+                                        </div>
+                                        <div className="field-body">
+                                            <div className="field">
+                                                <p className="control has-icons-left">
+                                                    <input className="input" type="text" placeholder="" name="fax" onChange={this.onChange} defaultValue={fax} />
+                                                    <span className="icon is-small is-left">
+                                                        <i class="fas fa-quote-right"></i>
+                                                    </span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="columns is-mobile">
+                                        <div className="column">
+                                            <div className="field ">
+                                                <div className="field-label is-normal">
+                                                    <label className="label has-text-left" style={colorWhite}>Descarga tu codigo QR</label>
+                                                </div>
+                                                <div className="field-body">
+                                                    <div className="field">
+                                                        <a className="button" href={`/static/clientes/${cif}/qr.jpg`} download="QRcode">Descargar</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
 
+                                        <div className="column">
+                                            <div className="field ">
+                                                <div className="field-label is-normal">
+                                                    <label className="label has-text-left" style={colorWhite}>Tipo</label>
+                                                </div>
+                                                <div className="field-body">
+                                                    <div className="control">
+                                                        <div className="select">
+                                                            <select name="tipo_negocio" onChange={this.onChange} defaultValue={tipo_negocio}>
+                                                                <option value="Bar">Bar</option>
+                                                                <option value="Restaurante">Restaurante</option>
+                                                                <option value="Hotel">Hotel</option>
+                                                                <option value="Discoteca">Discoteca</option>
+                                                                <option value="Cafeteria">Cafeteria</option>
+                                                                <option value="Catering">Catering</option>
+                                                                <option value="Catering">Churreria</option>
+                                                                <option value="Pub">Pub</option>
+                                                                <option value="Cerveceria">Cerveceria</option>
+                                                                <option value="Heladeria">Heladeria</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div>
+                                        <figure className="image is-128x128 is-inline-block">
+                                            <img className="" src={`/static/clientes/${cif}/qr.jpg`}></img>
+                                        </figure>
+                                    </div>
                                 </div>
-                                <div>
-                                    <figure className="image is-128x128 is-inline-block">
-                                        <img className="" src={`/static/clientes/${cif}/qr.jpg`}></img>
-                                    </figure>
-                                </div>
+
+                                <div className="column is-one-fifth"></div>
                             </div>
+                        </form>
 
-                            <div className="column is-one-fifth"></div>
-                        </div>
-                    </form>
+                        <div className="field is-horizontal" style={{ paddingTop: '40px', paddingBottom: '40px' }}>
+                            <div className="field-body">
+                                <div className="field">
+                                    <div className="buttons is-centered">
 
-                    <br />
-                    <div className="field is-horizontal">
-                        <div className="field-body">
-                            <div className="field">
-                                <div className="buttons is-centered">
+                                        {console.log("DEBUG[isUpdating] --> " + isUpdating)}
+                                        {isUpdating ?
+                                            <div>
+                                                <p style={{color: 'white'}}> Guardando sus datos... </p>
+                                                <ProgressBar />
+                                                {this.state.guardado = true}
+                                            </div>
 
-                                    {console.log("DEBUG[isUpdating] --> " + isUpdating)}
-                                    {isUpdating ?
-                                        <div>
-                                            <p > Guardando sus datos... </p>
-                                            <ProgressBar />
-                                            {this.state.guardado = true}
-                                        </div>
+                                            :
 
-                                        :
+                                            <div className="has-text-centered">
 
-                                        <div className="has-text-centered">
-                                            
-                                            <button className="button" onClick={this.onSubmit} style={{ backgroundColor: '#bca466', color: 'white' }}>Guardar Cambios</button>
-                                        </div>
-                                    }
+                                                <button className="button" onClick={this.onSubmit} style={{ backgroundColor: '#bca466', color: 'white' }}>Guardar Cambios</button>
+                                            </div>
+                                        }
 
-                                    {updateFailed ? this.state.guardado = false : ""}
+                                        {updateFailed ? this.state.guardado = false : ""}
 
-                                    {!isUpdating && !updateFailed && this.state.guardado ?
+                                        {!isUpdating && !updateFailed && this.state.guardado ?
 
-                                        <Link to="/" refresh="true" />
-                                        :
-                                        ""
-                                    }
+                                            <Link to="/" refresh="true" />
+                                            :
+                                            ""
+                                        }
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <hr />
                 </div>
             </React.Fragment>
         );

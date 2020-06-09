@@ -171,7 +171,7 @@ class Navbar extends Component {
             <div>
                 <nav className="navbar is-fixed-top">
                     <div className="navbar-brand">
-                        <Link to="/" style={{ marginTop: 16 }}>
+                        <Link to="/" style={{ marginTop: 9}}>
                             <img src={"/static/frontend/logoar.png"} width="300" height="125" />
                         </Link>
 
