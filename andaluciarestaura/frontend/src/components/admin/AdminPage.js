@@ -7,6 +7,16 @@ import ProgressBar from '../progressbar/ProgressBar'
 import PrivateRouteLogin from "../privateroute/PrivateRouteLogin";
 import { Redirect, Link } from 'react-router-dom';
 
+const bkg = {
+    backgroundPosition: 'center',
+    backgroundImage: "url('https://www.dev.andaluciarestaura.com/static/frontend/backLogin.png')",
+    backgroundRepeat: 'no-repeat',
+    marginTop: '20px',
+    backgroundSize: 'cover'
+}
+const colorWhite = {
+    color: 'white'
+}
 
 class AdminPage extends Component {
 
@@ -59,38 +69,39 @@ class AdminPage extends Component {
     onChange = e => this.setState({
         [e.target.name]: e.target.value
     },
-        console.log("TIPO NEGOCIO: " + e.target.value),
-        console.log("CIF:" + this.state.cif),
-        console.log("MARCA_COMERCIAL: " + this.state.marca_comercial)
+        console.log([e.target.name],  e.target.value),
     );
 
     componentDidMount() {
         console.log("Estoy en el component did mount del admin page")
         this.props.loadUserAdminPage(this.props.auth.user.cif);
-
+        this.state.id = this.props.auth.user.id
+        this.state.cif = this.props.auth.user.cif
+        this.state.marca_comercial = this.props.auth.user.marca_comercial
+        this.state.nombre_fiscal = this.props.auth.user.nombre_fiscal
+        this.state.razon_social = this.props.auth.user.razon_social
+        this.state.direccion_fiscal = this.props.auth.user.direccion_fiscal
+        this.state.localidad = this.props.auth.user.localidad
+        this.state.codigo_postal = this.props.auth.user.codigo_postal
+        this.state.provincia = this.props.auth.user.provincia
+        this.state.email = this.props.auth.user.email
+        this.state.telefono_1 = this.props.auth.user.telefono_1
+        this.state.telefono_2 = this.props.auth.user.telefono_2
+        this.state.fax = this.props.auth.user.fax
+        this.state.tipo_negocio = this.props.auth.user.tipo_negocio
+        this.state.logo = this.props.auth.user.logo
+        this.state.qr = this.props.auth.user.qr
     }
 
     render() {
-        console.log("Antes del return ")
         return (
             <React.Fragment>
                 <div>
                     {this.props.actualUser.map(user => (
                         
-                        <div className="section" style={{ marginTop: '40px' }}>
+                        <div className="section is-paddingless" style={{ marginTop: '40px' }}>
 <div className="is-hidden">
-                            {this.state.marca_comercial = user.marca_comercial}
-                            {this.state.nombre_fiscal = user.nombre_fiscal}
-                            {this.state.razon_social = user.razon_social}
-                            {this.state.direccion_fiscal = user.direccion_fiscal}
-                            {this.state.localidad = user.localidad}
-                            {this.state.codigo_postal = user.codigo_postal}
-                            {this.state.provincia = user.provincia}
-                            {this.state.email = user.email}
-                            {this.state.telefono_1 = user.telefono_1}
-                            {this.state.telefono_2 = user.telefono_2}
-                            {this.state.fax = user.fax}
-                            {this.state.tipo_negocio = user.tipo_negocio}
+                          
                         </div>
                             <div className="columns">
                                 <div className="column is-2"></div>
@@ -111,17 +122,16 @@ class AdminPage extends Component {
                                 </div>
                                 <div className="column is-one-fifth"></div>
                             </div>
-                            <hr />
 
 
-
-                            <form>
+                            <div style={bkg}>
+                            <form style={{paddingTop: '70px'}}>
                                 <div className="columns">
                                     <div className="column is-2"></div>
                                     <div className="column is-one-third">
                                         <div className="field">
                                             <div className="field-label has-text-left">
-                                                <label className="label">CIF/NIF Empresa</label>
+                                                <label className="label" style={colorWhite}>CIF/NIF Empresa</label>
                                             </div>
                                             <div className="field-body">
                                                 <div className="field">
@@ -136,7 +146,7 @@ class AdminPage extends Component {
                                         </div>
                                         <div className="field ">
                                             <div className="field-label has-text-left">
-                                                <label className="label">Marca Comercial</label>
+                                                <label className="label" style={colorWhite}>Marca Comercial</label>
                                             </div>
                                             <div className="field-body">
                                                 <div className="field">
@@ -151,7 +161,7 @@ class AdminPage extends Component {
                                         </div>
                                         <div className="field ">
                                             <div className="field-label has-text-left">
-                                                <label className="label">Nombre Fiscal</label>
+                                                <label className="label" style={colorWhite}>Nombre Fiscal</label>
                                             </div>
                                             <div className="field-body">
                                                 <div className="field">
@@ -166,7 +176,7 @@ class AdminPage extends Component {
                                         </div>
                                         <div className="field ">
                                             <div className="field-label has-text-left">
-                                                <label className="label">Razón Social</label>
+                                                <label className="label" style={colorWhite}>Razón Social</label>
                                             </div>
                                             <div className="field-body">
                                                 <div className="field">
@@ -186,7 +196,7 @@ class AdminPage extends Component {
                                         </div>
                                         <div className="field ">
                                             <div className="field-label has-text-left">
-                                                <label className="label" >Dirección fiscal</label>
+                                                <label className="label" style={colorWhite}>Dirección fiscal</label>
                                             </div>
                                             <div className="field-body">
                                                 <div className="field">
@@ -201,7 +211,7 @@ class AdminPage extends Component {
                                         </div>
                                         <div className="field ">
                                             <div className="field-label has-text-left">
-                                                <label className="label">Localidad</label>
+                                                <label className="label" style={colorWhite}>Localidad</label>
                                             </div>
                                             <div className="field-body">
                                                 <div className="field">
@@ -216,7 +226,7 @@ class AdminPage extends Component {
                                         </div>
                                         <div className="field ">
                                             <div className="field-label has-text-left">
-                                                <label className="label">Código postal</label>
+                                                <label className="label" style={colorWhite}>Código postal</label>
                                             </div>
                                             <div className="field-body">
                                                 <div className="field">
@@ -231,7 +241,7 @@ class AdminPage extends Component {
                                         </div>
                                         <div className="field ">
                                             <div className="field-label has-text-left">
-                                                <label className="label">Provincia</label>
+                                                <label className="label" style={colorWhite}>Provincia</label>
                                             </div>
                                             <div className="field-body">
                                                 <div className="field">
@@ -248,7 +258,7 @@ class AdminPage extends Component {
                                     <div className="column is-one-third">
                                         <div className="field ">
                                             <div className="field-label is-normal">
-                                                <label className="label has-text-left">Correo Electronico</label>
+                                                <label className="label has-text-left" style={colorWhite}>Correo Electronico</label>
                                             </div>
                                             <div className="field-body">
                                                 <div className="field">
@@ -263,7 +273,7 @@ class AdminPage extends Component {
                                         </div>
                                         <div className="field ">
                                             <div className="field-label is-normal">
-                                                <label className="label has-text-left">Teléfono 1</label>
+                                                <label className="label has-text-left" style={colorWhite}>Teléfono 1</label>
                                             </div>
                                             <div className="field-body">
                                                 <div className="field">
@@ -278,7 +288,7 @@ class AdminPage extends Component {
                                         </div>
                                         <div className="field ">
                                             <div className="field-label is-normal">
-                                                <label className="label has-text-left">Teléfono 2</label>
+                                                <label className="label has-text-left" style={colorWhite}>Teléfono 2</label>
                                             </div>
                                             <div className="field-body">
                                                 <div className="field">
@@ -293,7 +303,7 @@ class AdminPage extends Component {
                                         </div>
                                         <div className="field ">
                                             <div className="field-label is-normal">
-                                                <label className="label has-text-left">Eslogan Carta</label>
+                                                <label className="label has-text-left" style={colorWhite}>Eslogan Carta</label>
                                             </div>
                                             <div className="field-body">
                                                 <div className="field">
@@ -310,7 +320,7 @@ class AdminPage extends Component {
                                             <div className="column">
                                                 <div className="field ">
                                                     <div className="field-label is-normal">
-                                                        <label className="label has-text-left">Descarga tu codigo QR</label>
+                                                        <label className="label has-text-left" style={colorWhite}>Descarga tu codigo QR</label>
                                                     </div>
                                                     <div className="field-body">
                                                         <div className="field">
@@ -323,7 +333,7 @@ class AdminPage extends Component {
                                             <div className="column">
                                                 <div className="field ">
                                                     <div className="field-label is-normal">
-                                                        <label className="label has-text-left">Tipo</label>
+                                                        <label className="label has-text-left" style={colorWhite}>Tipo</label>
                                                     </div>
                                                     <div className="field-body">
                                                         <div className="control">
@@ -358,15 +368,14 @@ class AdminPage extends Component {
                                 </div>
                             </form>
 
-                            <br />
-                            <div className="field is-horizontal">
+                            <div className="field is-horizontal" style={{ paddingTop: '40px', paddingBottom: '40px' }}>
                                 <div className="field-body">
                                     <div className="field">
                                         <div className="buttons is-centered">
 
                                             {this.props.auth.isUpdating ?
                                                 <div>
-                                                    <p > Guardando sus datos... </p>
+                                                    <p style={colorWhite}> Guardando sus datos... </p>
                                                     <ProgressBar />
                                                     {this.state.guardado = true}
                                                 </div>
@@ -375,7 +384,7 @@ class AdminPage extends Component {
 
                                                 <div className="has-text-centered">
 
-                                                    <button className="button" onClick={this.onSubmit} style={{ backgroundColor: '#bca466', color: 'white' }}>Guardar Cambios</button>
+                                                    <button className="button" onClick={this.onSubmit} style={{ backgroundColor: 'white', color: '#bca466' }}>Guardar Cambios</button>
                                                 </div>
                                             }
 
@@ -383,7 +392,7 @@ class AdminPage extends Component {
 
                                             {!this.props.auth.isUpdating && !this.props.auth.updateFailed && this.state.guardado ?
 
-                                                <Link to="/" refresh="true" />
+                                                <Link to="/" />
                                                 :
                                                 ""
                                             }
@@ -391,7 +400,7 @@ class AdminPage extends Component {
                                     </div>
                                 </div>
                             </div>
-                            <hr />
+                        </div>
                         </div>
                     ))}
                 </div>

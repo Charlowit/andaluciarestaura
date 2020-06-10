@@ -121,7 +121,6 @@ export default function(state = initialState, action){
         case USER_LOADED_ADMIN_PAGE:
             return {
                 ...state,
-                isAuthenticated: true,
                 isLoading: false,
                 isUpdating: false,
                 isRegistering: false,
@@ -138,6 +137,7 @@ export default function(state = initialState, action){
                 ...state,
                 token: null,
                 user: null,
+                userAdminPage: [],
                 isAuthenticated: false,
                 isLoading: false,
                 isUpdating: false,
