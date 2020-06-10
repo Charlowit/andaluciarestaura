@@ -28,7 +28,8 @@ export class VisualizarCartas extends Component {
             posicion: -1,
             info_extra: "",
             eslogan: "",
-            addingCarta: false
+            addingCarta: false,
+            is_premium: false
         };
     }
 
@@ -212,7 +213,16 @@ export class VisualizarCartas extends Component {
                                         <tr key={carta.id}>
                                             <td>{carta.id}</td>
                                             <td>{carta.name}</td>
-                                            <td>{carta.plantilla}</td>
+                                            <td>
+                                                <div className="select">
+                                                    <select name="is_premium" onChange={this.onChange} defaultValue={this.state.plantilla}>
+                                                        <option>Ninguna plantilla seleccionada</option>
+                                                        <option value="false">No es Premium</option>
+                                                        <option value="true">Premium</option>
+                                                    </select>
+                                                </div>
+                                                {carta.plantilla}
+                                            </td>
                                             <td>
                                                 <div>
                                                     <figure className="image is-128x128 is-inline-block">
