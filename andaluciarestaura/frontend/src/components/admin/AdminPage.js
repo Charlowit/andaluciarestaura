@@ -365,16 +365,8 @@ class AdminPage extends Component {
                                 </div>
                             </form>
 
-<<<<<<< HEAD
-                            <div className="column is-one-fifth"></div>
-                        </div>
-                    </form>
-                    <br />
-                    <div className="field is-horizontal">
-                        <div className="field-body">
-                            <div className="field">
-                                <div className="buttons is-centered">
-=======
+
+
                             <div className="field is-horizontal" style={{ paddingTop: '40px', paddingBottom: '40px' }}>
                                 <div className="field-body">
                                     <div className="field">
@@ -386,40 +378,30 @@ class AdminPage extends Component {
                                                     <ProgressBar />
                                                     {this.state.guardado = true}
                                                 </div>
->>>>>>> 1ca4943b09928ddd63253d39fbd9ca9c895eed72
+
 
                                                 :
 
                                                 <div className="has-text-centered">
 
-<<<<<<< HEAD
-                                        <div className="has-text-centered">
-                                            <Link to="/" refresh="true" className="button" onClick={this.onSubmit} style={{ backgroundColor: '#bca466', color: 'white' }}>Guardar Cambios</Link>
-                                        </div>
-                                    }
-=======
                                                     <button className="button" onClick={this.onSubmit} style={{ backgroundColor: 'white', color: '#bca466' }}>Guardar Cambios</button>
                                                 </div>
                                             }
->>>>>>> 1ca4943b09928ddd63253d39fbd9ca9c895eed72
+
 
                                             {this.props.auth.updateFailed ? this.state.guardado = false : ""}
 
                                             {!this.props.auth.isUpdating && !this.props.auth.updateFailed && this.state.guardado ?
 
-<<<<<<< HEAD
-                                        <Redirect to="/" refresh="true" />
-                                        :
-                                        ""
-                                    }
-=======
+
+
                                                 <Link to="/" />
                                                 :
                                                 ""
                                             }
                                         </div>
                                     </div>
->>>>>>> 1ca4943b09928ddd63253d39fbd9ca9c895eed72
+
                                 </div>
                             </div>
                         </div>
