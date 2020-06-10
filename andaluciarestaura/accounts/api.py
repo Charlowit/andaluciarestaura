@@ -20,6 +20,8 @@ from django.template import Context
 import shutil
 import base64
 from django.conf import settings
+from rest_framework.decorators import action
+
 logger = logging.getLogger(__name__)
 
 #File pdf Upload
@@ -268,4 +270,20 @@ class UserActualizarApi(generics.UpdateAPIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
 
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        print("Mira el cuerpo que mandas cuando actualizas al user --> ", serializer.data)
+        return Response([serializer.data], status=status.HTTP_200_OK)
+
+#Get user API
+
+class UserApiAdminPage(viewsets.ModelViewSet):
+    permission_classes = [
+        permissions.AllowAny,
+    ]
+    serializer_class = UserSerializer
+
+    def get_queryset(self):
+        cif = self.request.query_params.get('cif', None)
+        queryset = User.objects.filter(cif__exact=cif)
+        return queryset
+
+

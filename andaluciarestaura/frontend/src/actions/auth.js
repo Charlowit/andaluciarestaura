@@ -6,7 +6,7 @@ import {
     LOGIN_FAIL,
     LOGIN_SUCCESS,
     LOGOUT_SUCCESS,
-    UPDATE_LOADING, UPDATE_SUCCESS, UPDATE_ERROR, GET_ERRORS, REGISTER_LOADING, REGISTER_FAILED, REGISTER_SUCCESS, DELETE_PRODUCTO
+    UPDATE_LOADING, UPDATE_SUCCESS, UPDATE_ERROR, GET_ERRORS, REGISTER_LOADING, REGISTER_FAILED, REGISTER_SUCCESS, USER_LOADED_ADMIN_PAGE
 } from "./types";
 
 import { createMessages } from './messages'
@@ -51,6 +51,32 @@ export const loadUser = () => (dispatch, getState) => {
                 payload: errors
             });
         });
+};
+
+export const loadUserAdminPage = (cif) => (dispatch, getState) => {
+
+
+    //Headers
+    const config = {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }
+
+    console.log("Mira ese cif guapeton -> ", cif)
+
+    axios.get(`/api/auth/datos/getuser/?cif=${cif}`, config)
+        .then(res => {
+            dispatch({
+                type: USER_LOADED_ADMIN_PAGE,
+                payload: res.data
+            });
+        }).catch(
+            err => console.log(err)
+        );
+    
+    console.log("Despues llamada axios")
+
 };
 
 // LOGIN USER

@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { getCategorias, deleteproducto, subirproducto, addCategoria, deleteCategoria } from '../../actions/carta';
-import { getCartaExpecifica } from '../../actions/cartas';
+import { getCartaExpecifica, updateEslogan, updateURL, updateNombreCarta } from '../../actions/cartas';
 
 
 const div100 = {
@@ -49,6 +49,16 @@ export class CartaPage extends Component {
             vacio: false,
             addingProduct: false,
             addCategoria: false,
+            editEslogan: false,
+            newEslogan: "",
+            editURLF: false,
+            newUrlF: "",
+            editURLI: false,
+            newUrlI: "",
+            editURLT: false,
+            newUrlT: "",
+            editNombreCarta: false,
+            newCartaNombre: "",
 
             nombreNuevaCategoria: "",
             descripcion: "",
@@ -89,6 +99,80 @@ export class CartaPage extends Component {
         this.props.addCategoria(categoria);
     }
 
+    onSubmitURL= e => {
+
+        e.preventDefault();
+
+        var url = null;
+        var urlType = "";
+
+        if (this.state.editURLF){
+            url = this.state.newUrlF;
+            urlType = "F";
+            this.setState({
+                editURLF: !this.state.editURLF
+            })
+        } else if (this.state.editURLI) {
+            url = this.state.newUrlI;
+            urlType = "I";
+            this.setState({
+                editURLI: !this.state.editURLI
+            })
+        } else if (this.state.editURLT){
+            url = this.state.newUrlT;
+            urlType = "T";
+            this.setState({
+                editURLT: !this.state.editURLT
+            })
+        }
+
+        const idCarta = this.props.match.params.id
+        const propietario = this.props.auth.user.id
+
+        const updatedCarta = { propietario, idCarta, url };
+
+        
+        
+        
+        console.log("ira el url --> ", url , " y el tipo --> ", urlType)
+        this.props.updateURL(updatedCarta, urlType);
+    }
+
+    onSubmitNewSlogan = e => {
+
+        e.preventDefault();
+
+        const eslogan = this.state.newEslogan
+        const idCarta = this.props.match.params.id
+        const propietario = this.props.auth.user.id
+
+        const updatedCarta = { propietario, idCarta, eslogan };
+
+        this.setState({
+            editEslogan: !this.state.editEslogan
+        })
+ 
+        console.log("mira el nuevo eslogan --> " + eslogan)
+        this.props.updateEslogan(updatedCarta);
+    }
+
+    onSubmitNewCartaNombre = e => {
+
+        e.preventDefault();
+
+        const cartaName = this.state.newCartaNombre
+        const idCarta = this.props.match.params.id
+        const propietario = this.props.auth.user.id
+
+        const updatedCarta = { propietario, idCarta, cartaName };
+
+        this.setState({
+            editNombreCarta: !this.state.editNombreCarta
+        })
+ 
+        this.props.updateNombreCarta(updatedCarta);
+    }
+
 
     addProduct = e => {
         this.setState({
@@ -99,6 +183,36 @@ export class CartaPage extends Component {
     addCategory = e => {
         this.setState({
             addCategoria: !this.state.addCategoria
+        })
+    }
+
+    editEslogan = e => {
+        this.setState({
+            editEslogan: !this.state.editEslogan
+        })
+    }
+
+    editURLF = e => {
+        this.setState({
+            editURLF: !this.state.editURLF
+        })
+    }
+
+    editURLI = e => {
+        this.setState({
+            editURLI: !this.state.editURLI
+        })
+    }
+
+    editURLT = e => {
+        this.setState({
+            editURLT: !this.state.editURLT
+        })
+    }
+
+    editNombreCarta = e => {
+        this.setState({
+            editNombreCarta: !this.state.editNombreCarta
         })
     }
 
@@ -196,7 +310,10 @@ export class CartaPage extends Component {
         deleteCategoria: PropTypes.func.isRequired,
         auth: PropTypes.func.isRequired,
         addCategoria: PropTypes.func.isRequired,
-        cartaReal: PropTypes.object.isRequired
+        cartaReal: PropTypes.object.isRequired,
+        updateEslogan: PropTypes.func.isRequired,
+        updateURL: PropTypes.func.isRequired,
+        updateNombreCarta: PropTypes.func.isRequired
     };
 
     componentDidMount() {
@@ -239,19 +356,19 @@ export class CartaPage extends Component {
                                     <h2 className="subtitle" style={{ display: 'inline' }}> {carta.eslogan} </h2>
 
 
-                                    <button class="button is-rounded is-small is-warning" style={{ display: 'inline', marginLeft: '7px', marginTop: '-3px' }} onClick={this.addingCarta}>
+                                    <button class="button is-rounded is-small is-warning" style={{ display: 'inline', marginLeft: '7px', marginTop: '-3px' }} onClick={this.editEslogan}>
                                         <span class="icon is-small">
                                             <i class="fas fa-pen"></i>
                                         </span>
                                     </button>
 
                                     <p className="field" style={{ marginTop: '15px' }}>
-                                        <a className="button is-rounded is-medium" id="id_boton" style={{ marginLeft: '10px' }}>
+                                        <button className="button is-rounded is-medium" id="id_boton" style={{ marginLeft: '10px' }}>
                                             <span className="icon">
                                                 <i className="fab fa-facebook"></i>
                                             </span>
-                                        </a>
-                                        <button class="button is-rounded is-small is-warning" style={{ display: 'inline' }} onClick={this.addingCarta}>
+                                        </button>
+                                        <button class="button is-rounded is-small is-warning" style={{ display: 'inline' }} onClick={this.editURLF}>
                                             <span class="icon is-small">
                                                 <i class="fas fa-pen"></i>
                                             </span>
@@ -261,17 +378,17 @@ export class CartaPage extends Component {
                                                 <i className="fab fa-tripadvisor"></i>
                                             </span>
                                         </a>
-                                        <button class="button is-rounded is-small is-warning" style={{ display: 'inline' }} onClick={this.addingCarta}>
+                                        <button class="button is-rounded is-small is-warning" style={{ display: 'inline' }} onClick={this.editURLT}>
                                             <span class="icon is-small">
                                                 <i class="fas fa-pen"></i>
                                             </span>
                                         </button>
-                                        <a className="button is-rounded is-medium" style={{ marginLeft: '10px' }} >
+                                        <a className="button is-rounded is-medium" href={carta.url_tripadvisor} style={{ marginLeft: '10px' }} >
                                             <span className="icon">
                                                 <i className="fab fa-instagram"></i>
                                             </span>
                                         </a>
-                                        <button class="button is-rounded is-small is-warning" style={{ display: 'inline' }} onClick={this.addingCarta}>
+                                        <button class="button is-rounded is-small is-warning" style={{ display: 'inline' }} onClick={this.editURLI}>
                                             <span class="icon is-small">
                                                 <i class="fas fa-pen"></i>
                                             </span>
@@ -291,7 +408,7 @@ export class CartaPage extends Component {
                                                 </div>
                                                 <div className="column">
                                                     <h1 className="title" style={{ display: 'inline' }}>{carta.name}</h1>
-                                                    <button class="button is-rounded is-small is-warning" style={{ display: 'inline', marginLeft: '10px' }} onClick={this.addingCarta}>
+                                                    <button class="button is-rounded is-small is-warning" style={{ display: 'inline', marginLeft: '10px' }} onClick={this.editNombreCarta}>
                                                         <span class="icon is-small">
                                                             <i class="fas fa-pen"></i>
                                                         </span>
@@ -338,6 +455,131 @@ export class CartaPage extends Component {
 
                             </div>
                         </section>
+
+                        <div className={this.state.editEslogan ? "modal is-active" : "modal"}>
+                            <div className="modal-background"></div>
+                            <div className="modal-content">
+                                <div className="container box">
+                                    <div className="has-text-right">
+                                        <button class="button is-danger" onClick={this.editEslogan}>
+                                            <span class="icon is-small">
+                                                <i class="fas fa-times"></i>
+                                            </span>
+                                        </button>
+                                    </div>
+                                    <hr style={{ marginTop: '30px' }} />
+                                    <form>
+                                        <label className="label" style={{ marginTop: '10px' }}>Escribe tu nuevo eslogan</label>
+                                        <div className="control">
+                                            <input className="input" onChange={this.onChange} name="newEslogan" defaultValue={this.state.newEslogan} type="text" placeholder="El mejor restaurante de Granada!" />
+                                        </div>
+                                        <div className="control buttons is-centered" style={{ marginTop: '20px' }}>
+                                            <button className="button is-success" onClick={this.onSubmitNewSlogan}>Guardar</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className={this.state.editURLF ? "modal is-active" : "modal"}>
+                            <div className="modal-background"></div>
+                            <div className="modal-content">
+                                <div className="container box">
+                                    <div className="has-text-right">
+                                        <button class="button is-danger" onClick={this.editURLF}>
+                                            <span class="icon is-small">
+                                                <i class="fas fa-times"></i>
+                                            </span>
+                                        </button>
+                                    </div>
+                                    <hr style={{ marginTop: '30px' }} />
+                                    <form>
+                                        <label className="label" style={{ marginTop: '10px' }}>Escribe tu URL de Facebook!</label>
+                                        <div className="control">
+                                            <input className="input" type="text" name="newUrlF" onChange={this.onChange} defaultValue={this.state.newUrlF} placeholder="https://www.facebook.com/" />
+                                        </div>
+                                        <div className="control buttons is-centered" style={{ marginTop: '20px' }}>
+                                            <button className="button is-success" onClick={this.onSubmitURL}>Guardar</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className={this.state.editURLI ? "modal is-active" : "modal"}>
+                            <div className="modal-background"></div>
+                            <div className="modal-content">
+                                <div className="container box">
+                                    <div className="has-text-right">
+                                        <button class="button is-danger" onClick={this.editURLI}>
+                                            <span class="icon is-small">
+                                                <i class="fas fa-times"></i>
+                                            </span>
+                                        </button>
+                                    </div>
+                                    <hr style={{ marginTop: '30px' }} />
+                                    <form>
+                                        <label className="label" style={{ marginTop: '10px' }}>Escribe tu URL de Instagram!</label>
+                                        <div className="control">
+                                            <input className="input" type="text" name="newUrlI" onChange={this.onChange} defaultValue={this.state.newUrlI} placeholder="https://www.instagram.com/" />
+                                        </div>
+                                        <div className="control buttons is-centered" style={{ marginTop: '20px' }}>
+                                            <button className="button is-success" onClick={this.onSubmitURL}>Guardar</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className={this.state.editURLT ? "modal is-active" : "modal"}>
+                            <div className="modal-background"></div>
+                            <div className="modal-content">
+                                <div className="container box">
+                                    <div className="has-text-right">
+                                        <button class="button is-danger" onClick={this.editURLT}>
+                                            <span class="icon is-small">
+                                                <i class="fas fa-times"></i>
+                                            </span>
+                                        </button>
+                                    </div>
+                                    <hr style={{ marginTop: '30px' }} />
+                                    <form>
+                                        <label className="label" style={{ marginTop: '10px' }}>Escribe tu URL de Tripadvisor!</label>
+                                        <div className="control">
+                                            <input className="input" name="newUrlT" onChange={this.onChange} defaultValue={this.state.newUrlT} type="text" placeholder="https://www.tripadvisor.es/" />
+                                        </div>
+                                        <div className="control buttons is-centered" style={{ marginTop: '20px' }}>
+                                            <button className="button is-success" onClick={this.onSubmitURL}>Guardar</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className={this.state.editNombreCarta ? "modal is-active" : "modal"}>
+                            <div className="modal-background"></div>
+                            <div className="modal-content">
+                                <div className="container box">
+                                    <div className="has-text-right">
+                                        <button class="button is-danger" onClick={this.editNombreCarta}>
+                                            <span class="icon is-small">
+                                                <i class="fas fa-times"></i>
+                                            </span>
+                                        </button>
+                                    </div>
+                                    <hr style={{ marginTop: '30px' }} />
+                                    <form>
+                                        <label className="label" style={{ marginTop: '10px' }}>Escribe el nuevo nombre de tu carta</label>
+                                        <div className="control">
+                                            <input className="input" type="text" name="newCartaNombre" onChange={this.onChange} defaultValue={this.state.newCartaNombre} placeholder="Nombre de la carta" />
+                                        </div>
+                                        <div className="control buttons is-centered" style={{ marginTop: '20px' }}>
+                                            <button className="button is-success" onClick={this.onSubmitNewCartaNombre}>Guardar</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
 
                         <div className={this.state.addCategoria ? "modal is-active" : "modal"}>
                             <div className="modal-background"></div>
@@ -938,4 +1180,4 @@ const mapStateToProps = state => ({
     cartaReal: state.reducerCartas.expecificCarta,
 });
 
-export default connect(mapStateToProps, { getCartaExpecifica, subirproducto, addCategoria, getCategorias, deleteproducto, deleteCategoria })(CartaPage);
+export default connect(mapStateToProps, { updateNombreCarta, updateURL, updateEslogan, getCartaExpecifica, subirproducto, addCategoria, getCategorias, deleteproducto, deleteCategoria })(CartaPage);
