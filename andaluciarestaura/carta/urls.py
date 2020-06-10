@@ -12,5 +12,4 @@ router.register('api/productact', ProductosApi, 'productos')
 router.register('api/getcartas', CartasApi, 'producto')
 router.register('api/damelascategorias', CategoriasApi, 'categorias')
 
-
 urlpatterns = router.urls

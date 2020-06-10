@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from "prop-types";
 import { updateuser } from '../../actions/auth';
@@ -61,8 +61,6 @@ class AdminPage extends Component {
     );
 
     componentDidMount() {
-        console.log("Cargando pagina ")
-        console.log("LISTA INICIO: ")
         this.state.id = this.props.auth.user.id
         this.state.cif = this.props.auth.user.cif
         this.state.marca_comercial = this.props.auth.user.marca_comercial
@@ -88,23 +86,26 @@ class AdminPage extends Component {
         console.log("LISTA FIN: ")
     }
 
+
     render() {
-        const { id = this.props.auth.user.id } = this.state.id
-        const { cif = this.props.auth.user.cif } = this.state.cif
-        const { marca_comercial = this.props.auth.user.marca_comercial } = this.state.marca_comercial
-        const { nombre_fiscal = this.props.auth.user.nombre_fiscal } = this.state.nombre_fiscal
-        const { razon_social = this.props.auth.user.razon_social } = this.state.razon_social
-        const { direccion_fiscal = this.props.auth.user.direccion_fiscal } = this.state.direccion_fiscal
-        const { localidad = this.props.auth.user.localidad } = this.state.localidad
-        const { codigo_postal = this.props.auth.user.codigo_postal } = this.state.codigo_postal
-        const { provincia = this.props.auth.user.provincia } = this.state.provincia
-        const { email = this.props.auth.user.email } = this.state.email
-        const { telefono_1 = this.props.auth.user.telefono_1 } = this.state.telefono_1
-        const { telefono_2 = this.props.auth.user.telefono_2 } = this.state.telefono_2
-        const { fax = this.props.auth.user.fax } = this.state.fax
-        const { tipo_negocio = this.props.auth.user.tipo_negocio } = this.state.tipo_negocio
-        const { logo } = this.props.auth.user.logo
-        const { qr } = this.props.auth.user.qr
+            const { id = this.props.auth.user.id } = this.state.id
+            const { cif = this.props.auth.user.cif } = this.state.cif
+            const { marca_comercial = this.props.auth.user.marca_comercial } = this.state.marca_comercial
+            const { nombre_fiscal = this.props.auth.user.nombre_fiscal } = this.state.nombre_fiscal
+            const { razon_social = this.props.auth.user.razon_social } = this.state.razon_social
+            const { direccion_fiscal = this.props.auth.user.direccion_fiscal } = this.state.direccion_fiscal
+            const { localidad = this.props.auth.user.localidad } = this.state.localidad
+            const { codigo_postal = this.props.auth.user.codigo_postal } = this.state.codigo_postal
+            const { provincia = this.props.auth.user.provincia } = this.state.provincia
+            const { email = this.props.auth.user.email } = this.state.email
+            const { telefono_1 = this.props.auth.user.telefono_1 } = this.state.telefono_1
+            const { telefono_2 = this.props.auth.user.telefono_2 } = this.state.telefono_2
+            const { fax = this.props.auth.user.fax } = this.state.fax
+            const { tipo_negocio = this.props.auth.user.tipo_negocio } = this.state.tipo_negocio
+            const { logo } = this.props.auth.user.logo
+            const { qr } = this.props.auth.user.qr
+
+
         const { isUpdating, updateFailed } = this.props.auth;
 
         return (
@@ -130,7 +131,6 @@ class AdminPage extends Component {
                         <div className="column is-one-fifth"></div>
                     </div>
                     <hr />
-
                     <form>
                         <div className="columns">
                             <div className="column is-2"></div>
@@ -373,7 +373,6 @@ class AdminPage extends Component {
                             <div className="column is-one-fifth"></div>
                         </div>
                     </form>
-
                     <br />
                     <div className="field is-horizontal">
                         <div className="field-body">
@@ -391,8 +390,7 @@ class AdminPage extends Component {
                                         :
 
                                         <div className="has-text-centered">
-                                            
-                                            <button className="button" onClick={this.onSubmit} style={{ backgroundColor: '#bca466', color: 'white' }}>Guardar Cambios</button>
+                                            <Link to="/" refresh="true" className="button" onClick={this.onSubmit} style={{ backgroundColor: '#bca466', color: 'white' }}>Guardar Cambios</Link>
                                         </div>
                                     }
 
@@ -400,7 +398,7 @@ class AdminPage extends Component {
 
                                     {!isUpdating && !updateFailed && this.state.guardado ?
 
-                                        <Link to="/" refresh="true" />
+                                        <Redirect to="/" refresh="true" />
                                         :
                                         ""
                                     }

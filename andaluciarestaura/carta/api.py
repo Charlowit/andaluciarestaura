@@ -7,8 +7,6 @@ from rest_framework.decorators import action
 from rest_framework import status
 from accounts.models import User
 
-
-
 #Carta Viewset
 
 class CartaViewSet(viewsets.ModelViewSet):
@@ -138,3 +136,4 @@ class ProductosApi(viewsets.ModelViewSet):
         categoriaID = self.request.query_params.get('categoria', None)
         queryset = Productos.objects.filter(categoria__id__exact=categoriaID)    
         return queryset
+
