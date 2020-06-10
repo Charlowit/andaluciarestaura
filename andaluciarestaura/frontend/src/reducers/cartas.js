@@ -1,4 +1,4 @@
-import { GET_ALL_CARTAS, ADD_CARTA, DELETE_CARTA, GET_EXPECIFIC_CARTA } from '../actions/types.js';
+import { GET_ALL_CARTAS, ADD_CARTA, DELETE_CARTA, GET_EXPECIFIC_CARTA, UPDATE_CARTA } from '../actions/types.js';
 
 const initialState = {
     cartas: [],
@@ -19,7 +19,6 @@ export default function(state = initialState, action) {
                 cartas: [...state.cartas, action.payload]
             };
         case GET_EXPECIFIC_CARTA:
-            console.log("Entrao en el reduces");
             return {
                 ...state,
                 expecificCarta: action.payload,
@@ -29,6 +28,11 @@ export default function(state = initialState, action) {
                 ...state,
                 cartas: state.cartas.filter(carta => carta.id !== action.payload)
             };
+        case UPDATE_CARTA:
+            return {
+                ...state,
+                expecificCarta: [action.payload]
+            }
         default:
             return state;
     }

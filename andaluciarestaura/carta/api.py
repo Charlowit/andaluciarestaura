@@ -86,30 +86,38 @@ class CartasApi(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         
-        carta_data = request.data
-        user = User.objects.filter(id__exact=carta_data['propietario'])
-        for p in user:
-            print(p)
+        user = User.objects.get(id__exact=request.data['propietario'])
 
-        """"
-        new_carta = Carta.objects.create(name=carta_data['name'], propietario=user.data,
-                    url_facebook=carta_data['url_facebook'], url_instagram=carta_data['url_instagram'],
-                    url_tripadvisor=carta_data['url_tripadvisor'], eslogan=carta_data['eslogan'],
-                    plantilla=carta_data['plantilla'])
-        new_carta.save()
+        carta = Carta.objects.create(
+            name = request.data['name'],
+            url_facebook = request.data['url_facebook'],
+            url_instagram = request.data['url_instagram'], 
+            url_tripadvisor = request.data['url_tripadvisor'],
+            eslogan = request.data['eslogan'],
+            plantilla = request.data['plantilla'],
+            propietario = user
+        )
+
+        carta.save()
+        serializer = CartaSerializerActualizar(carta)
         
-        serializer = CartaSerializerActualizar(new_carta)
-         
-        serializer = self.get_serializer(data=request.data, partial=True)
-        serializer.propietario = request.data['propietario']
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def update(self, request, *args, **kwargs):
+        instance = Carta.objects.get(id__exact=request.data['id'])
+        serializer = CartaSerializerActualizar(
+            instance=instance,
+            data=request.data
+        )
         serializer.is_valid(raise_exception=True)
-        
-        carta = serializer.save()
-        print("Estamos en el create -->" , carta)
-        """
-        return Response(status=status.HTTP_200_OK)
+        serializer.save()
+        return Response(serializer.data)
 
-        
+    def destroy(self, request, *args, **kwargs):
+        instance = Carta.objects.get(id__exact=request.data['id'])
+        self.perform_destroy(instance)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 
 class CategoriasApi(viewsets.ModelViewSet):

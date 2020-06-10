@@ -94,7 +94,7 @@ class Navbar extends Component {
                         </span>
                         <span className="control">
                             <div className="buttons">
-                                <Link to="/" className="button is-danger" style={{backgroundColor:'#bca466'}} onClick={this.props.logout}>Logout</Link>
+                                <Link to="/" refresh="true" className="button is-danger" style={{backgroundColor:'#bca466'}} onClick={this.props.logout}>Logout</Link>
                             </div>
                         </span>
                     </div>
@@ -171,8 +171,8 @@ class Navbar extends Component {
             <div>
                 <nav className="navbar is-fixed-top">
                     <div className="navbar-brand">
-                        <Link to="/" style={{ marginTop: 16 }}>
-                            <img src={"/static/frontend/logoar.svg"} width="300" height="125" />
+                        <Link to="/" style={{ marginTop: 9 }}>
+                            <img src={"/static/frontend/logoar.png"} width="300" height="125" />
                         </Link>
 
                         <div className="navbar-burger burger" data-target="navMenubd-example">

@@ -32,8 +32,7 @@ export class Alerts extends Component {
             if(error.msg.password)
                 alert.error("El campo Contraseña es obligatorio.")
             if(error.msg.telefono_1)
-                alert.show(<div style={{backgroundColor: 'blue'}}>El campo Telefono es obligatorio.</div>)
-                this.render()
+                alert.show("El campo Telefono es obligatorio.")
             if(error.msg.marca_comercial)
                 alert.error("El campo Marca Comercial es obligatorio.")
             if(error.msg.cif){
@@ -69,10 +68,7 @@ export class Alerts extends Component {
     render() {
         return (
             <Fragment>
-                <div className="is-info">
-                    <h1>asdasd</h1>
-                </div>
-                {console.log("Estoy en el componente de la Alerta")}
+                
             </Fragment>
         );
         

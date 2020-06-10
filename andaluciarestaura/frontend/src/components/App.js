@@ -63,7 +63,7 @@ class App extends Component {
                         <PrivateRoute exact path="/admin-page" component={AdminPage} />
                         <Route exact path="/register-page" component={Registro} />
                         <PrivateRoute exact path="/servicios-page" component={ServiciosPage} />
-                        <Route exact path="/carta-page/:id" component={CartaPage} />
+                        <PrivateRouteCartaPage exact path="/carta-page/:id" component={CartaPage} />
                         <PrivateRoute exact path="/reservas-page" component={ReservasPage} />
                         <PrivateRoute exact path="/delivery-page" component={DeliveryPage} />
                         <Route exact path="/pdf-upload" component={FileUpload} />

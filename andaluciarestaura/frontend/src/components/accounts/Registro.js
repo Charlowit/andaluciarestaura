@@ -173,17 +173,17 @@ export class Registro extends Component {
                         </div>
                     </section>
                 </div>
-                    <section className="hero has-text-centered ">
+                    <section className="hero has-text-centered is-paddingless">
 
-                        <div className="hero-body" style={bkg}>
+                        <div className="hero-body is-paddingless" style={bkg}>
                                 <h1 className="title" style={{ color: 'white', paddingTop: '20px' }}>¡Únete a nosotr@s!</h1>
-                                <div className="content">
+                                <div className="content" style={{marginTop: '70px'}}>
                                     <div className="columns is-centered is-marginless" style={{ width: '100%' }}>
                                         <div className="column is-one-third is-half-tablet is-full-mobile">
                                             <section className="hero has-text-centered">
-                                                <div className="hero-body">
-                                                    <div className="container is-paddingless">
-                                                        <div className="section is-paddingless">
+                                                <div className="hero-body is-paddingless">
+                                                    <div className="container ">
+                                                        <div className="section ">
                                                             <div >
                                                                 <form style={{ marginTop: '-60px' }}>
 
@@ -374,7 +374,7 @@ export class Registro extends Component {
                                                                                 {registerFailed ? this.state.terminado = false : ""}
                                                                                 {registerFailed ? this.state.primeraVez = false : ""}
                                                                                 {this.state.terminado ? this.state.primeraVez = true : ""}
-                                                                                <button type="submit" className="button" onClick={this.onSubmit} >Registro</button>
+                                                                                <button type="submit" className="button" onClick={this.onSubmit} style={{color: '#bca466'}} >Registro</button>
                                                                             </div>
                                                                         }
 
