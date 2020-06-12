@@ -126,7 +126,6 @@ export class VisualizarCartas extends Component {
                                 <div className="columns is-centered">
                                     <div className="column is-half">
                                         <div className="container">
-
                                             <h1 className="title has-text-centered">Crear nueva carta</h1>
                                             <form>
                                                 <div className="columns ">

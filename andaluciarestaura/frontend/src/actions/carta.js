@@ -1,5 +1,15 @@
 import axios from 'axios';
-import { GET_CARTA, DELETE_PRODUCTO, ADD_PRODUCTO, GET_CATEGORIAS, DELETE_CATEGORIA, ADD_CATEGORIA } from './types';
+import {
+    GET_CARTA,
+    DELETE_PRODUCTO,
+    ADD_PRODUCTO,
+    GET_CATEGORIAS,
+    DELETE_CATEGORIA,
+    ADD_CATEGORIA,
+    UPLOADED_PHOTO,
+    UPLOADING_PHOTO,
+    REGISTER_LOADING
+} from './types';
 import { tokenConfig } from './auth'
 import { compose } from 'redux';
 
@@ -36,6 +46,25 @@ export const subirproducto = (producto) => (dispatch, getState) => {
         .catch(err => console.log("Esto es el subir y mira que error tienes " + err));
 };
 
+export const subirPhoto = (formdata, id) => dispatch => {
+
+    dispatch({
+        type: UPLOADING_PHOTO,
+    });
+
+    const config = {
+        headers: {
+            'content-type': 'multipart/form-data'
+        }
+    }
+
+   axios.put(`api/subirphoto/?id=${id}`, formdata, config)
+       .then(res => {
+               dispatch({
+                   type: UPLOADED_PHOTO,
+               })
+       }).catch(err => console.log(err));
+}
 
 export const getCategorias = (carta_id) => (dispatch, getState) => {
 

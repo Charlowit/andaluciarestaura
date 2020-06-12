@@ -6,7 +6,7 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.decorators import action
 from rest_framework import status
 from accounts.models import User
-
+from django.conf import settings
 #Carta Viewset
 
 class CartaViewSet(viewsets.ModelViewSet):
@@ -144,4 +144,44 @@ class ProductosApi(viewsets.ModelViewSet):
         categoriaID = self.request.query_params.get('categoria', None)
         queryset = Productos.objects.filter(categoria__id__exact=categoriaID)    
         return queryset
+
+
+def handle_uploaded_file(f,ruta):
+    with open(ruta, 'wb+') as destination:
+        for chunk in f.chunks():
+            destination.write(chunk)
+
+class ProductosSubirPhotoApi(viewsets.ModelViewSet):
+
+    permission_classes = [
+        permissions.AllowAny
+    ]
+
+    serializer_class = ProductoSerializerActualizar
+    parser_classes = (MultiPartParser, FormParser)
+
+    def put(self, request, *args, **kwargs):
+
+        cif_user = request.data["cif"]
+
+        print("ESTE ES EL CIF DEL USER --> ", cif_user )
+        productoID = self.request.query_params.get('id', None)
+
+        if settings.IN_PRODUCTION:
+            # VARIABLES PARA PRODUCCION
+            directorio = settings.STATIC_ROOT + '/clientes/' + cif_user
+
+        else:
+            # VARIBALES PARA LOCAL
+            directorio = './frontend/static/clientes/' + cif_user
+
+        ruta = directorio +'/' + productoID + '.jpeg'
+
+        handle_uploaded_file(request.data["photo"], ruta)
+
+        ruta = '/static/clientes/' + cif_user + '/' + productoID + '.jpeg'
+
+        Productos.objects.filter(id__exact=productoID).update(photo=ruta)
+
+        return Response(status=status.HTTP_200_OK)
 

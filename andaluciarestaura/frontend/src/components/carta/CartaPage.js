@@ -1,9 +1,9 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { getCategorias, deleteproducto, subirproducto, addCategoria, deleteCategoria } from '../../actions/carta';
+import { getCategorias, deleteproducto, subirproducto, addCategoria, deleteCategoria, subirPhoto } from '../../actions/carta';
 import { getCartaExpecifica, updateEslogan, updateURL, updateNombreCarta } from '../../actions/cartas';
-
+import { Redirect, Link } from 'react-router-dom';
 
 const div100 = {
     width: '100%',
@@ -44,6 +44,8 @@ export class CartaPage extends Component {
             is_pescado: false,
             is_sesamo: false,
             is_soja: false,
+            photo: null,
+            file: null,
             carta: -1,
 
             vacio: false,
@@ -59,9 +61,10 @@ export class CartaPage extends Component {
             newUrlT: "",
             editNombreCarta: false,
             newCartaNombre: "",
+            updatingProduct: false,
+            addPhoto: false,
 
             nombreNuevaCategoria: "",
-            descripcion: "",
             info_extra: "",
             posicion: -1,
         };
@@ -71,10 +74,11 @@ export class CartaPage extends Component {
 
         e.preventDefault();
 
-        const { categoriaParaProducto, name, descripcion, tamanio, tamanio2, tamanio3, precio1, precio2, precio3, is_apio, is_altramuces, is_cacahuete, is_crustaceo, is_frutos_con_cascara, is_gluten, is_huevo, is_lacteo, is_molusco, is_mostaza, is_pescado, is_sesamo, is_soja
+        const { categoriaParaProducto, name, descripcion, tamanio, tamanio2, tamanio3, precio1, precio2, precio3, is_apio, is_altramuces, is_cacahuete, is_crustaceo, is_frutos_con_cascara, is_gluten, is_huevo, is_lacteo, is_molusco, is_mostaza, is_pescado, is_sesamo, is_soja, photo
         } = this.state;
         const { carta } = this.props.match.params.id;
-        const producto = { categoriaParaProducto, name, descripcion, tamanio, tamanio2, tamanio3, precio1, precio2, precio3, is_apio, is_altramuces, is_cacahuete, is_crustaceo, is_frutos_con_cascara, is_gluten, is_huevo, is_lacteo, is_molusco, is_mostaza, is_pescado, is_sesamo, is_soja, carta };
+
+        const producto = { categoriaParaProducto, name, descripcion, tamanio, tamanio2, tamanio3, precio1, precio2, precio3, is_apio, is_altramuces, is_cacahuete, is_crustaceo, is_frutos_con_cascara, is_gluten, is_huevo, is_lacteo, is_molusco, is_mostaza, is_pescado, is_sesamo, is_soja, carta, photo };
 
         this.setState({
             addingProduct: !this.state.addingProduct
@@ -84,6 +88,22 @@ export class CartaPage extends Component {
         this.props.subirproducto(producto);
 
     };
+
+    onSubmitPhotoProducto = (e, id, cif) => {
+        e.preventDefault();
+        console.log("ESTE ES EL ID DEL PRODUCTO --> ", id  )
+        let form_data = new FormData();
+        form_data.append('id', id);
+        form_data.append('cif', cif);
+        form_data.append('photo', this.state.photo);
+        this.props.subirPhoto(form_data, id);
+        this.setState({
+            addPhoto: !this.state.addPhoto
+        })
+        this.setState({ state: this.state });
+        //window.location.reload(false)
+
+    }
 
     onSubmitCategorias = e => {
         e.preventDefault();
@@ -177,6 +197,18 @@ export class CartaPage extends Component {
     addProduct = e => {
         this.setState({
             addingProduct: !this.state.addingProduct
+        })
+    }
+
+    addPhoto = e => {
+        this.setState({
+            addPhoto: !this.state.addPhoto
+        })
+    }
+
+    editProduct = e => {
+        this.setState({
+            updatingProduct: !this.state.updatingProduct
         })
     }
 
@@ -299,6 +331,13 @@ export class CartaPage extends Component {
     handleSojaChange = (e) => {
         this.setState({
             is_soja: !this.state.is_soja
+        })
+    };
+
+    handlePhotoChange = (e) => {
+        this.setState({
+            photo: e.target.files[0],
+            file: URL.createObjectURL(e.target.files[0])
         })
     };
 
@@ -884,6 +923,279 @@ export class CartaPage extends Component {
                             </div>
                         </div>
 
+                        {/*EMPIEZA EL MODAL PARA ACTUALIZAR EL PRODUCTO*/}
+                        <div className={this.state.updatingProduct ? "modal is-active" : "modal"}>
+                            <div className="modal-background"></div>
+                            <div className="modal-content">
+                                <div className="container box">
+                                    {this.props.cartaReal.map(carta => (
+                                        <div>
+                                            {this.props.categorias.map(categoria => (
+                                                <div>
+                                                    {this.props.cartas.map(producto => (
+                                                      <div>
+                                                        <div className="has-text-right">
+                                                            <button className="button is-danger" onClick={this.editProduct}>x</button>
+                                                        </div>
+                                                        <h1 className="title has-text-centered" style={{ marginTop: '20px' }}>Editar el producto {producto.name}</h1>
+                                                        <form>
+                                                            <div className="columns">
+                                                                <div className="column">
+                                                                    <div className="field">
+                                                                        <label className="label">Nombre</label>
+                                                                        <div className="control">
+                                                                            <input className="input" name="name" type="text" placeholder="Nombre del Producto" onChange={this.onChange} defaultValue={producto.name} required />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="columns">
+                                                                        <div className="column">
+                                                                            <div style={{ marginTop: '20px' }}>
+                                                                                <label className="label">Tamaño Precio 1</label>
+                                                                                <div className="control">
+                                                                                    <div className="select">
+                                                                                        <select name="tamanio" onChange={this.onChangePrecio1} defaultValue={producto.titulo_precio1}>
+                                                                                            <option >Ninguno</option>
+                                                                                            <option value="Tapa">Tapa</option>
+                                                                                            <option value="Media racion">Media ración</option>
+                                                                                            <option value="Racion">Ración</option>
+                                                                                            <option value="Plato">Plato</option>
+                                                                                            <option value="Bandeja">Bandeja</option>
+                                                                                            <option value="S">S</option>
+                                                                                            <option value="M">M</option>
+                                                                                            <option value="L">L</option>
+                                                                                            <option value="XL">XL</option>
+                                                                                            <option value="XXL">XXL</option>
+                                                                                        </select>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div className="field" style={{ marginTop: '10px' }}>
+                                                                                <label className="label">Precio 1</label>
+                                                                                <div className="control">
+                                                                                    <input className="input" name="precio1" type="text" placeholder="0.0" onChange={this.onChange} defaultValue={producto.precio1} required />
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className="column">
+                                                                            <div style={{ marginTop: '20px' }}>
+                                                                                <label className="label">Tamaño Precio 2</label>
+                                                                                <div className="control">
+                                                                                    <div className="select">
+                                                                                        <select name="tamanio2" onChange={this.onChangePrecio2} defaultValue={producto.titulo_precio2}>
+                                                                                            <option >Ninguno</option>
+                                                                                            <option value="Tapa">Tapa</option>
+                                                                                            <option value="Media racion">Media ración</option>
+                                                                                            <option value="Racion">Ración</option>
+                                                                                            <option value="Plato">Plato</option>
+                                                                                            <option value="Bandeja">Bandeja</option>
+                                                                                            <option value="S">S</option>
+                                                                                            <option value="M">M</option>
+                                                                                            <option value="L">L</option>
+                                                                                            <option value="XL">XL</option>
+                                                                                            <option value="XXL">XXL</option>
+                                                                                        </select>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div className="field" style={{ marginTop: '10px' }}>
+                                                                                <label className="label">Precio 2</label>
+                                                                                <div className="control">
+                                                                                    <input className="input " name="precio2" type="text" placeholder="0.0" onChange={this.onChange} defaultValue={precio2} />
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className="column">
+                                                                            <div style={{ marginTop: '20px' }}>
+                                                                                <label className="label">Tamaño Precio 3</label>
+                                                                                <div className="control">
+                                                                                    <div className="select">
+                                                                                        <select name="tamanio3" onChange={this.onChangePrecio3} defaultValue={producto.titulo_precio3}>
+                                                                                            <option >Ninguno</option>
+                                                                                            <option value="Tapa">Tapa</option>
+                                                                                            <option value="Media racion">Media ración</option>
+                                                                                            <option value="Racion">Ración</option>
+                                                                                            <option value="Plato">Plato</option>
+                                                                                            <option value="Bandeja">Bandeja</option>
+                                                                                            <option value="S">S</option>
+                                                                                            <option value="M">M</option>
+                                                                                            <option value="L">L</option>
+                                                                                            <option value="XL">XL</option>
+                                                                                            <option value="XXL">XXL</option>
+                                                                                        </select>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div className="field" style={{ marginTop: '10px' }}>
+                                                                                <label className="label">Precio 3</label>
+                                                                                <div className="control">
+                                                                                    <input className="input" name="precio3" type="text" placeholder="0.0" onChange={this.onChange} defaultValue={precio3} />
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="container">
+                                                                        <h2 className="subtitle">Alergenos</h2>
+                                                                        <div className="columns">
+                                                                            <div className="column">
+                                                                                <div className="field">
+                                                                                    <div className="control">
+                                                                                        <div className="b-checkbox">
+                                                                                            <input id="checkbox" name="is_apio" className="styled" type="checkbox" onChange={this.handleApioChange} defaultValue={is_apio} />
+                                                                                            <label >  Apio</label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div className="field">
+                                                                                    <div className="control">
+                                                                                        <div className="b-checkbox">
+                                                                                            <input id="checkbox" name="is_altramuces" className="styled" type="checkbox" onChange={this.handleAltramucesChange} defaultValue={is_altramuces} />
+                                                                                            <label>  Altramuces</label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div className="field">
+                                                                                    <div className="control">
+                                                                                        <div className="b-checkbox">
+                                                                                            <input id="checkbox" name="is_cacahuete" className="styled" type="checkbox" onChange={this.handleCacahueteChange} defaultValue={is_cacahuete} />
+                                                                                            <label >  Cacahuete</label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div className="field">
+                                                                                    <div className="control">
+                                                                                        <div className="b-checkbox">
+                                                                                            <input id="checkbox" name="is_custaceo" className="styled" type="checkbox" onChange={this.handleCrustaceoChange} defaultValue={is_crustaceo} />
+                                                                                            <label>  Crustaceo</label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div className="column">
+                                                                                <div className="field">
+                                                                                    <div className="control">
+                                                                                        <div className="b-checkbox">
+                                                                                            <input id="checkbox" name="is_frutas_con_cascara" className="styled" type="checkbox" onChange={this.handleCascaraChange} defaultValue={is_frutos_con_cascara} />
+                                                                                            <label >  Cascara Frutal</label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div className="field">
+                                                                                    <div className="control">
+                                                                                        <div className="b-checkbox">
+                                                                                            <input id="checkbox" name="is_gluten" className="styled" type="checkbox" onChange={this.handleGlutenChange} defaultValue={is_gluten} />
+                                                                                            <label >  Gluten</label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div className="field">
+                                                                                    <div className="control">
+                                                                                        <div className="b-checkbox">
+                                                                                            <input id="checkbox" name="is_huevo" className="styled" type="checkbox" onChange={this.handleHuevoChange} defaultValue={is_huevo} />
+                                                                                            <label >  Huevo</label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div className="field">
+                                                                                    <div className="control">
+                                                                                        <div className="b-checkbox">
+                                                                                            <input id="checkbox" name="is_lacteo" className="styled" type="checkbox" onChange={this.handleLacteoChange} defaultValue={is_lacteo} />
+                                                                                            <label >  Lacteo</label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div className="column">
+                                                                                <div className="field">
+                                                                                    <div className="control">
+                                                                                        <div className="b-checkbox">
+                                                                                            <input id="checkbox" name="is_molusco" className="styled" type="checkbox" onChange={this.handleMoluscoChange} defaultValue={is_molusco} />
+                                                                                            <label >  Molusco</label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div className="field">
+                                                                                    <div className="control">
+                                                                                        <div className="b-checkbox">
+                                                                                            <input id="checkbox" name="is_mostaza" className="styled" type="checkbox" onChange={this.handleMostazaChange} defaultValue={is_mostaza} />
+                                                                                            <label >  Mostaza</label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div className="field">
+                                                                                    <div className="control">
+                                                                                        <div className="b-checkbox">
+                                                                                            <input id="checkbox" name="is_pescado" className="styled" type="checkbox" onChange={this.handlePescadoChange} defaultValue={is_pescado} />
+                                                                                            <label >  Pescado</label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div className="field">
+                                                                                    <div className="control">
+                                                                                        <div className="b-checkbox">
+                                                                                            <input id="checkbox" name="is_sesamo" className="styled" type="checkbox" onChange={this.handleSesamoChange} defaultValue={is_sesamo} />
+                                                                                            <label >  Sesamo</label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div className="column">
+                                                                                <div className="field">
+                                                                                    <div className="control">
+                                                                                        <div className="b-checkbox">
+                                                                                            <input id="checkbox" name="is_soja" className="styled" type="checkbox" onChange={this.handleSojaChange} defaultValue={is_soja} />
+                                                                                            <label >  Soja</label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div className="field">
+                                                                <label className="label">Descripción</label>
+                                                                <div className="control">
+                                                                    <textarea name="descripcion" className="textarea" placeholder="Descripción del producto." size="99" onChange={this.onChange} defaultValue={descripcion}></textarea>
+                                                                </div>
+                                                            </div>
+                                                            <div className="container">
+                                                                <div className="field" >
+                                                                    <div>
+                                                                        <label className="label">Categoria</label>
+                                                                        <div className="control">
+                                                                            <div className="select">
+                                                                                <select id="categoriaParaProducto" onChange={this.onChangeCategoria} defaultValue={this.state.categoriaParaProducto}>
+                                                                                    <option>Ninguna categoria seleccionada</option>
+                                                                                    {this.props.categorias.map(categoria => (
+                                                                                        <option key={categoria.id} value={categoria.id}>{categoria.name}</option>
+                                                                                    ))}
+                                                                                </select>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div>
+
+                                                            </div>
+                                                        </form>
+                                                        <br />
+                                                        <div className="control buttons is-centered">
+                                                            <button className="button is-success" onClick={this.onSubmit}>Guardar</button>
+                                                        </div>
+                                                      </div>
+                                                    ))}
+                                                </div>
+                                            ))}
+                                        </div>
+                                    ))}
+
+                                </div>
+                            </div>
+                        </div>
+                        {/*TERMINA MODAL PARA ACTUALIZAR EL PRODUCTO*/}
+
                         <div className="container">
                             <div>
                                 <div className="container">
@@ -917,13 +1229,12 @@ export class CartaPage extends Component {
                                                         <div style={{ marginTop: '20px' }} key={producto.id}>
                                                             {categoria.id == producto.categoria ?
 
-                                                                <div className='card'>
-                                                                    {/*<div class="card-image">
-                                                                        <figure class="image is-4by3">
-                                                                            <img
-                                                                                src="static/frontend/cerverzaP2.png"></img>
+                                                                    <div className='card'>
+                                                                    <div class="card-image">
+                                                                        <figure class="image is-128x128">
+                                                                            <img src={producto.photo} ></img>
                                                                         </figure>
-                                                            </div>*/}
+                                                                    </div>
                                                                     <div className="columns">
 
 
@@ -937,6 +1248,7 @@ export class CartaPage extends Component {
                                                                                             <h1 className="title"> {producto.name} </h1>
                                                                                             <h2 className="subtitle has-text-weight-light">  {producto.descripcion}</h2>
                                                                                         </div>
+
                                                                                         <div className="column has-text-centered" style={{ marginTop: '10px' }}>
                                                                                             <div className="columns is-mobile">
                                                                                                 {producto.precio1 != 0.0 ?
@@ -1115,7 +1427,78 @@ export class CartaPage extends Component {
                                                                                 </div>
                                                                                 <div className="column is-full-mobile" style={{ marginTop: '20px' }}>
                                                                                     <div className="columns is-mobile has-text-centered is-gapless" >
-                                                                                        <div className="column">
+                                                                                        <div className="column" >
+                                                                                            <div className="is-rounded"
+                                                                                                 style={{
+                                                                                                     backgroundColor: '#d5c69f',
+                                                                                                     padding: '5px'
+                                                                                                 }}>
+                                                                                                <button
+                                                                                                    className="button is-warning" onClick={this.addPhoto}>
+                                                                                                    <span
+                                                                                                        className="icon is-small">
+                                                                                                        <i className="fas fa-camera"></i>
+                                                                                                    </span>
+                                                                                                </button>
+                                                                                                <div className={this.state.addPhoto ? "modal is-active" : "modal"}>
+                                                                                                    <div className="modal-background"></div>
+                                                                                                    <div className="modal-content">
+                                                                                                        <div className="container box">
+                                                                                                            <div className="has-text-right">
+                                                                                                                <button className="button is-danger" onClick={this.addPhoto}>
+                                                                                                                    <span className="icon is-small">
+                                                                                                                        <i className="fas fa-times"></i>
+                                                                                                                    </span>
+                                                                                                                </button>
+                                                                                                            </div>
+                                                                                                            <label className="label  is-size-4">Sube la foto de tu producto</label>
+                                                                                                            <hr style={{marginTop: '30px'}}/>
+                                                                                                            <form>
+                                                                                                                <div className="field">
+                                                                                                                    <div className="file has-name">
+                                                                                                                        <label className="file-label">
+                                                                                                                            <input className="file-input" type="file" id="logo" accept=".jpeg" onChange={this.handlePhotoChange} required />
+                                                                                                                            <span className="file-cta">
+                                                                                                                                <span className="file-icon">
+                                                                                                                                    <i className="fas fa-camera"></i>
+                                                                                                                                </span>
+                                                                                                                                <span className="file-label is-centered">
+                                                                                                                                    Escoja su foto
+                                                                                                                                </span>
+
+                                                                                                                            </span>
+                                                                                                                        </label>
+                                                                                                                    </div>
+                                                                                                                    <div style={{marginTop: '10px', marginBottom: '10px'}} className="is-centered">
+                                                                                                                        <span style={{marginBottom: '10px'}}>
+                                                                                                                            <p>Previsualización:</p>
+                                                                                                                        </span>
+                                                                                                                        <span>
+                                                                                                                            <img src={this.state.file}/>
+                                                                                                                        </span>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                                <div className="control buttons is-centered" style={{marginTop: '20px'}}>
+                                                                                                                    <button className="button is-success" onClick={e => this.onSubmitPhotoProducto(e, producto.id, this.state.cif)}>Guardar</button>
+                                                                                                                </div>
+                                                                                                            </form>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            {/*
+                                                                                            <div className="field">
+                                                                                                <div className="file has-name" style={{ backgroundColor: '#d5c69f', padding: '5px' }}>
+                                                                                                    <label className="file-label" style={{ backgroundColor: '#d5c69f', padding: '5px' }}>
+                                                                                                        <input className="file-input" type="file" id="photo" accept=".jpeg" onChange={this.handlePhotoChange} required />
+                                                                                                        <span className="file-cta">
+                                                                                                            <span className="file-icon">
+                                                                                                                <i className="fas fa-camera"></i>
+                                                                                                            </span>
+                                                                                                        </span>
+                                                                                                    </label>
+                                                                                                </div>
+                                                                                            </div>*/}
                                                                                         </div>
                                                                                         <div className="column" >
                                                                                             <div className="is-rounded" style={{ backgroundColor: '#d5c69f', padding: '5px' }}>
@@ -1180,4 +1563,4 @@ const mapStateToProps = state => ({
     cartaReal: state.reducerCartas.expecificCarta,
 });
 
-export default connect(mapStateToProps, { updateNombreCarta, updateURL, updateEslogan, getCartaExpecifica, subirproducto, addCategoria, getCategorias, deleteproducto, deleteCategoria })(CartaPage);
+export default connect(mapStateToProps, { updateNombreCarta, updateURL, updateEslogan, getCartaExpecifica, subirproducto, addCategoria, getCategorias, deleteproducto, deleteCategoria, subirPhoto })(CartaPage);
