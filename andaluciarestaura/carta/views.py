@@ -22,12 +22,12 @@ def react(response,cif):
 
 def index_gratis(request,cif_cliente):
     #Traemos el usuario con los atributos que nos interesen.
-    user = User.objects.filter(cif__exact=cif_cliente).values('fax','marca_comercial','is_premium')
+    user = User.objects.filter(cif__exact=cif_cliente).values('is_premium')
     server_local = "http://127.0.0.1"
     #Transformamos el usuario a una lista
-    user = list(user)
+    
     #Se carga el template
-
+    print("Mira el username --> ", user)
     #Traemos la carta del usuario
     if (settings.IN_PRODUCTION):
         server_local = "https://127.0.0.1"
@@ -70,17 +70,15 @@ def index_gratis(request,cif_cliente):
          
     template = loader.get_template('../../frontend/templates/frontend/free2.html')
 
-    if len(user) > 0:
-        user = user[0]
-        if user['is_premium']:
-            template = loader.get_template('carta/premium.html')
-        print(user)
-    else:
-        user = {}
+  
+    if user:
+        template = loader.get_template('carta/premium.html')
+    print(user)
+    
+    user = {}
     print("SERVER_LOCAL: " + server_local)
     context = {
         'cif_cliente': cif_cliente,
-        'user': user,
         'categorias': categoriasRaw,
         'productos': productos,
         'server': server_local,
@@ -100,10 +98,8 @@ def index_gratis(request,cif_cliente):
 
 def index_pago(request,cif_cliente, carta_id):
     #Traemos el usuario con los atributos que nos interesen.
-    user = User.objects.filter(cif__exact=cif_cliente).values('fax','marca_comercial','is_premium')
+    user = User.objects.filter(cif__exact=cif_cliente).values('is_premium')
     server_local = "http://127.0.0.1"
-    #Transformamos el usuario a una lista
-    user = list(user)
     #Se carga el template
 
     #Traemos la carta del usuario
@@ -153,7 +149,6 @@ def index_pago(request,cif_cliente, carta_id):
     print("SERVER_LOCAL: " + server_local)
     context = {
         'cif_cliente': cif_cliente,
-        'user': user,
         'categorias': categoriasRaw,
         'productos': productos,
         'server': server_local,

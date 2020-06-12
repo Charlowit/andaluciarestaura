@@ -28,6 +28,7 @@ export class VisualizarCartas extends Component {
             posicion: -1,
             info_extra: "",
             eslogan: "",
+            establecimiento: "",
             addingCarta: false,
             is_premium: "",
             modal_qr: false,
@@ -90,8 +91,8 @@ export class VisualizarCartas extends Component {
             this.state.eslogan = "-"
         }
 
-        const { nombreNuevaCarta, propietario, url_facebook, url_instagram, url_tripadvisor, eslogan, plantilla } = this.state;
-        const carta = { nombreNuevaCarta, propietario, url_facebook, url_instagram, url_tripadvisor, eslogan, plantilla };
+        const { nombreNuevaCarta, propietario, url_facebook, url_instagram, url_tripadvisor, eslogan, plantilla, establecimiento } = this.state;
+        const carta = { nombreNuevaCarta, propietario, url_facebook, url_instagram, url_tripadvisor, eslogan, plantilla, establecimiento };
         this.setState({
             addingCarta: !this.state.addingCarta
         })
@@ -131,7 +132,6 @@ export class VisualizarCartas extends Component {
                                 <div className="columns is-centered">
                                     <div className="column is-half">
                                         <div className="container">
-
                                             <h1 className="title has-text-centered">Crear nueva carta</h1>
                                             <form>
                                                 <div className="columns ">
@@ -164,6 +164,12 @@ export class VisualizarCartas extends Component {
                                                             <label className="label">Eslogan</label>
                                                             <div className="control">
                                                                 <input className="input" onChange={this.onChange} name="eslogan" defaultValue={this.state.eslogan} type="text" placeholder="El mejor restaurante de la zona!" />
+                                                            </div>
+                                                        </div>
+                                                        <div className="field">
+                                                            <label className="label">Establecimiento</label>
+                                                            <div className="control">
+                                                                <input className="input" onChange={this.onChange} name="establecimiento" defaultValue={this.state.establecimiento} type="text" placeholder="Bar del Desarrollador!" />
                                                             </div>
                                                         </div>
                                                         <div className="field">

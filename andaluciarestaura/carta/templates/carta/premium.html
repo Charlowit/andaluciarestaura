@@ -17,85 +17,98 @@
       font-family: 'El Messiri';
     }
 
-    #google_translate_element {
+    #google_translate_element {}
 
-  }
-  .goog-te-gadget {
-    font-family: Roboto, 'Open Sans', sans-serif!important;
-    text-transform: uppercase;
-  }
-  .goog-te-gadget-simple  {
-    background-color: #bca466!important;
-    border: 1px solid rgba(255,255,255,0.50) !important;
-    padding: 8px!important;
-    border-radius: 4px!important;
-    font-size: 1rem!important;
-    line-height:2rem!important;
-    display: inline-block;
-    cursor: pointer;
-    zoom: 1;
-  }
-  .goog-te-menu2 {
-    max-width: 100%;
-  }
-  .goog-te-menu-value {
-    color: #fff !important;
+    .goog-te-gadget {
+      font-family: Roboto, 'Open Sans', sans-serif !important;
+      text-transform: uppercase;
+    }
+
+    .goog-te-gadget-simple {
+      background-color: #bca466 !important;
+      border: 1px solid rgba(255, 255, 255, 0.50) !important;
+      padding: 8px !important;
+      border-radius: 4px !important;
+      font-size: 1rem !important;
+      line-height: 2rem !important;
+      display: inline-block;
+      cursor: pointer;
+      zoom: 1;
+    }
+
+    .goog-te-menu2 {
+      max-width: 100%;
+    }
+
+    .goog-te-menu-value {
+      color: #fff !important;
+
       &:before {
-      font-family: 'Material Icons';
-      content: "\E927";
-      margin-right: 16px;
-      font-size: 2rem;
-      vertical-align: -10px;
-      // width:32px!important;
-    } 
-  }
-  .goog-te-menu-value span:nth-child(5) {
-    display:none;
-  }
-  .goog-te-menu-value span:nth-child(3) {
-    border:none!important;
-    font-family: 'Material Icons';
-    &:after {
-      font-family: 'Material Icons';
-      content: "\E5C5";
-      font-size: 1.5rem;
-      vertical-align: -6px;
-    }  
-  }
+        font-family: 'Material Icons';
+        content: "\E927";
+        margin-right: 16px;
+        font-size: 2rem;
+        vertical-align: -10px;
+        // width:32px!important;
+      }
+    }
 
-  .goog-te-gadget-icon {
-      background-image: url(https://placehold.it/32)!important;
+    .goog-te-menu-value span:nth-child(5) {
+      display: none;
+    }
+
+    .goog-te-menu-value span:nth-child(3) {
+      border: none !important;
+      font-family: 'Material Icons';
+
+      &:after {
+        font-family: 'Material Icons';
+        content: "\E5C5";
+        font-size: 1.5rem;
+        vertical-align: -6px;
+      }
+    }
+
+    .goog-te-gadget-icon {
+      background-image: url(https://placehold.it/32) !important;
       background-position: 0px 0px;
       height: 32px;
       width: 32px;
-      margin-right: 8px!important;
+      margin-right: 8px !important;
       display: none;
-  }
+    }
 
-  .goog-te-banner-frame.skiptranslate {display: none!important;} 
-  body {top: 0px!important;}
+    .goog-te-banner-frame.skiptranslate {
+      display: none !important;
+    }
 
-  /* ================================== *\
+    body {
+      top: 0px !important;
+    }
+
+    /* ================================== *\
       Mediaqueries
   \* ================================== */
-  @media (max-width: 667px) {
-    #google_translate_element {
-      bottom: calc(100% - 50% - 53px);
-      left: 16px!important;
-      width: 100%!important;
-      goog-te-gadget {
-        width:100%!important;
+    @media (max-width: 667px) {
+      #google_translate_element {
+        bottom: calc(100% - 50% - 53px);
+        left: 16px !important;
+        width: 100% !important;
+
+        goog-te-gadget {
+          width: 100% !important;
+        }
+
+        .skiptranslate {
+          width: 100% !important;
+        }
+
+        .goog-te-gadget-simple {
+          width: calc(100% - 32px) !important;
+          text-align: center;
+        }
       }
-      .skiptranslate {
-        width:100%!important;			
-      }
-      .goog-te-gadget-simple {
-        width: calc(100% - 32px)!important;
-        text-align: center;
-      }	
     }
-  }
-    
   </style>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, user-scalable=no">
@@ -122,24 +135,22 @@
       color: #d5c69f;
     }
 
-    #fondoCarta{
+    #fondoCarta {
       margin-top: 20px;
 
     }
 
-    #colorDoradoTexto{
+    #colorDoradoTexto {}
 
-    }
-
-    #colorTextoWhite{
+    #colorTextoWhite {
       color: white;
     }
 
-    #fondoHeroBody{
+    #fondoHeroBody {
       background-color: #1D9BCB;
     }
 
-    #colorTextoWhite{
+    #colorTextoWhite {
       color: white;
     }
   </style>
@@ -166,27 +177,27 @@
       color: #d5c69f;
     }
 
-    #fondoCarta{
+    #fondoCarta {
       background-color: black;
       color: white;
     }
 
-    #colorDoradoTexto{
+    #colorDoradoTexto {
       color: #d5c69f;
     }
 
-    #fondoHeroBody{
+    #fondoHeroBody {
       background-color: #d5c69f;
     }
 
-    #colorTextoWhite{
+    #colorTextoWhite {
       color: black;
     }
   </style>
   {% endif %}
 </head>
 
-<body initial-scale=1 >
+<body initial-scale=1>
   <header>
     <nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
@@ -198,7 +209,7 @@
     </nav>
   </header>
   <section class="hero is-bold" id="fondoHeroBody" style="margin-top: 40px ">
-    
+
     <div class="hero-body">
       <div class="container has-text-centered is-clearfix">
         <div class='equal-height'>
@@ -212,8 +223,7 @@
             </figure>
           </div>
         </div>
-        <h1 class="title" id="colorTextoWhite"> {{user.marca_comercial}} </h1>
-        <h2 class="subtitle" id="colorTextoWhite"> {{user.fax}} <br /></h2>
+        <h1 class="title" id="colorTextoWhite"> {{carta.establecimiento}} </h1>
         <p class="field">
           {% if url_facebook != "-" %}
           <a href={{url_facebook}} class="button is-rounded is-medium">
@@ -283,57 +293,57 @@
     $('document').ready(function () {
 
 
-// RESTYLE THE DROPDOWN MENU
-$('#google_translate_element').on("click", function () {
+      // RESTYLE THE DROPDOWN MENU
+      $('#google_translate_element').on("click", function () {
 
-    // Change font family and color
-    $("iframe").contents().find(".goog-te-menu2-item div, .goog-te-menu2-item:link div, .goog-te-menu2-item:visited div, .goog-te-menu2-item:active div, .goog-te-menu2 *")
-        .css({
+        // Change font family and color
+        $("iframe").contents().find(".goog-te-menu2-item div, .goog-te-menu2-item:link div, .goog-te-menu2-item:visited div, .goog-te-menu2-item:active div, .goog-te-menu2 *")
+          .css({
             'color': '#544F4B',
             'font-family': 'Roboto',
-            'width':'100%'
+            'width': '100%'
+          });
+        // Change menu's padding
+        $("iframe").contents().find('.goog-te-menu2-item-selected').css('display', 'none');
+
+        // Change menu's padding
+        $("iframe").contents().find('.goog-te-menu2').css('padding', '0px');
+
+        // Change the padding of the languages
+        $("iframe").contents().find('.goog-te-menu2-item div').css('padding', '20px');
+
+        // Change the width of the languages
+        $("iframe").contents().find('.goog-te-menu2-item').css('width', '100%');
+        $("iframe").contents().find('td').css('width', '100%');
+
+        // Change hover effects
+        $("iframe").contents().find(".goog-te-menu2-item div").hover(function () {
+          $(this).css('background-color', '#4385F5').find('span.text').css('color', 'white');
+        }, function () {
+          $(this).css('background-color', 'white').find('span.text').css('color', '#544F4B');
         });
-    // Change menu's padding
-    $("iframe").contents().find('.goog-te-menu2-item-selected').css ('display', 'none');
-  
-    // Change menu's padding
-    $("iframe").contents().find('.goog-te-menu2').css ('padding', '0px');
-  
-    // Change the padding of the languages
-    $("iframe").contents().find('.goog-te-menu2-item div').css('padding', '20px');
-  
-    // Change the width of the languages
-    $("iframe").contents().find('.goog-te-menu2-item').css('width', '100%');
-    $("iframe").contents().find('td').css('width', '100%');
-  
-    // Change hover effects
-    $("iframe").contents().find(".goog-te-menu2-item div").hover(function () {
-        $(this).css('background-color', '#4385F5').find('span.text').css('color', 'white');
-    }, function () {
-        $(this).css('background-color', 'white').find('span.text').css('color', '#544F4B');
-    });
 
-    // Change Google's default blue border
-    $("iframe").contents().find('.goog-te-menu2').css('border', 'none');
+        // Change Google's default blue border
+        $("iframe").contents().find('.goog-te-menu2').css('border', 'none');
 
-    // Change the iframe's box shadow
-    $(".goog-te-menu-frame").css('box-shadow', '0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.3)');
-    
-  
-  
-    // Change the iframe's size and position?
-    $(".goog-te-menu-frame").css({
-        'height': '100%',
-        'width': '100%',
-        'top': '0px'
+        // Change the iframe's box shadow
+        $(".goog-te-menu-frame").css('box-shadow', '0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.3)');
+
+
+
+        // Change the iframe's size and position?
+        $(".goog-te-menu-frame").css({
+          'height': '100%',
+          'width': '100%',
+          'top': '0px'
+        });
+        // Change iframes's size
+        $("iframe").contents().find('.goog-te-menu2').css({
+          'height': '100%',
+          'width': '100%'
+        });
+      });
     });
-    // Change iframes's size
-    $("iframe").contents().find('.goog-te-menu2').css({
-        'height': '100%',
-        'width': '100%'
-    });
-});
-});
   </script>
 
   <div class="section">
@@ -342,11 +352,14 @@ $('#google_translate_element').on("click", function () {
         <div style="margin-top: 40px">
           <!-- FOR DE LA CARTA -->
           {% for categoria in categorias %}
-          <div class='card equal-height ' id="cardColour" style="margin-top: 40px">
-            <div class="container">
-              <br />
-              <h1 class="title has-text-centered" id="colorDoradoTexto" >{{categoria.name}}</h1>
-              <br />
+          <div class="container">
+
+            <div class='card equal-height ' id="cardColour" style="margin-top: 40px">
+              <div class="container">
+                <br />
+                <h1 class="title has-text-centered" id="colorDoradoTexto">{{categoria.name}}</h1>
+                <br />
+              </div>
             </div>
           </div>
           {% for producto in productos %}
@@ -354,15 +367,15 @@ $('#google_translate_element').on("click", function () {
           <div class='card equal-height' id="fondoCarta">
             <div className=" has-text-centered">
               <figure className="image is-64x64 is-inline-block">
-                  <img className="is-rounded"
-                      src="https://pngimage.net/wp-content/uploads/2018/06/plato-de-comida-png-5.png"></img>
+                <img className="is-rounded"
+                  src="https://pngimage.net/wp-content/uploads/2018/06/plato-de-comida-png-5.png"></img>
               </figure>
-          </div>
-          {% if plantilla == "Plantilla 2" %}
-          <div style="text-align: center;">
-            <hr style="width:75%; margin-left:25%; margin-right:25%; background-color: #d5c69f;"/>
-          </div>
-          {% endif %}
+            </div>
+            {% if plantilla == "Plantilla 2" %}
+            <div style="text-align: center;">
+              <hr style="width:75%; margin-left:25%; margin-right:25%; background-color: #d5c69f;" />
+            </div>
+            {% endif %}
             <div class="columns">
               <div class="container">
                 <div class="column">
@@ -372,11 +385,12 @@ $('#google_translate_element').on("click", function () {
                        <h1></h1>
                     </div>
                     -->
-                    <div class="column" >
+                    <div class="column">
                       <div class="columns">
                         <div class="column is-two-thirds" style="margin-left: 2%;margin-top: 2%">
                           <h1 class="title" id="colorDoradoTexto">{{ producto.name }} </h1>
-                          <h2 class="subtitle has-text-weight-light" id="colorDoradoTexto"> {{ producto.descripcion }}</h2>
+                          <h2 class="subtitle has-text-weight-light" id="colorDoradoTexto"> {{ producto.descripcion }}
+                          </h2>
                         </div>
                       </div>
                       <div class="columns">

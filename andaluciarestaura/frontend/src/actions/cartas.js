@@ -59,7 +59,7 @@ export const nuevaCarta = (carta) => (dispatch, getState) => {
         }
     };
 
-    const body = JSON.stringify({ name: carta.nombreNuevaCarta, propietario: carta.propietario, url_facebook: carta.url_facebook, url_instagram: carta.url_instagram, url_tripadvisor: carta.url_tripadvisor, eslogan: carta.eslogan, plantilla: carta.plantilla });
+    const body = JSON.stringify({ name: carta.nombreNuevaCarta, propietario: carta.propietario, url_facebook: carta.url_facebook, url_instagram: carta.url_instagram, url_tripadvisor: carta.url_tripadvisor, eslogan: carta.eslogan, plantilla: carta.plantilla, establecimiento: carta.establecimiento });
     console.log("Body de la nueva carta ->", body)
     //axios.get(`/api/cartaadmin/?cif=${cif}`)
     axios.post(`/api/getcartas/?cif=${carta.propietario}`, body, tokenConfig(getState))
@@ -119,6 +119,22 @@ export const updateNombreCarta = (carta) => (dispatch, getState) => {
 
 
     const body = JSON.stringify({ id: carta.idCarta, propietario: carta.propietario, name: carta.cartaName, directorio: carta.directorio });
+
+    axios.put(`/api/getcartas/${carta.idCarta}/`, body, tokenConfig(getState))
+        .then(res => {
+            dispatch({
+                type: UPDATE_CARTA,
+                payload: res.data
+            });
+        })
+        .catch(err => console.log("Esto ta mal? " + err));
+
+}
+
+export const updateEstablecimiento = (carta) => (dispatch, getState) => {
+
+
+    const body = JSON.stringify({ id: carta.idCarta, propietario: carta.propietario, establecimiento: carta.establecimiento, directorio: carta.directorio });
 
     axios.put(`/api/getcartas/${carta.idCarta}/`, body, tokenConfig(getState))
         .then(res => {

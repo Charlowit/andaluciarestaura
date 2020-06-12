@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from "prop-types";
 import { updateuser, loadUserAdminPage } from '../../actions/auth';
@@ -93,6 +93,7 @@ class AdminPage extends Component {
         this.state.logo = this.props.auth.user.logo
         this.state.qr = this.props.auth.user.qr
     }
+
 
     render() {
         return (
@@ -391,6 +392,7 @@ class AdminPage extends Component {
                                             </div>
                                         </div>
                                     </div>
+
                                 </div>
                             </div>
                         </div>

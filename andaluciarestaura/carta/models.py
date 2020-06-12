@@ -33,7 +33,7 @@ class Carta(models.Model):
     is_activa = models.BooleanField(default=True)
     show_as_pdf = models.BooleanField(default=False)
 
-    establecimiento = models.CharField(max_length=100)
+    establecimiento = models.CharField(max_length=100, null=True)
 
     def __str__(self):
         return self.name
@@ -73,7 +73,9 @@ class Productos(models.Model):
         is_pescado = models.BooleanField(default=False)
         is_sesamo = models.BooleanField(default=False)
         is_soja = models.BooleanField(default=False)
+        is_sulfito = models.BooleanField(default=False)
         carta = models.ForeignKey(Carta, null=True, on_delete=models.CASCADE, related_name="productos")
+        photo = models.CharField(max_length=200, null=True)
 
         def __str__(self):
             return self.name

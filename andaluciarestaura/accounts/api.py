@@ -12,6 +12,7 @@ from rest_framework.response import Response
 from rest_framework import status
 import logging
 import os
+from PIL import Image, ImageOps, ImageDraw
 import qrcode
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
@@ -118,6 +119,29 @@ def generar_qr_file(directorio, archivo_qr, url_carta):
     img = qr.make_image(fill_color="black", back_color="white")
     logger.error("Antes de salvar imagen qr:" + directorio + '/' + archivo_qr)
     img.save(directorio + '/' + archivo_qr)
+
+def generar_qr_file_v2(directorio, archivo_qr, url_carta, ruta_back, ruta_logo):
+    qr = qrcode.QRCode(
+        version=1,
+        error_correction=qrcode.constants.ERROR_CORRECT_L,
+        box_size=12,
+        border=4,)
+    qr.add_data(url_carta)
+    qr.make(fit=True)
+    img_qr = qr.make_image(fill_color="black", back_color="white")
+    logger.error("Antes de salvar imagen qrs:" + directorio + '/' + archivo_qr)
+
+    img_bg = Image.open(ruta_back)
+    img_logo = Image.open(ruta_logo)
+    img_logo = img_logo.resize((128, 128), Image.ANTIALIAS)
+
+    pos_qr = ((int(img_bg.size[0] / 2) - int(img_qr.size[0] / 2)), (img_bg.size[1] - img_qr.size[1]))
+    pos_logo = (500 - 64, 150)
+
+    img_bg.paste(img_qr, pos_qr)
+    img_bg.paste(img_logo, pos_logo)
+
+    img_bg.save(directorio + '/' + archivo_qr)
 
 def handle_uploaded_file(f,ruta):
     with open(ruta, 'wb+') as destination:
