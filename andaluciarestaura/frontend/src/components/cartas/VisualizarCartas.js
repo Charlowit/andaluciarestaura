@@ -1,9 +1,10 @@
 import React, { Component, Fragment } from 'react';
-import { getCartas, nuevaCarta, deleteCarta } from '../../actions/cartas';
+import { getCartas, nuevaCarta, deleteCarta, updateShow } from '../../actions/cartas';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { CartaPage } from '../carta/CartaPage'
 import { Link } from 'react-router-dom';
+import { updateuser } from '../../actions/auth';
 
 
 export class VisualizarCartas extends Component {
@@ -11,7 +12,6 @@ export class VisualizarCartas extends Component {
     constructor() {
         super();
         this.state = {
-            cif: "",
             categoriasParaNuevaCartaObjs: [],
             categoriasParaNuevaCarta: [],
             nombreNuevaCarta: "",
@@ -28,20 +28,23 @@ export class VisualizarCartas extends Component {
             posicion: -1,
             info_extra: "",
             eslogan: "",
-            addingCarta: false
+            addingCarta: false,
+            is_premium: "",
+            modal_qr: false,
         };
     }
 
     static propTypes = {
         cartas: PropTypes.array.isRequired,
         auth: PropTypes.func.isRequired,
-        nuevaCarta: PropTypes.func.isRequired
+        nuevaCarta: PropTypes.func.isRequired,
     };
 
     componentDidMount() {
         this.state.cif = this.props.auth.user.cif
         this.state.propietario = this.props.auth.user.id
-        this.props.getCartas(this.state.cif);
+        this.props.getCartas(this.props.auth.user.cif);
+
     }
 
     onChange = e => this.setState({
@@ -50,39 +53,27 @@ export class VisualizarCartas extends Component {
         console.log("Categoria seleccionada: " + e.target.value),
     );
 
-
-
-    onSubmitDelete = e => {
-        event.preventDefault();
-        console.log("Categoria --> " + this.state.categoriaSeleccionada)
-        let filteredArray = this.state.categoriasParaNuevaCarta.filter(item => item !== this.state.categoriaSeleccionada)
-        this.setState({ categoriasParaNuevaCarta: filteredArray });
-        this.setState({ categoriaSeleccionada: this.state.categoriasParaNuevaCarta[0] })
-    }
-
-    onSubmitModify = e => {
-        console.log("entrao")
-        event.preventDefault();
-
-        if (this.state.nombreNuevaCategoria != "") {
-            var newArray = this.state.categoriasParaNuevaCarta.slice();
-            newArray.push(this.state.nombreNuevaCategoria);
-
-            this.setState({
-                categoriasParaNuevaCarta: newArray
-            });
-
-        }
-    }
-
     addingCarta = e => {
         this.setState({
             addingCarta: !this.state.addingCarta
         })
     }
 
+    openNewTab = e => {
+        window.open('http://127.0.0.1:8000/cartaestatica/' + this.props.auth.user.cif);
+    }
+
+    onChangePremium = (e, carta) => {
+        e.preventDefault();
+
+        carta.show_as_pdf = !carta.show_as_pdf
+
+        this.props.updateShow(carta);
+    };
+
+
     onSubmit = e => {
-        event.preventDefault();
+        e.preventDefault();
         if (this.state.url_facebook == "") {
             this.state.url_facebook = "-"
         }
@@ -105,6 +96,20 @@ export class VisualizarCartas extends Component {
             addingCarta: !this.state.addingCarta
         })
         this.props.nuevaCarta(carta)
+    }
+
+    onSubmitDesactivarCarta = (e, carta) => {
+        e.preventDefault();
+        console.log("Estoy en el submit")
+        carta.is_activa = !carta.is_activa;
+        console.log("Mira la carta --> " + carta.name)
+        this.props.deleteCarta(carta);
+    }
+
+    modalQr = e => {
+        this.setState({
+            modal_qr: !this.state.modal_qr
+        })
     }
 
     render() {
@@ -167,9 +172,9 @@ export class VisualizarCartas extends Component {
                                                                 <div className="select">
                                                                     <select name="plantilla" onChange={this.onChange} defaultValue={this.state.plantilla}>
                                                                         <option>Ninguna plantilla seleccionada</option>
-                                                                        <option value="Plantilla1">Plantilla 1</option>
-                                                                        <option value="Plantilla2">Plantilla 2</option>
-                                                                        <option value="Plantilla3">Plantilla 3</option>
+                                                                        <option value="Plantilla 1">Plantilla 1</option>
+                                                                        <option value="Plantilla 2">Plantilla 2</option>
+                                                                        <option value="Plantilla 3">Plantilla 3</option>
                                                                     </select>
                                                                 </div>
                                                             </div>
@@ -179,8 +184,7 @@ export class VisualizarCartas extends Component {
                                                 </div>
                                             </form>
                                             <div className="control buttons is-centered">
-                                                {/* onClick={this.onSubmit}*/}
-                                                <button className="button is-success">Guardar carta y categorias</button>
+                                                <button className="button is-success" onClick={this.onSubmit}>Guardar carta y categorias</button>
                                             </div>
                                         </div>
                                     </div>
@@ -189,54 +193,113 @@ export class VisualizarCartas extends Component {
                         </div>
                     </div>
 
-                    <button className="button is-success" onClick={this.addingCarta}>
-                        <span class="icon is-small">
-                            <i class="fas fa-plus-circle"></i>
-                        </span>
-                        <p style={{ marginTop: '4px' }}>Añadir carta</p>
-                    </button>
+                    <div>
+                        <button className="button is-success" onClick={this.addingCarta}>
+                            <span class="icon is-small">
+                                <i class="fas fa-plus-circle"></i>
+                            </span>
+                            <p style={{ marginTop: '4px' }}>Añadir carta</p>
+                        </button>
+                    </div>
+
                     <div className="columns has-text-centered" style={{ marginTop: '40px' }}>
                         <div className="column">
-                            <table className="table is-striped">
-                                <thead>
-                                    <tr>
-                                        <th>Identificador del sistema</th>
-                                        <th>Nombre de la carta</th>
-                                        <th>Plantilla</th>
-                                        <th>QR</th>
 
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {this.props.cartas.map(carta => (
-                                        <tr key={carta.id}>
-                                            <td>{carta.id}</td>
-                                            <td>{carta.name}</td>
-                                            <td>{carta.plantilla}</td>
-                                            <td>
-                                                <div>
-                                                    <figure className="image is-128x128 is-inline-block">
-                                                        <img className="" src={`/static/clientes/${this.props.auth.user.cif}/qr.jpg`}></img>
+
+                            {this.props.cartas.map(carta => (
+                                <div style={{ display: "inline-block", margin: '10px' }}>
+                                    <div className="card" style={carta.is_activa ? { backgroundColor: '#bca466', maxWidth: '300px', marginTop: '40px' } : { backgroundColor: 'grey', maxWidth: '300px', marginTop: '40px' }}>
+
+                                        <div className="card-content">
+
+                                            <div className={this.state.modal_qr ? "modal is-active" : "modal"}>
+                                                <div className="modal-background"></div>
+                                                <div className="modal-content">
+
+                                                    <div className="box">
+                                                        <div className="has-text-right">
+
+                                                            <button class="button is-danger " onClick={this.modalQr}>
+                                                                <span class="icon is-small">
+                                                                    <i class="fas fa-times"></i>
+                                                                </span>
+                                                            </button>
+                                                        </div>
+                                                        <figure className="image is-4by4">
+                                                            <img className="" src={`/static/clientes/${this.props.auth.user.cif}/qr.jpg`}></img>
+                                                        </figure>
+                                                        <div className="field ">
+                                                            <div className="field-body" >
+                                                                <div className="field" >
+                                                                    <a className="button" style={{ backgroundColor: '#bca466', color: 'white' }} href={`/static/clientes/${this.props.auth.user.cif}/qr.jpg`} download="QRcode">Descargar</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                            <div className="card-image" onClick={this.modalQr}>
+                                                <figure className="image is-4by4">
+                                                    <img className="" src={`/static/clientes/${this.props.auth.user.cif}/qr.jpg`}></img>
+                                                </figure>
+                                            </div>
+                                            <div class="media" style={{ paddingTop: '40px' }}>
+                                                <div class="media-left">
+                                                    <figure class="image is-48x48">
+                                                        <img className="is-rounded" src={`/static/clientes/${this.props.auth.user.cif}/logo.jpeg`}></img>
                                                     </figure>
                                                 </div>
-                                            </td>
-                                            {/*<td><button className="button is-warning">Editar</button></td>*/}
-                                            <td>
-                                                <div>
-                                                    <Link className="navbar-link" style={{ width: '100%' }} to={`/carta-page/${carta.id}`}>Ver carta</Link>
+                                                <div class="media-content">
+                                                    <p class="title is-4">{carta.name}</p>
+                                                    <p class="subtitle is-6">Carta gratuita</p>
                                                 </div>
-                                            </td>
-                                            <td>
-                                                <button class="button is-danger" onClick={this.props.deleteCarta.bind(this, carta.id, this.props.auth.user.cif)}>
-                                                    <span class="icon is-small">
-                                                        <i class="fas fa-trash"></i>
-                                                    </span>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
+                                            </div>
+
+                                            <div class="content">
+                                                <div className="select">
+                                                    <select onChange={e => this.onChangePremium(e, carta)} defaultValue={carta.show_as_pdf}>
+                                                        <option value="true">Ver como PDF</option>
+                                                        <option value="false">Vista Premium</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div className="columns">
+                                                <div className="column">
+
+
+
+                                                    <button className="button">
+                                                        <Link className="link" style={{ width: '100%', color: '#bca466' }} to={`/carta-page/${carta.id}`}>Editar carta</Link>
+                                                    </button>
+                                                </div>
+                                                <div className="column">
+                                                    <button class="button is-link is-rounded" onClick={e => this.onSubmitDesactivarCarta(e, carta)}>
+                                                        <span class="icon is-small">
+                                                            <i class="fas fa-power-off"></i>
+                                                        </span>
+                                                    </button>
+                                                </div>
+                                                {/* ESTE ES EL DELETE DE VERDAD */}
+                                                {/* onClick={this.props.deleteCarta.bind(this, carta.id, this.props.auth.user.cif)} */}
+                                                <div className="column">
+                                                    <button class="button is-danger">
+                                                        <span class="icon is-small">
+                                                            <i class="fas fa-trash"></i>
+                                                        </span>
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            ))}
+
                         </div>
                     </div>
 
@@ -252,4 +315,4 @@ const mapStateToProps = state => ({
     auth: state.auth,
 });
 
-export default connect(mapStateToProps, { getCartas, nuevaCarta, deleteCarta })(VisualizarCartas);
+export default connect(mapStateToProps, { updateShow, updateuser, getCartas, nuevaCarta, deleteCarta })(VisualizarCartas);

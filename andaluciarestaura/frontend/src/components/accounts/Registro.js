@@ -44,12 +44,13 @@ export class Registro extends Component {
 
     state = {
         cif: "",
-        marca_comercial: "",
+        nombre: "",
         pdf: null,
         logo: null,
         email: "",
         telefono_1: "",
         password: "",
+        apellidos: "",
         submitClick: false,
         submitClick2: false,
         terminado: false,
@@ -120,7 +121,9 @@ export class Registro extends Component {
         e.preventDefault();
         let form_data = new FormData();
         form_data.append('cif', this.state.cif);
-        form_data.append('marca_comercial', this.state.marca_comercial);
+        console.log("EL nombre relleno --> ", this.state.nombre)
+        form_data.append('nombre', this.state.nombre);
+        form_data.append('apellidos', this.state.apellidos);
         form_data.append('pdf', this.state.pdf);
         form_data.append('logo', this.state.logo);
         form_data.append('email', this.state.email);
@@ -146,7 +149,7 @@ export class Registro extends Component {
 
     render() {
 
-        const { cif, password, marca_comercial, telefono_1, email } = this.state;
+        const { cif, password, nombre, apellidos , telefono_1, email } = this.state;
         const { isAuthenticated, user, isRegistering, registerFailed } = this.props.auth;
 
         const unlogged = (
@@ -210,21 +213,43 @@ export class Registro extends Component {
                                                                         }
                                                                     </div>
                                                                     <div className="field">
-                                                                        <label className="label has-text-centered is-size-4" style={colorWhite}>Marca Comercial</label>
+                                                                        <label className="label has-text-centered is-size-4" style={colorWhite}>Nombre</label>
 
                                                                         {this.state.marcaComercialVacia ?
                                                                             <div>
                                                                                 <div className="control has-icons-left">
-                                                                                    <input class="input is-danger" type="text" placeholder="Marca Comercial" name="marca_comercial" onChange={this.onChange} value={marca_comercial} required/>
+                                                                                    <input class="input is-danger" type="text" placeholder="Nombre" name="nombre" onChange={this.onChange} value={nombre} required/>
                                                                                     <span className="icon is-small is-left">
                                                                                         <i className="fa fa-copyright"></i>
                                                                                     </span>
                                                                                 </div>
-                                                                                <p className="help is-danger" style={{ fontSize: '15px' }} style={colorWhite}>El campo Marca Comercial está vacío</p>
+                                                                                <p className="help is-danger" style={{ fontSize: '15px' }} style={colorWhite}>El campo Nombre está vacío</p>
                                                                             </div>
                                                                             :
                                                                             <div className="control has-icons-left">
-                                                                                <input className="input" type="text" placeholder="Marca Comercial" name="marca_comercial" onChange={this.onChange} value={marca_comercial} required />
+                                                                                <input className="input" type="text" placeholder="Nombre" name="nombre" onChange={this.onChange} value={nombre} required />
+                                                                                <span className="icon is-small is-left">
+                                                                                    <i className="fa fa-copyright"></i>
+                                                                                </span>
+                                                                            </div>
+                                                                        }
+                                                                    </div>
+                                                                    <div className="field">
+                                                                        <label className="label has-text-centered is-size-4" style={colorWhite}>Apellidos</label>
+
+                                                                        {this.state.marcaComercialVacia ?
+                                                                            <div>
+                                                                                <div className="control has-icons-left">
+                                                                                    <input class="input is-danger" type="text" placeholder="Apellidos" name="apellidos" onChange={this.onChange} value={apellidos} required/>
+                                                                                    <span className="icon is-small is-left">
+                                                                                        <i className="fa fa-copyright"></i>
+                                                                                    </span>
+                                                                                </div>
+                                                                                <p className="help is-danger" style={{ fontSize: '15px' }} style={colorWhite}>El campo Apellidos está vacío</p>
+                                                                            </div>
+                                                                            :
+                                                                            <div className="control has-icons-left">
+                                                                                <input className="input" type="text" placeholder="Apellidos" name="apellidos" onChange={this.onChange} value={apellidos} required />
                                                                                 <span className="icon is-small is-left">
                                                                                     <i className="fa fa-copyright"></i>
                                                                                 </span>

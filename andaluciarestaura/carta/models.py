@@ -14,6 +14,7 @@ TAMANIOS = (
     ('L','L'),
     ('XL','XL'),
     ('XXL','XXL'),
+    ('', '')
 )
 
 
@@ -28,7 +29,12 @@ class Carta(models.Model):
     plantilla = models.CharField(max_length=50, default='-', null=True)
     
     contador_visitas = models.IntegerField(default=0)
-    
+    directorio = models.CharField(max_length=1000)
+    is_activa = models.BooleanField(default=True)
+    show_as_pdf = models.BooleanField(default=False)
+
+    establecimiento = models.CharField(max_length=100)
+
     def __str__(self):
         return self.name
 
@@ -48,12 +54,12 @@ class Productos(models.Model):
         categoria = models.ForeignKey(Categorias, on_delete=models.CASCADE, related_name="categoria", null=False)
         name = models.CharField(max_length=100, default="producto")
         descripcion= models.CharField(max_length=1000)
-        titulo_precio1 = models.CharField(max_length=13, choices=TAMANIOS, default='S')
-        titulo_precio2 = models.CharField(max_length=13, choices=TAMANIOS, default='S')
-        titulo_precio3 = models.CharField(max_length=13, choices=TAMANIOS, default='S')
+        titulo_precio1 = models.CharField(max_length=13, choices=TAMANIOS, default='')
+        titulo_precio2 = models.CharField(max_length=13, choices=TAMANIOS, default='', null=True)
+        titulo_precio3 = models.CharField(max_length=13, choices=TAMANIOS, default='', null=True)
         precio1 = models.FloatField(default="0.0")
-        precio2 = models.FloatField(default="0.0")
-        precio3 = models.FloatField(default="0.0")
+        precio2 = models.FloatField(default="0.0", null=True)
+        precio3 = models.FloatField(default="0.0", null=True)
         is_apio = models.BooleanField(default=False)
         is_altramuces = models.BooleanField(default=False)
         is_cacahuete = models.BooleanField(default=False)

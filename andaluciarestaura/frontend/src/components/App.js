@@ -26,6 +26,8 @@ import VisualizarCartas from './cartas/VisualizarCartas'
 
 import Alerts from './alerta/Alerts';
 import PrivateRouteCartaPage from './privateroute/PrivateRouteCartaPage';
+import PrivateRouteVisualizar from './privateroute/PrivateRouteVisualizar';
+import {Animated} from "react-animated-css";
 
 
 //Alert Options
@@ -74,7 +76,7 @@ class App extends Component {
                         {/*<Route exact path="/autocomplete-page" component={Roads} />*/}
                         <PrivateRoute exact path="/creditcard-page" component={CreditCard} />
                         <PrivateRoute exact path="/avatar-page" component={Logo} />
-                        <Route exact path="/visualizar" component={VisualizarCartas} />
+                        <PrivateRouteVisualizar exact path="/visualizar" component={VisualizarCartas} />
 
                         
                     </Switch>

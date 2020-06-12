@@ -9,14 +9,15 @@ class CustomUserManager(BaseUserManager):
 
     """
 
-    def create_user(self, cif, password, marca_comercial, telefono_1, email, **extra_fields):
+    def create_user(self, cif, password, nombre, apellidos, telefono_1, email, **extra_fields):
         """
         Create and save a User with the given email and password.
         """
         if not cif:
             raise ValueError(_('The Email must be set'))
         cif = self.normalize_email(cif)
-        marca_comercial = self.normalize_email(marca_comercial)
+        nombre = self.normalize_email(nombre)
+        apellidos = self.normalize_email(apellidos)
         telefono_1 = self.normalize_email(telefono_1)
         email = self.normalize_email(email)
         user = self.model(cif=cif, **extra_fields)

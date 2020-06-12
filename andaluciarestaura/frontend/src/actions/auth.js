@@ -6,7 +6,7 @@ import {
     LOGIN_FAIL,
     LOGIN_SUCCESS,
     LOGOUT_SUCCESS,
-    UPDATE_LOADING, UPDATE_SUCCESS, UPDATE_ERROR, GET_ERRORS, REGISTER_LOADING, REGISTER_FAILED, REGISTER_SUCCESS, USER_LOADED_ADMIN_PAGE
+    UPDATE_LOADING, UPDATE_SUCCESS, UPDATE_ERROR, GET_ERRORS, REGISTER_LOADING, REGISTER_FAILED, REGISTER_SUCCESS, USER_LOADED_ADMIN_PAGE, TRY_LOGIN
 } from "./types";
 
 import { createMessages } from './messages'
@@ -55,7 +55,9 @@ export const loadUser = () => (dispatch, getState) => {
 
 export const loadUserAdminPage = (cif) => (dispatch, getState) => {
 
-
+    dispatch({
+        type: TRY_LOGIN,
+    });
     //Headers
     const config = {
         headers: {
@@ -146,7 +148,7 @@ export const registro = (user) => dispatch => {
             'Content-Type': 'application/json'
         }
     };
-    const body = JSON.stringify({ cif: user.cif, password: user.password, marca_comercial: user.marca_comercial, telefono_1: user.telefono_1, email: user.email });
+    const body = JSON.stringify({ cif: user.cif, password: user.password, nombre: user.nombre, apellidos: user.apellidos, telefono_1: user.telefono_1, email: user.email });
     console.log("ESTE ES EL BODY: " + body);
 
     axios.post('/api/auth/register', body, config)
@@ -244,7 +246,7 @@ export const updateuser = (user) => (dispatch, getState) => {
         }
     }
 
-    const body = JSON.stringify({ id: user.id, cif: user.cif, nombre_fiscal: user.nombre_fiscal, marca_comercial: user.marca_comercial, razon_social: user.razon_social, direccion_fiscal: user.direccion_fiscal, localidad: user.localidad, codigo_postal: user.codigo_postal, provincia: user.provincia, email: user.email, telefono_1: user.telefono_1, telefono_2: user.telefono_2, fax: user.fax, tipo_negocio: user.tipo_negocio })
+    const body = JSON.stringify({ id: user.id, cif: user.cif, nombre_fiscal: user.nombre_fiscal, marca_comercial: user.marca_comercial, razon_social: user.razon_social, direccion_fiscal: user.direccion_fiscal, localidad: user.localidad, codigo_postal: user.codigo_postal, provincia: user.provincia, email: user.email, telefono_1: user.telefono_1, telefono_2: user.telefono_2, fax: user.fax, tipo_negocio: user.tipo_negocio, is_premium: user.is_premium })
 
     console.log("ESTE ES EL BODY DEL UPDATE: " + body)
     // If token, add to headers config

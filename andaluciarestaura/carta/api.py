@@ -6,8 +6,20 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.decorators import action
 from rest_framework import status
 from accounts.models import User
+import qrcode
+from django.conf import settings
+import os
 
-
+def generar_qr_file(directorio, archivo_qr, url_carta):
+    qr = qrcode.QRCode(
+        version=1,
+        error_correction=qrcode.constants.ERROR_CORRECT_L,
+        box_size=10,
+        border=4,)
+    qr.add_data(url_carta)
+    qr.make(fit=True)
+    img = qr.make_image(fill_color="black", back_color="white")
+    img.save(directorio + '/' + archivo_qr)
 
 #Carta Viewset
 
@@ -84,6 +96,8 @@ class CartasApi(viewsets.ModelViewSet):
         if cartaID is not None:
             response = Carta.objects.filter(id__exact=cartaID)
 
+
+
         return response
 
     def create(self, request, *args, **kwargs):
@@ -100,12 +114,38 @@ class CartasApi(viewsets.ModelViewSet):
             propietario = user
         )
 
+        directorio = ""
+        if settings.IN_PRODUCTION:
+            # VARIABLES PARA PRODUCCION
+            directorio = settings.STATIC_ROOT +'/clientes/' + user.cif + '/' + str(carta.id) 
+            directorio_bd = './static/clientes/' + user.cif + '/' +  str(carta.id) 
+        else:
+            # VARIBALES PARA LOCAL
+            directorio = './frontend/static/clientes/' + user.cif + '/' + str(carta.id) 
+            directorio_bd = './frontend/static/clientes/' + user.cif + '/' + str(carta.id) 
+
+        try:
+            os.mkdir(directorio)
+        except OSError:
+            print("Creation of the directory %s failed" % directorio)
+        else:
+            print("Successfully created the directory %s " % directorio)
+
+        archivo_qr = 'qr.jpg'
+        url_carta = 'https://www.andaluciarestaura.com/cartaestatica/' + user.cif + '/' + str(carta.id)
+
+        generar_qr_file(directorio, archivo_qr, url_carta)
+
+
+
+        carta.directorio = directorio
         carta.save()
         serializer = CartaSerializerActualizar(carta)
         
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def update(self, request, *args, **kwargs):
+        
         instance = Carta.objects.get(id__exact=request.data['id'])
         serializer = CartaSerializerActualizar(
             instance=instance,
@@ -113,10 +153,12 @@ class CartasApi(viewsets.ModelViewSet):
         )
         serializer.is_valid(raise_exception=True)
         serializer.save()
+
         return Response(serializer.data)
 
     def destroy(self, request, *args, **kwargs):
-        instance = Carta.objects.get(id__exact=request.data['id'])
+        idCarta = self.request.query_params.get('carta', None)
+        instance = Carta.objects.get(id__exact=idCarta)
         self.perform_destroy(instance)
         return Response(status=status.HTTP_204_NO_CONTENT)
 

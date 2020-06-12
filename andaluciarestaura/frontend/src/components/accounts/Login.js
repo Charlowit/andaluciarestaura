@@ -128,7 +128,13 @@ export class Login extends Component {
                                             }
                                         </div>
                                         <div className="has-text-centered">
+                                            {this.props.auth.isLoading ? 
+                                             <button type="submit is-outlined" className="button is-loading" style={{ backgroundColor: '#bca466', color: 'white', display: 'inline' }} ></button>
+
+                                            : 
                                             <button type="submit is-outlined" className="button" style={{ backgroundColor: '#bca466', color: 'white', display: 'inline' }} onClick={this.onSubmit} >Login</button>
+                                            }
+                                            
                                             <Link className="button is-outlined" to="/register-page" style={{ backgroundColor: 'white', color: '#bca466', marginLeft: '5px' }}>
                                                 Registro
                                             </Link>

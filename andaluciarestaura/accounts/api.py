@@ -1,6 +1,7 @@
 from rest_framework import generics, permissions
 from rest_framework.response import Response
 from .models import User
+from carta.models import Carta
 from rest_framework import viewsets, permissions
 from knox.models import AuthToken
 from .serializers import UserSerializer, RegisterSerializer, LoginSerializer, FilePDFSerializer, UserSerializerActualizar
@@ -196,7 +197,24 @@ class FilePDFApi(generics.GenericAPIView):
                 #logger.error("DESPUES: " + user.marca_comercial)
                 logger.error("USUARIO REGISTRADO!")
 
-                User.objects.filter(cif__exact=request.data["cif"]).update(pdf=ruta_pdf, qr=ruta_qr_bd, logo=ruta_logo_bd, marca_comercial=request.data["marca_comercial"], email=request.data["email"], telefono_1=request.data["telefono_1"])
+                userInstance = User.objects.get(id__exact=user.id)
+                carta = Carta.objects.create(
+                    name = "CartaPremium",
+                    url_facebook = "https://www.facebook.com",
+                    url_instagram = "https://www.instagram.com", 
+                    url_tripadvisor = "https://www.tripadvisor.es",
+                    eslogan = "Escribe aquí tu eslogan!",
+                    plantilla = "Plantilla 1",
+                    propietario = userInstance,
+                    directorio = directorio,
+                    is_activa = True,
+                    show_as_pdf = True,
+                    establecimiento = "Pon aqui el nombre de tu establecimiento!"
+                )
+
+                carta.save()
+
+                User.objects.filter(cif__exact=request.data["cif"]).update(pdf=ruta_pdf, logo=ruta_logo_bd, nombre=request.data["nombre"], apellidos=request.data["apellidos"], email=request.data["email"], telefono_1=request.data["telefono_1"])
                 #User.objects.filter(cif__exact=request.data["cif"]).update(pdf=ruta_pdf, qr=ruta_qr)
                 #logger.error(usuarioainsertarpdf[0])
                 # 5 Guardamos todos los datos en el modelo usuario
@@ -262,7 +280,7 @@ class UserApi(generics.RetrieveAPIView):
         return self.request.user
 
 class UserActualizarApi(generics.UpdateAPIView):
-    serializer_class = UserSerializerActualizar
+    serializer_class = UserSerializer
     permission_classes = (permissions.IsAuthenticated,)
 
     def update(self, request, *args, **kwargs):
@@ -270,7 +288,6 @@ class UserActualizarApi(generics.UpdateAPIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
 
-        print("Mira el cuerpo que mandas cuando actualizas al user --> ", serializer.data)
         return Response([serializer.data], status=status.HTTP_200_OK)
 
 #Get user API
