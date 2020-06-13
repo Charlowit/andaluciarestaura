@@ -1,9 +1,22 @@
 import React, { Component, Fragment } from 'react';
-import { getCartas, nuevaCarta, deleteCarta } from '../../actions/cartas';
+import { getCartas, nuevaCarta, deleteCarta, updateShow } from '../../actions/cartas';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { CartaPage } from '../carta/CartaPage'
 import { Link } from 'react-router-dom';
+import { updateuser } from '../../actions/auth';
+import { Animated } from "react-animated-css";
+import { createPortal } from 'react-dom';
+
+const bkg = {
+    marginBottom: '6%',
+    backgroundPosition: 'center',
+    backgroundImage: "url('https://www.dev.andaluciarestaura.com/static/frontend/backLogin.png')",
+    backgroundRepeat: 'no-repeat',
+    marginTop: '0px',
+    backgroundSize: 'cover'
+
+}
 
 
 export class VisualizarCartas extends Component {
@@ -11,7 +24,6 @@ export class VisualizarCartas extends Component {
     constructor() {
         super();
         this.state = {
-            cif: "",
             categoriasParaNuevaCartaObjs: [],
             categoriasParaNuevaCarta: [],
             nombreNuevaCarta: "",
@@ -29,20 +41,25 @@ export class VisualizarCartas extends Component {
             info_extra: "",
             eslogan: "",
             addingCarta: false,
-            is_premium: false
+            is_premium: false,
+            establecimiento: "",
+            addingCarta: false,
+            is_premium: "",
+            modal_qr: false,
         };
     }
 
     static propTypes = {
         cartas: PropTypes.array.isRequired,
         auth: PropTypes.func.isRequired,
-        nuevaCarta: PropTypes.func.isRequired
+        nuevaCarta: PropTypes.func.isRequired,
     };
 
     componentDidMount() {
         this.state.cif = this.props.auth.user.cif
         this.state.propietario = this.props.auth.user.id
-        this.props.getCartas(this.state.cif);
+        this.props.getCartas(this.props.auth.user.cif);
+
     }
 
     onChange = e => this.setState({
@@ -51,39 +68,27 @@ export class VisualizarCartas extends Component {
         console.log("Categoria seleccionada: " + e.target.value),
     );
 
-
-
-    onSubmitDelete = e => {
-        event.preventDefault();
-        console.log("Categoria --> " + this.state.categoriaSeleccionada)
-        let filteredArray = this.state.categoriasParaNuevaCarta.filter(item => item !== this.state.categoriaSeleccionada)
-        this.setState({ categoriasParaNuevaCarta: filteredArray });
-        this.setState({ categoriaSeleccionada: this.state.categoriasParaNuevaCarta[0] })
-    }
-
-    onSubmitModify = e => {
-        console.log("entrao")
-        event.preventDefault();
-
-        if (this.state.nombreNuevaCategoria != "") {
-            var newArray = this.state.categoriasParaNuevaCarta.slice();
-            newArray.push(this.state.nombreNuevaCategoria);
-
-            this.setState({
-                categoriasParaNuevaCarta: newArray
-            });
-
-        }
-    }
-
     addingCarta = e => {
         this.setState({
             addingCarta: !this.state.addingCarta
         })
     }
 
+    openNewTab = e => {
+        window.open('http://127.0.0.1:8000/cartaestatica/' + this.props.auth.user.cif);
+    }
+
+    onChangePremium = (e, carta) => {
+        e.preventDefault();
+
+        carta.show_as_pdf = !carta.show_as_pdf
+
+        this.props.updateShow(carta);
+    };
+
+
     onSubmit = e => {
-        event.preventDefault();
+        e.preventDefault();
         if (this.state.url_facebook == "") {
             this.state.url_facebook = "-"
         }
@@ -100,156 +105,247 @@ export class VisualizarCartas extends Component {
             this.state.eslogan = "-"
         }
 
-        const { nombreNuevaCarta, propietario, url_facebook, url_instagram, url_tripadvisor, eslogan, plantilla } = this.state;
-        const carta = { nombreNuevaCarta, propietario, url_facebook, url_instagram, url_tripadvisor, eslogan, plantilla };
+        const { nombreNuevaCarta, propietario, url_facebook, url_instagram, url_tripadvisor, eslogan, plantilla, establecimiento } = this.state;
+        const carta = { nombreNuevaCarta, propietario, url_facebook, url_instagram, url_tripadvisor, eslogan, plantilla, establecimiento };
         this.setState({
             addingCarta: !this.state.addingCarta
         })
+
+
         this.props.nuevaCarta(carta)
+    }
+
+    onSubmitDesactivarCarta = (e, carta) => {
+        e.preventDefault();
+        console.log("Estoy en el submit")
+        carta.is_activa = !carta.is_activa;
+        console.log("Mira la carta --> " + carta.name)
+        this.props.deleteCarta(carta);
+    }
+
+    modalQr = e => {
+        this.setState({
+            modal_qr: !this.state.modal_qr
+        })
     }
 
     render() {
         return (
 
-            <div className="section" style={{ marginTop: '100px' }}>
-                <div className="container">
-                    <div className={this.state.addingCarta ? "modal is-active" : "modal"}>
-                        <div class="modal-background"></div>
-                        <div class="modal-content">
-                            <div className="container box">
-                                <div className="has-text-right">
-                                    <button class="button is-danger" onClick={this.addingCarta}>
-                                        <span class="icon is-small">
-                                            <i class="fas fa-times"></i>
-                                        </span>
-                                    </button>
-                                </div>
-                                <div className="columns is-centered">
-                                    <div className="column is-half">
-                                        <div className="container">
+            <div style={{ marginBottom: '-90px' }}>
+                <div className="has-text-centered" style={{ marginTop: '60px', marginBottom: '60px' }}>
 
-                                            <h1 className="title has-text-centered">Crear nueva carta</h1>
-                                            <form>
-                                                <div className="columns ">
-                                                    <div className="column ">
-                                                        <div className="field">
-                                                            <label className="label">Nombre</label>
-                                                            <div className="control">
-                                                                <input className="input" onChange={this.onChange} name="nombreNuevaCarta" defaultValue={this.state.nombreNuevaCarta} type="text" placeholder="Nombre para la carta" />
-                                                            </div>
-                                                        </div>
-                                                        <div className="field">
-                                                            <label className="label">URL Facebook</label>
-                                                            <div className="control">
-                                                                <input className="input" onChange={this.onChange} name="url_facebook" defaultValue={this.state.url_facebook} type="text" placeholder="https://www.facebook.com/" />
-                                                            </div>
-                                                        </div>
-                                                        <div className="field">
-                                                            <label className="label">URL Instagram</label>
-                                                            <div className="control">
-                                                                <input className="input" onChange={this.onChange} name="url_instagram" defaultValue={this.state.url_instagram} type="text" placeholder="https://www.instagram.com/instagram/?hl=es" />
-                                                            </div>
-                                                        </div>
-                                                        <div className="field">
-                                                            <label className="label">URL TripAdvisor</label>
-                                                            <div className="control">
-                                                                <input className="input" onChange={this.onChange} name="url_tripadvisor" defaultValue={this.state.url_tripadvisor} type="text" placeholder="https://www.tripadvisor.es/" />
-                                                            </div>
-                                                        </div>
-                                                        <div className="field">
-                                                            <label className="label">Eslogan</label>
-                                                            <div className="control">
-                                                                <input className="input" onChange={this.onChange} name="eslogan" defaultValue={this.state.eslogan} type="text" placeholder="El mejor restaurante de la zona!" />
-                                                            </div>
-                                                        </div>
-                                                        <div className="field">
-                                                            <label className="label">Plantilla</label>
-                                                            <div className="control">
-                                                                <div className="select">
-                                                                    <select name="plantilla" onChange={this.onChange} defaultValue={this.state.plantilla}>
-                                                                        <option>Ninguna plantilla seleccionada</option>
-                                                                        <option value="Plantilla1">Plantilla 1</option>
-                                                                        <option value="Plantilla2">Plantilla 2</option>
-                                                                        <option value="Plantilla3">Plantilla 3</option>
-                                                                    </select>
+
+                    <div className="container">
+                        <h1 className="label is-size-3">CARTAS DEL NEGOCIO</h1>
+                    </div>
+
+                    <div className="has-text-centered" style={{ marginTop: '20px' }}>
+                        <button className="button is-success" style={{ backgroundColor: '#bca466' }} onClick={this.addingCarta}>
+                            <span className="icon is-small">
+                                <i className="fas fa-plus-circle"></i>
+                            </span>
+                            <p style={{ marginTop: '4px', color: 'white' }}>Añadir carta</p>
+                        </button>
+                    </div>
+                </div>
+
+                <div className="section hero is-paddingless" style={bkg}>
+                    <div className="container">
+                        <div className={this.state.addingCarta ? "modal is-active" : "modal"}>
+                            <div className="modal-background"></div>
+                            <div className="modal-content">
+                                <div className="container box">
+                                    <div className="has-text-right">
+                                        <button className="button is-danger" onClick={this.addingCarta}>
+                                            <span className="icon is-small">
+                                                <i className="fas fa-times"></i>
+                                            </span>
+                                        </button>
+                                    </div>
+                                    <div className="columns is-centered">
+                                        <div className="column is-half">
+                                            <div className="container">
+                                                <h1 className="title has-text-centered">Crear nueva carta</h1>
+                                                <form>
+                                                    <div className="columns ">
+                                                        <div className="column ">
+                                                            <div className="field">
+                                                                <label className="label">Nombre</label>
+                                                                <div className="control">
+                                                                    <input className="input" onChange={this.onChange} name="nombreNuevaCarta" defaultValue={this.state.nombreNuevaCarta} type="text" placeholder="Nombre para la carta" />
                                                                 </div>
                                                             </div>
+                                                            <div className="field">
+                                                                <label className="label">URL Facebook</label>
+                                                                <div className="control">
+                                                                    <input className="input" onChange={this.onChange} name="url_facebook" defaultValue={this.state.url_facebook} type="text" placeholder="https://www.facebook.com/" />
+                                                                </div>
+                                                            </div>
+                                                            <div className="field">
+                                                                <label className="label">URL Instagram</label>
+                                                                <div className="control">
+                                                                    <input className="input" onChange={this.onChange} name="url_instagram" defaultValue={this.state.url_instagram} type="text" placeholder="https://www.instagram.com/instagram/?hl=es" />
+                                                                </div>
+                                                            </div>
+                                                            <div className="field">
+                                                                <label className="label">URL TripAdvisor</label>
+                                                                <div className="control">
+                                                                    <input className="input" onChange={this.onChange} name="url_tripadvisor" defaultValue={this.state.url_tripadvisor} type="text" placeholder="https://www.tripadvisor.es/" />
+                                                                </div>
+                                                            </div>
+                                                            <div className="field">
+                                                                <label className="label">Eslogan</label>
+                                                                <div className="control">
+                                                                    <input className="input" onChange={this.onChange} name="eslogan" defaultValue={this.state.eslogan} type="text" placeholder="El mejor restaurante de la zona!" />
+                                                                </div>
+                                                            </div>
+                                                            <div className="field">
+                                                                <label className="label">Establecimiento</label>
+                                                                <div className="control">
+                                                                    <input className="input" onChange={this.onChange} name="establecimiento" defaultValue={this.state.establecimiento} type="text" placeholder="Bar del Desarrollador!" />
+                                                                </div>
+                                                            </div>
+                                                            <div className="field">
+                                                                <label className="label">Plantilla</label>
+                                                                <div className="control">
+                                                                    <div className="select">
+                                                                        <select name="plantilla" onChange={this.onChange} defaultValue={this.state.plantilla}>
+                                                                            <option>Ninguna plantilla seleccionada</option>
+                                                                            <option value="Plantilla 1">Plantilla 1</option>
+                                                                            <option value="Plantilla 2">Plantilla 2</option>
+                                                                            <option value="Plantilla 3">Plantilla 3</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <hr />
                                                         </div>
-                                                        <hr />
                                                     </div>
+                                                </form>
+                                                <div className="control buttons is-centered">
+                                                    <button className="button is-success" onClick={this.onSubmit}>Guardar carta y categorias</button>
                                                 </div>
-                                            </form>
-                                            <div className="control buttons is-centered">
-                                                {/* onClick={this.onSubmit}*/}
-                                                <button className="button is-success">Guardar carta y categorias</button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <button className="button is-success" onClick={this.addingCarta}>
-                        <span class="icon is-small">
-                            <i class="fas fa-plus-circle"></i>
-                        </span>
-                        <p style={{ marginTop: '4px' }}>Añadir carta</p>
-                    </button>
-                    <div className="columns has-text-centered" style={{ marginTop: '40px' }}>
-                        <div className="column">
-                            <table className="table is-striped">
-                                <thead>
-                                    <tr>
-                                        <th>Identificador del sistema</th>
-                                        <th>Nombre de la carta</th>
-                                        <th>Plantilla</th>
-                                        <th>QR</th>
 
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {this.props.cartas.map(carta => (
-                                        <tr key={carta.id}>
-                                            <td>{carta.id}</td>
-                                            <td>{carta.name}</td>
-                                            <td>
-                                                <div className="select">
-                                                    <select name="is_premium" onChange={this.onChange} defaultValue={this.state.plantilla}>
-                                                        <option>Ninguna plantilla seleccionada</option>
-                                                        <option value="false">No es Premium</option>
-                                                        <option value="true">Premium</option>
-                                                    </select>
-                                                </div>
-                                                {carta.plantilla}
-                                            </td>
-                                            <td>
-                                                <div>
-                                                    <figure className="image is-128x128 is-inline-block">
+
+                        <div className="columns has-text-centered" style={{ marginTop: '0px', marginBottom: '40px' }}>
+                            <div className="column">
+
+
+                                {this.props.cartas.map(carta => (
+                                    <div>
+                                        <div className={this.state.modal_qr ? "modal is-active" : "modal"}>
+                                            <div className="modal-background"></div>
+                                            <div className="modal-content">
+
+                                                <div className="box">
+                                                    <div className="has-text-right">
+
+                                                        <button className="button is-danger " onClick={this.modalQr}>
+                                                            <span className="icon is-small">
+                                                                <i className="fas fa-times"></i>
+                                                            </span>
+                                                        </button>
+                                                    </div>
+                                                    <figure className="image is-4by4"  >
                                                         <img className="" src={`/static/clientes/${this.props.auth.user.cif}/qr.jpg`}></img>
                                                     </figure>
-                                                </div>
-                                            </td>
-                                            {/*<td><button className="button is-warning">Editar</button></td>*/}
-                                            <td>
-                                                <div>
-                                                    <Link className="navbar-link" style={{ width: '100%' }} to={`/carta-page/${carta.id}`}>Ver carta</Link>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <button class="button is-danger" onClick={this.props.deleteCarta.bind(this, carta.id, this.props.auth.user.cif)}>
-                                                    <span class="icon is-small">
-                                                        <i class="fas fa-trash"></i>
-                                                    </span>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                                                    <div className="field ">
+                                                        <div className="field-body" >
+                                                            <div className="field" >
+                                                                <a className="button" style={{ backgroundColor: '#bca466', color: 'white' }} href={`/static/clientes/${this.props.auth.user.cif}/qr.jpg`} download="QRcode">Descargar</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
 
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                        <div style={{ display: "inline", margin: '5px' }}>
+                                            <Animated animationIn="slideInUp">
+                                                <div className="card" style={carta.is_activa ? { border: '1px solid #bca466', maxWidth: '400px', marginTop: '40px' } : { backgroundColor: '#c7c7c7', opacity: '0.5', maxWidth: '400px', marginTop: '40px' }}>
+
+                                                    <div className="card-content" >
+                                                        <div >
+
+
+                                                            <div className="card-image" style={{ border: '1px solid #bca466' }} onClick={this.modalQr}>
+                                                                <figure className="image is-4by4">
+                                                                    <img className="" src={`/static/clientes/${this.props.auth.user.cif}/qr.jpg`}></img>
+                                                                </figure>
+                                                            </div>
+                                                            <div className="media" style={{ paddingTop: '40px' }}>
+                                                                <div className="media-left">
+                                                                    <figure className="image is-48x48">
+                                                                        <img className="is-rounded" src={`/static/clientes/${this.props.auth.user.cif}/logo.jpeg`}></img>
+                                                                    </figure>
+                                                                </div>
+                                                                <div className="media-content" height='auto'>
+                                                                    <p className="title is-5" style={carta.is_activa ? { color: '#bca466' } : { color: 'black' }}>{carta.establecimiento}</p>
+                                                                    <p className="subtitle is-6" style={carta.is_activa ? { color: '#bca466' } : { color: 'black' }}>{carta.name}</p>
+                                                                </div>
+                                                            </div>
+
+
+                                                        </div>
+
+
+                                                        <div className="content" style={{ paddingTop: '10px' }}>
+                                                            <div className="select">
+                                                                <select onChange={e => this.onChangePremium(e, carta)} defaultValue={carta.show_as_pdf}>
+                                                                    <option value="true">Ver como PDF</option>
+                                                                    <option value="false">Vista Premium</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+
+                                                        <footer className="card-footer">
+                                                            <div className="card-footer-item" >
+
+                                                                <button className="button is-link is-rounded" onClick={e => this.onSubmitDesactivarCarta(e, carta)} style={carta.is_activa ? { backgroundColor: '#bca466', color: 'white' } : { backgroundColor: 'white', border: '1px solid #bca466', color: '#bca466' }}>
+                                                                    <span className="icon is-small" >
+                                                                        <i className="fas fa-power-off"></i>
+                                                                    </span>
+                                                                </button>
+                                                            </div>
+                                                            <div className="card-footer-item">
+                                                                <button className="button">
+
+                                                                    <Link className="link" style={{ width: '100%', color: '#bca466' }} to={`/carta-page/${carta.id}`}>Editar</Link>
+
+                                                                </button>
+                                                            </div>
+                                                            <div className="card-footer-item">
+                                                                <button className="button is-danger" style={{ backgroundColor: '#bca466' }}>
+                                                                    <span className="icon is-small">
+                                                                        <i className="fas fa-trash" ></i>
+                                                                    </span>
+                                                                </button>
+                                                            </div>
+                                                        </footer>
+
+
+
+                                                    </div>
+                                                </div>
+                                            </Animated>
+                                        </div>
+                                    </div>
+                                ))}
+
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
             </div>
         )
@@ -262,4 +358,4 @@ const mapStateToProps = state => ({
     auth: state.auth,
 });
 
-export default connect(mapStateToProps, { getCartas, nuevaCarta, deleteCarta })(VisualizarCartas);
+export default connect(mapStateToProps, { updateShow, updateuser, getCartas, nuevaCarta, deleteCarta })(VisualizarCartas);

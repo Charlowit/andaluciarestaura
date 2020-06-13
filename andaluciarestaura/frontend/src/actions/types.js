@@ -1,5 +1,6 @@
 //Esto es una constante que se va a tener para nuestro datosnegocio.js de la carpeta reducers
 //Es opcional pero es buena practica para mantener las constantes types en un fichero
+export const TRY_LOGIN = "TRY_LOGIN";
 export const USER_LOADING = "USER_LOADING";
 export const USER_LOADED = "USER_LOADED";
 export const AUTH_ERROR = "AUTH_ERROR";
@@ -41,3 +42,10 @@ export const ADD_CATEGORIA = "ADD_CATEGORIA";
 export const GET_EXPECIFIC_CARTA = "GET_EXPECIFIC_CARTA";
 export const UPDATE_CARTA = "UPDATE_CARTA";
 export const USER_LOADED_ADMIN_PAGE = "USER_LOADED_ADMIN_PAGE";
+
+export const UPLOADED_PHOTO = "UPLOADED_PHOTO";
+export const UPLOADING_PHOTO = "UPLOADED_PHOTO";
+
+export const UPDATE_CATEGORIA = "UPDATE_CATEGORIA";
+
+export const UPDATE_PRODUCTO = "UPDATE_PRODUCTO";

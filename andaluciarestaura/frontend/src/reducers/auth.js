@@ -78,7 +78,6 @@ export default function(state = initialState, action){
         case UPDATE_SUCCESS:
             return {
                 ...state,
-                
                 isAuthenticated: true,
                 isLoading: false,
                 isUpdating: false,
@@ -97,7 +96,6 @@ export default function(state = initialState, action){
                 isRegistering: false,
                 registerFailed: false,
                 needReload: false
-
             }
         case REGISTER_LOADING:
             return{

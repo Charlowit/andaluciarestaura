@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from "prop-types";
 import { logout } from '../../actions/auth';
-
+import BarraInformacion from '../barrainformacion/BarraInformacion'
 
 class Navbar extends Component {
 
@@ -171,7 +171,7 @@ class Navbar extends Component {
             <div>
                 <nav className="navbar is-fixed-top">
                     <div className="navbar-brand">
-                        <Link to="/" style={{ marginTop: 9 }}>
+                        <Link to="/" style={{ marginTop: '9px' }}>
                             <img src={"/static/frontend/logoar.png"} width="300" height="125" />
                         </Link>
 
@@ -187,8 +187,11 @@ class Navbar extends Component {
                         {isAuthenticated ? authLinks : ""}
                         {isAuthenticated ? authEnd : guestEnd}
                     </div>
+
+                    
                 </nav>
 
+                <BarraInformacion />
 
 
             </div>

@@ -31,7 +31,10 @@ export default function(state = initialState, action) {
         case UPDATE_CARTA:
             return {
                 ...state,
-                expecificCarta: [action.payload]
+                expecificCarta: [action.payload],
+                cartas: state.cartas.map(carta => (
+                    carta.id == action.payload.id ? carta = action.payload : carta = carta
+                ))
             }
         default:
             return state;
