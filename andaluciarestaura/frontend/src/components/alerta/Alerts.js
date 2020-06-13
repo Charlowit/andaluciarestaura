@@ -58,6 +58,9 @@ export class Alerts extends Component {
             if(message.loginError){
                 alert.error("El CIF o la contraseña son incorrectos.")
             }
+            if(message.fotoSubida) {
+                alert.success(message.fotoSubida);
+            }
 
         }
     }

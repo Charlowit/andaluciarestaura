@@ -25,7 +25,7 @@
     }
 
     .goog-te-gadget-simple {
-      background-color: #bca466 !important;
+      background-color: white !important;
       border: 1px solid rgba(255, 255, 255, 0.50) !important;
       padding: 8px !important;
       border-radius: 4px !important;
@@ -41,7 +41,7 @@
     }
 
     .goog-te-menu-value {
-      color: #fff !important;
+      color: #bca466 !important;
 
       &:before {
         font-family: 'Material Icons';
@@ -142,16 +142,22 @@
 
     #colorDoradoTexto {}
 
-    #colorTextoWhite {
-      color: white;
-    }
+    #colorTextoWhite {}
 
     #fondoHeroBody {
       background-color: #1D9BCB;
     }
 
-    #colorTextoWhite {
-      color: white;
+
+
+    #bkg {
+      margin-bottom: '6%';
+      background-position: center;
+      background-image: url('https://www.dev.andaluciarestaura.com/static/frontend/backLogin.png');
+      background-repeat: no-repeat;
+      margin-top: '50px';
+      background-size: cover;
+
     }
   </style>
   {% endif %}
@@ -190,8 +196,16 @@
       background-color: #d5c69f;
     }
 
-    #colorTextoWhite {
-      color: black;
+    #colorTextoWhite {}
+
+    #bkg {
+      margin-bottom: '6%';
+      background-position: center;
+      background-image: url(https://www.dev.andaluciarestaura.com/static/frontend/backLogin.png);
+      background-repeat: no-repeat;
+      margin-top: '50px';
+      background-size: cover;
+
     }
   </style>
   {% endif %}
@@ -208,7 +222,7 @@
       </div>
     </nav>
   </header>
-  <section class="hero is-bold" id="fondoHeroBody" style="margin-top: 40px ">
+  <section class="hero is-bold" id="bkg" style="margin-top: 40px ">
 
     <div class="hero-body">
       <div class="container has-text-centered is-clearfix">
@@ -361,168 +375,167 @@
                 <br />
               </div>
             </div>
-          </div>
-          {% for producto in productos %}
-          {% if categoria.id == producto.categoria %}
-          <div class='card equal-height' id="fondoCarta">
-            <div className=" has-text-centered">
-              <figure className="image is-64x64 is-inline-block">
-                <img className="is-rounded"
-                  src="https://pngimage.net/wp-content/uploads/2018/06/plato-de-comida-png-5.png"></img>
-              </figure>
-            </div>
-            {% if plantilla == "Plantilla 2" %}
-            <div style="text-align: center;">
-              <hr style="width:75%; margin-left:25%; margin-right:25%; background-color: #d5c69f;" />
-            </div>
-            {% endif %}
-            <div class="columns">
-              <div class="container">
-                <div class="column">
-                  <div class="columns">
-                    <!--
+            {% for producto in productos %}
+            {% if categoria.id == producto.categoria %}
+            <div class='card' id="fondoCarta">
+              <div className=" has-text-centered">
+                <figure className="image" style="max-width: 480px">
+                  <img className="is-rounded" src={{producto.photo}}></img>
+                </figure>
+              </div>
+              {% if plantilla == "Plantilla 2" %}
+              <div style="text-align: center;">
+                <hr style="width:75%; margin-left:25%; margin-right:25%; background-color: #d5c69f;" />
+              </div>
+              {% endif %}
+              <div class="columns">
+                <div class="container">
+                  <div class="column">
+                    <div class="columns">
+                      <!--
                     <div class="column">
                        <h1></h1>
                     </div>
                     -->
-                    <div class="column">
-                      <div class="columns">
-                        <div class="column is-two-thirds" style="margin-left: 2%;margin-top: 2%">
-                          <h1 class="title" id="colorDoradoTexto">{{ producto.name }} </h1>
-                          <h2 class="subtitle has-text-weight-light" id="colorDoradoTexto"> {{ producto.descripcion }}
-                          </h2>
+                      <div class="column">
+                        <div class="columns">
+                          <div class="column is-two-thirds" style="margin-left: 2%;margin-top: 2%">
+                            <h1 class="title" id="colorDoradoTexto">{{ producto.name }} </h1>
+                            <h2 class="subtitle has-text-weight-light" id="colorDoradoTexto"> {{ producto.descripcion }}
+                            </h2>
+                          </div>
                         </div>
-                      </div>
-                      <div class="columns">
-                        <div class="column is-two-thirds has-text-centered" style="margin-left: 2%">
+                        <div class="columns">
+                          <div class="column is-two-thirds has-text-centered" style="margin-left: 2%">
 
-                          {% if producto.is_apio == True %}
-                          <img src="{{server}}/static/frontend/Allergens/alergeno_apio.svg"
-                            alt="triangle with all three sides equal" width="50" />
-                          {% endif %}
-                          {% if producto.is_altramuces == True %}
-                          <img src="{{server}}/static/frontend/Allergens/alergeno_altramuces.svg"
-                            alt="triangle with all three sides equal" width="50" />
-                          {% endif %}
-                          {% if producto.is_cacahuete == True %}
-                          <img src="{{server}}/static/frontend/Allergens/alergeno_cacahuete.svg"
-                            alt="triangle with all three sides equal" width="50" />
-                          {% endif %}
-                          {% if producto.is_crustaceo == True %}
-                          <img src="{{server}}/static/frontend/Allergens/alergeno_crustaceo.svg"
-                            alt="triangle with all three sides equal" width="50" />
-                          {% endif %}
-                          {% if producto.is_frutos_con_cascara == True %}
-                          <img src="{{server}}/static/frontend/Allergens/alergeno_frutos_con_cascara.svg"
-                            alt="triangle with all three sides equal" width="50" />
-                          {% endif %}
-                          {% if producto.is_gluten == True %}
-                          <img src="{{server}}/static/frontend/Allergens/alergeno_gluten.svg"
-                            alt="triangle with all three sides equal" width="50" />
-                          {% endif %}
-                          {% if producto.is_huevo == True %}
-                          <img src="{{server}}/static/frontend/Allergens/alergeno_huevo.svg"
-                            alt="triangle with all three sides equal" width="50" />
-                          {% endif %}
-                          {% if producto.is_lacteo == True %}
-                          <img src="{{server}}/static/frontend/Allergens/alergeno_lacteo.svg"
-                            alt="triangle with all three sides equal" width="50" />
-                          {% endif %}
-                          {% if producto.is_molusco == True %}
-                          <img src="{{server}}/static/frontend/Allergens/alergeno_moluscos.svg"
-                            alt="triangle with all three sides equal" width="50" />
-                          {% endif %}
-                          {% if producto.is_mostaza == True %}
-                          <img src="{{server}}/static/frontend/Allergens/alergeno_mostaza.svg"
-                            alt="triangle with all three sides equal" width="50" />
-                          {% endif %}
-                          {% if producto.is_pescado == True %}
-                          <img src="{{server}}/static/frontend/Allergens/alergeno_pescado.svg"
-                            alt="triangle with all three sides equal" width="50" />
-                          {% endif %}
-                          {% if producto.is_sesamo == True %}
-                          <img src="{{server}}/static/frontend/Allergens/alergeno_sesamo.svg"
-                            alt="triangle with all three sides equal" width="50" />
-                          {% endif %}
-                          {% if producto.is_soja == True %}
-                          <img src="{{server}}/static/frontend/Allergens/alergeno_soja.svg"
-                            alt="triangle with all three sides equal" width="50" />
-                          {% endif %}
-                          {% if producto.is_sulfito == True %}
-                          <img src="/static/frontend/Allergens/alergeno_sulfito.svg"
-                            alt="triangle with all three sides equal" width="70" style="margin-bottom: -18px; margin-left: -9px;" />
-                          {% endif %}
-                        </div>
-                        <div class="column is-3">
-                          <div class="columns is-mobile" style="text-align: center; margin-bottom: 5%;">
-                            {% if producto.precio1 != 0.0 %}
-                            <div class="column">
-                              <div style="width:100%;margin-top:5%;margin-bottom: 6%;">
-                                <span class="icon is-size-7" id="simbolsColour">
-                                  <i class="fas fa-dot-circle" aria-hidden="true"></i>
-                                </span>
-                              </div>
-                              <span>
-                                <b> {{producto.titulo_precio1}} </b>
-                              </span>
-                              <div style="width:100%;">
-                                <span>
-                                  <b id="priceColour"> {{ producto.precio1 }}€</b>
-                                </span>
-                              </div>
-                            </div>
+                            {% if producto.is_apio == True %}
+                            <img src="{{server}}/static/frontend/Allergens/alergeno_apio.svg"
+                              alt="triangle with all three sides equal" width="50" />
                             {% endif %}
-                            {% if producto.precio2 != 0.0 %}
-                            <div class="column" style="margin-left: 4%; margin-top: 2%">
-                              <div style="width:100%;">
-                                <span class="icon is-size-5" id="simbolsColour" style="font-size:36px;">
-                                  <i class="fas fa-dot-circle" aria-hidden="true"></i>
-                                </span>
-                              </div>
-                              <span>
-                                <b> {{producto.titulo_precio2}}</b>
-                              </span>
-                              <div style="width:100%;">
-                                <span>
-                                  <b id="priceColour"> {{ producto.precio2 }}€</b>
-                                </span>
-                              </div>
-                            </div>
+                            {% if producto.is_altramuces == True %}
+                            <img src="{{server}}/static/frontend/Allergens/alergeno_altramuces.svg"
+                              alt="triangle with all three sides equal" width="50" />
                             {% endif %}
-                            {% if producto.precio3 != 0.0 %}
-                            <div class="column" style="margin-left: 4%; margin-top: 2%">
-                              <div style="width:100%;">
-                                <span class="icon is-size-9" id="simbolsColour" style="font-size:36px;">
-                                  <i class="fas fa-dot-circle" aria-hidden="true"></i>
-                                </span>
-                              </div>
-                              <span>
-                                <b> {{producto.titulo_precio3}}</b>
-                              </span>
-                              <div style="width:100%;">
-                                <span>
-                                  <b id="priceColour"> {{ producto.precio3 }}€</b>
-                                </span>
-                              </div>
-                            </div>
+                            {% if producto.is_cacahuete == True %}
+                            <img src="{{server}}/static/frontend/Allergens/alergeno_cacahuete.svg"
+                              alt="triangle with all three sides equal" width="50" />
+                            {% endif %}
+                            {% if producto.is_crustaceo == True %}
+                            <img src="{{server}}/static/frontend/Allergens/alergeno_crustaceo.svg"
+                              alt="triangle with all three sides equal" width="50" />
+                            {% endif %}
+                            {% if producto.is_frutos_con_cascara == True %}
+                            <img src="{{server}}/static/frontend/Allergens/alergeno_frutos_con_cascara.svg"
+                              alt="triangle with all three sides equal" width="50" />
+                            {% endif %}
+                            {% if producto.is_gluten == True %}
+                            <img src="{{server}}/static/frontend/Allergens/alergeno_gluten.svg"
+                              alt="triangle with all three sides equal" width="50" />
+                            {% endif %}
+                            {% if producto.is_huevo == True %}
+                            <img src="{{server}}/static/frontend/Allergens/alergeno_huevo.svg"
+                              alt="triangle with all three sides equal" width="50" />
+                            {% endif %}
+                            {% if producto.is_lacteo == True %}
+                            <img src="{{server}}/static/frontend/Allergens/alergeno_lacteo.svg"
+                              alt="triangle with all three sides equal" width="50" />
+                            {% endif %}
+                            {% if producto.is_molusco == True %}
+                            <img src="{{server}}/static/frontend/Allergens/alergeno_moluscos.svg"
+                              alt="triangle with all three sides equal" width="50" />
+                            {% endif %}
+                            {% if producto.is_mostaza == True %}
+                            <img src="{{server}}/static/frontend/Allergens/alergeno_mostaza.svg"
+                              alt="triangle with all three sides equal" width="50" />
+                            {% endif %}
+                            {% if producto.is_pescado == True %}
+                            <img src="{{server}}/static/frontend/Allergens/alergeno_pescado.svg"
+                              alt="triangle with all three sides equal" width="50" />
+                            {% endif %}
+                            {% if producto.is_sesamo == True %}
+                            <img src="{{server}}/static/frontend/Allergens/alergeno_sesamo.svg"
+                              alt="triangle with all three sides equal" width="50" />
+                            {% endif %}
+                            {% if producto.is_soja == True %}
+                            <img src="{{server}}/static/frontend/Allergens/alergeno_soja.svg"
+                              alt="triangle with all three sides equal" width="50" />
+                            {% endif %}
+                            {% if producto.is_sulfito == True %}
+                            <img src="/static/frontend/Allergens/alergeno_sulfito.svg"
+                              alt="triangle with all three sides equal" width="70"
+                              style="margin-bottom: -18px; margin-left: -9px;" />
                             {% endif %}
                           </div>
+                          <div class="column is-3">
+                            <div class="columns is-mobile" style="text-align: center; margin-bottom: 5%;">
+                              {% if producto.precio1 != 0.0 %}
+                              <div class="column">
+                                <div style="width:100%;margin-top:5%;margin-bottom: 6%;">
+                                  <span class="icon is-size-7" id="simbolsColour">
+                                    <i class="fas fa-dot-circle" aria-hidden="true"></i>
+                                  </span>
+                                </div>
+                                <span>
+                                  <b> {{producto.titulo_precio1}} </b>
+                                </span>
+                                <div style="width:100%;">
+                                  <span>
+                                    <b id="priceColour"> {{ producto.precio1 }}€</b>
+                                  </span>
+                                </div>
+                              </div>
+                              {% endif %}
+                              {% if producto.precio2 != 0.0 %}
+                              <div class="column" style="margin-left: 4%; margin-top: 2%">
+                                <div style="width:100%;">
+                                  <span class="icon is-size-5" id="simbolsColour" style="font-size:36px;">
+                                    <i class="fas fa-dot-circle" aria-hidden="true"></i>
+                                  </span>
+                                </div>
+                                <span>
+                                  <b> {{producto.titulo_precio2}}</b>
+                                </span>
+                                <div style="width:100%;">
+                                  <span>
+                                    <b id="priceColour"> {{ producto.precio2 }}€</b>
+                                  </span>
+                                </div>
+                              </div>
+                              {% endif %}
+                              {% if producto.precio3 != 0.0 %}
+                              <div class="column" style="margin-left: 4%; margin-top: 2%">
+                                <div style="width:100%;">
+                                  <span class="icon is-size-9" id="simbolsColour" style="font-size:36px;">
+                                    <i class="fas fa-dot-circle" aria-hidden="true"></i>
+                                  </span>
+                                </div>
+                                <span>
+                                  <b> {{producto.titulo_precio3}}</b>
+                                </span>
+                                <div style="width:100%;">
+                                  <span>
+                                    <b id="priceColour"> {{ producto.precio3 }}€</b>
+                                  </span>
+                                </div>
+                              </div>
+                              {% endif %}
+                            </div>
 
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
 
+                </div>
               </div>
             </div>
+
+            {% endif %}
+            {% endfor %}
           </div>
         </div>
-
-        {% endif %}
         {% endfor %}
-        {% endfor %}
-
       </div>
     </div>
   </div>

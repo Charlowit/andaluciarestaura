@@ -14,6 +14,8 @@ import {
 } from './types';
 import { tokenConfig } from './auth'
 import { compose } from 'redux';
+import { createMessages } from './messages';
+
 
 //FUNCIONA EL DELETE
 export const deleteproducto = (id, id_categoria) => (dispatch, getState) => {
@@ -89,6 +91,7 @@ export const subirPhoto = (formdata, producto, cif_user) => dispatch => {
     axios.put(`api/subirphoto/?id=${producto.id}`, formdata, config)
         .then(res => {
             console.log("La foto se ha subido correctamente")
+            dispatch(createMessages({ fotoSubida: "La foto se ha guardado correctamente!." }));
 
 
         }).then(res => {

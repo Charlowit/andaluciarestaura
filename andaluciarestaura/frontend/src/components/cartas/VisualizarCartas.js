@@ -132,7 +132,7 @@ export class VisualizarCartas extends Component {
     render() {
         return (
 
-            <div style={{ marginBottom: '-90px' }}>
+            <div style={{ marginBottom: '-20px' }}>
                 <div className="has-text-centered" style={{ marginTop: '60px', marginBottom: '60px' }}>
 
 

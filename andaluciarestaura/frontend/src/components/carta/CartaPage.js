@@ -12,6 +12,15 @@ const div100 = {
 };
 
 
+const bkg = {
+    marginBottom: '6%',
+    backgroundPosition: 'center',
+    backgroundImage: "url('https://www.dev.andaluciarestaura.com/static/frontend/backLogin.png')",
+    backgroundRepeat: 'no-repeat',
+    marginTop: '50px',
+    backgroundSize: 'cover'
+
+}
 
 export class CartaPage extends Component {
 
@@ -81,9 +90,9 @@ export class CartaPage extends Component {
             imagenClickada: null,
             addingPhoto: false,
 
-            addingPhotoArray: [false, false, false],
-            fileArray: [null , null , null ]
-           
+            addingPhotoArray: [],
+            fileArray: []
+
         };
     }
 
@@ -128,7 +137,7 @@ export class CartaPage extends Component {
 
 
         this.setState({
-            addingPhotoArray: this.state.addingPhotoArray.map((item, indexDentro) =>(
+            addingPhotoArray: this.state.addingPhotoArray.map((item, indexDentro) => (
                 index == indexDentro ? !item : item = item
             ))
         })
@@ -448,30 +457,29 @@ export class CartaPage extends Component {
             photo: e.target.files[0],
             file: URL.createObjectURL(e.target.files[0]),
         }, console.log("Este es el file --> ", URL.createObjectURL(e.target.files[0])))
-        
-        console.log("se va a cambiar? --> ", this.state.fileArray[index])        
+
+        console.log("se va a cambiar? --> ", this.state.fileArray[index])
 
         this.setState({
             fileArray: this.state.fileArray.map((item, indexDentro) => (
                 indexDentro == index ? item = URL.createObjectURL(e.target.files[0]) : item = item
             )),
-            addingPhotoArray: this.state.addingPhotoArray.map((item, indexDentro) =>(
+            addingPhotoArray: this.state.addingPhotoArray.map((item, indexDentro) => (
                 index == indexDentro ? !item : item = item
             ))
         })
 
-        console.log("Se habrá cambiao? --> ", this.state.fileArray[index])        
+        console.log("Se habrá cambiao? --> ", this.state.fileArray[index])
 
     };
 
+
     changeImageBackground(e) {
         e.target.style.opacity = '0.5';
-        e.target.src = '/static/clientes/hola8/136.jpeg';
     }
 
     changeImageBackgroundLeave(e) {
         e.target.style.opacity = '1';
-        e.target.src = '/static/frontend/default.jpg';
     }
 
 
@@ -532,13 +540,7 @@ export class CartaPage extends Component {
         const { categoriaParaProducto, name, descripcion, tamanio, precio1, precio2, precio3, is_apio, is_altramuces, is_cacahuete, is_crustaceo, is_frutos_con_cascara, is_gluten, is_huevo, is_lacteo, is_molusco, is_mostaza, is_pescado, is_sesamo, is_soja, is_sulfito, carta
         } = this.state;
 
-        /*this.props.cartas.map(producto =>(
-            this.setState({
-                addingPhotoArray: this.state.addingPhotoArray.push(false),
-                fileArray: this.state.fileArray.push(null)
-            })
-            
-        ))*/
+
 
         return (
             <Fragment>
@@ -546,9 +548,16 @@ export class CartaPage extends Component {
                 <div>
                     {this.props.cartaReal.map(carta => (
                         <div>
+                            {/* NO TOCAR POR FAVOR JAMÁS DE LOS JAMASES */}
+                            <div className="is-hidden">
+                                {this.props.cartas.map(producto => (
+                                    this.state.addingPhotoArray.push(false),
+                                    this.state.fileArray.push(null)
 
+                                ))}
+                            </div>
 
-                            <section className="hero is-info is-primary  hsl(54%, 15%, 143%) is-bold" style={{ marginTop: '50px' }}>
+                            <section className="hero is-bold" style={bkg}>
 
 
                                 <div className={this.state.editEslogan ? "modal is-active" : "modal"}>
@@ -713,7 +722,7 @@ export class CartaPage extends Component {
                                         </div>
 
                                         <h1 className="title" style={{ display: 'inline' }}> {carta.establecimiento} </h1>
-                                        <button class="button is-rounded is-small is-warning" style={{ display: 'inline', marginLeft: '7px', marginTop: '-3px' }} onClick={this.editEstablecimiento}>
+                                        <button class="button is-rounded is-small" style={{ color: '#bca466', backgroundColor: 'white', display: 'inline', marginLeft: '7px', marginTop: '-3px' }} onClick={this.editEstablecimiento}>
                                             <span class="icon is-small">
                                                 <i class="fas fa-pen"></i>
                                             </span>
@@ -722,7 +731,7 @@ export class CartaPage extends Component {
                                             <h2 className="subtitle" style={{ display: 'inline' }}> {carta.eslogan} </h2>
 
 
-                                            <button class="button is-rounded is-small is-warning" style={{ display: 'inline', marginLeft: '7px', marginTop: '-3px' }} onClick={this.editEslogan}>
+                                            <button class="button is-rounded is-small is-warning" style={{ color: '#bca466', backgroundColor: 'white', display: 'inline', marginLeft: '7px', marginTop: '-3px' }} onClick={this.editEslogan}>
                                                 <span class="icon is-small">
                                                     <i class="fas fa-pen"></i>
                                                 </span>
@@ -734,7 +743,7 @@ export class CartaPage extends Component {
                                                         <i className="fab fa-facebook"></i>
                                                     </span>
                                                 </a>
-                                                <button class="button is-rounded is-small is-warning" style={{ display: 'inline' }} onClick={this.editURLF}>
+                                                <button class="button is-rounded is-small is-warning" style={{ color: '#bca466', backgroundColor: 'white', display: 'inline' }} onClick={this.editURLF}>
                                                     <span class="icon is-small">
                                                         <i class="fas fa-pen"></i>
                                                     </span>
@@ -744,7 +753,7 @@ export class CartaPage extends Component {
                                                         <i className="fab fa-tripadvisor"></i>
                                                     </span>
                                                 </a>
-                                                <button class="button is-rounded is-small is-warning" style={{ display: 'inline' }} onClick={this.editURLT}>
+                                                <button class="button is-rounded is-small is-warning" style={{ color: '#bca466', backgroundColor: 'white', display: 'inline' }} onClick={this.editURLT}>
                                                     <span class="icon is-small">
                                                         <i class="fas fa-pen"></i>
                                                     </span>
@@ -754,7 +763,7 @@ export class CartaPage extends Component {
                                                         <i className="fab fa-instagram"></i>
                                                     </span>
                                                 </a>
-                                                <button class="button is-rounded is-small is-warning" style={{ display: 'inline' }} onClick={this.editURLI}>
+                                                <button class="button is-rounded is-small is-warning" style={{ color: '#bca466', backgroundColor: 'white', display: 'inline' }} onClick={this.editURLI}>
                                                     <span class="icon is-small">
                                                         <i class="fas fa-pen"></i>
                                                     </span>
@@ -773,8 +782,8 @@ export class CartaPage extends Component {
                                                             </button>
                                                         </div>
                                                         <div className="column">
-                                                            <h1 className="title" style={{ display: 'inline' }}>{carta.name}</h1>
-                                                            <button class="button is-rounded is-small is-warning" style={{ display: 'inline', marginLeft: '10px' }} onClick={this.editNombreCarta}>
+                                                            <h1 className="title" style={{ display: 'inline' }} > {carta.name}</h1>
+                                                            <button class="button is-rounded is-small is-warning" style={{ color: '#bca466', backgroundColor: 'white', display: 'inline', marginLeft: '10px' }} onClick={this.editNombreCarta}>
                                                                 <span class="icon is-small">
                                                                     <i class="fas fa-pen"></i>
                                                                 </span>
@@ -797,38 +806,38 @@ export class CartaPage extends Component {
                             </section>
                             {!carta.show_as_pdf ?
                                 <div>
-                                    <div className="section">
+                                    <div className="section" style={{ marginTop: '-40px' }}>
                                         <div className="container">
-                                            <section className="hero is-info is-primary  hsl(54%, 15%, 143%) is-small" style={{ marginTop: '40px', minHeight: '100px' }}>
+                                            <section className="hero is-small" style={{ minHeight: '100px', backgroundColor: '#d5c69f' }}>
                                                 <div className="columns is-gapless has-text-centered" style={{ marginTop: '15px' }}>
 
                                                     {this.props.categorias.length > 0 ?
                                                         <div className="column" style={{ marginTop: '10px' }}>
-                                                            <button className="button is-success is-medium" onClick={this.addProduct}>
-                                                                <span class="icon">
+                                                            <button className="button is-success is-medium" style={{ backgroundColor: 'white', border: '1px solid white' }} onClick={this.addProduct}>
+                                                                <span class="icon" style={{ color: '#171c8f' }}>
                                                                     <i class="fas fa-plus-circle"></i>
                                                                 </span>
-                                                                <p style={{ marginTop: '6px' }}> Añadir Producto</p>
+                                                                <p style={{ marginTop: '6px', color: '#171c8f' }}> Añadir Producto</p>
                                                             </button>
 
                                                         </div>
                                                         :
-                                                        <div className="column" style={{ backgroundColor: 'gray' }} style={{ marginTop: '10px' }}>
-                                                            <button disabled className="button is-success is-medium" onClick={this.addProduct}>
-                                                                <span class="icon">
+                                                        <div className="column" style={{ backgroundColor: 'gray', marginTop: '10px' }}>
+                                                            <button disabled className="button is-success is-medium" style={{ backgroundColor: 'white', border: '1px solid white' }} onClick={this.addProduct}>
+                                                                <span class="icon" style={{ color: '#171c8f' }}>
                                                                     <i class="fas fa-plus-circle"></i>
                                                                 </span>
-                                                                <p style={{ marginTop: '6px' }}> Añadir Producto</p>
+                                                                <p style={{ marginTop: '6px', color: '#171c8f' }}> Añadir Producto</p>
                                                             </button>
 
                                                         </div>
                                                     }
                                                     <div className="column" style={{ marginTop: '10px', marginBottom: '25px' }}>
-                                                        <button className="button is-success is-medium" onClick={this.addCategory}>
-                                                            <span class="icon">
+                                                        <button className="button is-success is-medium" style={{ backgroundColor: 'white', border: '1px solid white' }} onClick={this.addCategory}>
+                                                            <span class="icon" style={{ color: '#171c8f' }}>
                                                                 <i class="fas fa-plus-circle"></i>
                                                             </span>
-                                                            <p style={{ marginTop: '6px' }}> Añadir Categoría</p>
+                                                            <p style={{ marginTop: '6px', color: '#171c8f' }}> Añadir Categoría</p>
                                                         </button>
                                                     </div>
 
@@ -1152,41 +1161,47 @@ export class CartaPage extends Component {
                                                                 {this.props.categorias.map(categoria => (
                                                                     <div style={{ marginTop: '60px' }} key={categoria.id}>
                                                                         <div className='card equal-height' style={{ backgroundColor: '#d5c69f' }}>
-                                                                            <div className="columns is-mobile">
+                                                                            <div className="columns">
                                                                                 <div className="column is-two-thirds">
                                                                                     <h1 className="title has-text-centered">{categoria.name}</h1>
                                                                                 </div>
 
-                                                                                <div className="column" >
-                                                                                    <div className="control" style={{ paddingTop: '5px' }}>
-                                                                                        <div className="select">
-                                                                                            <select onChange={e => this.onSubmitCambiarPosiciones(e, categoria)}>
-                                                                                                <option>Posicion actual: {categoria.posicion}</option>
-                                                                                                {this.props.categorias.map((categoria, index) => (
-                                                                                                    <option value={index + 1}>Posicion {index + 1}</option>
-                                                                                                ))}
+                                                                                <div className="column is-full-mobile" >
+                                                                                    <div className="columns has-text-centered">
+                                                                                        <div className="column if-full-mobile">
+                                                                                            <div className="control" style={{ paddingTop: '5px' }}>
+                                                                                                <div className="select">
+                                                                                                    <select onChange={e => this.onSubmitCambiarPosiciones(e, categoria)}>
+                                                                                                        <option>Posicion actual: {categoria.posicion}</option>
+                                                                                                        {this.props.categorias.map((categoria, index) => (
+                                                                                                            <option value={index + 1}>Posicion {index + 1}</option>
+                                                                                                        ))}
 
-                                                                                            </select>
+                                                                                                    </select>
+                                                                                                </div>
+                                                                                            </div>
                                                                                         </div>
+                                                                                        <div className="column">
+                                                                                            <div style={{ paddingTop: '5px' }}>
+                                                                                                <button class="button is-danger" onClick={this.props.deleteCategoria.bind(this, categoria.id, categoria.carta)}>
+                                                                                                    <span class="icon is-small">
+                                                                                                        <i class="fas fa-trash"></i>
+                                                                                                    </span>
+                                                                                                </button>
+                                                                                            </div>
+                                                                                        </div>
+
+
                                                                                     </div>
                                                                                 </div>
 
-                                                                                <div className="column" >
-                                                                                    <div style={{ paddingTop: '5px' }}>
-                                                                                        <button class="button is-danger" onClick={this.props.deleteCategoria.bind(this, categoria.id, categoria.carta)}>
-                                                                                            <span class="icon is-small">
-                                                                                                <i class="fas fa-trash"></i>
-                                                                                            </span>
-                                                                                        </button>
-                                                                                    </div>
-                                                                                </div>
+
                                                                             </div>
                                                                             <div>
                                                                             </div>
                                                                         </div>
                                                                         {this.props.cartas.map((producto, index) => (
                                                                             <div style={{ marginTop: '20px' }} key={producto.id}>
-                                                                                {console.log("Mira el index --> ", index)}
                                                                                 <div className={this.state.addPhoto ? "modal is-active" : "modal"}>
                                                                                     <div className="modal-background"></div>
                                                                                     <div className="modal-content">
@@ -1224,26 +1239,27 @@ export class CartaPage extends Component {
 
 
                                                                                     <div className='card'>
-
-                                                                                        <label className="file-label">
-                                                                                            <input className="file-input" type="file" id="logo" accept=".jpeg" onChange={e => this.handlePhotoChange(e, index)} required />
-                                                                                            <span className="file-cta">
-                                                                                                <span className="file-icon">
-                                                                                                    <i className="fas fa-camera"></i>
-                                                                                                </span>
-                                                                                                <span className="file-label is-centered">
-                                                                                                    Escoja su foto
+                                                                                        <div className="has-text-centered">
+                                                                                            <label className="file-label">
+                                                                                                <input className="file-input" type="file" id="logo" accept=".jpeg" onChange={e => this.handlePhotoChange(e, index)} required />
+                                                                                                <span className="file-cta">
+                                                                                                    <span className="file-icon">
+                                                                                                        <i className="fas fa-camera"></i>
+                                                                                                    </span>
+                                                                                                    <span className="file-label is-centered">
+                                                                                                        Escoja su foto
                                                                                                                                 </span>
-                                                                                            </span>
-                                                                                            <div className="control buttons is-centered" >
-                                                                                                <button className="button is-success" onClick={e => this.onSubmitPhotoProducto(e, index, producto , this.state.cif)}>Guardar</button>
-                                                                                            </div>
-                                                                                        </label>
+                                                                                                </span>
+                                                                                                <div className="control buttons is-centered" >
+                                                                                                    <button className="button is-success" onClick={e => this.onSubmitPhotoProducto(e, index, producto, this.state.cif)}>Guardar</button>
+                                                                                                </div>
+                                                                                            </label>
 
-                                                                                        <div class="card-image">
-                                                                                            <figure class="image is-128x128">
-                                                                                                <img src={this.state.addingPhotoArray[index] || this.state.fileArray[index] != null ? this.state.fileArray[index] : producto.photo} ></img>
-                                                                                            </figure>
+                                                                                            <div class="card-image" style={{ maxWidth: '480px' }}>
+                                                                                                <figure class="image is-1by1">
+                                                                                                    <img onMouseEnter={this.changeImageBackground} onMouseLeave={this.changeImageBackgroundLeave} src={this.state.addingPhotoArray[index] || this.state.fileArray[index] != null ? this.state.fileArray[index] : producto.photo} ></img>
+                                                                                                </figure>
+                                                                                            </div>
                                                                                         </div>
                                                                                         <Animated animationIn="bounceInLeft" animationOut="fadeOut" isVisible={true}>
                                                                                             <div className="columns">
