@@ -1449,7 +1449,7 @@ export class CartaPage extends Component {
                                                                                                                     }
                                                                                                                     {producto.is_sulfito ?
                                                                                                                         <img
-                                                                                                                            src="static/frontend/Allergens/alergeno_sulfito.svg"
+                                                                                                                            src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_sulfito.svg"
                                                                                                                             alt="triangle with all three sides equal" width="70" style={{ marginBottom: '-18px', marginLeft: '-9px' }} />
                                                                                                                         :
                                                                                                                         ""
