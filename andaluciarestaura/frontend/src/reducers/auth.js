@@ -10,9 +10,7 @@ import {
     UPDATE_LOADING,
     REGISTER_LOADING,
     REGISTER_FAILED,
-    REGISTER_SUCCESS,
-    ADD_PRODUCTO,
-    ADD_PRODUCTO_SUCCESS
+    REGISTER_SUCCESS,    
 } from '../actions/types';
 
 const initialState = {
@@ -22,7 +20,8 @@ const initialState = {
     user: null,
     isUpdating: false,
     isRegistering: false,
-    needReload: false
+    needReload: false,
+    is_active: "NONE"
 }
 
 export default function(state = initialState, action){
@@ -107,26 +106,6 @@ export default function(state = initialState, action){
                 registerFailed: false,
                 needReload: false
             }
-        case ADD_PRODUCTO:
-            return {
-                ...state,
-                isAuthenticated: false,
-                isLoading: false,
-                isUpdating: false,
-                isRegistering: false,
-                registerFailed: false,
-                needReload: true
-            };
-        case ADD_PRODUCTO_SUCCESS:
-            return {
-                ...state,
-                isAuthenticated: false,
-                isLoading: false,
-                isUpdating: false,
-                isRegistering: false,
-                registerFailed: false,
-                needReload: false
-            };
         case UPDATE_ERROR:
             return{
                 ...state,

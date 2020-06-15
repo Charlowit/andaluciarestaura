@@ -1,4 +1,4 @@
-from .serializers import CartaSerializer, ProductosSerializer, ProductoSerializerActualizar, CategoriasSerializer
+from .serializers import CartaSerializer, ProductosSerializer, ProductoSerializerActualizar, CategoriasSerializer, CartaSerializerActualizar
 from rest_framework import viewsets, permissions, generics
 from .models import Carta, Productos, Categorias
 from rest_framework.parsers import MultiPartParser, FormParser
@@ -65,11 +65,12 @@ class CartasApi(viewsets.ModelViewSet):
         permissions.AllowAny
     ]
 
-    serializer_class = CartaSerializer
+    serializer_class = CartaSerializerActualizar
 
     def get_queryset(self):
         cif = self.request.query_params.get('cif', None)
         return Carta.objects.filter(propietario__cif__exact=cif)
+
 
 class CategoriasApi(viewsets.ModelViewSet):
     permission_classes = [
@@ -79,6 +80,7 @@ class CategoriasApi(viewsets.ModelViewSet):
     serializer_class = CategoriasSerializer
 
     def get_queryset(self):
+        cartaID = self.request.query_params.get('carta', None)
         return Categorias.objects.all()
 
 
@@ -92,6 +94,6 @@ class ProductosApi(viewsets.ModelViewSet):
     #parser_classes = (MultiPartParser, FormParser)
 
     def get_queryset(self):
-        cartaID = self.request.query_params.get('carta', None)
-        queryset = Productos.objects.filter(carta__exact=cartaID)    
+        categoriaID = self.request.query_params.get('categoria', None)
+        queryset = Productos.objects.filter(categoria=categoriaID)    
         return queryset

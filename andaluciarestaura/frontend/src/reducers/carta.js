@@ -1,8 +1,9 @@
-import { GET_CARTA, DELETE_PRODUCTO, ADD_PRODUCTO } from '../actions/types.js';
+import { GET_CARTA, DELETE_PRODUCTO, ADD_PRODUCTO, GET_PRODUCTOS, GET_CATEGORIAS, DELETE_CATEGORIA, ADD_CATEGORIA } from '../actions/types.js';
 
 const initialState = {
     cartas: [],
-    needReload: false
+    productos: [],
+    categorias: [],
 };
 
 export default function(state = initialState, action) {
@@ -10,17 +11,38 @@ export default function(state = initialState, action) {
         case GET_CARTA:
             return {
                 ...state,
-                cartas: action.payload,
-                needReload: false
+                cartas: state.cartas.concat(action.payload)
             };
         case DELETE_PRODUCTO:
             return {
                 ...state,
+                cartas: state.cartas.filter(carta => carta.id !== action.payload)
             };
         case ADD_PRODUCTO:
             return {
                 ...state,
-                needReload: true
+                cartas: [...state.cartas, action.payload]
+            };
+        case GET_PRODUCTOS:
+            return {
+                ...state,
+                cartas: cartas,
+                productos: action.payload,  
+            };
+        case GET_CATEGORIAS:
+            return {
+                ...state,
+                categorias: action.payload
+            };
+        case DELETE_CATEGORIA:
+            return {
+                ...state,
+                categorias: state.categorias.filter(categoria => categoria.id !== action.payload)
+            };
+        case ADD_CATEGORIA:
+            return {
+                ...state,
+                categorias: [...state.categorias, action.payload]
             };
         default:
             return state;

@@ -1,43 +1,10 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { getCarta, deleteproducto, subirproducto } from '../../actions/carta';
-import { Redirect, Link } from 'react-router-dom';
-
+import { getCategorias, deleteproducto, subirproducto, addCategoria, deleteCategoria } from '../../actions/carta';
 
 const div100 = {
     width: '100%',
-};
-const div2 = {
-    marginLeft: '2%',
-    marginTop: '2%'
-};
-const divtop = {
-    marginTop: '2%'
-};
-const divleft = {
-    marginLeft: '2%',
-};
-
-const divcenter = {
-    textAlign: 'center'
-};
-const divcolor1 = {
-    color: 'rgb(51, 153, 255)'
-};
-const divcolorred = {
-    color: 'red'
-};
-const divcolor2 = {
-    fontSize: '36px',
-    color: 'rgb(51, 153, 255)'
-};
-const divmargin1 = {
-    marginLeft: '4%',
-    marginTop: '2%'
-};
-const divtop2 = {
-    marginTop: '60px'
 };
 
 
@@ -47,14 +14,17 @@ export class CartaPage extends Component {
     constructor() {
         super();
         this.state = {
-            cartas: [],
+            component: "CATEGORIAS",
+            productos: [],
             cif: "",
-            categories: [],
-            deleted: false,
-            categoria: 1,
+            categorias: [],
+
+            categoriaParaProducto: -1,
             name: "",
             descripcion: "",
-            tamanio: "S",
+            tamanio: "",
+            tamanio2: "",
+            tamanio3: "",
             precio1: "",
             precio2: "",
             precio3: "",
@@ -72,6 +42,15 @@ export class CartaPage extends Component {
             is_sesamo: false,
             is_soja: false,
             carta: 1,
+
+            vacio: false,
+            addingProduct: false,
+            addCategoria: false,
+
+            nombreNuevaCategoria: "",
+            descripcion: "",
+            info_extra: "",
+            posicion: -1,
         };
     }
 
@@ -79,32 +58,54 @@ export class CartaPage extends Component {
 
         e.preventDefault();
 
-        this.setState({
-            added: true
-        })
-        const { categoria, name, descripcion, tamanio, precio1, precio2, precio3, is_apio, is_altramuces, is_cacahuete, is_crustaceo, is_frutos_con_cascara, is_gluten, is_huevo, is_lacteo, is_molusco, is_mostaza, is_pescado, is_sesamo, is_soja, carta
+        const { categoriaParaProducto, name, descripcion, tamanio, tamanio2, tamanio3, precio1, precio2, precio3, is_apio, is_altramuces, is_cacahuete, is_crustaceo, is_frutos_con_cascara, is_gluten, is_huevo, is_lacteo, is_molusco, is_mostaza, is_pescado, is_sesamo, is_soja, carta
         } = this.state;
-        const producto = { categoria, name, descripcion, tamanio, precio1, precio2, precio3, is_apio, is_altramuces, is_cacahuete, is_crustaceo, is_frutos_con_cascara, is_gluten, is_huevo, is_lacteo, is_molusco, is_mostaza, is_pescado, is_sesamo, is_soja, carta };
+        const producto = { categoriaParaProducto, name, descripcion, tamanio, tamanio2, tamanio3, precio1, precio2, precio3, is_apio, is_altramuces, is_cacahuete, is_crustaceo, is_frutos_con_cascara, is_gluten, is_huevo, is_lacteo, is_molusco, is_mostaza, is_pescado, is_sesamo, is_soja, carta };
 
+        this.setState({
+            addingProduct: !this.state.addingProduct
+        })
+
+        console.log("categoria  --> " + categoriaParaProducto)
         this.props.subirproducto(producto);
 
-        window.location.reload(false);
-
     };
 
-    onSubmitDelete = (productoID, cartaID) => {
-
-        console.log("ProductoID --> " + productoID)
-        console.log("CartaID --> " + cartaID)
-        //this.props.deleteproducto.bind(this, productoID, cartaID)
-
-        //window.location.reload(false);
-
-    };
+    onSubmitCategorias = e => {
+        e.preventDefault();
 
 
+
+        const { nombreNuevaCategoria, descripcion, posicion, info_extra, carta } = this.state;
+        const categoria = { nombreNuevaCategoria, descripcion, posicion, info_extra, carta };
+
+        this.setState({
+            addCategoria: !this.state.addCategoria
+        })
+
+        this.props.addCategoria(categoria);
+    }
+
+
+    addProduct = e => {
+        this.setState({
+            addingProduct: !this.state.addingProduct
+        })
+    }
+
+    addCategory = e => {
+        this.setState({
+            addCategoria: !this.state.addCategoria
+        })
+    }
 
     onChange = e => this.setState({ [e.target.name]: e.target.value });
+
+    onChangeCategoria = e => this.setState({ categoriaParaProducto: e.target.value }, console.log("Valor del select --> " + [e.target.name] + e.target.value));
+    onChangePrecio1 = e => this.setState({ tamanio: e.target.value });
+    onChangePrecio2 = e => this.setState({ tamanio2: e.target.value });
+    onChangePrecio3 = e => this.setState({ tamanio3: e.target.value });
+
 
     handleApioChange = (e) => {
         this.setState({
@@ -187,27 +188,25 @@ export class CartaPage extends Component {
 
     static propTypes = {
         cartas: PropTypes.array.isRequired,
-        auth: PropTypes.func.isRequired,
         deleteproducto: PropTypes.func.isRequired,
-        subirproducto: PropTypes.func.isRequired
+        subirproducto: PropTypes.func.isRequired,
+        deleteCategoria: PropTypes.func.isRequired,
+        addCategoria: PropTypes.func.isRequired
     };
 
     componentDidMount() {
         //this.state.arrayCartas = this.props.getCarta();
-        this.state.cif = this.props.auth.user.cif;
-        this.props.getCarta(this.props.auth.user.cif);
+        this.props.getCategorias(1)
+        //for (categoria in this.state.categorias)
+        //this.props.getProductos(2);
     }
 
     render() {
-        const { categoria, name, descripcion, tamanio, precio1, precio2, precio3, is_apio, is_altramuces, is_cacahuete, is_crustaceo, is_frutos_con_cascara, is_gluten, is_huevo, is_lacteo, is_molusco, is_mostaza, is_pescado, is_sesamo, is_soja, carta
+        const { categoriaParaProducto, name, descripcion, tamanio, precio1, precio2, precio3, is_apio, is_altramuces, is_cacahuete, is_crustaceo, is_frutos_con_cascara, is_gluten, is_huevo, is_lacteo, is_molusco, is_mostaza, is_pescado, is_sesamo, is_soja, carta
         } = this.state;
-        const { cif = this.props.auth.user.cif } = this.state.cif;
-        const { needReload } = this.props.auth
         return (
             <Fragment>
-
-
-                <section className="hero is-info is-primary  hsl(54%, 15%, 143%) is-bold" style={{ marginTop: '40px' }}>
+                <section className="hero is-info is-primary  hsl(54%, 15%, 143%) is-bold" style={{ marginTop: '50px' }}>
                     <div className="hero-body hsl(90%, 159%, 79%)">
                         <div className="container has-text-centered">
 
@@ -271,398 +270,372 @@ export class CartaPage extends Component {
                         </div>
                     </div>
                 </section>
-                {/* FORMULARIO PARA INSERTAR PRODUCTOS*/}
-                <div className="container box">
-                    <hr />
-                    <h1 className="title has-text-centered">Añadir Producto a la Carta</h1>
-                    <form>
-                        <div className="columns">
-                            <div className="column">
-                                <div className="field">
-                                    <label className="label">Nombre</label>
-                                    <div className="control">
-                                        <input className="input" name="name" type="text" placeholder="Nombre del Producto" onChange={this.onChange} defaultValue={name} required />
-                                    </div>
+                <div className="section">
+                    <div className="container">
+                        <div className="container" style={{ marginTop: '40px' }}>
+                            <div className="columns">
+                                <div className="column">
+                                    <button className="button is-medium" style={{ backgroundColor: '#d5c69f' }} onClick={this.addProduct}> Añadir Producto </button>
+
                                 </div>
-                                <div className="columns">
-                                    <div className="column">
-                                        <div className="field">
-                                            <label className="label">Precio 1</label>
-                                            <div className="control">
-                                                <input className="input" name="precio1" type="text" placeholder="0" onChange={this.onChange} defaultValue={precio1} required />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="column">
-                                        <div className="field">
-                                            <label className="label">Precio 2</label>
-                                            <div className="control">
-                                                <input className="input " name="precio2" type="text" placeholder="0" onChange={this.onChange} defaultValue={precio2} />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="column">
-                                        <div className="field">
-                                            <label className="label">Precio 3</label>
-                                            <div className="control">
-                                                <input className="input" name="precio3" type="text" placeholder="0" onChange={this.onChange} defaultValue={precio3} />
-                                            </div>
-                                        </div>
-                                    </div>
+                                <div className="column">
+                                    <button className="button is-medium" style={{ backgroundColor: '#d5c69f' }} onClick={this.addCategory}> Añadir Categoria de productos </button>
+
                                 </div>
-                                <div className="container">
-                                    <h2 className="subtitle">Alergenos</h2>
-                                    <div className="columns">
-                                        <div className="column">
-                                            <div className="field">
-                                                <p className="control">
-                                                    <div className="b-checkbox">
-                                                        <input id="checkbox" name="is_apio" className="styled" type="checkbox" onChange={this.handleApioChange} defaultValue={is_apio} />
-                                                        <label for="checkbox">  Apio</label>
-                                                    </div>
-                                                </p>
-                                            </div>
-                                            <div className="field">
-                                                <p className="control">
-                                                    <div className="b-checkbox">
-                                                        <input id="checkbox" name="is_altramuces" className="styled" type="checkbox" onChange={this.handleAltramucesChange} defaultValue={is_altramuces} />
-                                                        <label for="checkbox">  Altramuces</label>
-                                                    </div>
-                                                </p>
-                                            </div>
-                                            <div className="field">
-                                                <p className="control">
-                                                    <div className="b-checkbox">
-                                                        <input id="checkbox" name="is_cacahuete" className="styled" type="checkbox" onChange={this.handleCacahueteChange} defaultValue={is_cacahuete} />
-                                                        <label for="checkbox">  Cacahuete</label>
-                                                    </div>
-                                                </p>
-                                            </div>
-                                            <div className="field">
-                                                <p className="control">
-                                                    <div className="b-checkbox">
-                                                        <input id="checkbox" name="is_custaceo" className="styled" type="checkbox" onChange={this.handleCrustaceoChange} defaultValue={is_crustaceo} />
-                                                        <label for="checkbox">  Crustaceo</label>
-                                                    </div>
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div className="column">
-                                            <div className="field">
-                                                <p className="control">
-                                                    <div className="b-checkbox">
-                                                        <input id="checkbox" name="is_frutas_con_cascara" className="styled" type="checkbox" onChange={this.handleCascaraChange} defaultValue={is_frutos_con_cascara} />
-                                                        <label for="checkbox">  Cascara Frutal</label>
-                                                    </div>
-                                                </p>
-                                            </div>
-                                            <div className="field">
-                                                <p className="control">
-                                                    <div className="b-checkbox">
-                                                        <input id="checkbox" name="is_gluten" className="styled" type="checkbox" onChange={this.handleGlutenChange} defaultValue={is_gluten} />
-                                                        <label for="checkbox">  Gluten</label>
-                                                    </div>
-                                                </p>
-                                            </div>
-                                            <div className="field">
-                                                <p className="control">
-                                                    <div className="b-checkbox">
-                                                        <input id="checkbox" name="is_huevo" className="styled" type="checkbox" onChange={this.handleHuevoChange} defaultValue={is_huevo} />
-                                                        <label for="checkbox">  Huevo</label>
-                                                    </div>
-                                                </p>
-                                            </div>
-                                            <div className="field">
-                                                <p className="control">
-                                                    <div className="b-checkbox">
-                                                        <input id="checkbox" name="is_lacteo" className="styled" type="checkbox" onChange={this.handleLacteoChange} defaultValue={is_lacteo} />
-                                                        <label for="checkbox">  Lacteo</label>
-                                                    </div>
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div className="column">
-                                            <div className="field">
-                                                <p className="control">
-                                                    <div className="b-checkbox">
-                                                        <input id="checkbox" name="is_molusco" className="styled" type="checkbox" onChange={this.handleMoluscoChange} defaultValue={is_molusco} />
-                                                        <label for="checkbox">  Molusco</label>
-                                                    </div>
-                                                </p>
-                                            </div>
-                                            <div className="field">
-                                                <p className="control">
-                                                    <div className="b-checkbox">
-                                                        <input id="checkbox" name="is_mostaza" className="styled" type="checkbox" onChange={this.handleMostazaChange} defaultValue={is_mostaza} />
-                                                        <label for="checkbox">  Mostaza</label>
-                                                    </div>
-                                                </p>
-                                            </div>
-                                            <div className="field">
-                                                <p className="control">
-                                                    <div className="b-checkbox">
-                                                        <input id="checkbox" name="is_pescado" className="styled" type="checkbox" onChange={this.handlePescadoChange} defaultValue={is_pescado} />
-                                                        <label for="checkbox">  Pescado</label>
-                                                    </div>
-                                                </p>
-                                            </div>
-                                            <div className="field">
-                                                <p className="control">
-                                                    <div className="b-checkbox">
-                                                        <input id="checkbox" name="is_sesamo" className="styled" type="checkbox" onChange={this.handleSesamoChange} defaultValue={is_sesamo} />
-                                                        <label for="checkbox">  Sesamo</label>
-                                                    </div>
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div className="column">
-                                            <div className="field">
-                                                <p className="control">
-                                                    <div className="b-checkbox">
-                                                        <input id="checkbox" name="is_soja" className="styled" type="checkbox" onChange={this.handleSojaChange} defaultValue={is_soja} />
-                                                        <label for="checkbox">  Soja</label>
-                                                    </div>
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
+                                <div className="column is-half">
 
                                 </div>
                             </div>
-                            <div className="column">
-                                <div className="field">
-                                    <label className="label">Descripción</label>
-                                    <div className="control">
-                                        <textarea name="descripcion" className="textarea" placeholder="Descripción del producto." size="99" onChange={this.onChange} defaultValue={descripcion}></textarea>
+
+                        </div>
+
+                        {/* FORMULARIO PARA INSERTAR CATEGORIA */}
+                        <div className={this.state.addCategoria ? "modal is-active" : "modal"}>
+                            <div className="modal-background"></div>
+                            <div className="modal-content">
+                                <div className="container box">
+                                    <div className="has-text-right">
+                                        <button className="button is-danger" onClick={this.addCategory}>x</button>
                                     </div>
+                                    <div className="has-text-centered">
+                                        <h1 className="title" style={{ marginTop: '10px' }}>Añadir nueva categoria</h1>
+                                    </div>
+                                    <hr style={{ marginTop: '30px' }} />
+                                    <form  >
+                                        <div className="columns">
+                                            <div className="column">
+                                                <div className="field">
+                                                    <label className="label" style={{ marginTop: '10px' }}>Nombre para nueva categoria</label>
+                                                    <div className="control">
+                                                        <input className="input" onChange={this.onChange} defaultValue={this.state.nombreNuevaCategoria} name="nombreNuevaCategoria" type="text" placeholder="Entrantes, Postres..." />
+                                                    </div>
+                                                    <label className="label" style={{ marginTop: '10px' }}>Descripción</label>
+                                                    <div className="control">
+                                                        <textarea name="descripcion" className="textarea" placeholder="Descripción del producto." size="20" onChange={this.onChange} defaultValue={this.state.descripcion}></textarea>
+                                                    </div>
+                                                    <label className="label" style={{ marginTop: '10px' }}>Posicion</label>
+                                                    <div className="select" >
+                                                        <select name="posicion" onChange={this.onChange} defaultValue={this.state.posicion}>
+                                                            <option value="1">1</option>
+                                                        </select>
+                                                    </div>
+                                                    <label className="label" style={{ marginTop: '10px' }}>Información extra</label>
+                                                    <div className="control">
+                                                        <input className="input" onChange={this.onChange} defaultValue={this.state.info_extra} name="info_extra" type="text" placeholder="Estas tapas llevan todas patatas fritas..." />
+                                                    </div>
+                                                    <div className="has-text-right">
+                                                        <button className="button is-success" style={{ marginTop: '10px' }} onClick={this.onSubmitCategorias} > AÑADIR </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
                                 </div>
-                                <div className="columns">
-                                    <div className="column">
-                                        <br />
-                                        <div className="field">
-                                            <label className="label">Categoria</label>
-                                            <div className="control">
-                                                <div className="select">
-                                                    <select name="categoria" /*onChange={this.categoriaChange} defaultValue={categoria}*/>
-                                                        <option>Categoria 1</option>
-                                                        <option>Categoria 2</option>
-                                                        <option>...</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
+                            </div>
+                        </div>
+                        {/* FIN FORMULARIO CATEGORIA*/}
+                        {/* FORMULARIO PARA INSERTAR PRODUCTOS*/}
+
+                        <div className={this.state.addingProduct ? "modal is-active" : "modal"}>
+                            <div className="modal-background"></div>
+                            <div className="modal-content">
+                                <div className="container box">
+                                    <div className="has-text-right">
+                                        <button className="button is-danger" onClick={this.addProduct}>x</button>
                                     </div>
-                                    <div className="column">
-                                        <br />
-                                        <div className="field">
-                                            <label className="label">Tamaño</label>
-                                            <div className="control">
-                                                <div className="select">
-                                                    <select name="tamanio" /*onChange={this.tamanioChange} defaultValue={tamanio}*/>
-                                                        <option value="S">S</option>
-                                                        <option value="M">M</option>
-                                                        <option value="L">L</option>
-                                                        <option value="XL">XL</option>
-                                                        <option value="XXL">XXL</option>
-                                                    </select>
+                                    <h1 className="title has-text-centered" style={{ marginTop: '20px' }}>Añadir Producto a la Carta</h1>
+                                    <form>
+                                        <div className="columns">
+                                            <div className="column">
+                                                <div className="field">
+                                                    <label className="label">Nombre</label>
+                                                    <div className="control">
+                                                        <input className="input" name="name" type="text" placeholder="Nombre del Producto" onChange={this.onChange} defaultValue={name} required />
+                                                    </div>
+                                                </div>
+                                                <div className="columns">
+                                                    <div className="column">
+                                                        <div style={{ marginTop: '20px' }}>
+                                                            <label className="label">Tamaño Precio 1</label>
+                                                            <div className="control">
+                                                                <div className="select">
+                                                                    <select name="tamanio" onChange={this.onChangePrecio1} defaultValue={this.state.tamanio}>
+                                                                        <option >Ninguno</option>
+                                                                        <option value="Tapa">Tapa</option>
+                                                                        <option value="Media racion">Media ración</option>
+                                                                        <option value="Racion">Ración</option>
+                                                                        <option value="Plato">Plato</option>
+                                                                        <option value="Bandeja">Bandeja</option>
+                                                                        <option value="S">S</option>
+                                                                        <option value="M">M</option>
+                                                                        <option value="L">L</option>
+                                                                        <option value="XL">XL</option>
+                                                                        <option value="XXL">XXL</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div className="field" style={{ marginTop: '10px' }}>
+                                                            <label className="label">Precio 1</label>
+                                                            <div className="control">
+                                                                <input className="input" name="precio1" type="text" placeholder="0.0" onChange={this.onChange} defaultValue={precio1} required />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="column">
+                                                        <div style={{ marginTop: '20px' }}>
+                                                            <label className="label">Tamaño Precio 2</label>
+                                                            <div className="control">
+                                                                <div className="select">
+                                                                    <select name="tamanio2" onChange={this.onChangePrecio2} defaultValue={this.state.tamanio}>
+                                                                        <option >Ninguno</option>
+                                                                        <option value="Tapa">Tapa</option>
+                                                                        <option value="Media racion">Media ración</option>
+                                                                        <option value="Racion">Ración</option>
+                                                                        <option value="Plato">Plato</option>
+                                                                        <option value="Bandeja">Bandeja</option>
+                                                                        <option value="S">S</option>
+                                                                        <option value="M">M</option>
+                                                                        <option value="L">L</option>
+                                                                        <option value="XL">XL</option>
+                                                                        <option value="XXL">XXL</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div className="field" style={{ marginTop: '10px' }}>
+                                                            <label className="label">Precio 2</label>
+                                                            <div className="control">
+                                                                <input className="input " name="precio2" type="text" placeholder="0.0" onChange={this.onChange} defaultValue={precio2} />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="column">
+                                                        <div style={{ marginTop: '20px' }}>
+                                                            <label className="label">Tamaño Precio 3</label>
+                                                            <div className="control">
+                                                                <div className="select">
+                                                                    <select name="tamanio3" onChange={this.onChangePrecio3} defaultValue={this.state.tamanio}>
+                                                                        <option >Ninguno</option>
+                                                                        <option value="Tapa">Tapa</option>
+                                                                        <option value="Media racion">Media ración</option>
+                                                                        <option value="Racion">Ración</option>
+                                                                        <option value="Plato">Plato</option>
+                                                                        <option value="Bandeja">Bandeja</option>
+                                                                        <option value="S">S</option>
+                                                                        <option value="M">M</option>
+                                                                        <option value="L">L</option>
+                                                                        <option value="XL">XL</option>
+                                                                        <option value="XXL">XXL</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div className="field" style={{ marginTop: '10px' }}>
+                                                            <label className="label">Precio 3</label>
+                                                            <div className="control">
+                                                                <input className="input" name="precio3" type="text" placeholder="0.0" onChange={this.onChange} defaultValue={precio3} />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="container">
+                                                    <h2 className="subtitle">Alergenos</h2>
+                                                    <div className="columns">
+                                                        <div className="column">
+                                                            <div className="field">
+                                                                <div className="control">
+                                                                    <div className="b-checkbox">
+                                                                        <input id="checkbox" name="is_apio" className="styled" type="checkbox" onChange={this.handleApioChange} defaultValue={is_apio} />
+                                                                        <label >  Apio</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div className="field">
+                                                                <div className="control">
+                                                                    <div className="b-checkbox">
+                                                                        <input id="checkbox" name="is_altramuces" className="styled" type="checkbox" onChange={this.handleAltramucesChange} defaultValue={is_altramuces} />
+                                                                        <label>  Altramuces</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div className="field">
+                                                                <div className="control">
+                                                                    <div className="b-checkbox">
+                                                                        <input id="checkbox" name="is_cacahuete" className="styled" type="checkbox" onChange={this.handleCacahueteChange} defaultValue={is_cacahuete} />
+                                                                        <label >  Cacahuete</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div className="field">
+                                                                <div className="control">
+                                                                    <div className="b-checkbox">
+                                                                        <input id="checkbox" name="is_custaceo" className="styled" type="checkbox" onChange={this.handleCrustaceoChange} defaultValue={is_crustaceo} />
+                                                                        <label>  Crustaceo</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div className="column">
+                                                            <div className="field">
+                                                                <div className="control">
+                                                                    <div className="b-checkbox">
+                                                                        <input id="checkbox" name="is_frutas_con_cascara" className="styled" type="checkbox" onChange={this.handleCascaraChange} defaultValue={is_frutos_con_cascara} />
+                                                                        <label >  Cascara Frutal</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div className="field">
+                                                                <div className="control">
+                                                                    <div className="b-checkbox">
+                                                                        <input id="checkbox" name="is_gluten" className="styled" type="checkbox" onChange={this.handleGlutenChange} defaultValue={is_gluten} />
+                                                                        <label >  Gluten</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div className="field">
+                                                                <div className="control">
+                                                                    <div className="b-checkbox">
+                                                                        <input id="checkbox" name="is_huevo" className="styled" type="checkbox" onChange={this.handleHuevoChange} defaultValue={is_huevo} />
+                                                                        <label >  Huevo</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div className="field">
+                                                                <div className="control">
+                                                                    <div className="b-checkbox">
+                                                                        <input id="checkbox" name="is_lacteo" className="styled" type="checkbox" onChange={this.handleLacteoChange} defaultValue={is_lacteo} />
+                                                                        <label >  Lacteo</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div className="column">
+                                                            <div className="field">
+                                                                <div className="control">
+                                                                    <div className="b-checkbox">
+                                                                        <input id="checkbox" name="is_molusco" className="styled" type="checkbox" onChange={this.handleMoluscoChange} defaultValue={is_molusco} />
+                                                                        <label >  Molusco</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div className="field">
+                                                                <div className="control">
+                                                                    <div className="b-checkbox">
+                                                                        <input id="checkbox" name="is_mostaza" className="styled" type="checkbox" onChange={this.handleMostazaChange} defaultValue={is_mostaza} />
+                                                                        <label >  Mostaza</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div className="field">
+                                                                <div className="control">
+                                                                    <div className="b-checkbox">
+                                                                        <input id="checkbox" name="is_pescado" className="styled" type="checkbox" onChange={this.handlePescadoChange} defaultValue={is_pescado} />
+                                                                        <label >  Pescado</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div className="field">
+                                                                <div className="control">
+                                                                    <div className="b-checkbox">
+                                                                        <input id="checkbox" name="is_sesamo" className="styled" type="checkbox" onChange={this.handleSesamoChange} defaultValue={is_sesamo} />
+                                                                        <label >  Sesamo</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div className="column">
+                                                            <div className="field">
+                                                                <div className="control">
+                                                                    <div className="b-checkbox">
+                                                                        <input id="checkbox" name="is_soja" className="styled" type="checkbox" onChange={this.handleSojaChange} defaultValue={is_soja} />
+                                                                        <label >  Soja</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div className="column">
-                                        <br />
+
                                         <div className="field">
-                                            <label className="label">Carta</label>
+                                            <label className="label">Descripción</label>
                                             <div className="control">
-                                                <div className="select">
-                                                    <select>
-                                                        <option>Carta 1</option>
-                                                    </select>
-                                                </div>
+                                                <textarea name="descripcion" className="textarea" placeholder="Descripción del producto." size="99" onChange={this.onChange} defaultValue={descripcion}></textarea>
                                             </div>
                                         </div>
+                                        <div className="container">
+                                            <div className="field" >
+                                                <div>
+                                                    <label className="label">Categoria</label>
+                                                    <div className="control">
+                                                        <div className="select">
+                                                            <select id="categoriaParaProducto" onChange={this.onChangeCategoria} defaultValue={this.state.categoriaParaProducto}>
+                                                                <option>Ninguna categoria seleccionada</option>
+                                                                {this.props.categorias.map(categoria => (
+                                                                    <option key={categoria.id} value={categoria.id}>{categoria.name}</option>
+                                                                ))}
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                    </form>
+                                    <br />
+                                    <div className="control buttons is-centered">
+                                        <button className="button is-success" onClick={this.onSubmit}>Guardar</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </form>
-                    <br />
-                    <div className="control buttons is-centered">
-                        <button className="button" onClick={this.onSubmit}>Guardar</button>
-                    </div>
-                </div>
-                {/* FIN FORMULARIO PARA INSERTAR PRODUCTOS*/}
-                {/* MOSTRAR PRODUCTOS DE UNA CARTA*/}
-                {this.props.cartas.map(carta => (
-                    <div class="debug">
-                        {this.state.carta = carta.id}
-                        {carta.productos.map(producto => (
-                            <div>
-                                <div>
-                                    {!this.state.categories.includes(producto.category_name) ? this.state.categories.push(producto.category_name) : ""}
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-
-                ))}
-
-
-                <div className="container">
-                    <div>
+                        {/* FIN FORMULARIO PARA INSERTAR PRODUCTOS*/}
+                        {/* MOSTRAR PRODUCTOS DE UNA CARTA*/}
                         <div className="container">
                             <div>
-                                {this.props.cartas.map(carta => (
-                                    <div class="debug">
-                                        {this.state.categories.map(categoryName => (
-                                            <div style={{ marginTop: '60px' }}>
-                                                <div className='card equal-height' style={{ backgroundColor: '#d5c69f', height: '60px' }}>
-                                                    <div className="container">
-                                                        <h1 className="title has-text-centered" style={{ paddingTop: '15px' }}>{categoryName}</h1>
+                                <div className="container">
+                                    <div>
+
+                                        <div className="debug">
+                                            {this.props.categorias.map(categoria => (
+                                                <div style={{ marginTop: '60px' }} key={categoria.id}>
+                                                    <div className='card equal-height' style={{ backgroundColor: '#d5c69f', height: '60px' }}>
+                                                        <div className="container">
+                                                            <div className="columns">
+                                                                <div className="column">
+                                                                    <h1 className="title has-text-centered">{categoria.name}</h1>
+                                                                </div>
+                                                                <div className="column has-text-right">
+                                                                    <button className="button is-danger" onClick={this.props.deleteCategoria.bind(this, categoria.id, categoria.carta)}> Borrar Categoria </button>
+                                                                </div>
+                                                            </div>
+                                                            <div>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                {carta.productos.map(producto => (
-                                                    <div style={{ marginTop: '20px' }} key={producto.id}>
-                                                        {categoryName == producto.category_name ?
-                                                            <div className='card equal-height'>
-                                                                <div className="columns">
-                                                                    <div className="container">
+                                                    {this.props.cartas.map(producto => (
+                                                        <div style={{ marginTop: '20px' }} key={producto.id}>
+                                                            {categoria.id == producto.categoria ?
+
+                                                                <div className='card'>
+
+                                                                    <div className="columns">
+
                                                                         <div className="column">
-                                                                            <div className="columns">
-                                                                                <div className="column is-two-thirds"
-                                                                                    style={{ marginLeft: '2%', marginTop: '2%' }}>
-                                                                                    <h1 className="title"> {producto.name} </h1>
-                                                                                    <h2 className="subtitle has-text-weight-light">  {producto.descripcion}</h2>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div className="columns">
-                                                                                <div className="column is-two-thirds" style={{ marginLeft: '2%' }}>
+                                                                            <div className="container">
+                                                                                <div className="column is-full">
+                                                                                    <div className="columns">
 
-                                                                                    {producto.is_apio ?
-                                                                                        <img
-                                                                                            src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_apio.svg"
-
-                                                                                            alt="triangle with all three sides equal" width="50" />
-                                                                                        :
-                                                                                        ""
-                                                                                    }
-
-                                                                                    {producto.is_altramuces ?
-
-                                                                                        <img
-
-                                                                                            src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_altramuces.svg"
-
-                                                                                            alt="triangle with all three sides equal" width="50" />
-                                                                                        :
-                                                                                        ""
-                                                                                    }
-
-
-                                                                                    {producto.is_cacahuete ?
-                                                                                        <img
-
-                                                                                            src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_cacahuete.svg"
-
-                                                                                            alt="triangle with all three sides equal" width="50" />
-                                                                                        :
-                                                                                        ""
-                                                                                    }
-
-                                                                                    {producto.is_crustaceo ?
-                                                                                        <img
-
-                                                                                            src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_crustaceo.svg"
-                                                                                            alt="triangle with all three sides equal" width="50" />
-                                                                                        :
-                                                                                        ""
-                                                                                    }
-
-                                                                                    {producto.is_frutos_con_cascara ?
-                                                                                        <img
-
-                                                                                            src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_frutos_con_cascara.svg"
-
-                                                                                            alt="triangle with all three sides equal" width="50" />
-                                                                                        :
-                                                                                        ""
-                                                                                    }
-
-                                                                                    {producto.is_gluten ?
-                                                                                        <img
-
-                                                                                            src="https://www.andaluciarestaura.com//static/frontend/Allergens/alergeno_gluten.svg"
-
-                                                                                            alt="triangle with all three sides equal" width="50" />
-                                                                                        :
-                                                                                        ""
-                                                                                    }
-
-                                                                                    {producto.is_huevo ?
-                                                                                        <img
-
-                                                                                            src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_huevo.svg"
-                                                                                            alt="triangle with all three sides equal" width="50" />
-                                                                                        :
-                                                                                        ""
-                                                                                    }
-
-                                                                                    {producto.is_lacteo ?
-                                                                                        <img
-
-                                                                                            src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_lacteo.svg"
-
-                                                                                            alt="triangle with all three sides equal" width="50" />
-                                                                                        :
-                                                                                        ""
-                                                                                    }
-
-                                                                                    {producto.is_molusco ?
-                                                                                        <img
-
-                                                                                            src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_moluscos.svg"
-                                                                                            alt="triangle with all three sides equal" width="50" />
-                                                                                        :
-                                                                                        ""
-                                                                                    }
-
-
-                                                                                    {producto.is_mostaza ?
-                                                                                        <img
-
-                                                                                            src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_mostaza.svg"
-                                                                                            alt="triangle with all three sides equal" width="50" />
-                                                                                        :
-                                                                                        ""
-                                                                                    }
-                                                                                    {producto.is_pescado ?
-                                                                                        <img
-
-                                                                                            src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_pescado.svg"
-                                                                                            alt="triangle with all three sides equal" width="50" />
-                                                                                        :
-                                                                                        ""
-                                                                                    }
-                                                                                    {producto.is_sesamo ?
-                                                                                        <img
-
-                                                                                            src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_sesamo.svg"
-                                                                                            alt="triangle with all three sides equal" width="50" />
-                                                                                        :
-                                                                                        ""
-                                                                                    }
-                                                                                    {producto.is_soja ?
-                                                                                        <img
-                                                                                            src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_soja.svg"
-                                                                                            alt="triangle with all three sides equal" width="50" />
-                                                                                        :
-                                                                                        ""
-                                                                                    }
-                                                                                </div>
-                                                                                <div className="column is-3">
-                                                                                    <div className="columns is-mobile has-text-centered"
-                                                                                        style={{ marginBottom: '5%' }}>
-                                                                                        <div className="column">
+                                                                                        <div className="column is-two-thirds"
+                                                                                            style={{ marginLeft: '2%', marginTop: '2%' }}>
+                                                                                            <h1 className="title"> {producto.name} </h1>
+                                                                                            <h2 className="subtitle has-text-weight-light">  {producto.descripcion}</h2>
+                                                                                        </div>
+                                                                                        <div className="column has-text-centered">
                                                                                             <div
                                                                                                 style={{ width: '100%', marginTop: '5%', marginBottom: '6%' }}>
                                                                                                 <span className="icon is-small" style={{ color: 'rgb(51, 153, 255)' }}>
@@ -670,7 +643,7 @@ export class CartaPage extends Component {
                                                                                                 </span>
                                                                                             </div>
                                                                                             <span>
-                                                                                                <b> Media Ración </b>
+                                                                                                <b> {producto.titulo_precio1} </b>
                                                                                             </span>
                                                                                             <div style={{ width: '100%' }}>
                                                                                                 <span>
@@ -678,8 +651,8 @@ export class CartaPage extends Component {
                                                                                                 </span>
                                                                                             </div>
                                                                                         </div>
-                                                                                        <div className="column"
-                                                                                            style={{ marginLeft: '4%', marginTop: '2%' }}>
+                                                                                        <div className="column has-text-centered"
+                                                                                            style={{ marginLeft: '4%'}}>
                                                                                             <div style={{ width: '100%' }}>
                                                                                                 <span className="icon is-small"
                                                                                                     style={{ fontSize: ' 36px', color: 'rgb(51, 153, 255)' }}>
@@ -687,7 +660,7 @@ export class CartaPage extends Component {
                                                                                                 </span>
                                                                                             </div>
                                                                                             <span>
-                                                                                                <b> Ración </b>
+                                                                                                <b> {producto.titulo_precio2} </b>
                                                                                             </span>
                                                                                             <div style={{ width: '100%' }}>
                                                                                                 <span>
@@ -695,33 +668,175 @@ export class CartaPage extends Component {
                                                                                                 </span>
                                                                                             </div>
                                                                                         </div>
-                                                                                        <div>
-                                                                                            <button className="button" onClick={this.props.deleteproducto.bind(this, producto.id, producto.carta_id)}>Borrar</button>
-                                                                                       </div>
+                                                                                        <div className="column has-text-centered"
+                                                                                            style={{ marginLeft: '4%'}}>
+                                                                                            <div style={{ width: '100%' }}>
+                                                                                                <span className="icon is-small"
+                                                                                                    style={{ fontSize: ' 36px', color: 'rgb(51, 153, 255)' }}>
+                                                                                                    <i className="fas fa-dot-circle" aria-hidden="true"></i>
+                                                                                                </span>
+                                                                                            </div>
+                                                                                            <span>
+                                                                                                <b> {producto.titulo_precio3} </b>
+                                                                                            </span>
+                                                                                            <div style={{ width: '100%' }}>
+                                                                                                <span>
+                                                                                                    <b style={{ color: 'red' }}>  {!producto.precio3 == "" ? producto.precio3 : ""}€</b>
+                                                                                                </span>
+                                                                                            </div>
+                                                                                        </div>
                                                                                     </div>
-
                                                                                 </div>
                                                                             </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            :
-                                                            ""
-                                                        }
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        ))}
 
+                                                                            <div className="columns is-full" style={{ marginTop: '-20px' }}>
+                                                                                <div className="column is-two-thirds is-full-mobile">
+                                                                                    <div className="columns is-mobile">
+                                                                                        <div className="column has-text-centered" style={{ marginLeft: '2%' }}>
+
+                                                                                            {producto.is_apio ?
+                                                                                                <img
+                                                                                                    src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_apio.svg"
+                                                                                                    alt="triangle with all three sides equal" width="50" />
+                                                                                                :
+                                                                                                ""
+                                                                                            }
+
+                                                                                            {producto.is_altramuces ?
+
+                                                                                                <img
+                                                                                                    src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_altramuces.svg"
+                                                                                                    alt="triangle with all three sides equal" width="50" />
+                                                                                                :
+                                                                                                ""
+                                                                                            }
+
+
+                                                                                            {producto.is_cacahuete ?
+                                                                                                <img
+                                                                                                    src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_cacahuete.svg"
+                                                                                                    alt="triangle with all three sides equal" width="50" />
+                                                                                                :
+                                                                                                ""
+                                                                                            }
+
+                                                                                            {producto.is_crustaceo ?
+                                                                                                <img
+                                                                                                    src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_crustaceo.svg"
+                                                                                                    alt="triangle with all three sides equal" width="50" />
+                                                                                                :
+                                                                                                ""
+                                                                                            }
+
+                                                                                            {producto.is_frutos_con_cascara ?
+                                                                                                <img
+                                                                                                    src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_frutos_con_cascara.svg"
+                                                                                                    alt="triangle with all three sides equal" width="50" />
+                                                                                                :
+                                                                                                ""
+                                                                                            }
+
+                                                                                            {producto.is_gluten ?
+                                                                                                <img
+                                                                                                    src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_gluten.svg"
+                                                                                                    alt="triangle with all three sides equal" width="50" />
+                                                                                                :
+                                                                                                ""
+                                                                                            }
+
+                                                                                            {producto.is_huevo ?
+                                                                                                <img
+                                                                                                    src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_huevo.svg"
+                                                                                                    alt="triangle with all three sides equal" width="50" />
+                                                                                                :
+                                                                                                ""
+                                                                                            }
+
+                                                                                            {producto.is_lacteo ?
+                                                                                                <img
+                                                                                                    src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_lacteo.svg"
+                                                                                                    alt="triangle with all three sides equal" width="50" />
+                                                                                                :
+                                                                                                ""
+                                                                                            }
+
+                                                                                            {producto.is_molusco ?
+                                                                                                <img
+                                                                                                    src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_moluscos.svg"
+                                                                                                    alt="triangle with all three sides equal" width="50" />
+                                                                                                :
+                                                                                                ""
+                                                                                            }
+
+
+                                                                                            {producto.is_mostaza ?
+                                                                                                <img
+                                                                                                    src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_mostaza.svg"
+                                                                                                    alt="triangle with all three sides equal" width="50" />
+                                                                                                :
+                                                                                                ""
+                                                                                            }
+                                                                                            {producto.is_pescado ?
+                                                                                                <img
+                                                                                                    src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_pescado.svg"
+                                                                                                    alt="triangle with all three sides equal" width="50" />
+                                                                                                :
+                                                                                                ""
+                                                                                            }
+                                                                                            {producto.is_sesamo ?
+                                                                                                <img
+                                                                                                    src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_sesamo.svg"
+                                                                                                    alt="triangle with all three sides equal" width="50" />
+                                                                                                :
+                                                                                                ""
+                                                                                            }
+                                                                                            {producto.is_soja ?
+                                                                                                <img
+                                                                                                    src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_soja.svg"
+                                                                                                    alt="triangle with all three sides equal" width="50" />
+                                                                                                :
+                                                                                                ""
+                                                                                            }
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div className="column is-full-mobile">
+                                                                                    <div className="columns is-mobile has-text-centered">
+                                                                                        <div className="column">
+                                                                                            <button className="button is-warning"> Editar </button>
+                                                                                        </div>
+                                                                                        <div className="column">
+                                                                                            <button className="button is-danger" onClick={this.props.deleteproducto.bind(this, producto.id, producto.categoria)}> Borrar </button>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+
+                                                                        </div>
+
+                                                                    </div>
+
+                                                                </div>
+
+                                                                :
+                                                                <div>
+                                                                    {this.state.vacio = false}
+                                                                </div>
+                                                            }
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            ))}
+
+                                        </div>
                                     </div>
-                                ))}
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 {/* FIN MOSTRAR PRODUCTOS DE UNA CARTA*/}
-            </Fragment>
+            </Fragment >
         )
     }
 
@@ -729,7 +844,9 @@ export class CartaPage extends Component {
 
 const mapStateToProps = state => ({
     cartas: state.cartas.cartas,
-    auth: state.auth,
+    categorias: state.cartas.categorias,
+    canGetProducts: state.cartas.canGetProducts,
+    is_active: state.cartas.is_active,
 });
 
-export default connect(mapStateToProps, { subirproducto, getCarta, deleteproducto })(CartaPage);
+export default connect(mapStateToProps, { subirproducto, addCategoria, getCategorias, deleteproducto, deleteCategoria })(CartaPage);

@@ -27,6 +27,18 @@
       .whatsapp {
         display: none
       }
+
+      #divElement {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-top: -50px;
+        margin-left: -50px;
+        width: 100px;
+        height: 100px;
+      }
+
+      ​
     }
   </style>
 </head>
@@ -67,11 +79,13 @@
   </section>
   {% if cif_cliente %}
   {% with 'clientes/'|add:cif_cliente|add:'/free.pdf' as pdf_static %}
-    <!-- ESTO CARGA EL COMPONENTE DE REACT! -->
-
+  <!-- ESTO CARGA EL COMPONENTE DE REACT! -->
+  <div class="columns is-mobile">
+    <div class="column">
       <div id="root" style="width:100%; height:100%; margin-top: 30px"></div>
-
-    <!-- FIN DE COMPONENTE DE REACT! -->
+    </div>
+  </div>
+  <!-- FIN DE COMPONENTE DE REACT! -->
   {% endwith %}
   {% endif %}
   <footer>
@@ -85,13 +99,14 @@
     </section>
   </footer>
 </body>
-     <script>
-      //Aqui podemos extraer variables del contexto de django, que seran almacenadas de forma global en la memoria de javascript, estando por lo tanto disponibles globalmente
-      //y por lo tanto se pueden utilizar a modo de inicializacion de cualquier componente react cargado posteriormente.
-      // REDUX AL CUADRADO BY JAIME QUE TE QUIERE MUCHO
-      window.django = {
-        cif_cliente: "{{ cif_cliente }}",
-      };
-     </script>
-  <script src="{% static 'frontend/prueba.js' %}"></script>
+<script>
+  //Aqui podemos extraer variables del contexto de django, que seran almacenadas de forma global en la memoria de javascript, estando por lo tanto disponibles globalmente
+  //y por lo tanto se pueden utilizar a modo de inicializacion de cualquier componente react cargado posteriormente.
+  // REDUX AL CUADRADO BY JAIME QUE TE QUIERE MUCHO
+  window.django = {
+    cif_cliente: "{{ cif_cliente }}",
+  };
+</script>
+<script src="{% static 'frontend/prueba.js' %}"></script>
+
 </html>
