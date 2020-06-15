@@ -11,7 +11,7 @@ const bkg = {
     backgroundPosition: 'center',
     backgroundImage: "url('https://www.dev.andaluciarestaura.com/static/frontend/backLogin.png')",
     backgroundRepeat: 'no-repeat',
-    marginTop: '20px',
+    marginTop: '40px',
     backgroundSize: 'cover'
 }
 const colorWhite = {
@@ -101,7 +101,7 @@ class AdminPage extends Component {
                 <section className="section hero is-paddingless" style={{ marginTop: '40px', width: '100%', marginBottom: '30px' }}>
                     {this.props.actualUser.map(user => (
                         <div>
-                            <div className="section is-marginless is-paddingless" style={{ marginTop: '40px' }} width="100%">
+                            <div className="section is-marginless is-paddingless" style={{ marginTop: '40px'}} width="100%">
 
                                 <div className="container">
                                     <div className="columns has-text-centered">
@@ -201,7 +201,7 @@ class AdminPage extends Component {
                                                                 <p className="control has-icons-left">
                                                                     <input className="input" type="text" placeholder="" name="direccion_fiscal" defaultValue={user.direccion_fiscal} onChange={this.onChange} />
                                                                     <span className="icon is-small is-left">
-                                                                        <i className="fas fa-address-book"></i>
+                                                                        <i className="fas fa-road"></i>
                                                                     </span>
                                                                 </p>
                                                             </div>
@@ -216,7 +216,7 @@ class AdminPage extends Component {
                                                                 <p className="control has-icons-left">
                                                                     <input className="input" type="text" placeholder="" defaultValue={user.localidad} name="localidad" onChange={this.onChange} />
                                                                     <span className="icon is-small is-left">
-                                                                        <i className="fas fa-address-book"></i>
+                                                                        <i className="fas fa-map-marker-alt"></i>
                                                                     </span>
                                                                 </p>
                                                             </div>
@@ -231,7 +231,7 @@ class AdminPage extends Component {
                                                                 <p className="control has-icons-left">
                                                                     <input className="input" type="text" placeholder="" defaultValue={user.codigo_postal} name="codigo_postal" onChange={this.onChange} />
                                                                     <span className="icon is-small is-left">
-                                                                        <i className="fas fa-address-book"></i>
+                                                                        <i className="fas fa-map-marker-alt"></i>
                                                                     </span>
                                                                 </p>
                                                             </div>
@@ -246,7 +246,7 @@ class AdminPage extends Component {
                                                                 <p className="control has-icons-left">
                                                                     <input className="input" type="text" placeholder="" name="provincia" defaultValue={user.provincia} onChange={this.onChange} />
                                                                     <span className="icon is-small is-left">
-                                                                        <i className="fas fa-address-book"></i>
+                                                                        <i className="fas fa-map-marker-alt"></i>
                                                                     </span>
                                                                 </p>
                                                             </div>
@@ -278,7 +278,7 @@ class AdminPage extends Component {
                                                                 <p className="control has-icons-left">
                                                                     <input className="input" type="text" placeholder="" name="telefono_1" defaultValue={user.telefono_1} onChange={this.onChange} />
                                                                     <span className="icon is-small is-left">
-                                                                        <i className="fas fa-phone-square-alt"></i>
+                                                                        <i className="fas fa-phone"></i>
                                                                     </span>
                                                                 </p>
                                                             </div>
@@ -293,7 +293,7 @@ class AdminPage extends Component {
                                                                 <p className="control has-icons-left">
                                                                     <input className="input" type="text" placeholder="" name="telefono_2" defaultValue={user.telefono_2} onChange={this.onChange} />
                                                                     <span className="icon is-small is-left">
-                                                                        <i className="fas fa-phone-square-alt"></i>
+                                                                        <i className="fas fa-phone"></i>
                                                                     </span>
                                                                 </p>
                                                             </div>

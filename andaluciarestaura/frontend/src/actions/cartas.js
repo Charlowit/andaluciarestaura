@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GET_ALL_CARTAS, ADD_CARTA, DELETE_CARTA, GET_EXPECIFIC_CARTA, GET_CARTA, GET_CATEGORIAS, UPDATE_CARTA } from './types';
+import { GET_ALL_CARTAS, ADD_CARTA, DELETE_CARTA, GET_EXPECIFIC_CARTA, GET_CARTA, GET_CATEGORIAS, UPDATE_CARTA, GET_ERRORS } from './types';
 import { tokenConfig } from './auth'
 
 export const getCartas = (cif) => (dispatch, getState) => {
@@ -70,7 +70,17 @@ export const nuevaCarta = (carta) => (dispatch, getState) => {
             });
 
         })
-        .catch(err => console.log(err));
+        .catch(err => {
+            console.log("Ha dado error loco")
+            const errors = {
+                msg: err.response.data,
+                status: err.response.status
+            }
+            dispatch({
+                type: GET_ERRORS,
+                payload: errors
+            });
+        });
 };
 
 
@@ -86,16 +96,26 @@ export const deleteCarta = (carta) => (dispatch, getState) => {
         })
         .catch(err => console.log("Esto ta mal? " + err));*/
 
-    const body = JSON.stringify({ id: carta.id, propietario: carta.propietario, is_activa: carta.is_activa, directorio: carta.directorio});
+    const body = JSON.stringify({ id: carta.id, propietario: carta.propietario, is_activa: carta.is_activa, directorio: carta.directorio });
 
     axios.put(`/api/getcartas/${carta.id}/?cif=${carta.propietario}`, body, tokenConfig(getState))
-    .then(res => {
-        dispatch({
-            type: UPDATE_CARTA,
-            payload: res.data
+        .then(res => {
+            dispatch({
+                type: UPDATE_CARTA,
+                payload: res.data
+            });
+        })
+        .catch(err => {
+            console.log("Ha dado error loco")
+            const errors = {
+                msg: err.response.data,
+                status: err.response.status
+            }
+            dispatch({
+                type: GET_ERRORS,
+                payload: errors
+            });
         });
-    })
-    .catch(err => console.log("Esto ta mal? " + err));
 }
 
 
@@ -111,7 +131,16 @@ export const updateEslogan = (carta) => (dispatch, getState) => {
                 payload: res.data
             });
         })
-        .catch(err => console.log("Esto ta mal? " + err));
+        .catch(err => {
+            const errors = {
+                msg: err.response.data,
+                status: err.response.status
+            }
+            dispatch({
+                type: GET_ERRORS,
+                payload: errors
+            });
+        });
 
 }
 
@@ -127,7 +156,16 @@ export const updateNombreCarta = (carta) => (dispatch, getState) => {
                 payload: res.data
             });
         })
-        .catch(err => console.log("Esto ta mal? " + err));
+        .catch(err => {
+            const errors = {
+                msg: err.response.data,
+                status: err.response.status
+            }
+            dispatch({
+                type: GET_ERRORS,
+                payload: errors
+            });
+        });
 
 }
 
@@ -143,19 +181,28 @@ export const updateEstablecimiento = (carta) => (dispatch, getState) => {
                 payload: res.data
             });
         })
-        .catch(err => console.log("Esto ta mal? " + err));
+        .catch(err => {
+            const errors = {
+                msg: err.response.data,
+                status: err.response.status
+            }
+            dispatch({
+                type: GET_ERRORS,
+                payload: errors
+            });
+        });
 
 }
 
 export const updateURL = (carta, urltype) => (dispatch, getState) => {
-    
+
     var body = null;
 
-    if (urltype == "F"){
-        body = JSON.stringify({ id: carta.idCarta, propietario: carta.propietario, url_facebook: carta.url,directorio: carta.directorio });
-    } else if (urltype == "I"){
+    if (urltype == "F") {
+        body = JSON.stringify({ id: carta.idCarta, propietario: carta.propietario, url_facebook: carta.url, directorio: carta.directorio });
+    } else if (urltype == "I") {
         body = JSON.stringify({ id: carta.idCarta, propietario: carta.propietario, url_instagram: carta.url, directorio: carta.directorio });
-    } else if (urltype == "T"){
+    } else if (urltype == "T") {
         body = JSON.stringify({ id: carta.idCarta, propietario: carta.propietario, url_tripadvisor: carta.url, directorio: carta.directorio });
     }
 
@@ -167,14 +214,24 @@ export const updateURL = (carta, urltype) => (dispatch, getState) => {
                 payload: res.data
             });
         })
-        .catch(err => console.log("Esto ta mal? " + err));
+        .catch(err => {
+
+            const errors = {
+                msg: err.response.data,
+                status: err.response.status
+            }
+            dispatch({
+                type: GET_ERRORS,
+                payload: errors
+            });
+        });
 
 }
 
 
 export const updateShow = (carta) => (dispatch, getState) => {
-    
-    const body = JSON.stringify({ id: carta.id, propietario: carta.propietario, show_as_pdf: carta.show_as_pdf,directorio: carta.directorio });
+
+    const body = JSON.stringify({ id: carta.id, propietario: carta.propietario, show_as_pdf: carta.show_as_pdf, directorio: carta.directorio });
 
     axios.put(`/api/getcartas/${carta.id}/`, body, tokenConfig(getState))
         .then(res => {

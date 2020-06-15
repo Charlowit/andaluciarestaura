@@ -13,7 +13,8 @@ export class Alerts extends Component {
 
     componentDidUpdate(prevProps){
         const { error, alert, message } = this.props;
-        console.log(error.msg)
+        console.log("Error --> ",  error.msg)
+        
         if (error !== prevProps.error) {
             if(error.msg.localidad)
                 alert.error('El campo Localidad es obligatorio.');
@@ -35,6 +36,29 @@ export class Alerts extends Component {
                 alert.show("El campo Telefono es obligatorio.")
             if(error.msg.marca_comercial)
                 alert.error("El campo Marca Comercial es obligatorio.")
+            if(error.msg.establecimiento)
+                alert.error("Debes de rellenar el campo Establecimiento.")
+            if(error.msg.url_facebook)
+                alert.error("Debes de rellenar el campo url de Facebook.")
+            if(error.msg.url_instagram)
+                alert.error("Debes de rellenar el campo url de Instagram.")
+            if(error.msg.url_tripadvisor)
+                alert.error("Debes de rellenar el campo url de Tripadvisor.")
+            if(error.msg.name)
+                alert.error("Debes de rellenar el campo del nuevo nombre de la carta.")
+            if(error.msg.eslogan)
+                alert.error("Debes de rellenar el campo del nuevo eslogan.")
+
+            if(String(error.msg).includes("NOT NULL constraint failed: carta_carta.name")){
+                alert.error("El campo Nombre de la nueva carta es obligatorio.")
+            }
+            if(String(error.msg).includes("NOT NULL constraint failed: carta_carta.plantilla")){
+                alert.error("El campo Plantilla de la nueva carta es obligatorio.")
+            }
+            if(String(error.msg).includes("NOT NULL constraint failed: carta_carta.establecimiento")){
+                alert.error("El campo Establecimiento de la nueva carta es obligatorio.")
+            }
+            
             if(error.msg.cif){
                 console.log(error.msg.cif[0])
                 if (error.msg.cif[0] == "This field may not be blank."){

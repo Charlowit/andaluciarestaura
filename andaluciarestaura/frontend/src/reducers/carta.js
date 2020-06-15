@@ -1,4 +1,4 @@
-import { GET_CARTA, DELETE_PRODUCTO, ADD_PRODUCTO, GET_PRODUCTOS, GET_CATEGORIAS, DELETE_CATEGORIA, ADD_CATEGORIA, UPLOADED_PHOTO, UPLOADING_PHOTO, UPDATE_CATEGORIA } from '../actions/types.js';
+import { GET_CARTA, DELETE_PRODUCTO, ADD_PRODUCTO, GET_PRODUCTOS, GET_CATEGORIAS, DELETE_CATEGORIA, ADD_CATEGORIA, UPLOADED_PHOTO, UPLOADING_PHOTO, UPDATE_CATEGORIA, UPDATE_PRODUCTO } from '../actions/types.js';
 
 const initialState = {
     cartas: [],
@@ -80,11 +80,18 @@ export default function(state = initialState, action) {
                 isUpdatingPhoto: true,
             }
         case UPLOADED_PHOTO:
+
             return {
                 ...state,
-                isUpdatingPhoto: false,
-                cartas: state.cartas.map(cartas => (
-                    cartas.id == action.payload.id ? cartas = action.payload : cartas = cartas
+               
+            }
+
+        case UPDATE_PRODUCTO:
+
+            return {
+                ...state,
+                cartas: state.cartas.map(producto => (
+                    producto.id == action.payload.id ? producto = action.payload : producto = producto
                 ))
             }
         default:

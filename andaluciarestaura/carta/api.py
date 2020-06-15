@@ -133,7 +133,7 @@ class CartasApi(viewsets.ModelViewSet):
             print("Successfully created the directory %s " % directorio)
 
         archivo_qr = 'qr.jpg'
-        url_carta = 'https://www.andaluciarestaura.com/cartaestatica/' + user.cif + '/' + str(carta.id)
+        url_carta = 'https://127.0.0.1:8000/cartaestatica/' + user.cif + '/' + str(carta.id)
 
         generar_qr_file(directorio, archivo_qr, url_carta)
 
