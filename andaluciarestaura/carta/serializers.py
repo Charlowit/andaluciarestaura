@@ -49,4 +49,8 @@ class CartaSerializerActualizar(serializers.ModelSerializer):
         model = Carta
         fields = '__all__'
 
+    def create(self, validated_data):
+        carta = Carta.objects.create()
+        return carta
+
 

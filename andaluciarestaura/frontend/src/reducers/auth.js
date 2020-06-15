@@ -10,7 +10,8 @@ import {
     UPDATE_LOADING,
     REGISTER_LOADING,
     REGISTER_FAILED,
-    REGISTER_SUCCESS,    
+    REGISTER_SUCCESS,  
+    USER_LOADED_ADMIN_PAGE  
 } from '../actions/types';
 
 const initialState = {
@@ -18,6 +19,7 @@ const initialState = {
     isAuthenticated: null,
     isLoading: false,
     user: null,
+    userAdminPage: [],
     isUpdating: false,
     isRegistering: false,
     needReload: false,
@@ -45,7 +47,8 @@ export default function(state = initialState, action){
                 isRegistering: false,
                 registerFailed: false,
                 needReload: false,
-                user: action.payload
+                user: action.payload,
+
             }
         case LOGIN_SUCCESS:
             localStorage.setItem('token', action.payload.token);
@@ -75,15 +78,14 @@ export default function(state = initialState, action){
         case UPDATE_SUCCESS:
             return {
                 ...state,
-                ...action.payload,
                 isAuthenticated: true,
                 isLoading: false,
                 isUpdating: false,
                 isRegistering: false,
                 registerFailed: false,
                 updateFailed: false,
-                needReload: false
-
+                needReload: false,
+                userAdminPage: action.payload
             }
         case REGISTER_SUCCESS:
             return{
@@ -94,7 +96,6 @@ export default function(state = initialState, action){
                 isRegistering: false,
                 registerFailed: false,
                 needReload: false
-
             }
         case REGISTER_LOADING:
             return{
@@ -115,6 +116,16 @@ export default function(state = initialState, action){
                 updateFailed: true,
                 needReload: false
             }
+        case USER_LOADED_ADMIN_PAGE:
+            return {
+                ...state,
+                isLoading: false,
+                isUpdating: false,
+                isRegistering: false,
+                registerFailed: false,
+                needReload: false,
+                userAdminPage: action.payload
+            }
         case REGISTER_FAILED:
         case AUTH_ERROR:
         case LOGIN_FAIL:
@@ -124,6 +135,7 @@ export default function(state = initialState, action){
                 ...state,
                 token: null,
                 user: null,
+                userAdminPage: [],
                 isAuthenticated: false,
                 isLoading: false,
                 isUpdating: false,

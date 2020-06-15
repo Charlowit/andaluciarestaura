@@ -50,7 +50,8 @@ export class DeliveryPage extends Component {
     render(){
         return(
             <Fragment>
-                <section className="section" style={{marginTop: '40px'}} >
+                
+                <section className="hero" style={{paddingTop: '40px'}} >
                     <div className="container">
                         <div className="columns">
                             <div className="column is-four-fifths">

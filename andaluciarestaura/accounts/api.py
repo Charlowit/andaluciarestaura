@@ -1,6 +1,7 @@
 from rest_framework import generics, permissions
 from rest_framework.response import Response
 from .models import User
+from carta.models import Carta
 from rest_framework import viewsets, permissions
 from knox.models import AuthToken
 from .serializers import UserSerializer, RegisterSerializer, LoginSerializer, FilePDFSerializer, UserSerializerActualizar
@@ -11,6 +12,8 @@ from rest_framework.response import Response
 from rest_framework import status
 import logging
 import os
+from PIL import Image, ImageOps, ImageDraw
+import qrcode
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.core import mail
@@ -19,12 +22,12 @@ from django.template import Context
 import shutil
 import base64
 from django.conf import settings
-from PIL import Image, ImageOps, ImageDraw
-import qrcode
+from rest_framework.decorators import action
+
+logger = logging.getLogger(__name__)
 
 #File pdf Upload
 
-logger = logging.getLogger(__name__)
 
 def enviar_email_v1(correo):
     logger.error("ENTRO EN EMAIL V1")
@@ -54,10 +57,10 @@ def enviar_email_v2(correo, url_carta, ruta_qr, url_qr):
     from_email= 'soporte@hotehub.com'
     to = correo
     logger.error("DENTRO DE MAIL V2 EL CORREO ES" + correo)
-    text_content = 'Gracias por registrarse en Córdoba Restaura. '
-    html_content = '<p> Aquí tienes tu dirección donde tus clientes podrán ver tu carta en PDF: <br/>' \
-                   '<a href='+url_carta+'> Pulsa aquí para visualizar tu carta </a</p><br/>' \
-                   '<a href='+url_qr+'> Pulsa aquí para descargar tu código QR </a</p>'
+    text_content = 'Gracias por registrarse en Córdoba Restaura.'
+    html_content = '<p>Aquí tienes tu dirección donde tus clientes podrán ver tu carta en PDF:<br/>' \
+                   '<a href='+url_carta+'>Pulsa aquí para visualizar tu carta</a</p><br/>' \
+                   '<a href='+url_qr+'>Pulsa aquí para descargar tu código QR</a</p>'
     """"
     html_content = '<div class="section"><div class="container has-text-centered"><div class="section">' \
                    '<img src="https://www.andaluciarestaura.com/static/frontend/logoar.svg" width="400">' \
@@ -105,7 +108,19 @@ def enviar_email_v2(correo, url_carta, ruta_qr, url_qr):
     """
 
 
-def generar_qr_file(directorio, archivo_qr, url_carta, ruta_back, ruta_logo):
+def generar_qr_file(directorio, archivo_qr, url_carta):
+    qr = qrcode.QRCode(
+        version=1,
+        error_correction=qrcode.constants.ERROR_CORRECT_L,
+        box_size=10,
+        border=4,)
+    qr.add_data(url_carta)
+    qr.make(fit=True)
+    img = qr.make_image(fill_color="black", back_color="white")
+    logger.error("Antes de salvar imagen qr:" + directorio + '/' + archivo_qr)
+    img.save(directorio + '/' + archivo_qr)
+
+def generar_qr_file_v2(directorio, archivo_qr, url_carta, ruta_back, ruta_logo):
     qr = qrcode.QRCode(
         version=1,
         error_correction=qrcode.constants.ERROR_CORRECT_L,
@@ -154,30 +169,29 @@ class FilePDFApi(generics.GenericAPIView):
                 archivo_pdf = 'free.pdf'
                 archivo_qr = 'qr.jpg'
                 archivo_logo = 'logo.jpeg'
-                archivo_back = 'emailback.jpeg'
-
                 if settings.IN_PRODUCTION:
                     # VARIABLES PARA PRODUCCION
                     directorio = settings.STATIC_ROOT +'/clientes/' + cif_user
                     directorio_bd = './static/clientes/' + cif_user
-                    directorio_back = settings.STATIC_ROOT + '/frontend/'
 
                 else:
                     # VARIBALES PARA LOCAL
                     directorio = './frontend/static/clientes/' + cif_user
                     directorio_bd = './frontend/static/clientes/' + cif_user
-                    directorio_back = './frontend/static/frontend/'
 
                 ruta_logo_bd = directorio_bd + '/' + archivo_logo
                 ruta_qr_bd = directorio_bd + '/' + archivo_qr
                 ruta_pdf = directorio + '/' + archivo_pdf
                 ruta_qr = directorio + '/' + archivo_qr
                 ruta_logo = directorio + '/' + archivo_logo
-                ruta_back = directorio_back + archivo_back
+
 
                 #ESTO DA IGUAL EN PRODUCCION QUE EN LOCAL NO NOS INTERFIERE
                 url_carta = 'https://www.andaluciarestaura.com/cartaestatica/' + cif_user
+                url_carta_dev = 'https://www.dev.andaluciarestaura.com/cartaestatica/' + cif_user
+
                 url_qr = 'https://www.andaluciarestaura.com/static/clientes/' + cif_user + '/'+ archivo_qr
+                url_qr_dev = 'https://www.dev.andaluciarestaura.com/static/clientes/' + cif_user + '/'+ archivo_qr
 
                 try:
                     os.mkdir(directorio)
@@ -195,7 +209,7 @@ class FilePDFApi(generics.GenericAPIView):
 
                 #4 Generamos el qr
                 logger.error('ANTES DEL GENERAR EL QR:')
-                generar_qr_file(directorio, archivo_qr, url_carta, ruta_back, ruta_logo)
+                generar_qr_file(directorio, archivo_qr, url_carta)
                 logger.error('DESPUES DEL GENERAR EL QR:')
 
 
@@ -207,7 +221,24 @@ class FilePDFApi(generics.GenericAPIView):
                 #logger.error("DESPUES: " + user.marca_comercial)
                 logger.error("USUARIO REGISTRADO!")
 
-                User.objects.filter(cif__exact=request.data["cif"]).update(pdf=ruta_pdf, qr=ruta_qr_bd, logo=ruta_logo_bd, marca_comercial=request.data["marca_comercial"], email=request.data["email"], telefono_1=request.data["telefono_1"])
+                userInstance = User.objects.get(id__exact=user.id)
+                carta = Carta.objects.create(
+                    name = "CartaPremium",
+                    url_facebook = "https://www.facebook.com",
+                    url_instagram = "https://www.instagram.com", 
+                    url_tripadvisor = "https://www.tripadvisor.es",
+                    eslogan = "Escribe aquí tu eslogan!",
+                    plantilla = "Plantilla 1",
+                    propietario = userInstance,
+                    directorio = directorio,
+                    is_activa = True,
+                    show_as_pdf = True,
+                    establecimiento = "Pon aqui el nombre de tu establecimiento!"
+                )
+
+                carta.save()
+
+                User.objects.filter(cif__exact=request.data["cif"]).update(pdf=ruta_pdf, logo=ruta_logo_bd, nombre=request.data["nombre"], apellidos=request.data["apellidos"], email=request.data["email"], telefono_1=request.data["telefono_1"])
                 #User.objects.filter(cif__exact=request.data["cif"]).update(pdf=ruta_pdf, qr=ruta_qr)
                 #logger.error(usuarioainsertarpdf[0])
                 # 5 Guardamos todos los datos en el modelo usuario
@@ -217,7 +248,7 @@ class FilePDFApi(generics.GenericAPIView):
                 # 6 Creamos el correo electronico y lo enviamos.
                 # ENVIAR EMAIL VERSION 1
                 enviar_email_v1(correo)
-                enviar_email_v2(correo, url_carta, ruta_qr, url_qr)
+                enviar_email_v3(correo, url_carta, ruta_qr, url_qr)
 
                 return Response({
                     "user": UserSerializer(user, context=self.get_serializer_context()).data,
@@ -273,7 +304,7 @@ class UserApi(generics.RetrieveAPIView):
         return self.request.user
 
 class UserActualizarApi(generics.UpdateAPIView):
-    serializer_class = UserSerializerActualizar
+    serializer_class = UserSerializer
     permission_classes = (permissions.IsAuthenticated,)
 
     def update(self, request, *args, **kwargs):
@@ -281,6 +312,19 @@ class UserActualizarApi(generics.UpdateAPIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
 
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response([serializer.data], status=status.HTTP_200_OK)
+
+#Get user API
+
+class UserApiAdminPage(viewsets.ModelViewSet):
+    permission_classes = [
+        permissions.AllowAny,
+    ]
+    serializer_class = UserSerializer
+
+    def get_queryset(self):
+        cif = self.request.query_params.get('cif', None)
+        queryset = User.objects.filter(cif__exact=cif)
+        return queryset
 
 

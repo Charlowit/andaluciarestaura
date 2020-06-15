@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from "prop-types";
 import { logout } from '../../actions/auth';
-
+import BarraInformacion from '../barrainformacion/BarraInformacion'
 
 class Navbar extends Component {
 
@@ -94,7 +94,7 @@ class Navbar extends Component {
                         </span>
                         <span className="control">
                             <div className="buttons">
-                                <Link to="/" className="button is-danger" style={{backgroundColor:'#bca466'}} onClick={this.props.logout}>Logout</Link>
+                                <Link to="/" refresh="true" className="button is-danger" style={{backgroundColor:'#bca466'}} onClick={this.props.logout}>Logout</Link>
                             </div>
                         </span>
                     </div>
@@ -150,7 +150,7 @@ class Navbar extends Component {
                     <Link className="navbar-link " style={{ width: '100%'}} to="/servicios-page">Servicios</Link>
                 </div>
                 <div className="navbar-item  is-hoverable has-dropdown">
-                    <Link className="navbar-link" style={{ width: '100%'}} to="/carta-page">Carta</Link>
+                    <Link className="navbar-link" style={{ width: '100%'}} to="/visualizar">Cartas</Link>
                 </div>
                 <div className="navbar-item  is-hoverable has-dropdown">
                     <Link className="navbar-link" style={{ width: '100%'}} to="/reservas-page">Reservas</Link>
@@ -171,8 +171,8 @@ class Navbar extends Component {
             <div>
                 <nav className="navbar is-fixed-top">
                     <div className="navbar-brand">
-                        <Link to="/" style={{ marginTop: 16 }}>
-                            <img src={"/static/frontend/logoar.svg"} width="300" height="125" />
+                        <Link to="/" style={{ marginTop: '9px' }}>
+                            <img src={"/static/frontend/logoar.png"} width="300" height="125" />
                         </Link>
 
                         <div className="navbar-burger burger" data-target="navMenubd-example">
@@ -187,8 +187,11 @@ class Navbar extends Component {
                         {isAuthenticated ? authLinks : ""}
                         {isAuthenticated ? authEnd : guestEnd}
                     </div>
+
+                    
                 </nav>
 
+                <BarraInformacion />
 
 
             </div>

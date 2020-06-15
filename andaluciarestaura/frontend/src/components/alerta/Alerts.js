@@ -10,6 +10,7 @@ export class Alerts extends Component {
         message: PropTypes.object.isRequired
     };
 
+
     componentDidUpdate(prevProps){
         const { error, alert, message } = this.props;
         console.log(error.msg)
@@ -31,20 +32,17 @@ export class Alerts extends Component {
             if(error.msg.password)
                 alert.error("El campo Contraseña es obligatorio.")
             if(error.msg.telefono_1)
-                alert.error("El campo Telefono 1 es obligatorio.")
+                alert.show("El campo Telefono es obligatorio.")
             if(error.msg.marca_comercial)
                 alert.error("El campo Marca Comercial es obligatorio.")
             if(error.msg.cif){
                 console.log(error.msg.cif[0])
                 if (error.msg.cif[0] == "This field may not be blank."){
-                    alert.error("El campo CIF es obligatorio")
+                    //alert.error("El campo CIF es obligatorio")
                 } else if (error.msg.cif[0] == "user with this cif already exists.") {
                     alert.error("Ese CIF ya esta siendo utilizado.")
                 }
             } 
-            if(error.msg.non_field_errors)
-                alert.error("El CIF o la contraseña son incorrectos.")
-                
         
         }
 
@@ -60,6 +58,9 @@ export class Alerts extends Component {
             if(message.loginError){
                 alert.error("El CIF o la contraseña son incorrectos.")
             }
+            if(message.fotoSubida) {
+                alert.success(message.fotoSubida);
+            }
 
         }
     }
@@ -68,7 +69,11 @@ export class Alerts extends Component {
 
 
     render() {
-        return <Fragment/>;
+        return (
+            <Fragment>
+                
+            </Fragment>
+        );
         
     }
 }

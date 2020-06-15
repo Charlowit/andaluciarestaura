@@ -28,16 +28,6 @@
         display: none
       }
 
-      #divElement {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        margin-top: -50px;
-        margin-left: -50px;
-        width: 100px;
-        height: 100px;
-      }
-
       ​
     }
   </style>
@@ -48,7 +38,7 @@
     <nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
         <a class="navbar-item" href="/">
-          <img src="{% static 'frontend/logoar.svg' %}" width="300" height="125">
+          <img src="{% static 'frontend/logoar.png' %}" width="300" height="125">
         </a>
 
       </div>
@@ -68,12 +58,8 @@
             </figure>
           </div>
         </div>
-        <h1 class="title"> {{user.marca_comercial}} </h1>
-        <h2 class="subtitle"> {{ user.fax }} <br /></h2>
+        <h1 class="title"> {{carta.establecimiento}} </h1>
         <hr />
-        <div class="container">
-          <h1 class="title">Carta {{ user.marca_comercial }}</h1>
-        </div>
       </div>
     </div>
   </section>
@@ -89,12 +75,12 @@
   {% endwith %}
   {% endif %}
   <footer>
-    <section class="section has-text-centered" style="min-width:470px">
+    <section class="section has-text-centered" style="min-width:470px;">
       <p>
-        <img width="200" height="50" src="{% static 'frontend/hotehub.svg' %}"></img>
+        <img width="200" height="50" src="{% static 'frontend/hotehub.svg' %}">
         <br />
-      <p style="margin-top:1%"> Córdoba Restaura by Hotehub </br> </p>
-      Copyright@2020 Todos los derechos reservados
+          <p style="margin-top:1%"> Córdoba Restaura by Hotehub </br> </p>
+          <p>Copyright@2020 Todos los  reservados</p>
       </p>
     </section>
   </footer>
