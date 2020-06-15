@@ -367,7 +367,7 @@
           <!-- FOR DE LA CARTA -->
           {% for categoria in categorias %}
           <div class="container">
-
+           
             <div class='card equal-height ' id="cardColour" style="margin-top: 40px">
               <div class="container">
                 <br />
@@ -378,11 +378,13 @@
             {% for producto in productos %}
             {% if categoria.id == producto.categoria %}
             <div class='card' id="fondoCarta">
-              <div className=" has-text-centered">
-                <figure className="image" style="max-width: 480px">
-                  <img className="is-rounded" src={{producto.photo}}></img>
-                </figure>
-              </div>
+              {% if 'default' not in producto.photo %}
+               <div className=" has-text-centered">
+                 <figure className="image" style="max-width: 480px">
+                   <img className="is-rounded" src={{producto.photo}}></img>
+                 </figure>
+               </div>
+              {% endif %}
               {% if plantilla == "Plantilla 2" %}
               <div style="text-align: center;">
                 <hr style="width:75%; margin-left:25%; margin-right:25%; background-color: #d5c69f;" />

@@ -11,7 +11,7 @@ import { createPortal } from 'react-dom';
 const bkg = {
     marginBottom: '6%',
     backgroundPosition: 'center',
-    backgroundImage: "url('https://www.andaluciarestaura.com/static/frontend/backLogin.png')",
+    backgroundImage: "url('https://www.dev.andaluciarestaura.com/static/frontend/backLogin.png')",
     backgroundRepeat: 'no-repeat',
     marginTop: '0px',
     backgroundSize: 'cover'
@@ -26,12 +26,12 @@ export class VisualizarCartas extends Component {
         this.state = {
             categoriasParaNuevaCartaObjs: [],
             categoriasParaNuevaCarta: [],
-            nombreNuevaCarta: "",
+            nombreNuevaCarta: null,
             propietario: -1, //Es el id del usuario "1" deberiamos de traer el id
             url_facebook: "",
             url_instagram: "",
             url_tripadvisor: "",
-            plantilla: "",
+            plantilla: null,
             nombreNuevaCategoria: "",
             categoriaSeleccionada: "",
             descripciones: [],
@@ -42,10 +42,11 @@ export class VisualizarCartas extends Component {
             eslogan: "",
             addingCarta: false,
             is_premium: false,
-            establecimiento: "",
+            establecimiento: null,
             addingCarta: false,
             is_premium: "",
             modal_qr: false,
+            cartaClickedId: -1,
         };
     }
 
@@ -110,9 +111,11 @@ export class VisualizarCartas extends Component {
         this.setState({
             addingCarta: !this.state.addingCarta
         })
-
+        
 
         this.props.nuevaCarta(carta)
+
+        
     }
 
     onSubmitDesactivarCarta = (e, carta) => {
@@ -123,9 +126,10 @@ export class VisualizarCartas extends Component {
         this.props.deleteCarta(carta);
     }
 
-    modalQr = e => {
+    modalQr = (e, cartaId) => {
         this.setState({
-            modal_qr: !this.state.modal_qr
+            modal_qr: !this.state.modal_qr,
+            cartaClickedId: cartaId
         })
     }
 
@@ -255,12 +259,12 @@ export class VisualizarCartas extends Component {
                                                         </button>
                                                     </div>
                                                     <figure className="image is-4by4"  >
-                                                        <img className="" src={index == 0 ? `/static/clientes/${this.props.auth.user.cif}/qr.jpg` :  `/static/clientes/${this.props.auth.user.cif}/${carta.id}/qr.jpg`}></img>
+                                                        <img className="" src={this.props.cartas[0].id == this.state.cartaClickedId ? `/static/clientes/${this.props.auth.user.cif}/qr.jpg` : `/static/clientes/${this.props.auth.user.cif}/${carta.id}/qr.jpg`}></img>
                                                     </figure>
                                                     <div className="field ">
                                                         <div className="field-body" >
                                                             <div className="field" >
-                                                                <a className="button" style={{ backgroundColor: '#bca466', color: 'white' }} href={index == 0 ? `/static/clientes/${this.props.auth.user.cif}/qr.jpg` : `/static/clientes/${this.props.auth.user.cif}/${carta.id}/qr.jpg`} download="QRcode">Descargar</a>
+                                                                <a className="button" style={{ backgroundColor: '#bca466', color: 'white' }} href={this.props.cartas[0].id == this.state.cartaClickedId ? `/static/clientes/${this.props.auth.user.cif}/qr.jpg` : `/static/clientes/${this.props.auth.user.cif}/${carta.id}/qr.jpg`} download="QRcode">Descargar</a>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -278,9 +282,9 @@ export class VisualizarCartas extends Component {
                                                         <div >
 
 
-                                                            <div className="card-image" style={{ border: '1px solid #bca466' }} onClick={this.modalQr}>
+                                                            <div className="card-image" style={{ border: '1px solid #bca466' }} onClick={e => this.modalQr(e, carta.id)}>
                                                                 <figure className="image is-4by4">
-                                                                    <img className="" src={`/static/clientes/${this.props.auth.user.cif}/qr.jpg`}></img>
+                                                                    <img className="" src={index == 0 ? `/static/clientes/${this.props.auth.user.cif}/qr.jpg` : `/static/clientes/${this.props.auth.user.cif}/${carta.id}/qr.jpg`}></img>
                                                                 </figure>
                                                             </div>
                                                             <div className="media" style={{ paddingTop: '40px' }}>

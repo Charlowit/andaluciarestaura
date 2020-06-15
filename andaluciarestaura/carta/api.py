@@ -218,7 +218,7 @@ class ProductosSubirPhotoApi(viewsets.ModelViewSet):
         directorioCartaRaw = Carta.objects.filter(id__exact=cartaProducto[0]['carta']).values('directorio')
         directorio = directorioCartaRaw[0]['directorio']
 
-        ruta = directorio + '/' + productoID + '.jpeg'
+        ruta = './frontend' + directorio + '/' + productoID + '.jpeg'
         ruta_producto = directorio + '/' + productoID + '.jpeg'
         handle_uploaded_file(request.data["photo"], ruta)
 
