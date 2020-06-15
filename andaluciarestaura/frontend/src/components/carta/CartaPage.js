@@ -132,7 +132,12 @@ export class CartaPage extends Component {
 
 
         this.props.subirPhoto(form_data, producto, cif);
-        this.props.uploadProducto(producto, cif)
+
+        var  is_primera = false;
+        if(this.props.cartaReal[0] == producto.carta){
+            is_primera = true
+        }
+        this.props.uploadProducto(producto, cif, is_primera)
         //setTimeout(this.props.uploadProducto(this.state.clickedProducto), 5000)
 
 
@@ -274,6 +279,13 @@ export class CartaPage extends Component {
     }
 
 
+    onSubmitDesactivateProduct = (e, producto) => {
+        e.preventDefault()
+        console.log("Antes --> ", producto.is_activo)
+
+        console.log("Antes --> ", producto.is_activo)
+        this.props.uploadProducto(producto)
+    }
 
     addProduct = e => {
         this.setState({
@@ -482,6 +494,12 @@ export class CartaPage extends Component {
         e.target.style.opacity = '1';
     }
 
+    openUrl = (e, url) => {
+        if(url != '-'){
+            window.open(url)
+        }
+    }
+
 
 
     static propTypes = {
@@ -508,33 +526,7 @@ export class CartaPage extends Component {
 
     };
 
-    componentWillReceiveProps(nextProps) {
-        //console.log('Se ejecuta componentWillReceiveProps con las propiedades futuras', nextProps)
-    }
-    shouldComponentUpdate(nextProps, nextState) {
-        //console.log('Ejecutando shouldComponentUpdate. Próximas propiedades y estado: ', nextProps, nextState)
-        return true
-    }
 
-    componentWillUpdate(nextProps, nextState) {
-        //console.log('Ejecutando componentWillUpdate. Próximas propiedades y estado: ', nextProps, nextState)
-    }
-
-    componentDidUpdate(prevProps, prevState) {
-        //console.log('Ejecutando componentDidUpdate. Anteriores propiedades y estado: ', prevProps, prevState)
-    }
-
-    componentWillUnmount() {
-        //console.log('Se desmonta el componente...')
-    }
-
-    componentWillMount() {
-        //console.log('Se ejecuta componentWillMount')
-    }
-
-    useEffect() {
-        //console.log("Esto ejecuta el useEffect")
-    }
 
     render() {
         const { categoriaParaProducto, name, descripcion, tamanio, precio1, precio2, precio3, is_apio, is_altramuces, is_cacahuete, is_crustaceo, is_frutos_con_cascara, is_gluten, is_huevo, is_lacteo, is_molusco, is_mostaza, is_pescado, is_sesamo, is_soja, is_sulfito, carta
@@ -728,7 +720,7 @@ export class CartaPage extends Component {
                                             </span>
                                         </button>
                                         <div>
-                                            <h2 className="subtitle" style={{ display: 'inline' }}> {carta.eslogan} </h2>
+                                            <h2 className="subtitle" style={{ display: 'inline' }}> {carta.eslogan != '-' ? carta.eslogan : "Escribe tu slogan!"} </h2>
 
 
                                             <button class="button is-rounded is-small is-warning" style={{ color: '#bca466', backgroundColor: 'white', display: 'inline', marginLeft: '7px', marginTop: '-3px' }} onClick={this.editEslogan}>
@@ -738,7 +730,7 @@ export class CartaPage extends Component {
                                             </button>
 
                                             <p className="field" style={{ marginTop: '15px' }}>
-                                                <a className="button is-rounded is-medium" id="id_boton" style={{ marginLeft: '10px' }}>
+                                                <a className="button is-rounded is-medium" id="id_boton" onClick={e => this.openUrl(e, carta.url_facebook)} style={{ marginLeft: '10px' }}>
                                                     <span className="icon">
                                                         <i className="fab fa-facebook"></i>
                                                     </span>
@@ -748,7 +740,7 @@ export class CartaPage extends Component {
                                                         <i class="fas fa-pen"></i>
                                                     </span>
                                                 </button>
-                                                <a className="button is-rounded is-medium" style={{ marginLeft: '10px' }}>
+                                                <a className="button is-rounded is-medium" onClick={e => this.openUrl(e, carta.url_tripadvisor)} style={{ marginLeft: '10px' }}>
                                                     <span className="icon">
                                                         <i className="fab fa-tripadvisor"></i>
                                                     </span>
@@ -758,7 +750,7 @@ export class CartaPage extends Component {
                                                         <i class="fas fa-pen"></i>
                                                     </span>
                                                 </button>
-                                                <a className="button is-rounded is-medium" style={{ marginLeft: '10px' }} >
+                                                <a className="button is-rounded is-medium"  onClick={e => this.openUrl(e, carta.url_instagram)} style={{ marginLeft: '10px' }} >
                                                     <span className="icon">
                                                         <i className="fab fa-instagram"></i>
                                                     </span>
@@ -822,14 +814,13 @@ export class CartaPage extends Component {
 
                                                         </div>
                                                         :
-                                                        <div className="column" style={{ backgroundColor: 'gray', marginTop: '10px' }}>
+                                                        <div className="column" style={{ marginTop: '10px' }}>
                                                             <button disabled className="button is-success is-medium" style={{ backgroundColor: 'white', border: '1px solid white' }} onClick={this.addProduct}>
                                                                 <span class="icon" style={{ color: '#171c8f' }}>
                                                                     <i class="fas fa-plus-circle"></i>
                                                                 </span>
                                                                 <p style={{ marginTop: '6px', color: '#171c8f' }}> Añadir Producto</p>
                                                             </button>
-
                                                         </div>
                                                     }
                                                     <div className="column" style={{ marginTop: '10px', marginBottom: '25px' }}>
@@ -1103,15 +1094,16 @@ export class CartaPage extends Component {
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
-                                                                            </div>
-                                                                            <div className="field">
-                                                                                <div className="control">
-                                                                                    <div className="b-checkbox">
-                                                                                        <input id="checkbox" name="is_sulfito" className="styled" type="checkbox" onChange={this.handleSulfitoChange} defaultValue={is_sulfito} />
-                                                                                        <label >  Sulfitos </label>
+                                                                                <div className="field">
+                                                                                    <div className="control">
+                                                                                        <div className="b-checkbox">
+                                                                                            <input id="checkbox" name="is_sulfito" className="styled" type="checkbox" onChange={this.handleSulfitoChange} defaultValue={is_sulfito} />
+                                                                                            <label >  Sulfitos </label>
+                                                                                        </div>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
+
                                                                         </div>
 
                                                                     </div>
@@ -1238,7 +1230,7 @@ export class CartaPage extends Component {
                                                                                 {categoria.id == producto.categoria ?
 
 
-                                                                                    <div className='card'>
+                                                                                    <div className='card' style={producto.is_activo ? { opacity: '1' } : { opacity: '0.5' }}>
                                                                                         <div className="has-text-centered">
                                                                                             <label className="file-label">
                                                                                                 <input className="file-input" type="file" id="logo" accept=".jpeg" onChange={e => this.handlePhotoChange(e, index)} required />
@@ -1257,7 +1249,7 @@ export class CartaPage extends Component {
 
                                                                                             <div class="card-image" style={{ maxWidth: '480px' }}>
                                                                                                 <figure class="image is-1by1">
-                                                                                                    <img onMouseEnter={this.changeImageBackground} onMouseLeave={this.changeImageBackgroundLeave} src={this.state.addingPhotoArray[index] || this.state.fileArray[index] != null ? this.state.fileArray[index] : producto.photo} ></img>
+                                                                                                    <img src={this.state.addingPhotoArray[index] || this.state.fileArray[index] != null ? this.state.fileArray[index] : producto.photo} ></img>
                                                                                                 </figure>
                                                                                             </div>
                                                                                         </div>
@@ -1466,11 +1458,11 @@ export class CartaPage extends Component {
                                                                                                                             padding: '5px'
                                                                                                                         }}>
                                                                                                                         <button
-                                                                                                                            className="button is-warning" onClick={e => this.addPhoto(e, producto)}>
+                                                                                                                            className="button is-warning" onClick={(e) => this.onSubmitDesactivateProduct(e, producto)}>
 
                                                                                                                             <span
                                                                                                                                 className="icon is-small">
-                                                                                                                                <i className="fas fa-camera"></i>
+                                                                                                                                <i className="fas fa-power-off"></i>
                                                                                                                             </span>
                                                                                                                         </button>
 

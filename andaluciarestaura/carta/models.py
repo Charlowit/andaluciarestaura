@@ -19,21 +19,21 @@ TAMANIOS = (
 
 
 class Carta(models.Model):
-    name = models.CharField(max_length=100, blank=False, default="cartanegocio")
+    name = models.CharField(max_length=100, null=False)
     propietario = models.ForeignKey(settings.AUTH_USER_MODEL, null=False, on_delete=models.CASCADE, related_name="propietario")
 
     url_facebook = models.CharField(max_length=50, default='-', null=True)
     url_instagram = models.CharField(max_length=50, default='-', null=True)
     url_tripadvisor = models.CharField(max_length=50, default='-', null=True)
     eslogan = models.CharField(max_length=50, default='-', null=True)
-    plantilla = models.CharField(max_length=50, default='-', null=True)
+    plantilla = models.CharField(max_length=50, default='-', null=False)
     
     contador_visitas = models.IntegerField(default=0)
     directorio = models.CharField(max_length=1000)
     is_activa = models.BooleanField(default=True)
     show_as_pdf = models.BooleanField(default=False)
 
-    establecimiento = models.CharField(max_length=100, null=True)
+    establecimiento = models.CharField(max_length=100, null=False)
 
     def __str__(self):
         return self.name
@@ -76,6 +76,7 @@ class Productos(models.Model):
         is_sulfito = models.BooleanField(default=False)
         carta = models.ForeignKey(Carta, null=True, on_delete=models.CASCADE, related_name="productos")
         photo = models.CharField(max_length=200, null=True, default="/static/frontend/default.jpg")
+        is_activo = models.BooleanField(default=True)
 
         def __str__(self):
             return self.name
