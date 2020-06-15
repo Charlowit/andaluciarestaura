@@ -11,7 +11,8 @@ import {
     REGISTER_LOADING,
     UPDATE_CATEGORIA,
     UPDATE_LOADING,
-    UPDATE_PRODUCTO
+    UPDATE_PRODUCTO,
+    GET_ERRORS
 } from './types';
 import { tokenConfig } from './auth'
 import { compose } from 'redux';
@@ -43,6 +44,7 @@ export const subirproducto = (producto) => (dispatch, getState) => {
 
     axios.post(`/api/productact/?categoria=${producto.categoriaParaProducto}`, body, tokenConfig(getState))
         .then(res => {
+            dispatch(createMessages({ nuevoProducto: "Producto creado correctamente." }));
             dispatch({
                 type: ADD_PRODUCTO,
                 payload: res.data,
@@ -189,12 +191,23 @@ export const addCategoria = (categoria) => (dispatch, getState) => {
     const body = JSON.stringify({ name: categoria.nombreNuevaCategoria, descripcion: categoria.descripcion, posicion: categoria.posicion, info_extra: categoria.info_extra, carta: categoria.carta });
     axios.post(`/api/damelascategorias/?carta=${categoria.carta}`, body, tokenConfig(getState))
         .then(res => {
+            dispatch(createMessages({ nuevaCategoria: "Categoria creada correctamente." }));
+
             dispatch({
                 type: ADD_CATEGORIA,
                 payload: res.data
             });
         })
-        .catch(err => console.log("Esto ta mal? " + err));
+        .catch(err => {
+            const errors = {
+                msg: err.response.data,
+                status: err.response.status
+            }
+            dispatch({
+                type: GET_ERRORS,
+                payload: errors
+            });
+        });
 }
 
 export const updateCategoria = (categoria) => (dispatch, getState) => {

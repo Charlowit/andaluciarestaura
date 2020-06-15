@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { GET_ALL_CARTAS, ADD_CARTA, DELETE_CARTA, GET_EXPECIFIC_CARTA, GET_CARTA, GET_CATEGORIAS, UPDATE_CARTA, GET_ERRORS } from './types';
 import { tokenConfig } from './auth'
+import { createMessages } from './messages'
 
 export const getCartas = (cif) => (dispatch, getState) => {
 
@@ -64,6 +65,7 @@ export const nuevaCarta = (carta) => (dispatch, getState) => {
     //axios.get(`/api/cartaadmin/?cif=${cif}`)
     axios.post(`/api/getcartas/?cif=${carta.propietario}`, body, tokenConfig(getState))
         .then(res => {
+            dispatch(createMessages({ nuevaCarta: "Carta creada correctamente." }));
             dispatch({
                 type: ADD_CARTA,
                 payload: res.data
@@ -96,7 +98,7 @@ export const deleteCarta = (carta) => (dispatch, getState) => {
         })
         .catch(err => console.log("Esto ta mal? " + err));*/
 
-    const body = JSON.stringify({ id: carta.id, propietario: carta.propietario, is_activa: carta.is_activa, directorio: carta.directorio });
+    const body = JSON.stringify({ id: carta.id, establecimiento: carta.establecimiento, name: carta.name, propietario: carta.propietario, is_activa: carta.is_activa, directorio: carta.directorio });
 
     axios.put(`/api/getcartas/${carta.id}/?cif=${carta.propietario}`, body, tokenConfig(getState))
         .then(res => {
@@ -122,10 +124,12 @@ export const deleteCarta = (carta) => (dispatch, getState) => {
 export const updateEslogan = (carta) => (dispatch, getState) => {
 
 
-    const body = JSON.stringify({ id: carta.idCarta, propietario: carta.propietario, eslogan: carta.eslogan, directorio: carta.directorio });
+    const body = JSON.stringify({ id: carta.idCarta, establecimiento: carta.establecimiento, name: carta.name, propietario: carta.propietario, eslogan: carta.eslogan, directorio: carta.directorio });
 
     axios.put(`/api/getcartas/${carta.idCarta}/`, body, tokenConfig(getState))
         .then(res => {
+            dispatch(createMessages({ newEslogan: "Eslogan actualizado correctamente." }));
+
             dispatch({
                 type: UPDATE_CARTA,
                 payload: res.data
@@ -147,10 +151,11 @@ export const updateEslogan = (carta) => (dispatch, getState) => {
 export const updateNombreCarta = (carta) => (dispatch, getState) => {
 
 
-    const body = JSON.stringify({ id: carta.idCarta, propietario: carta.propietario, name: carta.cartaName, directorio: carta.directorio });
+    const body = JSON.stringify({ id: carta.idCarta, establecimiento: carta.establecimiento, propietario: carta.propietario, name: carta.cartaName, directorio: carta.directorio });
 
     axios.put(`/api/getcartas/${carta.idCarta}/`, body, tokenConfig(getState))
         .then(res => {
+            dispatch(createMessages({ newNombreCarta: "Nombre de la carta actualizado correctamente." }));
             dispatch({
                 type: UPDATE_CARTA,
                 payload: res.data
@@ -172,10 +177,11 @@ export const updateNombreCarta = (carta) => (dispatch, getState) => {
 export const updateEstablecimiento = (carta) => (dispatch, getState) => {
 
 
-    const body = JSON.stringify({ id: carta.idCarta, propietario: carta.propietario, establecimiento: carta.establecimiento, directorio: carta.directorio });
+    const body = JSON.stringify({ id: carta.idCarta, name: carta.name, propietario: carta.propietario, establecimiento: carta.establecimiento, directorio: carta.directorio });
 
     axios.put(`/api/getcartas/${carta.idCarta}/`, body, tokenConfig(getState))
         .then(res => {
+            dispatch(createMessages({ newEstablecimiento: "Establecimiento actualizado correctamente." }));
             dispatch({
                 type: UPDATE_CARTA,
                 payload: res.data
@@ -199,16 +205,18 @@ export const updateURL = (carta, urltype) => (dispatch, getState) => {
     var body = null;
 
     if (urltype == "F") {
-        body = JSON.stringify({ id: carta.idCarta, propietario: carta.propietario, url_facebook: carta.url, directorio: carta.directorio });
+        body = JSON.stringify({ id: carta.idCarta, establecimiento: carta.establecimiento, name: carta.name, propietario: carta.propietario, url_facebook: carta.url, directorio: carta.directorio });
     } else if (urltype == "I") {
-        body = JSON.stringify({ id: carta.idCarta, propietario: carta.propietario, url_instagram: carta.url, directorio: carta.directorio });
+        body = JSON.stringify({ id: carta.idCarta, establecimiento: carta.establecimiento, name: carta.name, propietario: carta.propietario, url_instagram: carta.url, directorio: carta.directorio });
     } else if (urltype == "T") {
-        body = JSON.stringify({ id: carta.idCarta, propietario: carta.propietario, url_tripadvisor: carta.url, directorio: carta.directorio });
+        body = JSON.stringify({ id: carta.idCarta, establecimiento: carta.establecimiento, name: carta.name, propietario: carta.propietario, url_tripadvisor: carta.url, directorio: carta.directorio });
     }
 
     axios.put(`/api/getcartas/${carta.idCarta}/`, body, tokenConfig(getState))
         .then(res => {
             console.log("Its working?")
+            dispatch(createMessages({ newUrl: "Url actualizado correctamente." }));
+
             dispatch({
                 type: UPDATE_CARTA,
                 payload: res.data
@@ -231,7 +239,24 @@ export const updateURL = (carta, urltype) => (dispatch, getState) => {
 
 export const updateShow = (carta) => (dispatch, getState) => {
 
-    const body = JSON.stringify({ id: carta.id, propietario: carta.propietario, show_as_pdf: carta.show_as_pdf, directorio: carta.directorio });
+    const body = JSON.stringify({ id: carta.id, establecimiento: carta.establecimiento, name: carta.name, propietario: carta.propietario, show_as_pdf: carta.show_as_pdf, directorio: carta.directorio });
+
+    axios.put(`/api/getcartas/${carta.id}/`, body, tokenConfig(getState))
+        .then(res => {
+            console.log("Its working?")
+            dispatch({
+                type: UPDATE_CARTA,
+                payload: res.data
+            });
+        })
+        .catch(err => console.log("Esto ta mal? " + err));
+
+}
+
+
+export const updateLogoRounded = (carta) => (dispatch, getState) => {
+
+    const body = JSON.stringify({ id: carta.id, establecimiento: carta.establecimiento, name: carta.name, propietario: carta.propietario, show_as_pdf: carta.show_as_pdf, directorio: carta.directorio, logo_rounded: carta.logo_rounded });
 
     axios.put(`/api/getcartas/${carta.id}/`, body, tokenConfig(getState))
         .then(res => {
