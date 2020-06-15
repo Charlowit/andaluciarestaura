@@ -218,17 +218,18 @@ class ProductosSubirPhotoApi(viewsets.ModelViewSet):
         directorioCartaRaw = Carta.objects.filter(id__exact=cartaProducto[0]['carta']).values('directorio')
         directorio = directorioCartaRaw[0]['directorio']
 
-        ruta = './frontend' + directorio + '/' + productoID + '.jpeg'
+	ruta = directorio + '/' + productoID + '.jpeg'
+
         ruta_producto = directorio + '/' + productoID + '.jpeg'
         handle_uploaded_file(request.data["photo"], ruta)
 
-        print("Mira la ruta antes de -- > ", ruta_producto)
-        producto_instance = Productos.objects.filter(id__exact=productoID)
-        print("Producto instance -- > ", producto_instance[0].photo)
+        #print("Mira la ruta antes de -- > ", ruta_producto)
+        #producto_instance = Productos.objects.filter(id__exact=productoID)
+        #print("Producto instance -- > ", producto_instance[0].photo)
 
-        producto_instance[0].photo =ruta_producto
+        #producto_instance[0].photo = ruta_producto
 
-        producto_instance[0].save(update_fields=['photo'])
+        #producto_instance[0].save(update_fields=['photo'])
 
         return Response(status=status.HTTP_200_OK)
 

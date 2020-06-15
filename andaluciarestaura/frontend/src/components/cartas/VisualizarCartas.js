@@ -111,11 +111,11 @@ export class VisualizarCartas extends Component {
         this.setState({
             addingCarta: !this.state.addingCarta
         })
-        
+
 
         this.props.nuevaCarta(carta)
 
-        
+
     }
 
     onSubmitDesactivarCarta = (e, carta) => {
@@ -155,7 +155,7 @@ export class VisualizarCartas extends Component {
                 </div>
 
                 <div className="section hero is-paddingless" style={bkg}>
-                    <div className="container">
+                    <div className="container " style={{width: '100%'}}>
                         <div className={this.state.addingCarta ? "modal is-active" : "modal"}>
                             <div className="modal-background"></div>
                             <div className="modal-content">
@@ -239,49 +239,47 @@ export class VisualizarCartas extends Component {
 
 
 
-                        <div className="columns has-text-centered" style={{ marginTop: '0px', marginBottom: '40px' }}>
-                            <div className="column">
+                        <div className=" has-text-centered" style={{ marginTop: '0px', marginBottom: '40px', width: '100%' }}>
 
 
-                                {this.props.cartas.map((carta, index) => (
-                                    <div>
-                                        <div className={this.state.modal_qr ? "modal is-active" : "modal"}>
-                                            <div className="modal-background"></div>
-                                            <div className="modal-content">
+                            {this.props.cartas.map((carta, index) => (
+                                <div width='100%'  style={{display: 'inline-block'}}>
+                                    <div className={this.state.modal_qr ? "modal is-active" : "modal"}>
+                                        <div className="modal-background"></div>
+                                        <div className="modal-content">
 
-                                                <div className="box">
-                                                    <div className="has-text-right">
+                                            <div className="box">
+                                                <div className="has-text-right">
 
-                                                        <button className="button is-danger " onClick={this.modalQr}>
-                                                            <span className="icon is-small">
-                                                                <i className="fas fa-times"></i>
-                                                            </span>
-                                                        </button>
-                                                    </div>
-                                                    <figure className="image is-4by4"  >
-                                                        <img className="" src={this.props.cartas[0].id == this.state.cartaClickedId ? `/static/clientes/${this.props.auth.user.cif}/qr.jpg` : `/static/clientes/${this.props.auth.user.cif}/${carta.id}/qr.jpg`}></img>
-                                                    </figure>
-                                                    <div className="field ">
-                                                        <div className="field-body" >
-                                                            <div className="field" >
-                                                                <a className="button" style={{ backgroundColor: '#bca466', color: 'white' }} href={this.props.cartas[0].id == this.state.cartaClickedId ? `/static/clientes/${this.props.auth.user.cif}/qr.jpg` : `/static/clientes/${this.props.auth.user.cif}/${carta.id}/qr.jpg`} download="QRcode">Descargar</a>
-                                                            </div>
+                                                    <button className="button is-danger " onClick={this.modalQr}>
+                                                        <span className="icon is-small">
+                                                            <i className="fas fa-times"></i>
+                                                        </span>
+                                                    </button>
+                                                </div>
+                                                <figure className="image is-4by4"  >
+                                                    <img className="" src={this.props.cartas[0].id == this.state.cartaClickedId ? `/static/clientes/${this.props.auth.user.cif}/qr.jpg` : `/static/clientes/${this.props.auth.user.cif}/${carta.id}/qr.jpg`}></img>
+                                                </figure>
+                                                <div className="field ">
+                                                    <div className="field-body" >
+                                                        <div className="field" >
+                                                            <a className="button" style={{ backgroundColor: '#bca466', color: 'white' }} href={this.props.cartas[0].id == this.state.cartaClickedId ? `/static/clientes/${this.props.auth.user.cif}/qr.jpg` : `/static/clientes/${this.props.auth.user.cif}/${carta.id}/qr.jpg`} download="QRcode">Descargar</a>
                                                         </div>
                                                     </div>
-
                                                 </div>
 
                                             </div>
+
+                                        </div>s
                                         </div>
 
-                                        <div style={{ display: "inline", margin: '5px' }}>
+                                    <div style={{ margin: '5px' }}>
+                                        <div >
                                             <Animated animationIn="slideInUp">
                                                 <div className="card" style={carta.is_activa ? { border: '1px solid #bca466', maxWidth: '400px', marginTop: '40px' } : { backgroundColor: '#c7c7c7', opacity: '0.5', maxWidth: '400px', marginTop: '40px' }}>
 
                                                     <div className="card-content" >
                                                         <div >
-
-
                                                             <div className="card-image" style={{ border: '1px solid #bca466' }} onClick={e => this.modalQr(e, carta.id)}>
                                                                 <figure className="image is-4by4">
                                                                     <img className="" src={index == 0 ? `/static/clientes/${this.props.auth.user.cif}/qr.jpg` : `/static/clientes/${this.props.auth.user.cif}/${carta.id}/qr.jpg`}></img>
@@ -343,10 +341,11 @@ export class VisualizarCartas extends Component {
                                                 </div>
                                             </Animated>
                                         </div>
-                                    </div>
-                                ))}
 
-                            </div>
+                                    </div>
+                                </div>
+                            ))}
+
                         </div>
 
                     </div>

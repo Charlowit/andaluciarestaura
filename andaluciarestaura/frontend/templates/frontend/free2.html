@@ -52,7 +52,11 @@
             <figure class="image is-128x128 is-inline-block">
               {% if cif_cliente %}
               {% with 'clientes/'|add:cif_cliente|add:'/logo.jpeg' as img_static %}
+              {% if carta.logo_rounded %}
               <img class="is-rounded" src="{% static img_static %}"></img>
+              {% else %}
+              <img src="{% static img_static %}"></img>
+              {% endif %}
               {% endwith %}
               {% endif %}
             </figure>

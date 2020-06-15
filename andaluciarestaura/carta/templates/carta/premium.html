@@ -231,7 +231,11 @@
             <figure class="image is-128x128 is-inline-block">
               {% if cif_cliente %}
               {% with 'clientes/'|add:cif_cliente|add:'/logo.jpeg' as img_static %}
+              {% if carta.logo_rounded %}
               <img class="is-rounded" src="{% static img_static %}"></img>
+              {% else %}
+              <img src="{% static img_static %}"></img>
+              {% endif %}
               {% endwith %}
               {% endif %}
             </figure>
@@ -379,11 +383,11 @@
             {% if categoria.id == producto.categoria %}
             <div class='card' id="fondoCarta">
               {% if 'default' not in producto.photo %}
-               <div className=" has-text-centered">
-                 <figure className="image" style="max-width: 480px">
-                   <img className="is-rounded" src={{producto.photo}}></img>
-                 </figure>
-               </div>
+              <div className=" has-text-centered">
+                <figure className="image" style="max-width: 480px">
+                  <img className="is-rounded" src={{producto.photo}}></img>
+                </figure>
+              </div>
               {% endif %}
               {% if plantilla == "Plantilla 2" %}
               <div style="text-align: center;">
