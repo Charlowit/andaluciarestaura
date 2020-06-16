@@ -91,13 +91,13 @@ class CartasApi(viewsets.ModelViewSet):
         response = ""
 
         if cif is not None:
-            response = Carta.objects.filter(propietario__cif__exact=cif)
+            response = Carta.objects.filter(propietario__cif__exact=cif).order_by('id')
 
         if cartaID is not None:
-            response = Carta.objects.filter(id__exact=cartaID)
+            response = Carta.objects.filter(id__exact=cartaID).order_by('id')
 
 
-
+       
         return response
 
     def create(self, request, *args, **kwargs):
@@ -119,7 +119,7 @@ class CartasApi(viewsets.ModelViewSet):
         if settings.IN_PRODUCTION:
             # VARIABLES PARA PRODUCCION
             directorio = settings.STATIC_ROOT +'/clientes/' + user.cif + '/' + str(carta.id) 
-            directorio_carta = '/static/clientes/' + user.cif + '/' +  str(carta.id) 
+            directorio_carta = '/clientes/' + user.cif + '/' +  str(carta.id) 
         else:
             # VARIBALES PARA LOCAL
             directorio = './frontend/static/clientes/' + user.cif + '/' + str(carta.id) 
@@ -217,10 +217,9 @@ class ProductosSubirPhotoApi(viewsets.ModelViewSet):
         cartaProducto = Productos.objects.filter(id__exact=productoID).values('carta')
         directorioCartaRaw = Carta.objects.filter(id__exact=cartaProducto[0]['carta']).values('directorio')
         directorio = directorioCartaRaw[0]['directorio']
+        ruta = settings.STATIC_ROOT + directorio + '/' + productoID + '.jpeg'
 
-	ruta = directorio + '/' + productoID + '.jpeg'
-
-        ruta_producto = directorio + '/' + productoID + '.jpeg'
+        #ruta_producto = directorio + '/' + productoID + '.jpeg'
         handle_uploaded_file(request.data["photo"], ruta)
 
         #print("Mira la ruta antes de -- > ", ruta_producto)

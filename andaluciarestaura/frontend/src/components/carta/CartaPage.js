@@ -2,7 +2,7 @@ import React, { Component, Fragment, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { uploadProducto, updateCategoria, getCategorias, deleteproducto, subirproducto, addCategoria, deleteCategoria, subirPhoto } from '../../actions/carta';
-import { updateLogoRounded, updateEstablecimiento, getCartaExpecifica, updateEslogan, updateURL, updateNombreCarta } from '../../actions/cartas';
+import { updateLogoRounded, updateEstablecimiento, getCartaExpecifica, updateEslogan, updateURL, updateNombreCarta, getCartas } from '../../actions/cartas';
 import CargarPdf from '../cartaestatica/CargarPdf'
 import { Animated } from "react-animated-css";
 import { Redirect, Link } from 'react-router-dom';
@@ -128,10 +128,14 @@ export class CartaPage extends Component {
         this.props.subirPhoto(form_data, producto, cif);
 
         var is_primera = false;
-        if (this.props.cartaReal[0] == producto.carta) {
-            is_primera = true
+        if (this.props.totalcartas[0].id == producto.carta) {
+           console.log("CARTA REAL DE 0 --> ",this.props.totalcartas[0].id )
+           console.log("PRODUCTO CARTA ID --> ", producto.carta) 
+           is_primera = true
         }
+        console.log("ESTO ES LO QUE VALE IS_PRIMERA " , is_primera)
         this.props.uploadProducto(producto, cif, is_primera)
+        is_primera = false;
         //setTimeout(this.props.uploadProducto(this.state.clickedProducto), 5000)
 
 
@@ -507,6 +511,7 @@ export class CartaPage extends Component {
 
 
     static propTypes = {
+        totalcartas: PropTypes.array.isRequired,
         cartas: PropTypes.array.isRequired,
         deleteproducto: PropTypes.func.isRequired,
         subirproducto: PropTypes.func.isRequired,
@@ -1554,6 +1559,7 @@ export class CartaPage extends Component {
 }
 
 const mapStateToProps = state => ({
+    totalcartas: state.reducerCartas.cartas,
     cartas: state.cartas.cartas,
     categorias: state.cartas.categorias,
     canGetProducts: state.cartas.canGetProducts,
@@ -1563,4 +1569,4 @@ const mapStateToProps = state => ({
     isUpdatingPhoto: state.cartas.isUpdatingPhoto
 });
 
-export default connect(mapStateToProps, { updateLogoRounded, uploadProducto, updateCategoria, updateEstablecimiento, updateNombreCarta, updateURL, updateEslogan, getCartaExpecifica, subirproducto, addCategoria, getCategorias, deleteproducto, deleteCategoria, subirPhoto })(CartaPage);
+export default connect(mapStateToProps, { getCartas, updateLogoRounded, uploadProducto, updateCategoria, updateEstablecimiento, updateNombreCarta, updateURL, updateEslogan, getCartaExpecifica, subirproducto, addCategoria, getCategorias, deleteproducto, deleteCategoria, subirPhoto })(CartaPage);
