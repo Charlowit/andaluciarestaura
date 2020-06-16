@@ -77,8 +77,6 @@ export class ResetPassword extends Component {
         return (
             <React.Fragment>
                 <div className="section is-paddingless">
-                    <h1>¿Necesita cambiar su contraseña?</h1>
-                    <h3>No olvide rellenar todos los campos.</h3>
                     <section className="hero has-text-centered is-paddingless">
                         <div className="hero-body is-paddingless" style={bkg}>
                             <div className="content" style={{marginTop: '70px'}}>
