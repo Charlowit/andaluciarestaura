@@ -159,7 +159,7 @@ export class VisualizarCartas extends Component {
                         <div className={this.state.addingCarta ? "modal is-active" : "modal"}>
                             <div className="modal-background"></div>
                             <div className="modal-content">
-                                <div className="container box">
+                                <div className="container box" style={{backgroundColor: '#bca466'}}>
                                     <div className="has-text-right">
                                         <button className="button is-danger" onClick={this.addingCarta}>
                                             <span className="icon is-small">
@@ -228,7 +228,7 @@ export class VisualizarCartas extends Component {
                                                     </div>
                                                 </form>
                                                 <div className="control buttons is-centered">
-                                                    <button className="button is-success" onClick={this.onSubmit}>Guardar carta y categorias</button>
+                                                    <button className="button is-success" style={{color: '#bca466', backgroundColor: 'white'}} onClick={this.onSubmit}>Guardar carta y categorias</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -248,7 +248,7 @@ export class VisualizarCartas extends Component {
                                         <div className="modal-background"></div>
                                         <div className="modal-content">
 
-                                            <div className="box">
+                                            <div className="box" >
                                                 <div className="has-text-right">
 
                                                     <button className="button is-danger " onClick={this.modalQr}>
@@ -327,11 +327,14 @@ export class VisualizarCartas extends Component {
                                                                 </button>
                                                             </div>
                                                             <div className="card-footer-item">
+
+                                                                {carta.contador_visitas}
+                                                                {/*
                                                                 <button className="button is-danger" style={{ backgroundColor: '#bca466' }}>
                                                                     <span className="icon is-small">
                                                                         <i className="fas fa-trash" ></i>
                                                                     </span>
-                                                                </button>
+                                                                </button>*/}
                                                             </div>
                                                         </footer>
 

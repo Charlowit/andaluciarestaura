@@ -39,7 +39,7 @@ export class CartaPage extends Component {
             tamanio: "",
             tamanio2: "",
             tamanio3: "",
-            precio1: "0.0",
+            precio1: "",
             precio2: "0.0",
             precio3: "0.0",
             is_apio: false,
@@ -147,10 +147,10 @@ export class CartaPage extends Component {
     onSubmitCategorias = e => {
         e.preventDefault();
 
-        const { nombreNuevaCategoria, descripcion, info_extra } = this.state;
+        const { nombreNuevaCategoria, info_extra } = this.state;
         const posicion = this.props.categorias.length + 1
         const carta = this.props.match.params.id
-        const categoria = { nombreNuevaCategoria, descripcion, posicion, info_extra, carta };
+        const categoria = { nombreNuevaCategoria, posicion, info_extra, carta };
 
         this.setState({
             addCategoria: !this.state.addCategoria
@@ -559,7 +559,7 @@ export class CartaPage extends Component {
                                 <div className={this.state.editEslogan ? "modal is-active" : "modal"}>
                                     <div className="modal-background"></div>
                                     <div className="modal-content">
-                                        <div className="container box">
+                                        <div className="container box" style={{backgroundColor: '#bca466'}}>
                                             <div className="has-text-right">
                                                 <button class="button is-danger" onClick={this.editEslogan}>
                                                     <span class="icon is-small">
@@ -574,7 +574,7 @@ export class CartaPage extends Component {
                                                     <input className="input" onChange={this.onChange} name="newEslogan" defaultValue={this.state.newEslogan} type="text" placeholder="El mejor restaurante de Granada!" />
                                                 </div>
                                                 <div className="control buttons is-centered" style={{ marginTop: '20px' }}>
-                                                    <button className="button is-success" onClick={e => this.onSubmitNewSlogan(e, carta)}>Guardar</button>
+                                                    <button className="button is-success" style={{color: '#bca466', backgroundColor: 'white'}} onClick={e => this.onSubmitNewSlogan(e, carta)}>Guardar</button>
                                                 </div>
                                             </form>
                                         </div>
@@ -584,7 +584,7 @@ export class CartaPage extends Component {
                                 <div className={this.state.editURLF ? "modal is-active" : "modal"}>
                                     <div className="modal-background"></div>
                                     <div className="modal-content">
-                                        <div className="container box">
+                                        <div className="container box" style={{backgroundColor: '#bca466'}}>
                                             <div className="has-text-right">
                                                 <button class="button is-danger" onClick={this.editURLF}>
                                                     <span class="icon is-small">
@@ -599,7 +599,7 @@ export class CartaPage extends Component {
                                                     <input className="input" type="text" name="newUrlF" onChange={this.onChange} defaultValue={this.state.newUrlF} placeholder="https://www.facebook.com/" />
                                                 </div>
                                                 <div className="control buttons is-centered" style={{ marginTop: '20px' }}>
-                                                    <button className="button is-success" onClick={e => this.onSubmitURL(e, carta)}>Guardar</button>
+                                                    <button className="button is-success" style={{color: '#bca466', backgroundColor: 'white'}} onClick={e => this.onSubmitURL(e, carta)}>Guardar</button>
                                                 </div>
                                             </form>
                                         </div>
@@ -609,7 +609,7 @@ export class CartaPage extends Component {
                                 <div className={this.state.editURLI ? "modal is-active" : "modal"}>
                                     <div className="modal-background"></div>
                                     <div className="modal-content">
-                                        <div className="container box">
+                                        <div className="container box" style={{backgroundColor: '#bca466'}}>
                                             <div className="has-text-right">
                                                 <button class="button is-danger" onClick={this.editURLI}>
                                                     <span class="icon is-small">
@@ -624,7 +624,7 @@ export class CartaPage extends Component {
                                                     <input className="input" type="text" name="newUrlI" onChange={this.onChange} defaultValue={this.state.newUrlI} placeholder="https://www.instagram.com/" />
                                                 </div>
                                                 <div className="control buttons is-centered" style={{ marginTop: '20px' }}>
-                                                    <button className="button is-success" onClick={e => this.onSubmitURL(e, carta)}>Guardar</button>
+                                                    <button className="button is-success" style={{color: '#bca466', backgroundColor: 'white'}} onClick={e => this.onSubmitURL(e, carta)}>Guardar</button>
                                                 </div>
                                             </form>
                                         </div>
@@ -634,7 +634,7 @@ export class CartaPage extends Component {
                                 <div className={this.state.editURLT ? "modal is-active" : "modal"}>
                                     <div className="modal-background"></div>
                                     <div className="modal-content">
-                                        <div className="container box">
+                                        <div className="container box" style={{backgroundColor: '#bca466'}}>
                                             <div className="has-text-right">
                                                 <button class="button is-danger" onClick={this.editURLT}>
                                                     <span class="icon is-small">
@@ -649,7 +649,7 @@ export class CartaPage extends Component {
                                                     <input className="input" name="newUrlT" onChange={this.onChange} defaultValue={this.state.newUrlT} type="text" placeholder="https://www.tripadvisor.es/" />
                                                 </div>
                                                 <div className="control buttons is-centered" style={{ marginTop: '20px' }}>
-                                                    <button className="button is-success" onClick={e => this.onSubmitURL(e, carta)}>Guardar</button>
+                                                    <button className="button is-success" style={{color: '#bca466', backgroundColor: 'white'}} onClick={e => this.onSubmitURL(e, carta)}>Guardar</button>
                                                 </div>
                                             </form>
                                         </div>
@@ -659,7 +659,7 @@ export class CartaPage extends Component {
                                 <div className={this.state.editNombreCarta ? "modal is-active" : "modal"}>
                                     <div className="modal-background"></div>
                                     <div className="modal-content">
-                                        <div className="container box">
+                                        <div className="container box" style={{backgroundColor: '#bca466'}}>
                                             <div className="has-text-right">
                                                 <button class="button is-danger" onClick={this.editNombreCarta}>
                                                     <span class="icon is-small">
@@ -674,7 +674,7 @@ export class CartaPage extends Component {
                                                     <input className="input" type="text" name="newCartaNombre" onChange={this.onChange} defaultValue={this.state.newCartaNombre} placeholder="Nombre de la carta" />
                                                 </div>
                                                 <div className="control buttons is-centered" style={{ marginTop: '20px' }}>
-                                                    <button className="button is-success" onClick={e => this.onSubmitNewCartaNombre(e, carta)}>Guardar</button>
+                                                    <button className="button is-success" style={{color: '#bca466', backgroundColor: 'white'}} onClick={e => this.onSubmitNewCartaNombre(e, carta)}>Guardar</button>
                                                 </div>
                                             </form>
                                         </div>
@@ -684,7 +684,7 @@ export class CartaPage extends Component {
                                 <div className={this.state.editEstablecimiento ? "modal is-active" : "modal"}>
                                     <div className="modal-background"></div>
                                     <div className="modal-content">
-                                        <div className="container box">
+                                        <div className="container box" style={{backgroundColor: '#bca466'}}>
                                             <div className="has-text-right">
                                                 <button class="button is-danger" onClick={this.editEstablecimiento}>
                                                     <span class="icon is-small">
@@ -699,7 +699,7 @@ export class CartaPage extends Component {
                                                     <input className="input" onChange={this.onChange} name="newEstablecimiento" defaultValue={this.state.newEstablecimiento} type="text" placeholder="El restaurante del Desarrollador" />
                                                 </div>
                                                 <div className="control buttons is-centered" style={{ marginTop: '20px' }}>
-                                                    <button className="button is-success" onClick={e => this.onSubmitNewEstablecimiento(e, carta)}>Guardar</button>
+                                                    <button className="button is-success" style={{color: '#bca466', backgroundColor: 'white'}} onClick={e => this.onSubmitNewEstablecimiento(e, carta)}>Guardar</button>
                                                 </div>
                                             </form>
                                         </div>
@@ -723,13 +723,13 @@ export class CartaPage extends Component {
                                                     </figure>
                                                 </div>
                                             </div>
-                                            
+
                                             <button className="button is-rounded is-small is-warning" style={{ color: '#bca466', backgroundColor: 'white', display: 'inline' }} onClick={e => this.changeLogoRounded(e, carta)}>
                                                 <span className="icon is-small">
                                                     <i className="fas fa-camera"></i>
                                                 </span>
                                             </button>
-                                          
+
                                         </div>
 
 
@@ -861,9 +861,13 @@ export class CartaPage extends Component {
                                             <div className={this.state.addCategoria ? "modal is-active" : "modal"}>
                                                 <div className="modal-background"></div>
                                                 <div className="modal-content">
-                                                    <div className="container box">
+                                                    <div className="container box" style={{ backgroundColor: '#bca466' }}>
                                                         <div className="has-text-right">
-                                                            <button className="button is-danger" onClick={this.addCategory}>x</button>
+                                                            <button className="button is-link" onClick={this.addCategory}>
+                                                                <span className="icon is-small">
+                                                                    <i className="fas fa-times"></i>
+                                                                </span>
+                                                            </button>
                                                         </div>
                                                         <div className="has-text-centered">
                                                             <h1 className="title" style={{ marginTop: '10px' }}>Añadir nueva categoria</h1>
@@ -877,16 +881,13 @@ export class CartaPage extends Component {
                                                                         <div className="control">
                                                                             <input className="input" onChange={this.onChange} defaultValue={this.state.nombreNuevaCategoria} name="nombreNuevaCategoria" type="text" placeholder="Entrantes, Postres..." />
                                                                         </div>
-                                                                        <label className="label" style={{ marginTop: '10px' }}>Descripción</label>
-                                                                        <div className="control">
-                                                                            <textarea name="descripcion" className="textarea" placeholder="Descripción del producto." size="20" onChange={this.onChange} defaultValue={this.state.descripcion}></textarea>
-                                                                        </div>
+
                                                                         <label className="label" style={{ marginTop: '10px' }}>Información extra</label>
                                                                         <div className="control">
                                                                             <input className="input" onChange={this.onChange} defaultValue={this.state.info_extra} name="info_extra" type="text" placeholder="Estas tapas llevan todas patatas fritas..." />
                                                                         </div>
                                                                         <div className="has-text-right">
-                                                                            <button className="button is-success" style={{ marginTop: '10px' }} onClick={this.onSubmitCategorias} > AÑADIR </button>
+                                                                            <button className="button is-success" style={{ marginTop: '10px', color: '#bca466', backgroundColor: 'white' }} onClick={this.onSubmitCategorias} > AÑADIR </button>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -900,9 +901,13 @@ export class CartaPage extends Component {
                                             <div className={this.state.addingProduct ? "modal is-active" : "modal"}>
                                                 <div className="modal-background"></div>
                                                 <div className="modal-content">
-                                                    <div className="container box">
+                                                    <div className="container box" style={{ backgroundColor: '#bca466' }}>
                                                         <div className="has-text-right">
-                                                            <button className="button is-danger" onClick={this.addProduct}>x</button>
+                                                            <button className="button is-link" onClick={this.addProduct}>
+                                                                <span className="icon is-small">
+                                                                    <i className="fas fa-times"></i>
+                                                                </span>
+                                                            </button>
                                                         </div>
                                                         <h1 className="title has-text-centered" style={{ marginTop: '20px' }}>Añadir Producto a la Carta</h1>
                                                         <form>
@@ -1158,7 +1163,7 @@ export class CartaPage extends Component {
                                                         </form>
                                                         <br />
                                                         <div className="control buttons is-centered">
-                                                            <button className="button is-success" onClick={this.onSubmit}>Guardar</button>
+                                                            <button className="button is-success"  style={{backgroundColor: 'white', color:'#bca466'}} onClick={this.onSubmit}>Guardar</button>
                                                         </div>
                                                     </div>
                                                 </div>

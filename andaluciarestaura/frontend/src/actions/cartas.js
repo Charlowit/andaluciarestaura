@@ -244,6 +244,8 @@ export const updateShow = (carta) => (dispatch, getState) => {
     axios.put(`/api/getcartas/${carta.id}/`, body, tokenConfig(getState))
         .then(res => {
             console.log("Its working?")
+            dispatch(createMessages({ nuevaVisualizacion: "Su visualizacion se ha actualizado correctamente." }));
+
             dispatch({
                 type: UPDATE_CARTA,
                 payload: res.data

@@ -242,6 +242,11 @@
           </div>
         </div>
         <h1 class="title" id="colorTextoWhite"> {{carta.establecimiento}} </h1>
+        {% if carta.eslogan != "Escribe aquí tu eslogan!" %}
+        {% if carta.eslogan != "-" %}
+        <h1 class="subtitle" id="colorTextoWhite"> {{carta.eslogan}} </h1>
+        {% endif %}
+        {% endif %}
         <p class="field">
           {% if url_facebook != "-" %}
           <a href={{url_facebook}} class="button is-rounded is-medium">

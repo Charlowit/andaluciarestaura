@@ -44,13 +44,16 @@ export class Alerts extends Component {
                 alert.error("Debes de rellenar el campo url de Instagram.")
             if(error.msg.url_tripadvisor)
                 alert.error("Debes de rellenar el campo url de Tripadvisor.")
-            
             if(error.msg.eslogan)
                 alert.error("Debes de rellenar el campo del nuevo eslogan.")
             if(error.msg.name)
-                alert.error("Debes de rellenar el campo Nombre de la nueva categoria.")
+                alert.error("Debes de rellenar el campo Nombre.")
+            if(error.msg.precio1)
+                alert.error("Debes de rellenar el campo del primer precio.")
             if(error.msg.descripcion)
-                alert.error("Debes de rellenar el campo Descripcion de la nueva categoria.")
+                alert.error("Debes de rellenar el campo Descripcion del nuevo producto.")
+            if(error.msg.categoria)
+                alert.error("Debes de rellenar el campo Categoria del nuevo producto.")
             if(String(error.msg).includes("NOT NULL constraint failed: carta_carta.name")){
                 alert.error("El campo Nombre de la nueva carta es obligatorio.")
             }
@@ -108,8 +111,18 @@ export class Alerts extends Component {
             if(message.nuevoProducto) {
                 alert.success(message.nuevoProducto);
             }
-            
-
+            if(message.updateCategoria) {
+                alert.success(message.updateCategoria);
+            }
+            if(message.borrarCategoria) {
+                alert.success(message.borrarCategoria);
+            }
+            if(message.borrarProducto) {
+                alert.success(message.borrarProducto);
+            }
+            if(message.nuevaVisualizacion) {
+                alert.success(message.nuevaVisualizacion);
+            }
         }
     }
 

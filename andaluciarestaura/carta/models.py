@@ -43,7 +43,6 @@ class Carta(models.Model):
 
 class Categorias(models.Model):
     name = models.CharField(max_length=50)
-    descripcion = models.CharField(max_length=100,default="producto",null=True)
     posicion = models.IntegerField(default="-1")
     carta = models.ForeignKey(Carta, null=False, on_delete=models.CASCADE)
     info_extra = models.CharField(max_length=100,default="-", null=True)

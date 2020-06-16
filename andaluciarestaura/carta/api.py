@@ -91,10 +91,10 @@ class CartasApi(viewsets.ModelViewSet):
         response = ""
 
         if cif is not None:
-            response = Carta.objects.filter(propietario__cif__exact=cif)
+            response = Carta.objects.filter(propietario__cif__exact=cif).order_by('id')
 
         if cartaID is not None:
-            response = Carta.objects.filter(id__exact=cartaID)
+            response = Carta.objects.filter(id__exact=cartaID).order_by('id')
 
 
 
@@ -187,7 +187,7 @@ class ProductosApi(viewsets.ModelViewSet):
 
     def get_queryset(self):
         categoriaID = self.request.query_params.get('categoria', None)
-        queryset = Productos.objects.filter(categoria__id__exact=categoriaID)    
+        queryset = Productos.objects.filter(categoria__id__exact=categoriaID).order_by('id') 
         return queryset
 
 
