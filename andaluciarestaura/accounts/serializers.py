@@ -52,3 +52,9 @@ class FilePDFSerializer(serializers.Serializer):
         cif = serializers.CharField()
         pdf = serializers.FileField()
 
+class PasswordSerializer(serializers.Serializer):
+    cif = serializers.CharField()
+    password = serializers.CharField()
+
+    def update(self):
+        pass

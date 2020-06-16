@@ -140,6 +140,20 @@ export const logout = () => (dispatch, getState) => {
 
 // Registro (ESTE NO FUNCIONA EL REGISTRO DE VERDAD ESTA EN EL DEL PDF)
 
+export const cambiarpassword = (user) => (dispatch, getState) => {
+
+    const config = {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    };
+
+    axios.put('api/auth/password', user, config)
+        .then(res => {
+            console.log("Password reseteada correctamente!")
+        }).catch(err => console.log("Este es el error de restaurar la pass: " , err))
+};
+
 export const registro = (user) => dispatch => {
 
     //Headers

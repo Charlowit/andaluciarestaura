@@ -29,6 +29,8 @@ import PrivateRouteCartaPage from './privateroute/PrivateRouteCartaPage';
 import PrivateRouteVisualizar from './privateroute/PrivateRouteVisualizar';
 import { Animated } from "react-animated-css";
 import BarraInformacion from './barrainformacion/BarraInformacion';
+import ResetPassword from "./accounts/ResetPassword";
+import PrivateRoutePass from "./privateroute/PrivateRoutePass";
 
 
 //Alert Options
@@ -101,8 +103,7 @@ class App extends Component {
                                 <PrivateRoute exact path="/creditcard-page" component={CreditCard} />
                                 <PrivateRoute exact path="/avatar-page" component={Logo} />
                                 <PrivateRouteVisualizar exact path="/visualizar" component={VisualizarCartas} />
-
-
+                                <PrivateRoutePass exact path="/reset-password" component={ResetPassword} />
                             </Switch>
                             <Footer />
                         </Fragment>
