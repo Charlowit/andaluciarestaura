@@ -1574,7 +1574,6 @@ export class CartaPage extends Component {
                                                         <div>
                                                             <div className="debug">
                                                                 {this.props.categorias.map(categoria => (
-                                                                    <Animated animationIn="fadeIn" animationOut="fadeOutRight">
                                                                         <div style={{ marginTop: '60px' }} key={categoria.id}>
                                                                             <div className='card equal-height' style={{ backgroundColor: '#d5c69f' }}>
                                                                                 <div className="columns">
@@ -1935,7 +1934,6 @@ export class CartaPage extends Component {
                                                                                 </div>
                                                                             ))}
                                                                         </div>
-                                                                    </Animated>
                                                                 ))}
 
                                                             </div>
@@ -1977,8 +1975,4 @@ const mapStateToProps = state => ({
     isUpdatingPhoto: state.cartas.isUpdatingPhoto
 });
 
-<<<<<<< HEAD
-export default connect(mapStateToProps, { getCartas, updateLogoRounded, uploadProducto, updateCategoria, updateEstablecimiento, updateNombreCarta, updateURL, updateEslogan, getCartaExpecifica, subirproducto, addCategoria, getCategorias, deleteproducto, deleteCategoria, subirPhoto })(CartaPage);
-=======
 export default connect(mapStateToProps, { uploadProductParams, updateLogoRounded, uploadProducto, updateCategoria, updateEstablecimiento, updateNombreCarta, updateURL, updateEslogan, getCartaExpecifica, subirproducto, addCategoria, getCategorias, deleteproducto, deleteCategoria, subirPhoto })(CartaPage);
->>>>>>> master
