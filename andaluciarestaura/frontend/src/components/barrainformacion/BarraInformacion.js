@@ -16,7 +16,7 @@ export default class BarraInformacion extends Component {
                                         <i className="fas fa-envelope" style={{paddingTop: '4px'}}></i>
                                     </span>
                                 </div>
-                                <p style={{ display: 'inline' }}>: <a style={{ color: 'white' }}>soporte@hotehub.com</a></p>
+                                <p style={{ display: 'inline' }}><a style={{ color: 'white' }}>soporte@hotehub.com</a></p>
                             </div>
                         </div>
                     </div>
