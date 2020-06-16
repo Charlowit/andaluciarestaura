@@ -67,6 +67,7 @@ def index_gratis(request,cif_cliente):
             if len(data) > 0:
                 for p in data:
                     productos.append(p)
+        
 
     template = None
 

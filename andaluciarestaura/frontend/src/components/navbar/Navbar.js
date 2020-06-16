@@ -8,23 +8,23 @@ import BarraInformacion from '../barrainformacion/BarraInformacion'
 class Navbar extends Component {
 
     constructor() {
-      super();
-      this.state = {
-        id: "",
-        cif: "",
-        marca_comercial: "",
-        nombre_fiscal: "",
-        razon_social: "",
-        direccion_fiscal: "",
-        localidad: "",
-        codigo_postal: "",
-        provincia: "",
-        email: "",
-        telefono_1: "",
-        telefono_2: "",
-        fax: "",
-        tipo_negocio: "",
-      };
+        super();
+        this.state = {
+            id: "",
+            cif: "",
+            marca_comercial: "",
+            nombre_fiscal: "",
+            razon_social: "",
+            direccion_fiscal: "",
+            localidad: "",
+            codigo_postal: "",
+            provincia: "",
+            email: "",
+            telefono_1: "",
+            telefono_2: "",
+            fax: "",
+            tipo_negocio: "",
+        };
     }
 
     static propTypes = {
@@ -35,29 +35,29 @@ class Navbar extends Component {
     componentDidMount() {
         console.log(this.props.auth.user)
         console.log("LISTA INICIO: ")
-       /*this.state.id = this.props.auth.user.id
-        this.state.cif = this.props.auth.user.cif
-
-        this.state.marca_comercial = this.props.auth.user.marca_comercial
-        this.state.nombre_fiscal = this.props.auth.user.nombre_fiscal
-        this.state.razon_social = this.props.auth.user.razon_social
-        this.state.direccion_fiscal = this.props.auth.user.direccion_fiscal
-        this.state.localidad = this.props.auth.user.localidad
-        this.state.codigo_postal = this.props.auth.user.codigo_postal
-        this.state.provincia = this.props.auth.user.provincia
-        this.state.email = this.props.auth.user.email
-        this.state.telefono_1 = this.props.auth.user.telefono_1
-        this.state.telefono_2 = this.props.auth.user.telefono_2
-        this.state.fax = this.props.auth.user.fax
-        this.state.tipo_negocio = this.props.auth.user.tipo_negocio
-        console.log("THIS STATE ID: " + this.state.id)
-        console.log("THIS PROPS AUTH USER ID: " + this.props.auth.user.id)
-        console.log("THIS STATE CIF: " + this.state.cif)
-        console.log("THIS PROPS AUTH USER CIF: " + this.props.auth.user.cif)
-        console.log("LISTA FIN: ")*/
+        /*this.state.id = this.props.auth.user.id
+         this.state.cif = this.props.auth.user.cif
+ 
+         this.state.marca_comercial = this.props.auth.user.marca_comercial
+         this.state.nombre_fiscal = this.props.auth.user.nombre_fiscal
+         this.state.razon_social = this.props.auth.user.razon_social
+         this.state.direccion_fiscal = this.props.auth.user.direccion_fiscal
+         this.state.localidad = this.props.auth.user.localidad
+         this.state.codigo_postal = this.props.auth.user.codigo_postal
+         this.state.provincia = this.props.auth.user.provincia
+         this.state.email = this.props.auth.user.email
+         this.state.telefono_1 = this.props.auth.user.telefono_1
+         this.state.telefono_2 = this.props.auth.user.telefono_2
+         this.state.fax = this.props.auth.user.fax
+         this.state.tipo_negocio = this.props.auth.user.tipo_negocio
+         console.log("THIS STATE ID: " + this.state.id)
+         console.log("THIS PROPS AUTH USER ID: " + this.props.auth.user.id)
+         console.log("THIS STATE CIF: " + this.state.cif)
+         console.log("THIS PROPS AUTH USER CIF: " + this.props.auth.user.cif)
+         console.log("LISTA FIN: ")*/
     }
 
-    render(){
+    render() {
 
 
         /*const { id=this.props.auth.user.id } = this.state.id
@@ -94,7 +94,7 @@ class Navbar extends Component {
                         </span>
                         <span className="control">
                             <div className="buttons">
-                                <Link to="/" refresh="true" className="button is-danger" style={{backgroundColor:'#bca466'}} onClick={this.props.logout}>Logout</Link>
+                                <Link to="/" refresh="true" className="button is-danger" style={{ backgroundColor: '#bca466' }} onClick={this.props.logout}>Logout</Link>
                             </div>
                         </span>
                     </div>
@@ -111,12 +111,12 @@ class Navbar extends Component {
                     <div className="field is-grouped">
                         <span className="control">
                             <Link to="/register-page">
-                                <p className="button is-link" style={{ width: '100%', backgroundColor:'#bca466' }}>Registro</p>
+                                <p className="button is-link" style={{ width: '100%', backgroundColor: '#bca466' }}>Registro</p>
                             </Link>
                         </span>
                         <span className="control">
                             <Link to="/">
-                                <p className="button is-link" style={{ width: '100%', backgroundColor:'#bca466' }}>Login</p>
+                                <p className="button is-link" style={{ width: '100%', backgroundColor: '#bca466' }}>Login</p>
                             </Link>
                         </span>
                     </div>
@@ -139,24 +139,35 @@ class Navbar extends Component {
                         {/*<Link className="navbar-item" style={{ width: '100%', marginTop: '10px' }} to="/avatar-page">Avatar</Link>*/}
                         <hr className="navbar-divider">
                         </hr>
-                        
+
                     </div>
                 </div>
 
                 <div className="navbar-item is-hoverable has-dropdown">
-                    <Link className="navbar-link " style={{ width: '100%'}} to="/servicios-page">Servicios</Link>
+                    <a className="navbar-link  is-active" href="#/servicios-page">
+                        Servicios
+                    </a>
+                    <div className="navbar-dropdown ">
+                        <Link className="navbar-item " style={{ width: '100%' }} to="/servicios-page">Listado Servicios</Link>
+                    </div>
                 </div>
                 <div className="navbar-item  is-hoverable has-dropdown">
-                    <Link className="navbar-link" style={{ width: '100%'}} to="/visualizar">Cartas</Link>
+
+                    <a className="navbar-link  is-active" href="#/visualizar">
+                        Cartas
+                    </a>
+                    <div className="navbar-dropdown ">
+                        <Link className="navbar-item" style={{ width: '100%' }} to="/visualizar">Listado Cartas</Link>
+                    </div>
                 </div>
                 <div className="navbar-item  is-hoverable has-dropdown">
-                    <Link className="navbar-link" style={{ width: '100%'}} to="/reservas-page">Reservas</Link>
+                    <Link className="navbar-item" style={{ width: '100%' }} to="/reservas-page">Reservas</Link>
                 </div>
                 <div className="navbar-item  is-hoverable  has-dropdown">
-                    <Link className="navbar-link" style={{ width: '100%'}} to="/delivery-page">Delivery</Link>
+                    <Link className="navbar-item" style={{ width: '100%' }} to="/delivery-page">Delivery</Link>
                 </div>
                 <div className="navbar-item   is-hoverable has-dropdown">
-                    <a className="navbar-link" style={{ width: '100%'}} >Aforo</a>
+                    <a className="navbar-item" style={{ width: '100%' }} >Aforo</a>
                 </div>
 
             </div>
@@ -168,7 +179,7 @@ class Navbar extends Component {
             <div>
                 <nav className="navbar is-fixed-top">
                     <div className="navbar-brand">
-                        <Link to="/" style={{ marginTop: '9px' }}>
+                        <Link to="/" style={{ marginTop: '9px', marginLeft: '10px' }}>
                             <img src={"/static/frontend/logoar.png"} width="300" height="125" />
                         </Link>
 
@@ -185,7 +196,7 @@ class Navbar extends Component {
                         {isAuthenticated ? authEnd : guestEnd}
                     </div>
 
-                    
+
                 </nav>
 
                 <BarraInformacion />
