@@ -132,15 +132,12 @@ class Navbar extends Component {
         </a>
                     <div className="navbar-dropdown ">
                         <Link className="navbar-item" style={{ width: '100%', marginTop: '10px' }} to="/admin-page">Datos Negocio</Link>
-                        {/*<Link className="navbar-item" style={{ width: '100%', marginTop: '10px' }} to="/maps-page">Maps</Link>*/}
                         <Link className="navbar-item" style={{ width: '100%', marginTop: '10px' }} to="/creditcard-page">Tárjeta de crédito</Link>
+                        <Link className="navbar-item" style={{ width: '100%', marginTop: '10px' }} to="/reset-password">Cambiar Contraseña</Link>
+                        {/*<Link className="navbar-item" style={{ width: '100%', marginTop: '10px' }} to="/maps-page">Maps</Link>*/}
                         {/*<Link className="navbar-item" style={{ width: '100%', marginTop: '10px' }} to="/autocomplete-page">Roads</Link>*/}
                         {/*<Link className="navbar-item" style={{ width: '100%', marginTop: '10px' }} to="/avatar-page">Avatar</Link>*/}
-
-
-                        
                         <hr className="navbar-divider">
-
                         </hr>
                         
                     </div>
