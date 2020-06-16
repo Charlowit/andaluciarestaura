@@ -33,7 +33,7 @@ export class Alerts extends Component {
             if(error.msg.password)
                 alert.error("El campo Contraseña es obligatorio.")
             if(error.msg.telefono_1)
-                alert.show("El campo Telefono es obligatorio.")
+                alert.error("El campo Telefono es obligatorio.")
             if(error.msg.marca_comercial)
                 alert.error("El campo Marca Comercial es obligatorio.")
             if(error.msg.establecimiento)

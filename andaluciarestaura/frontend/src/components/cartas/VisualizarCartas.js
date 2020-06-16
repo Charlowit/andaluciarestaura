@@ -155,29 +155,57 @@ export class VisualizarCartas extends Component {
                 </div>
 
                 <div className="section hero is-paddingless" style={bkg}>
-                    <div className="container " style={{width: '100%'}}>
+                    <div className="container " style={{ width: '100%' }}>
                         <div className={this.state.addingCarta ? "modal is-active" : "modal"}>
                             <div className="modal-background"></div>
                             <div className="modal-content">
-                                <div className="container box" style={{backgroundColor: '#bca466'}}>
+                                <div className="container box" >
                                     <div className="has-text-right">
-                                        <button className="button is-danger" onClick={this.addingCarta}>
+
+                                        <button className="button" style={{ backgroundColor: '#171c8f' }} onClick={this.addingCarta}>
                                             <span className="icon is-small">
-                                                <i className="fas fa-times"></i>
+                                                <i className="fas fa-times " style={{ color: 'white' }}></i>
                                             </span>
                                         </button>
                                     </div>
                                     <div className="columns is-centered">
                                         <div className="column is-half">
                                             <div className="container">
-                                                <h1 className="title has-text-centered">Crear nueva carta</h1>
-                                                <form>
+                                                <div className="has-text-centered">
+
+                                                    <span className="icon" >
+                                                        <i className="fas fa-cocktail" style={{ fontSize: '70px', color: "#bca466" }}></i>
+                                                    </span>
+                                                    <h1 className="title" style={{ marginTop: '10px' }}> NUEVA CARTA </h1>
+
+                                                </div>
+
+                                                <hr style={{ marginTop: '30px', backgroundColor: '#bca466', color: '#bca466' }} />                                                 <form>
                                                     <div className="columns ">
                                                         <div className="column ">
                                                             <div className="field">
                                                                 <label className="label">Nombre</label>
                                                                 <div className="control">
                                                                     <input className="input" onChange={this.onChange} name="nombreNuevaCarta" defaultValue={this.state.nombreNuevaCarta} type="text" placeholder="Nombre para la carta" />
+                                                                </div>
+                                                            </div>
+                                                            <div className="field">
+                                                                <label className="label">Establecimiento</label>
+                                                                <div className="control">
+                                                                    <input className="input" onChange={this.onChange} name="establecimiento" defaultValue={this.state.establecimiento} type="text" placeholder="Bar del Desarrollador!" />
+                                                                </div>
+                                                            </div>
+                                                            <div className="field">
+                                                                <label className="label">Plantilla</label>
+                                                                <div className="control">
+                                                                    <div className="select">
+                                                                        <select name="plantilla" onChange={this.onChange} defaultValue={this.state.plantilla}>
+                                                                            <option>Ninguna plantilla seleccionada</option>
+                                                                            <option value="Plantilla 1">Plantilla 1</option>
+                                                                            <option value="Plantilla 2">Plantilla 2</option>
+                                                                            <option value="Plantilla 3">Plantilla 3</option>
+                                                                        </select>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                             <div className="field">
@@ -204,31 +232,13 @@ export class VisualizarCartas extends Component {
                                                                     <input className="input" onChange={this.onChange} name="eslogan" defaultValue={this.state.eslogan} type="text" placeholder="El mejor restaurante de la zona!" />
                                                                 </div>
                                                             </div>
-                                                            <div className="field">
-                                                                <label className="label">Establecimiento</label>
-                                                                <div className="control">
-                                                                    <input className="input" onChange={this.onChange} name="establecimiento" defaultValue={this.state.establecimiento} type="text" placeholder="Bar del Desarrollador!" />
-                                                                </div>
-                                                            </div>
-                                                            <div className="field">
-                                                                <label className="label">Plantilla</label>
-                                                                <div className="control">
-                                                                    <div className="select">
-                                                                        <select name="plantilla" onChange={this.onChange} defaultValue={this.state.plantilla}>
-                                                                            <option>Ninguna plantilla seleccionada</option>
-                                                                            <option value="Plantilla 1">Plantilla 1</option>
-                                                                            <option value="Plantilla 2">Plantilla 2</option>
-                                                                            <option value="Plantilla 3">Plantilla 3</option>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
+                                                            
                                                             <hr />
                                                         </div>
                                                     </div>
                                                 </form>
                                                 <div className="control buttons is-centered">
-                                                    <button className="button is-success" style={{color: '#bca466', backgroundColor: 'white'}} onClick={this.onSubmit}>Guardar carta y categorias</button>
+                                                    <button className="button is-success" style={{ color: 'white', backgroundColor: '#bca466' }} onClick={this.onSubmit}>Guardar carta y categorias</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -243,7 +253,7 @@ export class VisualizarCartas extends Component {
 
 
                             {this.props.cartas.map((carta, index) => (
-                                <div width='100%'  style={{display: 'inline-block'}}>
+                                <div width='100%' style={{ display: 'inline-block' }}>
                                     <div className={this.state.modal_qr ? "modal is-active" : "modal"}>
                                         <div className="modal-background"></div>
                                         <div className="modal-content">

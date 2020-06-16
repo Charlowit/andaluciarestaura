@@ -28,7 +28,6 @@ import Alerts from './alerta/Alerts';
 import PrivateRouteCartaPage from './privateroute/PrivateRouteCartaPage';
 import PrivateRouteVisualizar from './privateroute/PrivateRouteVisualizar';
 import { Animated } from "react-animated-css";
-import BarraInformacion from './barrainformacion/BarraInformacion';
 
 
 //Alert Options

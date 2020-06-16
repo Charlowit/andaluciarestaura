@@ -1,7 +1,7 @@
 import React, { Component, Fragment, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { uploadProducto, updateCategoria, getCategorias, deleteproducto, subirproducto, addCategoria, deleteCategoria, subirPhoto } from '../../actions/carta';
+import { uploadProducto, updateCategoria, getCategorias, deleteproducto, subirproducto, addCategoria, deleteCategoria, subirPhoto, uploadProductParams } from '../../actions/carta';
 import { updateLogoRounded, updateEstablecimiento, getCartaExpecifica, updateEslogan, updateURL, updateNombreCarta } from '../../actions/cartas';
 import CargarPdf from '../cartaestatica/CargarPdf'
 import { Animated } from "react-animated-css";
@@ -90,7 +90,9 @@ export class CartaPage extends Component {
             addingPhoto: false,
 
             addingPhotoArray: [],
-            fileArray: []
+            fileArray: [],
+            editingProduct: false,
+            productoClicked: null
 
         };
     }
@@ -282,7 +284,36 @@ export class CartaPage extends Component {
         console.log("Antes --> ", producto.is_activo)
 
         console.log("Antes --> ", producto.is_activo)
+
         this.props.uploadProducto(producto)
+    }
+
+    onSubmitEditarProducto = (e, producto) => {
+
+        e.preventDefault();
+
+        const { name, descripcion, tamanio, tamanio2, tamanio3, precio1, precio2, precio3, is_apio, is_altramuces, is_cacahuete, is_crustaceo, is_frutos_con_cascara, is_gluten, is_huevo, is_lacteo, is_molusco, is_mostaza, is_pescado, is_sesamo, is_soja, is_sulfito
+        } = this.state;
+
+        var categoriaPropia = this.state.clickedProducto.categoria;
+        var categoria = this.state.clickedProducto.categoria;
+        if (this.state.categoriaParaProducto != -1) {
+            categoria = this.state.categoriaParaProducto
+        }
+        let carta = this.state.clickedProducto.carta;
+        let photo = this.state.clickedProducto.photo;
+        var id = this.state.clickedProducto.id;
+        console.log("Categoria --> ", categoria)
+        const producto2 = { id, categoria, name, descripcion, tamanio, tamanio2, tamanio3, precio1, precio2, precio3, is_apio, is_altramuces, is_cacahuete, is_crustaceo, is_frutos_con_cascara, is_gluten, is_huevo, is_lacteo, is_molusco, is_mostaza, is_pescado, is_sesamo, is_soja, is_sulfito, carta, photo };
+
+
+        this.props.uploadProductParams(producto2, categoriaPropia);
+
+        this.setState({
+            updatingProduct: !this.state.updatingProduct,
+            clickedProducto: null,
+            categoriaParaProducto: -1
+        })
     }
 
     changeLogoRounded = (e, carta) => {
@@ -316,9 +347,30 @@ export class CartaPage extends Component {
 
     }
 
-    editProduct = e => {
+    editProduct = (e, producto) => {
+
+        if (producto != null) {
+            this.setState({
+                clickedProducto: producto
+            })
+            console.log("Camio de producto!")
+        } else {
+            this.setState({
+                clickedProducto: null
+            })
+            console.log("Camio de producto a null!")
+
+        }
         this.setState({
-            updatingProduct: !this.state.updatingProduct
+            updatingProduct: !this.state.updatingProduct,
+            tamanio: producto.titulo_precio1,
+            tamanio2: producto.titulo_precio2,
+            tamanio3: producto.titulo_precio3,
+            precio1: producto.precio1,
+            precio2: producto.precio2,
+            precio3: producto.precio3,
+            descripcion: producto.descripcion,
+            name: producto.name
         })
     }
 
@@ -327,6 +379,7 @@ export class CartaPage extends Component {
             addCategoria: !this.state.addCategoria
         })
     }
+
 
     editEslogan = e => {
         console.log("Hola")
@@ -559,22 +612,30 @@ export class CartaPage extends Component {
                                 <div className={this.state.editEslogan ? "modal is-active" : "modal"}>
                                     <div className="modal-background"></div>
                                     <div className="modal-content">
-                                        <div className="container box" style={{backgroundColor: '#bca466'}}>
+                                        <div className="container box" >
                                             <div className="has-text-right">
-                                                <button class="button is-danger" onClick={this.editEslogan}>
-                                                    <span class="icon is-small">
-                                                        <i class="fas fa-times"></i>
+
+                                                <button className="button" style={{ backgroundColor: '#171c8f' }} onClick={this.editEslogan}>
+                                                    <span className="icon is-small">
+                                                        <i className="fas fa-times " style={{ color: 'white' }}></i>
                                                     </span>
                                                 </button>
                                             </div>
-                                            <hr style={{ marginTop: '30px' }} />
-                                            <form>
+                                            <div className="has-text-centered">
+                                                <span className="icon" >
+                                                    <i className="fas fa-quote-right" style={{ fontSize: '100px', color: "#bca466" }}></i>
+                                                </span>
+                                                <h1 className="title" style={{ marginTop: '10px' }}> NOMBRE ESTABLECIMIENTO </h1>
+
+                                            </div>
+
+                                            <hr style={{ marginTop: '30px', backgroundColor: '#bca466', color: '#bca466' }} />                                             <form>
                                                 <label className="label" style={{ marginTop: '10px' }}>Escribe tu nuevo eslogan</label>
                                                 <div className="control">
                                                     <input className="input" onChange={this.onChange} name="newEslogan" defaultValue={this.state.newEslogan} type="text" placeholder="El mejor restaurante de Granada!" />
                                                 </div>
                                                 <div className="control buttons is-centered" style={{ marginTop: '20px' }}>
-                                                    <button className="button is-success" style={{color: '#bca466', backgroundColor: 'white'}} onClick={e => this.onSubmitNewSlogan(e, carta)}>Guardar</button>
+                                                    <button className="button is-success" style={{ color: 'white', backgroundColor: '#bca466' }} onClick={e => this.onSubmitNewSlogan(e, carta)}>Guardar</button>
                                                 </div>
                                             </form>
                                         </div>
@@ -584,22 +645,30 @@ export class CartaPage extends Component {
                                 <div className={this.state.editURLF ? "modal is-active" : "modal"}>
                                     <div className="modal-background"></div>
                                     <div className="modal-content">
-                                        <div className="container box" style={{backgroundColor: '#bca466'}}>
+                                        <div className="container box" >
                                             <div className="has-text-right">
-                                                <button class="button is-danger" onClick={this.editURLF}>
-                                                    <span class="icon is-small">
-                                                        <i class="fas fa-times"></i>
+
+                                                <button className="button" style={{ backgroundColor: '#171c8f' }} onClick={this.editURLF}>
+                                                    <span className="icon is-small">
+                                                        <i className="fas fa-times " style={{ color: 'white' }}></i>
                                                     </span>
                                                 </button>
                                             </div>
-                                            <hr style={{ marginTop: '30px' }} />
+                                            <div className="has-text-centered">
+                                                <span className="icon" >
+                                                    <i className="fab fa-facebook" style={{ fontSize: '100px', color: "#bca466" }}></i>
+                                                </span>
+                                                <h1 className="title" style={{ marginTop: '10px' }}> PÁGINA DE FACEBOOK </h1>
+                                            </div>
+
+                                            <hr style={{ marginTop: '30px', backgroundColor: '#bca466', color: '#bca466' }} />
                                             <form>
                                                 <label className="label" style={{ marginTop: '10px' }}>Escribe tu URL de Facebook!</label>
                                                 <div className="control">
                                                     <input className="input" type="text" name="newUrlF" onChange={this.onChange} defaultValue={this.state.newUrlF} placeholder="https://www.facebook.com/" />
                                                 </div>
                                                 <div className="control buttons is-centered" style={{ marginTop: '20px' }}>
-                                                    <button className="button is-success" style={{color: '#bca466', backgroundColor: 'white'}} onClick={e => this.onSubmitURL(e, carta)}>Guardar</button>
+                                                    <button className="button is-success" style={{ color: 'white', backgroundColor: '#bca466' }} onClick={e => this.onSubmitURL(e, carta)}>Guardar</button>
                                                 </div>
                                             </form>
                                         </div>
@@ -609,22 +678,29 @@ export class CartaPage extends Component {
                                 <div className={this.state.editURLI ? "modal is-active" : "modal"}>
                                     <div className="modal-background"></div>
                                     <div className="modal-content">
-                                        <div className="container box" style={{backgroundColor: '#bca466'}}>
+                                        <div className="container box" >
                                             <div className="has-text-right">
-                                                <button class="button is-danger" onClick={this.editURLI}>
-                                                    <span class="icon is-small">
-                                                        <i class="fas fa-times"></i>
+
+                                                <button className="button" style={{ backgroundColor: '#171c8f' }} onClick={this.editURLI}>
+                                                    <span className="icon is-small">
+                                                        <i className="fas fa-times " style={{ color: 'white' }}></i>
                                                     </span>
                                                 </button>
                                             </div>
-                                            <hr style={{ marginTop: '30px' }} />
+                                            <div className="has-text-centered">
+                                                <span className="icon" >
+                                                    <i className="fab fa-instagram" style={{ fontSize: '100px', color: "#bca466" }}></i>
+                                                </span>
+                                                <h1 className="title" style={{ marginTop: '10px' }}> PÁGINA DE INSTAGRAM </h1>
+                                            </div>
+                                            <hr style={{ marginTop: '30px', backgroundColor: '#bca466', color: '#bca466' }} />
                                             <form>
                                                 <label className="label" style={{ marginTop: '10px' }}>Escribe tu URL de Instagram!</label>
                                                 <div className="control">
                                                     <input className="input" type="text" name="newUrlI" onChange={this.onChange} defaultValue={this.state.newUrlI} placeholder="https://www.instagram.com/" />
                                                 </div>
                                                 <div className="control buttons is-centered" style={{ marginTop: '20px' }}>
-                                                    <button className="button is-success" style={{color: '#bca466', backgroundColor: 'white'}} onClick={e => this.onSubmitURL(e, carta)}>Guardar</button>
+                                                    <button className="button is-success" style={{ color: 'white', backgroundColor: '#bca466' }} onClick={e => this.onSubmitURL(e, carta)}>Guardar</button>
                                                 </div>
                                             </form>
                                         </div>
@@ -634,22 +710,29 @@ export class CartaPage extends Component {
                                 <div className={this.state.editURLT ? "modal is-active" : "modal"}>
                                     <div className="modal-background"></div>
                                     <div className="modal-content">
-                                        <div className="container box" style={{backgroundColor: '#bca466'}}>
+                                        <div className="container box">
                                             <div className="has-text-right">
-                                                <button class="button is-danger" onClick={this.editURLT}>
-                                                    <span class="icon is-small">
-                                                        <i class="fas fa-times"></i>
+
+                                                <button className="button" style={{ backgroundColor: '#171c8f' }} onClick={this.editURLT}>
+                                                    <span className="icon is-small">
+                                                        <i className="fas fa-times " style={{ color: 'white' }}></i>
                                                     </span>
                                                 </button>
                                             </div>
-                                            <hr style={{ marginTop: '30px' }} />
+                                            <div className="has-text-centered">
+                                                <span className="icon" >
+                                                    <i className="fab fa-tripadvisor" style={{ fontSize: '100px', color: "#bca466" }}></i>
+                                                </span>
+                                                <h1 className="title" style={{ marginTop: '10px' }}> PÁGINA DE TRIPADVISOR </h1>
+                                            </div>
+                                            <hr style={{ marginTop: '30px', backgroundColor: '#bca466', color: '#bca466' }} />
                                             <form>
                                                 <label className="label" style={{ marginTop: '10px' }}>Escribe tu URL de Tripadvisor!</label>
                                                 <div className="control">
                                                     <input className="input" name="newUrlT" onChange={this.onChange} defaultValue={this.state.newUrlT} type="text" placeholder="https://www.tripadvisor.es/" />
                                                 </div>
                                                 <div className="control buttons is-centered" style={{ marginTop: '20px' }}>
-                                                    <button className="button is-success" style={{color: '#bca466', backgroundColor: 'white'}} onClick={e => this.onSubmitURL(e, carta)}>Guardar</button>
+                                                    <button className="button is-success" style={{ color: 'white', backgroundColor: '#bca466' }} onClick={e => this.onSubmitURL(e, carta)}>Guardar</button>
                                                 </div>
                                             </form>
                                         </div>
@@ -659,22 +742,30 @@ export class CartaPage extends Component {
                                 <div className={this.state.editNombreCarta ? "modal is-active" : "modal"}>
                                     <div className="modal-background"></div>
                                     <div className="modal-content">
-                                        <div className="container box" style={{backgroundColor: '#bca466'}}>
+                                        <div className="container box" >
                                             <div className="has-text-right">
-                                                <button class="button is-danger" onClick={this.editNombreCarta}>
-                                                    <span class="icon is-small">
-                                                        <i class="fas fa-times"></i>
+
+                                                <button className="button" style={{ backgroundColor: '#171c8f' }} onClick={this.editNombreCarta}>
+                                                    <span className="icon is-small">
+                                                        <i className="fas fa-times " style={{ color: 'white' }}></i>
                                                     </span>
                                                 </button>
                                             </div>
-                                            <hr style={{ marginTop: '30px' }} />
-                                            <form>
+                                            <div className="has-text-centered">
+
+
+                                                <span className="icon" >
+                                                    <i className="fas fa-file-signature" style={{ fontSize: '100px', color: "#bca466" }}></i>
+                                                </span>
+                                                <h1 className="title" style={{ marginTop: '10px' }}> NOMBRE CARTA </h1>
+                                            </div>
+                                            <hr style={{ marginTop: '30px', backgroundColor: '#bca466', color: '#bca466' }} />                                            <form>
                                                 <label className="label" style={{ marginTop: '10px' }}>Escribe el nuevo nombre de tu carta</label>
                                                 <div className="control">
                                                     <input className="input" type="text" name="newCartaNombre" onChange={this.onChange} defaultValue={this.state.newCartaNombre} placeholder="Nombre de la carta" />
                                                 </div>
                                                 <div className="control buttons is-centered" style={{ marginTop: '20px' }}>
-                                                    <button className="button is-success" style={{color: '#bca466', backgroundColor: 'white'}} onClick={e => this.onSubmitNewCartaNombre(e, carta)}>Guardar</button>
+                                                    <button className="button is-success" style={{ color: 'white', backgroundColor: '#bca466' }} onClick={e => this.onSubmitNewCartaNombre(e, carta)}>Guardar</button>
                                                 </div>
                                             </form>
                                         </div>
@@ -684,22 +775,28 @@ export class CartaPage extends Component {
                                 <div className={this.state.editEstablecimiento ? "modal is-active" : "modal"}>
                                     <div className="modal-background"></div>
                                     <div className="modal-content">
-                                        <div className="container box" style={{backgroundColor: '#bca466'}}>
+                                        <div className="container box">
                                             <div className="has-text-right">
-                                                <button class="button is-danger" onClick={this.editEstablecimiento}>
-                                                    <span class="icon is-small">
-                                                        <i class="fas fa-times"></i>
+
+                                                <button className="button" style={{ backgroundColor: '#171c8f' }} onClick={this.editEstablecimiento}>
+                                                    <span className="icon is-small">
+                                                        <i className="fas fa-times " style={{ color: 'white' }}></i>
                                                     </span>
                                                 </button>
                                             </div>
-                                            <hr style={{ marginTop: '30px' }} />
-                                            <form>
+                                            <div className="has-text-centered">
+                                                <span className="icon" >
+                                                    <i className="fas fa-map-marker-alt" style={{ fontSize: '100px', color: "#bca466" }}></i>
+                                                </span>
+                                                <h1 className="title" style={{ marginTop: '10px' }}> NOMBRE ESTABLECIMIENTO </h1>
+                                            </div>
+                                            <hr style={{ marginTop: '30px', backgroundColor: '#bca466', color: '#bca466' }} />                                                          <form>
                                                 <label className="label" style={{ marginTop: '10px' }}>Escribe el establecimiento</label>
                                                 <div className="control">
                                                     <input className="input" onChange={this.onChange} name="newEstablecimiento" defaultValue={this.state.newEstablecimiento} type="text" placeholder="El restaurante del Desarrollador" />
                                                 </div>
                                                 <div className="control buttons is-centered" style={{ marginTop: '20px' }}>
-                                                    <button className="button is-success" style={{color: '#bca466', backgroundColor: 'white'}} onClick={e => this.onSubmitNewEstablecimiento(e, carta)}>Guardar</button>
+                                                    <button className="button is-success" style={{ color: 'white', backgroundColor: '#bca466' }} onClick={e => this.onSubmitNewEstablecimiento(e, carta)}>Guardar</button>
                                                 </div>
                                             </form>
                                         </div>
@@ -861,19 +958,24 @@ export class CartaPage extends Component {
                                             <div className={this.state.addCategoria ? "modal is-active" : "modal"}>
                                                 <div className="modal-background"></div>
                                                 <div className="modal-content">
-                                                    <div className="container box" style={{ backgroundColor: '#bca466' }}>
+                                                    <div className="container box">
                                                         <div className="has-text-right">
-                                                            <button className="button is-link" onClick={this.addCategory}>
+                                                            <button className="button" style={{ backgroundColor: '#171c8f' }} onClick={this.addCategory}>
                                                                 <span className="icon is-small">
-                                                                    <i className="fas fa-times"></i>
+                                                                    <i className="fas fa-times " style={{ color: 'white' }}></i>
                                                                 </span>
                                                             </button>
                                                         </div>
                                                         <div className="has-text-centered">
-                                                            <h1 className="title" style={{ marginTop: '10px' }}>Añadir nueva categoria</h1>
+
+                                                            <span className="icon" >
+                                                                <i className="fas fa-clipboard" style={{ fontSize: '70px', color: "#bca466" }}></i>
+                                                            </span>
+                                                            <h1 className="title" style={{ marginTop: '10px' }}> NUEVA CATEGORIA </h1>
+
                                                         </div>
-                                                        <hr style={{ marginTop: '30px' }} />
-                                                        <form  >
+
+                                                        <hr style={{ marginTop: '30px', backgroundColor: '#bca466', color: '#bca466' }} />                                                        <form  >
                                                             <div className="columns">
                                                                 <div className="column">
                                                                     <div className="field">
@@ -887,7 +989,7 @@ export class CartaPage extends Component {
                                                                             <input className="input" onChange={this.onChange} defaultValue={this.state.info_extra} name="info_extra" type="text" placeholder="Estas tapas llevan todas patatas fritas..." />
                                                                         </div>
                                                                         <div className="has-text-right">
-                                                                            <button className="button is-success" style={{ marginTop: '10px', color: '#bca466', backgroundColor: 'white' }} onClick={this.onSubmitCategorias} > AÑADIR </button>
+                                                                            <button className="button is-success" style={{ marginTop: '10px', color: 'white', backgroundColor: '#bca466' }} onClick={this.onSubmitCategorias} > AÑADIR </button>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -901,15 +1003,24 @@ export class CartaPage extends Component {
                                             <div className={this.state.addingProduct ? "modal is-active" : "modal"}>
                                                 <div className="modal-background"></div>
                                                 <div className="modal-content">
-                                                    <div className="container box" style={{ backgroundColor: '#bca466' }}>
+                                                    <div className="container box" >
                                                         <div className="has-text-right">
-                                                            <button className="button is-link" onClick={this.addProduct}>
+                                                            <button className="button" style={{ backgroundColor: '#171c8f' }} onClick={this.addProduct}>
                                                                 <span className="icon is-small">
-                                                                    <i className="fas fa-times"></i>
+                                                                    <i className="fas fa-times " style={{ color: 'white' }}></i>
                                                                 </span>
                                                             </button>
                                                         </div>
-                                                        <h1 className="title has-text-centered" style={{ marginTop: '20px' }}>Añadir Producto a la Carta</h1>
+                                                        <div className="has-text-centered">
+
+                                                            <span className="icon" >
+                                                                <i className="fas fa-coffee" style={{ fontSize: '70px', color: "#bca466" }}></i>
+                                                            </span>
+                                                            <h1 className="title" style={{ marginTop: '10px' }}> NUEVO PRODUCTO </h1>
+
+                                                        </div>
+
+                                                        <hr style={{ marginTop: '30px', backgroundColor: '#bca466', color: '#bca466' }} />
                                                         <form>
                                                             <div className="columns">
                                                                 <div className="column">
@@ -1163,122 +1274,413 @@ export class CartaPage extends Component {
                                                         </form>
                                                         <br />
                                                         <div className="control buttons is-centered">
-                                                            <button className="button is-success"  style={{backgroundColor: 'white', color:'#bca466'}} onClick={this.onSubmit}>Guardar</button>
+                                                            <button className="button is-success" style={{ backgroundColor: '#bca466', color: 'white' }} onClick={this.onSubmit}>Guardar</button>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
 
+                                            {/*  EDITAR PRODUCTO */}
+                                            {this.state.clickedProducto != null ?
+                                                <div className={this.state.updatingProduct ? "modal is-active" : "modal"}>
+                                                    <div className="modal-background"></div>
+                                                    <div className="modal-content">
+                                                        <div className="container box" >
+                                                            <div className="has-text-right">
+
+                                                                <button className="button" style={{ backgroundColor: '#171c8f' }} onClick={e => this.editProduct(e, null)}>
+                                                                    <span className="icon is-small">
+                                                                        <i className="fas fa-times " style={{ color: 'white' }}></i>
+                                                                    </span>
+                                                                </button>
+                                                            </div>
+                                                            <div className="has-text-centered">
+
+                                                                <span className="icon" >
+                                                                    <i className="fas fa-coffee" style={{ fontSize: '70px', color: "#bca466" }}></i>
+                                                                </span>
+                                                                <h1 className="title" style={{ marginTop: '10px' }}> EDITAR PRODUCTO </h1>
+
+                                                            </div>   
+                                                            <hr style={{ marginTop: '30px', backgroundColor: '#bca466', color: '#bca466' }} />     
+                                                                                                                <form>
+                                                                <div className="columns">
+                                                                    <div className="column">
+                                                                        <div className="field">
+                                                                            <label className="label">Nombre</label>
+                                                                            <div className="control">
+                                                                                <input className="input" name="name" type="text" placeholder="Nombre del Producto" onChange={this.onChange} defaultValue={this.state.clickedProducto.name} required />
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className="columns">
+                                                                            <div className="column">
+                                                                                <div style={{ marginTop: '20px' }}>
+                                                                                    <label className="label">Tamaño Precio 1</label>
+                                                                                    <div className="control">
+                                                                                        <div className="select">
+                                                                                            <select name="tamanio" onChange={this.onChangePrecio1} defaultValue={this.state.clickedProducto.titulo_precio1}>
+                                                                                                <option value="">Ninguno</option>
+                                                                                                <option value="Tapa">Tapa</option>
+                                                                                                <option value="Media racion">Media ración</option>
+                                                                                                <option value="Racion">Ración</option>
+                                                                                                <option value="Plato">Plato</option>
+                                                                                                <option value="Bandeja">Bandeja</option>
+                                                                                                <option value="S">S</option>
+                                                                                                <option value="M">M</option>
+                                                                                                <option value="L">L</option>
+                                                                                                <option value="XL">XL</option>
+                                                                                                <option value="XXL">XXL</option>
+                                                                                            </select>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div className="field" style={{ marginTop: '10px' }}>
+                                                                                    <label className="label">Precio 1</label>
+                                                                                    <div className="control">
+                                                                                        <input className="input" name="precio1" type="text" placeholder="0.0" onChange={this.onChange} defaultValue={this.state.clickedProducto.precio1} required />
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div className="column">
+                                                                                <div style={{ marginTop: '20px' }}>
+                                                                                    <label className="label">Tamaño Precio 2</label>
+                                                                                    <div className="control">
+                                                                                        <div className="select">
+                                                                                            <select name="tamanio2" onChange={this.onChangePrecio2} defaultValue={this.state.clickedProducto.titulo_precio2}>
+                                                                                                <option value="">Ninguno</option>
+                                                                                                <option value="Tapa">Tapa</option>
+                                                                                                <option value="Media racion">Media ración</option>
+                                                                                                <option value="Racion">Ración</option>
+                                                                                                <option value="Plato">Plato</option>
+                                                                                                <option value="Bandeja">Bandeja</option>
+                                                                                                <option value="S">S</option>
+                                                                                                <option value="M">M</option>
+                                                                                                <option value="L">L</option>
+                                                                                                <option value="XL">XL</option>
+                                                                                                <option value="XXL">XXL</option>
+                                                                                            </select>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div className="field" style={{ marginTop: '10px' }}>
+                                                                                    <label className="label">Precio 2</label>
+                                                                                    <div className="control">
+                                                                                        <input className="input " name="precio2" type="text" placeholder="0.0" onChange={this.onChange} defaultValue={this.state.clickedProducto.precio2} />
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div className="column">
+                                                                                <div style={{ marginTop: '20px' }}>
+                                                                                    <label className="label">Tamaño Precio 3</label>
+                                                                                    <div className="control">
+                                                                                        <div className="select">
+                                                                                            <select name="tamanio3" onChange={this.onChangePrecio3} defaultValue={this.state.clickedProducto.titulo_precio3}>
+                                                                                                <option value="">Ninguno</option>
+                                                                                                <option value="Tapa">Tapa</option>
+                                                                                                <option value="Media racion">Media ración</option>
+                                                                                                <option value="Racion">Ración</option>
+                                                                                                <option value="Plato">Plato</option>
+                                                                                                <option value="Bandeja">Bandeja</option>
+                                                                                                <option value="S">S</option>
+                                                                                                <option value="M">M</option>
+                                                                                                <option value="L">L</option>
+                                                                                                <option value="XL">XL</option>
+                                                                                                <option value="XXL">XXL</option>
+                                                                                            </select>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div className="field" style={{ marginTop: '10px' }}>
+                                                                                    <label className="label">Precio 3</label>
+                                                                                    <div className="control">
+                                                                                        <input className="input" name="precio3" type="text" placeholder="0.0" onChange={this.onChange} defaultValue={this.state.clickedProducto.precio3} />
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className="container">
+                                                                            <h2 className="subtitle">Alergenos</h2>
+                                                                            <div className="columns">
+                                                                                <div className="column">
+                                                                                    <div className="field">
+                                                                                        <div className="control">
+                                                                                            <div className="b-checkbox">
+                                                                                                <input id="checkbox" name="is_apio" className="styled" type="checkbox" onChange={this.handleApioChange} defaultValue={this.state.clickedProducto.is_apio} />
+                                                                                                <label >  Apio</label>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div className="field">
+                                                                                        <div className="control">
+                                                                                            <div className="b-checkbox">
+                                                                                                <input id="checkbox" name="is_altramuces" className="styled" type="checkbox" onChange={this.handleAltramucesChange} defaultValue={this.state.clickedProducto.is_altramuces} />
+                                                                                                <label>  Altramuces</label>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div className="field">
+                                                                                        <div className="control">
+                                                                                            <div className="b-checkbox">
+                                                                                                <input id="checkbox" name="is_cacahuete" className="styled" type="checkbox" onChange={this.handleCacahueteChange} defaultValue={this.state.clickedProducto.is_cacahuete} />
+                                                                                                <label >  Cacahuete</label>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div className="field">
+                                                                                        <div className="control">
+                                                                                            <div className="b-checkbox">
+                                                                                                <input id="checkbox" name="is_custaceo" className="styled" type="checkbox" onChange={this.handleCrustaceoChange} defaultValue={this.state.clickedProducto.is_crustaceo} />
+                                                                                                <label>  Crustaceo</label>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div className="column">
+                                                                                    <div className="field">
+                                                                                        <div className="control">
+                                                                                            <div className="b-checkbox">
+                                                                                                <input id="checkbox" name="is_frutas_con_cascara" className="styled" type="checkbox" onChange={this.handleCascaraChange} defaultValue={this.state.clickedProducto.is_frutos_con_cascara} />
+                                                                                                <label >  Cascara Frutal</label>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div className="field">
+                                                                                        <div className="control">
+                                                                                            <div className="b-checkbox">
+                                                                                                <input id="checkbox" name="is_gluten" className="styled" type="checkbox" onChange={this.handleGlutenChange} defaultValue={this.state.clickedProducto.is_gluten} />
+                                                                                                <label >  Gluten</label>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div className="field">
+                                                                                        <div className="control">
+                                                                                            <div className="b-checkbox">
+                                                                                                <input id="checkbox" name="is_huevo" className="styled" type="checkbox" onChange={this.handleHuevoChange} defaultValue={this.state.clickedProducto.is_huevo} />
+                                                                                                <label >  Huevo</label>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div className="field">
+                                                                                        <div className="control">
+                                                                                            <div className="b-checkbox">
+                                                                                                <input id="checkbox" name="is_lacteo" className="styled" type="checkbox" onChange={this.handleLacteoChange} defaultValue={this.state.clickedProducto.is_lacteo} />
+                                                                                                <label >  Lacteo</label>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div className="column">
+                                                                                    <div className="field">
+                                                                                        <div className="control">
+                                                                                            <div className="b-checkbox">
+                                                                                                <input id="checkbox" name="is_molusco" className="styled" type="checkbox" onChange={this.handleMoluscoChange} defaultValue={this.state.clickedProducto.is_molusco} />
+                                                                                                <label >  Molusco</label>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div className="field">
+                                                                                        <div className="control">
+                                                                                            <div className="b-checkbox">
+                                                                                                <input id="checkbox" name="is_mostaza" className="styled" type="checkbox" onChange={this.handleMostazaChange} defaultValue={this.state.clickedProducto.is_mostaza} />
+                                                                                                <label >  Mostaza</label>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div className="field">
+                                                                                        <div className="control">
+                                                                                            <div className="b-checkbox">
+                                                                                                <input id="checkbox" name="is_pescado" className="styled" type="checkbox" onChange={this.handlePescadoChange} defaultValue={this.state.clickedProducto.is_pescado} />
+                                                                                                <label >  Pescado</label>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div className="field">
+                                                                                        <div className="control">
+                                                                                            <div className="b-checkbox">
+                                                                                                <input id="checkbox" name="is_sesamo" className="styled" type="checkbox" onChange={this.handleSesamoChange} defaultValue={this.state.clickedProducto.is_sesamo} />
+                                                                                                <label >  Sesamo</label>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div className="column">
+                                                                                    <div className="field">
+                                                                                        <div className="control">
+                                                                                            <div className="b-checkbox">
+                                                                                                <input id="checkbox" name="is_soja" className="styled" type="checkbox" onChange={this.handleSojaChange} defaultValue={this.state.clickedProducto.is_soja} />
+                                                                                                <label >  Soja</label>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div className="field">
+                                                                                        <div className="control">
+                                                                                            <div className="b-checkbox">
+                                                                                                <input id="checkbox" name="is_sulfito" className="styled" type="checkbox" onChange={this.handleSulfitoChange} defaultValue={this.state.clickedProducto.is_sulfito} />
+                                                                                                <label >  Sulfitos </label>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                            </div>
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div className="field">
+                                                                    <label className="label">Descripción</label>
+                                                                    <div className="control">
+                                                                        <textarea name="descripcion" className="textarea" placeholder="Descripción del producto." size="99" onChange={this.onChange} defaultValue={this.state.clickedProducto.descripcion}></textarea>
+                                                                    </div>
+                                                                </div>
+                                                                <div className="container">
+                                                                    <div className="field" >
+                                                                        <div>
+                                                                            <label className="label">Categoria</label>
+                                                                            <div className="control">
+                                                                                <div className="select">
+                                                                                    <select id="categoriaParaProducto" onChange={this.onChangeCategoria} defaultValue={this.state.clickedProducto.categoria}>
+                                                                                        <option>Ninguna categoria seleccionada</option>
+                                                                                        {this.props.categorias.map(categoria => (
+                                                                                            <option key={categoria.id} value={categoria.id}>{categoria.name}</option>
+                                                                                        ))}
+                                                                                    </select>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+
+                                                                </div>
+                                                            </form>
+                                                            <br />
+                                                            <div className="control buttons is-centered">
+                                                                <button className="button is-success" style={{ backgroundColor: '#bca466', color: 'white' }} onClick={this.onSubmitEditarProducto}>Guardar</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                : ""}
+
                                             <div className="container">
                                                 <div>
                                                     <div className="container">
                                                         <div>
-
                                                             <div className="debug">
                                                                 {this.props.categorias.map(categoria => (
-                                                                    <div style={{ marginTop: '60px' }} key={categoria.id}>
-                                                                        <div className='card equal-height' style={{ backgroundColor: '#d5c69f' }}>
-                                                                            <div className="columns">
-                                                                                <div className="column is-two-thirds">
-                                                                                    <h1 className="title has-text-centered">{categoria.name}</h1>
+                                                                    <Animated animationIn="fadeIn" animationOut="fadeOutRight">
+                                                                        <div style={{ marginTop: '60px' }} key={categoria.id}>
+                                                                            <div className='card equal-height' style={{ backgroundColor: '#d5c69f' }}>
+                                                                                <div className="columns">
+                                                                                    <div className="column is-two-thirds">
+                                                                                        <h1 className="title has-text-centered">{categoria.name}</h1>
+                                                                                    </div>
+
+                                                                                    <div className="column is-full-mobile" >
+                                                                                        <div className="columns has-text-centered">
+                                                                                            <div className="column if-full-mobile">
+                                                                                                <div className="control" style={{ paddingTop: '5px' }}>
+                                                                                                    <div className="select">
+                                                                                                        <select onChange={e => this.onSubmitCambiarPosiciones(e, categoria)}>
+                                                                                                            <option>Posicion actual: {categoria.posicion}</option>
+                                                                                                            {this.props.categorias.map((categoria, index) => (
+                                                                                                                <option value={index + 1}>Posicion {index + 1}</option>
+                                                                                                            ))}
+
+                                                                                                        </select>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div className="column">
+                                                                                                <div style={{ paddingTop: '5px' }}>
+                                                                                                    <button class="button is-danger" onClick={this.props.deleteCategoria.bind(this, categoria.id, categoria.carta)}>
+                                                                                                        <span class="icon is-small">
+                                                                                                            <i class="fas fa-trash"></i>
+                                                                                                        </span>
+                                                                                                    </button>
+                                                                                                </div>
+                                                                                            </div>
+
+
+                                                                                        </div>
+                                                                                    </div>
+
+
                                                                                 </div>
+                                                                                <div>
+                                                                                </div>
+                                                                            </div>
+                                                                            {categoria.info_extra != "-" ?
+                                                                                <div className="card has-text-centered" style={{ marginTop: '-10px' }}>
+                                                                                    <div>
+                                                                                        <p className="subtitle">{categoria.info_extra}</p>
+                                                                                    </div>
+                                                                                </div>
+                                                                                : ""}
+                                                                            {this.props.cartas.map((producto, index) => (
 
-                                                                                <div className="column is-full-mobile" >
-                                                                                    <div className="columns has-text-centered">
-                                                                                        <div className="column if-full-mobile">
-                                                                                            <div className="control" style={{ paddingTop: '5px' }}>
-                                                                                                <div className="select">
-                                                                                                    <select onChange={e => this.onSubmitCambiarPosiciones(e, categoria)}>
-                                                                                                        <option>Posicion actual: {categoria.posicion}</option>
-                                                                                                        {this.props.categorias.map((categoria, index) => (
-                                                                                                            <option value={index + 1}>Posicion {index + 1}</option>
-                                                                                                        ))}
+                                                                                <div style={{ marginTop: '20px' }} key={producto.id}>
+                                                                                    <div className={this.state.addPhoto ? "modal is-active" : "modal"}>
+                                                                                        <div className="modal-background"></div>
+                                                                                        <div className="modal-content">
+                                                                                            <div className="container box">
+                                                                                                <div className="has-text-right">
+                                                                                                    <button className="button is-danger" onClick={e => this.addPhoto(e, this.state.clickedProducto)}>
+                                                                                                        <span className="icon is-small">
+                                                                                                            <i className="fas fa-times"></i>
+                                                                                                        </span>
+                                                                                                    </button>
+                                                                                                </div>
+                                                                                                <div className="has-text-centered">
+                                                                                                    <label className="label  is-size-4">Sube la foto de tu producto</label>
+                                                                                                    <hr style={{ marginTop: '30px' }} />
+                                                                                                    <div className="field">
+                                                                                                        <div className="file has-name">
 
-                                                                                                    </select>
+                                                                                                        </div>
+                                                                                                        <div style={{ marginTop: '10px', marginBottom: '10px' }} className="is-centered">
+                                                                                                            <span style={{ marginBottom: '10px' }}>
+                                                                                                                <p>Previsualización:</p>
+                                                                                                            </span>
+                                                                                                            <span>
+                                                                                                                <img src={this.state.fileArray[index]} />
+                                                                                                            </span>
+                                                                                                        </div>
+                                                                                                    </div>
+
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
-                                                                                        <div className="column">
-                                                                                            <div style={{ paddingTop: '5px' }}>
-                                                                                                <button class="button is-danger" onClick={this.props.deleteCategoria.bind(this, categoria.id, categoria.carta)}>
-                                                                                                    <span class="icon is-small">
-                                                                                                        <i class="fas fa-trash"></i>
-                                                                                                    </span>
-                                                                                                </button>
-                                                                                            </div>
-                                                                                        </div>
-
-
                                                                                     </div>
-                                                                                </div>
+                                                                                    {/* BUSCATE EL PRODUCTO */}
+                                                                                    {categoria.id == producto.categoria ?
 
 
-                                                                            </div>
-                                                                            <div>
-                                                                            </div>
-                                                                        </div>
-                                                                        {this.props.cartas.map((producto, index) => (
-                                                                            <div style={{ marginTop: '20px' }} key={producto.id}>
-                                                                                <div className={this.state.addPhoto ? "modal is-active" : "modal"}>
-                                                                                    <div className="modal-background"></div>
-                                                                                    <div className="modal-content">
-                                                                                        <div className="container box">
-                                                                                            <div className="has-text-right">
-                                                                                                <button className="button is-danger" onClick={e => this.addPhoto(e, this.state.clickedProducto)}>
-                                                                                                    <span className="icon is-small">
-                                                                                                        <i className="fas fa-times"></i>
-                                                                                                    </span>
-                                                                                                </button>
-                                                                                            </div>
+                                                                                        <div className='card' style={producto.is_activo ? { opacity: '1' } : { opacity: '0.5' }}>
                                                                                             <div className="has-text-centered">
-                                                                                                <label className="label  is-size-4">Sube la foto de tu producto</label>
-                                                                                                <hr style={{ marginTop: '30px' }} />
-                                                                                                <div className="field">
-                                                                                                    <div className="file has-name">
-
-                                                                                                    </div>
-                                                                                                    <div style={{ marginTop: '10px', marginBottom: '10px' }} className="is-centered">
-                                                                                                        <span style={{ marginBottom: '10px' }}>
-                                                                                                            <p>Previsualización:</p>
+                                                                                                <label className="file-label">
+                                                                                                    <input className="file-input" type="file" id="logo" accept=".jpeg" onChange={e => this.handlePhotoChange(e, index)} required />
+                                                                                                    <span className="file-cta">
+                                                                                                        <span className="file-icon">
+                                                                                                            <i className="fas fa-camera"></i>
                                                                                                         </span>
-                                                                                                        <span>
-                                                                                                            <img src={this.state.fileArray[index]} />
-                                                                                                        </span>
-                                                                                                    </div>
-                                                                                                </div>
-
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                                {/* BUSCATE EL PRODUCTO */}
-                                                                                {categoria.id == producto.categoria ?
-
-
-                                                                                    <div className='card' style={producto.is_activo ? { opacity: '1' } : { opacity: '0.5' }}>
-                                                                                        <div className="has-text-centered">
-                                                                                            <label className="file-label">
-                                                                                                <input className="file-input" type="file" id="logo" accept=".jpeg" onChange={e => this.handlePhotoChange(e, index)} required />
-                                                                                                <span className="file-cta">
-                                                                                                    <span className="file-icon">
-                                                                                                        <i className="fas fa-camera"></i>
-                                                                                                    </span>
-                                                                                                    <span className="file-label is-centered">
-                                                                                                        Escoja su foto
+                                                                                                        <span className="file-label is-centered">
+                                                                                                            Escoja su foto
                                                                                                                                 </span>
-                                                                                                </span>
-                                                                                                <div className="control buttons is-centered" >
-                                                                                                    <button className="button is-success" onClick={e => this.onSubmitPhotoProducto(e, index, producto, this.state.cif)}>Guardar</button>
-                                                                                                </div>
-                                                                                            </label>
+                                                                                                    </span>
+                                                                                                    <div className="control buttons is-centered" >
+                                                                                                        <button className="button is-success" onClick={e => this.onSubmitPhotoProducto(e, index, producto, this.state.cif)}>Guardar</button>
+                                                                                                    </div>
+                                                                                                </label>
 
-                                                                                            <div class="card-image" style={{ maxWidth: '480px' }}>
-                                                                                                <figure class="image is-1by1">
-                                                                                                    <img src={this.state.addingPhotoArray[index] || this.state.fileArray[index] != null ? this.state.fileArray[index] : producto.photo} ></img>
-                                                                                                </figure>
+                                                                                                <div class="card-image" style={{ maxWidth: '480px' }}>
+                                                                                                    <figure class="image is-128x128">
+                                                                                                        <img src={this.state.addingPhotoArray[index] || this.state.fileArray[index] != null ? this.state.fileArray[index] : producto.photo} ></img>
+                                                                                                    </figure>
+                                                                                                </div>
                                                                                             </div>
-                                                                                        </div>
-                                                                                        <Animated animationIn="bounceInLeft" animationOut="fadeOut" isVisible={true}>
                                                                                             <div className="columns">
                                                                                                 <div className="column">
                                                                                                     <div className="container">
@@ -1297,7 +1699,7 @@ export class CartaPage extends Component {
                                                                                                                                 <div
                                                                                                                                     style={{ width: '100%', marginTop: '5%', marginBottom: '6%' }}>
                                                                                                                                     <span className="icon is-small" style={{ color: 'rgb(51, 153, 255)' }}>
-                                                                                                                                        <i className="fas fa-dot-circle" aria-hidden="true"></i>
+                                                                                                                                        <i className="fas fa-dot-circle" aria-hidden="true" style={{color: "#bca466"}}></i>
                                                                                                                                     </span>
                                                                                                                                 </div>
                                                                                                                                 <span>
@@ -1305,7 +1707,7 @@ export class CartaPage extends Component {
                                                                                                                                 </span>
                                                                                                                                 <div style={{ width: '100%' }}>
                                                                                                                                     <span>
-                                                                                                                                        <b style={{ color: 'red' }}>  {!producto.precio1 == "" ? producto.precio1 : ""}€</b>
+                                                                                                                                        <b style={{ color: '#bca466' }}>  {!producto.precio1 == "" ? producto.precio1 : ""}€</b>
                                                                                                                                     </span>
                                                                                                                                 </div>
                                                                                                                             </div>
@@ -1316,7 +1718,7 @@ export class CartaPage extends Component {
                                                                                                                                 <div style={{ width: '100%' }}>
                                                                                                                                     <span className="icon is-small"
                                                                                                                                         style={{ fontSize: ' 36px', color: 'rgb(51, 153, 255)' }}>
-                                                                                                                                        <i className="fas fa-dot-circle" aria-hidden="true"></i>
+                                                                                                                                        <i className="fas fa-dot-circle" aria-hidden="true" style={{color: "#bca466"}}></i>
                                                                                                                                     </span>
                                                                                                                                 </div>
                                                                                                                                 <span>
@@ -1324,7 +1726,7 @@ export class CartaPage extends Component {
                                                                                                                                 </span>
                                                                                                                                 <div style={{ width: '100%' }}>
                                                                                                                                     <span>
-                                                                                                                                        <b style={{ color: 'red' }}>  {!producto.precio2 == "" ? producto.precio2 : ""}€</b>
+                                                                                                                                        <b style={{ color: '#bca466' }}>  {!producto.precio2 == "" ? producto.precio2 : ""}€</b>
                                                                                                                                     </span>
                                                                                                                                 </div>
                                                                                                                             </div>
@@ -1335,7 +1737,7 @@ export class CartaPage extends Component {
                                                                                                                                 <div style={{ width: '100%' }}>
                                                                                                                                     <span className="icon is-small"
                                                                                                                                         style={{ fontSize: ' 36px', color: 'rgb(51, 153, 255)' }}>
-                                                                                                                                        <i className="fas fa-dot-circle" aria-hidden="true"></i>
+                                                                                                                                        <i className="fas fa-dot-circle" aria-hidden="true" style={{color: "#bca466"}}></i>
                                                                                                                                     </span>
                                                                                                                                 </div>
                                                                                                                                 <span>
@@ -1343,7 +1745,7 @@ export class CartaPage extends Component {
                                                                                                                                 </span>
                                                                                                                                 <div style={{ width: '100%' }}>
                                                                                                                                     <span>
-                                                                                                                                        <b style={{ color: 'red' }}>  {!producto.precio3 == "" ? producto.precio3 : ""}€</b>
+                                                                                                                                        <b style={{ color: '#bca466' }}>  {!producto.precio3 == "" ? producto.precio3 : ""}€</b>
                                                                                                                                     </span>
                                                                                                                                 </div>
                                                                                                                             </div>
@@ -1496,7 +1898,7 @@ export class CartaPage extends Component {
                                                                                                                 </div>
                                                                                                                 <div className="column" >
                                                                                                                     <div className="is-rounded" style={{ backgroundColor: '#d5c69f', padding: '5px' }}>
-                                                                                                                        <button class="button is-warning">
+                                                                                                                        <button class="button is-warning" onClick={e => this.editProduct(e, producto)}>
                                                                                                                             <span class="icon is-small">
                                                                                                                                 <i class="fas fa-pen"></i>
                                                                                                                             </span>
@@ -1518,18 +1920,19 @@ export class CartaPage extends Component {
                                                                                                     </div>
                                                                                                 </div>
                                                                                             </div>
-                                                                                        </Animated>
 
-                                                                                    </div>
 
-                                                                                    :
-                                                                                    <div>
-                                                                                        {this.state.vacio = false}
-                                                                                    </div>
-                                                                                }
-                                                                            </div>
-                                                                        ))}
-                                                                    </div>
+                                                                                        </div>
+
+                                                                                        :
+                                                                                        <div>
+                                                                                            {this.state.vacio = false}
+                                                                                        </div>
+                                                                                    }
+                                                                                </div>
+                                                                            ))}
+                                                                        </div>
+                                                                    </Animated>
                                                                 ))}
 
                                                             </div>
@@ -1570,4 +1973,4 @@ const mapStateToProps = state => ({
     isUpdatingPhoto: state.cartas.isUpdatingPhoto
 });
 
-export default connect(mapStateToProps, { updateLogoRounded, uploadProducto, updateCategoria, updateEstablecimiento, updateNombreCarta, updateURL, updateEslogan, getCartaExpecifica, subirproducto, addCategoria, getCategorias, deleteproducto, deleteCategoria, subirPhoto })(CartaPage);
+export default connect(mapStateToProps, { uploadProductParams, updateLogoRounded, uploadProducto, updateCategoria, updateEstablecimiento, updateNombreCarta, updateURL, updateEslogan, getCartaExpecifica, subirproducto, addCategoria, getCategorias, deleteproducto, deleteCategoria, subirPhoto })(CartaPage);

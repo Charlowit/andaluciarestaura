@@ -74,11 +74,10 @@ export class Login extends Component {
             <Redirect to="/admin-page" />
         );
         const notlogged = (
-            <div style={{marginTop: '-35px'}}>
+            <div style={{ marginTop: '-35px' }}>
                 
-                    
                 <section className="hero" style={{ marginBottom: "-30px" }} >
-                    
+
                     <div className="has-text-centered" style={{ paddingTop: '150px' }}>
                         <h1 className="title is-spaced is-size-1-desktop is-size-2-tablet is-size-3-mobile" style={colorBlue}>
                             Bienvenid@ a Córdoba Restaura

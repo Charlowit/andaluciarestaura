@@ -58,7 +58,19 @@
     <div class="hero-body">
       <div class="container has-text-centered is-clearfix">
         <div class='equal-height'>
-          <div class="card-image has-text-centered">
+          <a class="copi button is-link" href="javascript:getlink();">Copiar URL</a>
+
+          <script>//<![CDATA[
+            function getlink() {
+              var aux = document.createElement("input");
+              aux.setAttribute("value", window.location.href);
+              document.body.appendChild(aux);
+              aux.select();
+              document.execCommand("copy");
+              document.body.removeChild(aux);
+            }
+//]]></script>
+          <div class="card-image has-text-centered" style="margin-top: 20px;">
             <figure class="image is-128x128 is-inline-block">
               {% if cif_cliente %}
               {% with 'clientes/'|add:cif_cliente|add:'/logo.jpeg' as img_static %}

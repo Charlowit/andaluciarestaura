@@ -98,6 +98,23 @@ export const uploadProducto = (producto, cif, is_primera) => (dispatch, getState
         .catch(err => console.log("Esto es el subir y mira que error tienes " + err));
 };
 
+export const uploadProductParams = (producto, categoriaPropia) => (dispatch, getState) => {
+
+    const body = JSON.stringify({ id: producto.id, photo: producto.photo, categoria: producto.categoria, name: producto.name, descripcion: producto.descripcion, titulo_precio1: producto.tamanio, titulo_precio2: producto.tamanio2, titulo_precio3: producto.tamanio3, precio1: producto.precio1, precio2: producto.precio2, precio3: producto.precio3, is_apio: producto.is_apio, is_altramuces: producto.is_altramuces, is_cacahuete: producto.is_cacahuete, is_crustaceo: producto.is_crustaceo, is_frutos_con_cascara: producto.is_frutos_con_cascara, is_gluten: producto.is_gluten, is_huevo: producto.is_huevo, is_lacteo: producto.is_lacteo, is_molusco: producto.is_molusco, is_mostaza: producto.is_mostaza, is_pescado: producto.is_pescado, is_sesamo: producto.is_sesamo, is_soja: producto.is_soja, is_sulfito: producto.is_sulfito, carta: producto.carta });
+
+    console.log("Mira el body --> ", body)
+    axios.put(`/api/productact/${producto.id}/?categoria=${categoriaPropia}`, body, tokenConfig(getState))
+        .then(res => {
+            console.log("Miralo que hemos hcho el update ", res.data.id)
+            dispatch({
+                type: UPDATE_PRODUCTO,
+                payload: res.data
+
+            });
+        })
+        .catch(err => console.log("Esto es el subir y mira que error tienes " + err));
+}
+
 export const subirPhoto = (formdata, producto, cif_user) => dispatch => {
 
     dispatch({

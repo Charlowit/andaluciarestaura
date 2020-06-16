@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'carta.apps.CartaConfig',
     'rest_framework',
     'corsheaders',
+
     'knox',
 ]
 
