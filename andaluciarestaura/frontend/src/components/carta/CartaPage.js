@@ -2,7 +2,7 @@ import React, { Component, Fragment, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { uploadProducto, updateCategoria, getCategorias, deleteproducto, subirproducto, addCategoria, deleteCategoria, subirPhoto } from '../../actions/carta';
-import { updateEstablecimiento, getCartaExpecifica, updateEslogan, updateURL, updateNombreCarta } from '../../actions/cartas';
+import { updateLogoRounded, updateEstablecimiento, getCartaExpecifica, updateEslogan, updateURL, updateNombreCarta } from '../../actions/cartas';
 import CargarPdf from '../cartaestatica/CargarPdf'
 import { Animated } from "react-animated-css";
 import { Redirect, Link } from 'react-router-dom';
@@ -26,7 +26,6 @@ export class CartaPage extends Component {
 
     constructor() {
         super();
-        this.forceUpdateHandler = this.forceUpdateHandler.bind(this);
         this.state = {
             component: "CATEGORIAS",
             productos: [],
@@ -40,7 +39,7 @@ export class CartaPage extends Component {
             tamanio: "",
             tamanio2: "",
             tamanio3: "",
-            precio1: "0.0",
+            precio1: "",
             precio2: "0.0",
             precio3: "0.0",
             is_apio: false,
@@ -80,7 +79,7 @@ export class CartaPage extends Component {
             editEstablecimiento: false,
 
             nombreNuevaCategoria: "",
-            info_extra: "",
+            info_extra: "-",
             posicion: 1,
             clickedProducto: null,
 
@@ -95,11 +94,6 @@ export class CartaPage extends Component {
 
         };
     }
-
-    forceUpdateHandler() {
-        this.forceUpdate();
-    };
-
 
 
     onSubmit = e => {
@@ -133,8 +127,8 @@ export class CartaPage extends Component {
 
         this.props.subirPhoto(form_data, producto, cif);
 
-        var  is_primera = false;
-        if(this.props.cartaReal[0] == producto.carta){
+        var is_primera = false;
+        if (this.props.cartaReal[0] == producto.carta) {
             is_primera = true
         }
         this.props.uploadProducto(producto, cif, is_primera)
@@ -153,10 +147,10 @@ export class CartaPage extends Component {
     onSubmitCategorias = e => {
         e.preventDefault();
 
-        const { nombreNuevaCategoria, descripcion, info_extra } = this.state;
+        const { nombreNuevaCategoria, info_extra } = this.state;
         const posicion = this.props.categorias.length + 1
         const carta = this.props.match.params.id
-        const categoria = { nombreNuevaCategoria, descripcion, posicion, info_extra, carta };
+        const categoria = { nombreNuevaCategoria, posicion, info_extra, carta };
 
         this.setState({
             addCategoria: !this.state.addCategoria
@@ -165,7 +159,7 @@ export class CartaPage extends Component {
         this.props.addCategoria(categoria);
     }
 
-    onSubmitURL = e => {
+    onSubmitURL = (e, carta) => {
 
         e.preventDefault();
 
@@ -195,7 +189,9 @@ export class CartaPage extends Component {
         const idCarta = this.props.match.params.id
         const propietario = this.props.auth.user.id
         const directorio = this.props.cartaReal[0].directorio
-        const updatedCarta = { propietario, idCarta, url, directorio };
+        const establecimiento = carta.establecimiento
+        const name = carta.name
+        const updatedCarta = { propietario, idCarta, url, directorio, establecimiento, name };
 
 
 
@@ -204,7 +200,7 @@ export class CartaPage extends Component {
         this.props.updateURL(updatedCarta, urlType);
     }
 
-    onSubmitNewSlogan = e => {
+    onSubmitNewSlogan = (e, carta) => {
 
         e.preventDefault();
 
@@ -212,8 +208,9 @@ export class CartaPage extends Component {
         const idCarta = this.props.match.params.id
         const propietario = this.props.auth.user.id
         const directorio = this.props.cartaReal[0].directorio
-
-        const updatedCarta = { propietario, idCarta, eslogan, directorio };
+        const establecimiento = carta.establecimiento
+        const name = carta.name
+        const updatedCarta = { propietario, idCarta, eslogan, directorio, establecimiento, name };
 
         this.setState({
             editEslogan: !this.state.editEslogan
@@ -223,7 +220,7 @@ export class CartaPage extends Component {
         this.props.updateEslogan(updatedCarta);
     }
 
-    onSubmitNewCartaNombre = e => {
+    onSubmitNewCartaNombre = (e, carta) => {
 
         e.preventDefault();
 
@@ -231,8 +228,8 @@ export class CartaPage extends Component {
         const idCarta = this.props.match.params.id
         const propietario = this.props.auth.user.id
         const directorio = this.props.cartaReal[0].directorio
-
-        const updatedCarta = { propietario, idCarta, cartaName, directorio };
+        const establecimiento = carta.establecimiento
+        const updatedCarta = { propietario, idCarta, cartaName, directorio, establecimiento };
 
         this.setState({
             editNombreCarta: !this.state.editNombreCarta
@@ -241,7 +238,7 @@ export class CartaPage extends Component {
         this.props.updateNombreCarta(updatedCarta);
     }
 
-    onSubmitNewEstablecimiento = e => {
+    onSubmitNewEstablecimiento = (e, carta) => {
 
         e.preventDefault();
 
@@ -249,8 +246,9 @@ export class CartaPage extends Component {
         const idCarta = this.props.match.params.id
         const propietario = this.props.auth.user.id
         const directorio = this.props.cartaReal[0].directorio
+        const name = carta.name
 
-        const updatedCarta = { propietario, idCarta, establecimiento, directorio };
+        const updatedCarta = { propietario, idCarta, establecimiento, directorio, name };
 
         this.setState({
             editEstablecimiento: !this.state.editEstablecimiento
@@ -285,6 +283,12 @@ export class CartaPage extends Component {
 
         console.log("Antes --> ", producto.is_activo)
         this.props.uploadProducto(producto)
+    }
+
+    changeLogoRounded = (e, carta) => {
+        e.preventDefault()
+        carta.logo_rounded = !carta.logo_rounded
+        this.props.updateLogoRounded(carta)
     }
 
     addProduct = e => {
@@ -495,7 +499,7 @@ export class CartaPage extends Component {
     }
 
     openUrl = (e, url) => {
-        if(url != '-'){
+        if (url != '-') {
             window.open(url)
         }
     }
@@ -555,7 +559,7 @@ export class CartaPage extends Component {
                                 <div className={this.state.editEslogan ? "modal is-active" : "modal"}>
                                     <div className="modal-background"></div>
                                     <div className="modal-content">
-                                        <div className="container box">
+                                        <div className="container box" style={{backgroundColor: '#bca466'}}>
                                             <div className="has-text-right">
                                                 <button class="button is-danger" onClick={this.editEslogan}>
                                                     <span class="icon is-small">
@@ -570,7 +574,7 @@ export class CartaPage extends Component {
                                                     <input className="input" onChange={this.onChange} name="newEslogan" defaultValue={this.state.newEslogan} type="text" placeholder="El mejor restaurante de Granada!" />
                                                 </div>
                                                 <div className="control buttons is-centered" style={{ marginTop: '20px' }}>
-                                                    <button className="button is-success" onClick={this.onSubmitNewSlogan}>Guardar</button>
+                                                    <button className="button is-success" style={{color: '#bca466', backgroundColor: 'white'}} onClick={e => this.onSubmitNewSlogan(e, carta)}>Guardar</button>
                                                 </div>
                                             </form>
                                         </div>
@@ -580,7 +584,7 @@ export class CartaPage extends Component {
                                 <div className={this.state.editURLF ? "modal is-active" : "modal"}>
                                     <div className="modal-background"></div>
                                     <div className="modal-content">
-                                        <div className="container box">
+                                        <div className="container box" style={{backgroundColor: '#bca466'}}>
                                             <div className="has-text-right">
                                                 <button class="button is-danger" onClick={this.editURLF}>
                                                     <span class="icon is-small">
@@ -595,7 +599,7 @@ export class CartaPage extends Component {
                                                     <input className="input" type="text" name="newUrlF" onChange={this.onChange} defaultValue={this.state.newUrlF} placeholder="https://www.facebook.com/" />
                                                 </div>
                                                 <div className="control buttons is-centered" style={{ marginTop: '20px' }}>
-                                                    <button className="button is-success" onClick={this.onSubmitURL}>Guardar</button>
+                                                    <button className="button is-success" style={{color: '#bca466', backgroundColor: 'white'}} onClick={e => this.onSubmitURL(e, carta)}>Guardar</button>
                                                 </div>
                                             </form>
                                         </div>
@@ -605,7 +609,7 @@ export class CartaPage extends Component {
                                 <div className={this.state.editURLI ? "modal is-active" : "modal"}>
                                     <div className="modal-background"></div>
                                     <div className="modal-content">
-                                        <div className="container box">
+                                        <div className="container box" style={{backgroundColor: '#bca466'}}>
                                             <div className="has-text-right">
                                                 <button class="button is-danger" onClick={this.editURLI}>
                                                     <span class="icon is-small">
@@ -620,7 +624,7 @@ export class CartaPage extends Component {
                                                     <input className="input" type="text" name="newUrlI" onChange={this.onChange} defaultValue={this.state.newUrlI} placeholder="https://www.instagram.com/" />
                                                 </div>
                                                 <div className="control buttons is-centered" style={{ marginTop: '20px' }}>
-                                                    <button className="button is-success" onClick={this.onSubmitURL}>Guardar</button>
+                                                    <button className="button is-success" style={{color: '#bca466', backgroundColor: 'white'}} onClick={e => this.onSubmitURL(e, carta)}>Guardar</button>
                                                 </div>
                                             </form>
                                         </div>
@@ -630,7 +634,7 @@ export class CartaPage extends Component {
                                 <div className={this.state.editURLT ? "modal is-active" : "modal"}>
                                     <div className="modal-background"></div>
                                     <div className="modal-content">
-                                        <div className="container box">
+                                        <div className="container box" style={{backgroundColor: '#bca466'}}>
                                             <div className="has-text-right">
                                                 <button class="button is-danger" onClick={this.editURLT}>
                                                     <span class="icon is-small">
@@ -645,7 +649,7 @@ export class CartaPage extends Component {
                                                     <input className="input" name="newUrlT" onChange={this.onChange} defaultValue={this.state.newUrlT} type="text" placeholder="https://www.tripadvisor.es/" />
                                                 </div>
                                                 <div className="control buttons is-centered" style={{ marginTop: '20px' }}>
-                                                    <button className="button is-success" onClick={this.onSubmitURL}>Guardar</button>
+                                                    <button className="button is-success" style={{color: '#bca466', backgroundColor: 'white'}} onClick={e => this.onSubmitURL(e, carta)}>Guardar</button>
                                                 </div>
                                             </form>
                                         </div>
@@ -655,7 +659,7 @@ export class CartaPage extends Component {
                                 <div className={this.state.editNombreCarta ? "modal is-active" : "modal"}>
                                     <div className="modal-background"></div>
                                     <div className="modal-content">
-                                        <div className="container box">
+                                        <div className="container box" style={{backgroundColor: '#bca466'}}>
                                             <div className="has-text-right">
                                                 <button class="button is-danger" onClick={this.editNombreCarta}>
                                                     <span class="icon is-small">
@@ -670,7 +674,7 @@ export class CartaPage extends Component {
                                                     <input className="input" type="text" name="newCartaNombre" onChange={this.onChange} defaultValue={this.state.newCartaNombre} placeholder="Nombre de la carta" />
                                                 </div>
                                                 <div className="control buttons is-centered" style={{ marginTop: '20px' }}>
-                                                    <button className="button is-success" onClick={this.onSubmitNewCartaNombre}>Guardar</button>
+                                                    <button className="button is-success" style={{color: '#bca466', backgroundColor: 'white'}} onClick={e => this.onSubmitNewCartaNombre(e, carta)}>Guardar</button>
                                                 </div>
                                             </form>
                                         </div>
@@ -680,7 +684,7 @@ export class CartaPage extends Component {
                                 <div className={this.state.editEstablecimiento ? "modal is-active" : "modal"}>
                                     <div className="modal-background"></div>
                                     <div className="modal-content">
-                                        <div className="container box">
+                                        <div className="container box" style={{backgroundColor: '#bca466'}}>
                                             <div className="has-text-right">
                                                 <button class="button is-danger" onClick={this.editEstablecimiento}>
                                                     <span class="icon is-small">
@@ -695,7 +699,7 @@ export class CartaPage extends Component {
                                                     <input className="input" onChange={this.onChange} name="newEstablecimiento" defaultValue={this.state.newEstablecimiento} type="text" placeholder="El restaurante del Desarrollador" />
                                                 </div>
                                                 <div className="control buttons is-centered" style={{ marginTop: '20px' }}>
-                                                    <button className="button is-success" onClick={this.onSubmitNewEstablecimiento}>Guardar</button>
+                                                    <button className="button is-success" style={{color: '#bca466', backgroundColor: 'white'}} onClick={e => this.onSubmitNewEstablecimiento(e, carta)}>Guardar</button>
                                                 </div>
                                             </form>
                                         </div>
@@ -703,29 +707,45 @@ export class CartaPage extends Component {
                                 </div>
                                 <div className="hero-body hsl(90%, 159%, 79%)">
                                     <div className="container has-text-centered">
+                                        <div style={{ marginBottom: '20px' }}>
+                                            <div className='equal-height is-info' style={{ display: 'inline' }}>
 
-                                        <div className='equal-height is-info'>
-                                            <div className=" has-text-centered">
-                                                <figure className="image is-128x128 is-inline-block">
-                                                    <img className="is-rounded"
-                                                        src={`/static/clientes/${this.state.cif}/logo.jpeg`}></img>
-                                                </figure>
+                                                <div className=" has-text-centered">
+                                                    <figure className="image is-128x128 is-inline-block">
+                                                        {carta.logo_rounded ?
+                                                            <img className="is-rounded"
+                                                                src={`/static/clientes/${this.state.cif}/logo.jpeg`}></img>
+                                                            :
+                                                            <img
+                                                                src={`/static/clientes/${this.state.cif}/logo.jpeg`}></img>
+
+                                                        }
+                                                    </figure>
+                                                </div>
                                             </div>
+
+                                            <button className="button is-rounded is-small is-warning" style={{ color: '#bca466', backgroundColor: 'white', display: 'inline' }} onClick={e => this.changeLogoRounded(e, carta)}>
+                                                <span className="icon is-small">
+                                                    <i className="fas fa-camera"></i>
+                                                </span>
+                                            </button>
+
                                         </div>
 
-                                        <h1 className="title" style={{ display: 'inline' }}> {carta.establecimiento} </h1>
-                                        <button class="button is-rounded is-small" style={{ color: '#bca466', backgroundColor: 'white', display: 'inline', marginLeft: '7px', marginTop: '-3px' }} onClick={this.editEstablecimiento}>
-                                            <span class="icon is-small">
-                                                <i class="fas fa-pen"></i>
+
+                                        <h1 className="title" style={{ display: 'inline', paddingTop: '20px' }}> {carta.establecimiento} </h1>
+                                        <button className="button is-rounded is-small" style={{ color: '#bca466', backgroundColor: 'white', display: 'inline', marginLeft: '7px', marginTop: '-3px' }} onClick={this.editEstablecimiento}>
+                                            <span className="icon is-small">
+                                                <i className="fas fa-pen"></i>
                                             </span>
                                         </button>
                                         <div>
                                             <h2 className="subtitle" style={{ display: 'inline' }}> {carta.eslogan != '-' ? carta.eslogan : "Escribe tu slogan!"} </h2>
 
 
-                                            <button class="button is-rounded is-small is-warning" style={{ color: '#bca466', backgroundColor: 'white', display: 'inline', marginLeft: '7px', marginTop: '-3px' }} onClick={this.editEslogan}>
-                                                <span class="icon is-small">
-                                                    <i class="fas fa-pen"></i>
+                                            <button className="button is-rounded is-small is-warning" style={{ color: '#bca466', backgroundColor: 'white', display: 'inline', marginLeft: '7px', marginTop: '-3px' }} onClick={this.editEslogan}>
+                                                <span className="icon is-small">
+                                                    <i className="fas fa-pen"></i>
                                                 </span>
                                             </button>
 
@@ -750,7 +770,7 @@ export class CartaPage extends Component {
                                                         <i class="fas fa-pen"></i>
                                                     </span>
                                                 </button>
-                                                <a className="button is-rounded is-medium"  onClick={e => this.openUrl(e, carta.url_instagram)} style={{ marginLeft: '10px' }} >
+                                                <a className="button is-rounded is-medium" onClick={e => this.openUrl(e, carta.url_instagram)} style={{ marginLeft: '10px' }} >
                                                     <span className="icon">
                                                         <i className="fab fa-instagram"></i>
                                                     </span>
@@ -841,9 +861,13 @@ export class CartaPage extends Component {
                                             <div className={this.state.addCategoria ? "modal is-active" : "modal"}>
                                                 <div className="modal-background"></div>
                                                 <div className="modal-content">
-                                                    <div className="container box">
+                                                    <div className="container box" style={{ backgroundColor: '#bca466' }}>
                                                         <div className="has-text-right">
-                                                            <button className="button is-danger" onClick={this.addCategory}>x</button>
+                                                            <button className="button is-link" onClick={this.addCategory}>
+                                                                <span className="icon is-small">
+                                                                    <i className="fas fa-times"></i>
+                                                                </span>
+                                                            </button>
                                                         </div>
                                                         <div className="has-text-centered">
                                                             <h1 className="title" style={{ marginTop: '10px' }}>Añadir nueva categoria</h1>
@@ -857,16 +881,13 @@ export class CartaPage extends Component {
                                                                         <div className="control">
                                                                             <input className="input" onChange={this.onChange} defaultValue={this.state.nombreNuevaCategoria} name="nombreNuevaCategoria" type="text" placeholder="Entrantes, Postres..." />
                                                                         </div>
-                                                                        <label className="label" style={{ marginTop: '10px' }}>Descripción</label>
-                                                                        <div className="control">
-                                                                            <textarea name="descripcion" className="textarea" placeholder="Descripción del producto." size="20" onChange={this.onChange} defaultValue={this.state.descripcion}></textarea>
-                                                                        </div>
+
                                                                         <label className="label" style={{ marginTop: '10px' }}>Información extra</label>
                                                                         <div className="control">
                                                                             <input className="input" onChange={this.onChange} defaultValue={this.state.info_extra} name="info_extra" type="text" placeholder="Estas tapas llevan todas patatas fritas..." />
                                                                         </div>
                                                                         <div className="has-text-right">
-                                                                            <button className="button is-success" style={{ marginTop: '10px' }} onClick={this.onSubmitCategorias} > AÑADIR </button>
+                                                                            <button className="button is-success" style={{ marginTop: '10px', color: '#bca466', backgroundColor: 'white' }} onClick={this.onSubmitCategorias} > AÑADIR </button>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -880,9 +901,13 @@ export class CartaPage extends Component {
                                             <div className={this.state.addingProduct ? "modal is-active" : "modal"}>
                                                 <div className="modal-background"></div>
                                                 <div className="modal-content">
-                                                    <div className="container box">
+                                                    <div className="container box" style={{ backgroundColor: '#bca466' }}>
                                                         <div className="has-text-right">
-                                                            <button className="button is-danger" onClick={this.addProduct}>x</button>
+                                                            <button className="button is-link" onClick={this.addProduct}>
+                                                                <span className="icon is-small">
+                                                                    <i className="fas fa-times"></i>
+                                                                </span>
+                                                            </button>
                                                         </div>
                                                         <h1 className="title has-text-centered" style={{ marginTop: '20px' }}>Añadir Producto a la Carta</h1>
                                                         <form>
@@ -901,7 +926,7 @@ export class CartaPage extends Component {
                                                                                 <div className="control">
                                                                                     <div className="select">
                                                                                         <select name="tamanio" onChange={this.onChangePrecio1} defaultValue={this.state.tamanio}>
-                                                                                            <option >Ninguno</option>
+                                                                                            <option value="">Ninguno</option>
                                                                                             <option value="Tapa">Tapa</option>
                                                                                             <option value="Media racion">Media ración</option>
                                                                                             <option value="Racion">Ración</option>
@@ -929,7 +954,7 @@ export class CartaPage extends Component {
                                                                                 <div className="control">
                                                                                     <div className="select">
                                                                                         <select name="tamanio2" onChange={this.onChangePrecio2} defaultValue={this.state.tamanio}>
-                                                                                            <option >Ninguno</option>
+                                                                                            <option value="">Ninguno</option>
                                                                                             <option value="Tapa">Tapa</option>
                                                                                             <option value="Media racion">Media ración</option>
                                                                                             <option value="Racion">Ración</option>
@@ -957,7 +982,7 @@ export class CartaPage extends Component {
                                                                                 <div className="control">
                                                                                     <div className="select">
                                                                                         <select name="tamanio3" onChange={this.onChangePrecio3} defaultValue={this.state.tamanio}>
-                                                                                            <option >Ninguno</option>
+                                                                                            <option value="">Ninguno</option>
                                                                                             <option value="Tapa">Tapa</option>
                                                                                             <option value="Media racion">Media ración</option>
                                                                                             <option value="Racion">Ración</option>
@@ -1138,7 +1163,7 @@ export class CartaPage extends Component {
                                                         </form>
                                                         <br />
                                                         <div className="control buttons is-centered">
-                                                            <button className="button is-success" onClick={this.onSubmit}>Guardar</button>
+                                                            <button className="button is-success"  style={{backgroundColor: 'white', color:'#bca466'}} onClick={this.onSubmit}>Guardar</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1545,4 +1570,4 @@ const mapStateToProps = state => ({
     isUpdatingPhoto: state.cartas.isUpdatingPhoto
 });
 
-export default connect(mapStateToProps, { uploadProducto, updateCategoria, updateEstablecimiento, updateNombreCarta, updateURL, updateEslogan, getCartaExpecifica, subirproducto, addCategoria, getCategorias, deleteproducto, deleteCategoria, subirPhoto })(CartaPage);
+export default connect(mapStateToProps, { updateLogoRounded, uploadProducto, updateCategoria, updateEstablecimiento, updateNombreCarta, updateURL, updateEslogan, getCartaExpecifica, subirproducto, addCategoria, getCategorias, deleteproducto, deleteCategoria, subirPhoto })(CartaPage);

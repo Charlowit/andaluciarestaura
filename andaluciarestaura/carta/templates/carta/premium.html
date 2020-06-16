@@ -231,13 +231,22 @@
             <figure class="image is-128x128 is-inline-block">
               {% if cif_cliente %}
               {% with 'clientes/'|add:cif_cliente|add:'/logo.jpeg' as img_static %}
+              {% if carta.logo_rounded %}
               <img class="is-rounded" src="{% static img_static %}"></img>
+              {% else %}
+              <img src="{% static img_static %}"></img>
+              {% endif %}
               {% endwith %}
               {% endif %}
             </figure>
           </div>
         </div>
         <h1 class="title" id="colorTextoWhite"> {{carta.establecimiento}} </h1>
+        {% if carta.eslogan != "Escribe aquí tu eslogan!" %}
+        {% if carta.eslogan != "-" %}
+        <h1 class="subtitle" id="colorTextoWhite"> {{carta.eslogan}} </h1>
+        {% endif %}
+        {% endif %}
         <p class="field">
           {% if url_facebook != "-" %}
           <a href={{url_facebook}} class="button is-rounded is-medium">
@@ -378,11 +387,13 @@
             {% for producto in productos %}
             {% if categoria.id == producto.categoria %}
             <div class='card' id="fondoCarta">
+              {% if 'default' not in producto.photo %}
               <div className=" has-text-centered">
                 <figure className="image" style="max-width: 480px">
                   <img className="is-rounded" src={{producto.photo}}></img>
                 </figure>
               </div>
+              {% endif %}
               {% if plantilla == "Plantilla 2" %}
               <div style="text-align: center;">
                 <hr style="width:75%; margin-left:25%; margin-right:25%; background-color: #d5c69f;" />

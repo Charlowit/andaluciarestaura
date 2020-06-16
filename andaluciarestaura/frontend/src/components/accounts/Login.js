@@ -74,7 +74,7 @@ export class Login extends Component {
             <Redirect to="/admin-page" />
         );
         const notlogged = (
-            <div style={{marginTop: '100px'}}>
+            <div style={{marginTop: '-35px'}}>
                 
                     
                 <section className="hero" style={{ marginBottom: "-30px" }} >

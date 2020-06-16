@@ -35,16 +35,17 @@ class Carta(models.Model):
 
     establecimiento = models.CharField(max_length=100, null=False)
 
+    logo_rounded = models.BooleanField(default=True)
+
     def __str__(self):
         return self.name
 
 
 class Categorias(models.Model):
     name = models.CharField(max_length=50)
-    descripcion = models.CharField(max_length=100,default="producto",null=True)
     posicion = models.IntegerField(default="-1")
     carta = models.ForeignKey(Carta, null=False, on_delete=models.CASCADE)
-    info_extra = models.CharField(max_length=100,default="-")
+    info_extra = models.CharField(max_length=100,default="-", null=True)
     
     def __str__(self):
         return self.name

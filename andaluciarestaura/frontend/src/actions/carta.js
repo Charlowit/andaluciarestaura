@@ -11,7 +11,8 @@ import {
     REGISTER_LOADING,
     UPDATE_CATEGORIA,
     UPDATE_LOADING,
-    UPDATE_PRODUCTO
+    UPDATE_PRODUCTO,
+    GET_ERRORS
 } from './types';
 import { tokenConfig } from './auth'
 import { compose } from 'redux';
@@ -23,6 +24,7 @@ export const deleteproducto = (id, id_categoria) => (dispatch, getState) => {
 
     axios.delete(`/api/productact/${id}/?categoria=${id_categoria}`, tokenConfig(getState))
         .then(res => {
+            dispatch(createMessages({ borrarProducto: "Producto borrado correctamente." }));
             dispatch({
                 type: DELETE_PRODUCTO,
                 payload: id
@@ -43,13 +45,23 @@ export const subirproducto = (producto) => (dispatch, getState) => {
 
     axios.post(`/api/productact/?categoria=${producto.categoriaParaProducto}`, body, tokenConfig(getState))
         .then(res => {
+            dispatch(createMessages({ nuevoProducto: "Producto creado correctamente." }));
             dispatch({
                 type: ADD_PRODUCTO,
                 payload: res.data,
 
             });
         })
-        .catch(err => console.log("Esto es el subir y mira que error tienes " + err));
+        .catch(err => {    
+            const errors = {
+                msg: err.response.data,
+                status: err.response.status
+            }
+            dispatch({
+                type: GET_ERRORS,
+                payload: errors
+            });
+        });
 };
 
 export const uploadProducto = (producto, cif, is_primera) => (dispatch, getState) => {
@@ -168,7 +180,10 @@ export const deleteCategoria = (categoria_id, carta_id) => (dispatch, getState) 
 
     axios.delete(`/api/damelascategorias/${categoria_id}/?carta=${carta_id}`, tokenConfig(getState))
         .then(res => {
+            dispatch(createMessages({ borrarCategoria: "Categoria borrada correctamente." }));
+
             dispatch({
+                
                 type: DELETE_CATEGORIA,
                 payload: categoria_id
             });
@@ -189,12 +204,23 @@ export const addCategoria = (categoria) => (dispatch, getState) => {
     const body = JSON.stringify({ name: categoria.nombreNuevaCategoria, descripcion: categoria.descripcion, posicion: categoria.posicion, info_extra: categoria.info_extra, carta: categoria.carta });
     axios.post(`/api/damelascategorias/?carta=${categoria.carta}`, body, tokenConfig(getState))
         .then(res => {
+            dispatch(createMessages({ nuevaCategoria: "Categoria creada correctamente." }));
+
             dispatch({
                 type: ADD_CATEGORIA,
                 payload: res.data
             });
         })
-        .catch(err => console.log("Esto ta mal? " + err));
+        .catch(err => {
+            const errors = {
+                msg: err.response.data,
+                status: err.response.status
+            }
+            dispatch({
+                type: GET_ERRORS,
+                payload: errors
+            });
+        });
 }
 
 export const updateCategoria = (categoria) => (dispatch, getState) => {
@@ -210,6 +236,8 @@ export const updateCategoria = (categoria) => (dispatch, getState) => {
     //axios.get(`/api/cartaadmin/?cif=${cif}`)
     axios.put(`/api/damelascategorias/${categoria.id}/?carta=${categoria.carta}`, body, tokenConfig(getState))
         .then(res => {
+            dispatch(createMessages({ updateCategoria: "Categoria actualizada correctamente." }));
+
             dispatch({
                 type: UPDATE_CATEGORIA,
                 payload: res.data
