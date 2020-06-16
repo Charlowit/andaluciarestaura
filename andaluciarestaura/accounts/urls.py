@@ -1,5 +1,6 @@
 from django.urls import path, include
-from .api import RegisterApi, LoginApi, UserApi, FilePDFApi, UserActualizarApi, UserApiAdminPage
+from django.conf.urls import url
+from .api import RegisterApi, LoginApi, UserApi, FilePDFApi, UserActualizarApi, UserApiAdminPage, PasswordAPIView
 from knox import views as knox_views
 from . import views
 from rest_framework.routers import DefaultRouter, SimpleRouter
@@ -15,5 +16,6 @@ urlpatterns =[
     path('api/auth/logout/', knox_views.LogoutView.as_view(), name='knox_logout'),
     path('api/auth/pdf', FilePDFApi.as_view(), name='pdf_list'),
     path('api/auth/useract', UserActualizarApi.as_view()),
-    path('api/auth/datos/', include(router.urls))
+    path("api/auth/password", PasswordAPIView.as_view(), name="password-detail"),
+    path('api/auth/datos/', include(router.urls)),
 ]

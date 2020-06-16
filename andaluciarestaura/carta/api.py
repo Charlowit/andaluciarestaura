@@ -187,7 +187,7 @@ class ProductosApi(viewsets.ModelViewSet):
 
     def get_queryset(self):
         categoriaID = self.request.query_params.get('categoria', None)
-        queryset = Productos.objects.filter(categoria__id__exact=categoriaID)    
+        queryset = Productos.objects.filter(categoria__id__exact=categoriaID).order_by('id') 
         return queryset
 
 

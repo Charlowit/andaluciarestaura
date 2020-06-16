@@ -24,6 +24,7 @@ export const deleteproducto = (id, id_categoria) => (dispatch, getState) => {
 
     axios.delete(`/api/productact/${id}/?categoria=${id_categoria}`, tokenConfig(getState))
         .then(res => {
+            dispatch(createMessages({ borrarProducto: "Producto borrado correctamente." }));
             dispatch({
                 type: DELETE_PRODUCTO,
                 payload: id
@@ -51,7 +52,16 @@ export const subirproducto = (producto) => (dispatch, getState) => {
 
             });
         })
-        .catch(err => console.log("Esto es el subir y mira que error tienes " + err));
+        .catch(err => {    
+            const errors = {
+                msg: err.response.data,
+                status: err.response.status
+            }
+            dispatch({
+                type: GET_ERRORS,
+                payload: errors
+            });
+        });
 };
 
 export const uploadProducto = (producto, cif, is_primera) => (dispatch, getState) => {
@@ -87,6 +97,23 @@ export const uploadProducto = (producto, cif, is_primera) => (dispatch, getState
         })
         .catch(err => console.log("Esto es el subir y mira que error tienes " + err));
 };
+
+export const uploadProductParams = (producto, categoriaPropia) => (dispatch, getState) => {
+
+    const body = JSON.stringify({ id: producto.id, photo: producto.photo, categoria: producto.categoria, name: producto.name, descripcion: producto.descripcion, titulo_precio1: producto.tamanio, titulo_precio2: producto.tamanio2, titulo_precio3: producto.tamanio3, precio1: producto.precio1, precio2: producto.precio2, precio3: producto.precio3, is_apio: producto.is_apio, is_altramuces: producto.is_altramuces, is_cacahuete: producto.is_cacahuete, is_crustaceo: producto.is_crustaceo, is_frutos_con_cascara: producto.is_frutos_con_cascara, is_gluten: producto.is_gluten, is_huevo: producto.is_huevo, is_lacteo: producto.is_lacteo, is_molusco: producto.is_molusco, is_mostaza: producto.is_mostaza, is_pescado: producto.is_pescado, is_sesamo: producto.is_sesamo, is_soja: producto.is_soja, is_sulfito: producto.is_sulfito, carta: producto.carta });
+
+    console.log("Mira el body --> ", body)
+    axios.put(`/api/productact/${producto.id}/?categoria=${categoriaPropia}`, body, tokenConfig(getState))
+        .then(res => {
+            console.log("Miralo que hemos hcho el update ", res.data.id)
+            dispatch({
+                type: UPDATE_PRODUCTO,
+                payload: res.data
+
+            });
+        })
+        .catch(err => console.log("Esto es el subir y mira que error tienes " + err));
+}
 
 export const subirPhoto = (formdata, producto, cif_user) => dispatch => {
 
@@ -170,7 +197,10 @@ export const deleteCategoria = (categoria_id, carta_id) => (dispatch, getState) 
 
     axios.delete(`/api/damelascategorias/${categoria_id}/?carta=${carta_id}`, tokenConfig(getState))
         .then(res => {
+            dispatch(createMessages({ borrarCategoria: "Categoria borrada correctamente." }));
+
             dispatch({
+                
                 type: DELETE_CATEGORIA,
                 payload: categoria_id
             });
@@ -223,6 +253,8 @@ export const updateCategoria = (categoria) => (dispatch, getState) => {
     //axios.get(`/api/cartaadmin/?cif=${cif}`)
     axios.put(`/api/damelascategorias/${categoria.id}/?carta=${categoria.carta}`, body, tokenConfig(getState))
         .then(res => {
+            dispatch(createMessages({ updateCategoria: "Categoria actualizada correctamente." }));
+
             dispatch({
                 type: UPDATE_CATEGORIA,
                 payload: res.data

@@ -67,30 +67,38 @@ def index_gratis(request,cif_cliente):
             if len(data) > 0:
                 for p in data:
                     productos.append(p)
-         
-    
-    if user[0]['is_premium']:
-        template = loader.get_template('carta/premium.html')
-    else:
-        template = loader.get_template('../../frontend/templates/frontend/free2.html')
         
-    context = {
-        'cif_cliente': cif_cliente,
-        'categorias': categoriasRaw,
-        'productos': productos,
-        'server': server_local,
-        'plantilla': plantilla,
-        'url_facebook': url_facebook,
-        'url_instagram': url_instagram,
-        'url_tripadvisor': url_tripadvisor,
-        'eslogan': eslogan,
-        'carta': carta
-    }
+
+    template = None
+
+    if carta['is_activa']:
+
+        if user[0]['is_premium']:
+            template = loader.get_template('carta/premium.html')
+        else:
+            template = loader.get_template('../../frontend/templates/frontend/free2.html')
+            
+        context = {
+            'cif_cliente': cif_cliente,
+            'categorias': categoriasRaw,
+            'productos': productos,
+            'server': server_local,
+            'plantilla': plantilla,
+            'url_facebook': url_facebook,
+            'url_instagram': url_instagram,
+            'url_tripadvisor': url_tripadvisor,
+            'eslogan': eslogan,
+            'carta': carta
+        }
+    else:
+        template = loader.get_template('../../frontend/templates/frontend/cartanoactiva.html')
+        context = {}
     #FILTRAR EL NOMBRE DE LA CARTA
     #carta = Carta.objects.filter(cif__exact=cif_cliente)
-    
-
     return HttpResponse(template.render(context, request))
+
+
+    
 
 
 def index_pago(request,cif_cliente, carta_id):
@@ -137,25 +145,36 @@ def index_pago(request,cif_cliente, carta_id):
         if len(data) > 0:
             for p in data:
                 productos.append(p)
-         
-    if carta['show_as_pdf']:
-        template = loader.get_template('../../frontend/templates/frontend/free2.html')
-    else :
-        template = loader.get_template('carta/premium.html')
+
+
+    template = None
+
+    if carta['is_activa']:
+
+        if carta['show_as_pdf']:
+            template = loader.get_template('../../frontend/templates/frontend/free2.html')
+        else :
+            template = loader.get_template('carta/premium.html')
+        
+        print("SERVER_LOCAL: " + server_local)
+        context = {
+            'cif_cliente': cif_cliente,
+            'categorias': categoriasRaw,
+            'productos': productos,
+            'server': server_local,
+            'plantilla': plantilla,
+            'url_facebook': url_facebook,
+            'url_instagram': url_instagram,
+            'url_tripadvisor': url_tripadvisor,
+            'eslogan': eslogan,
+            'carta': carta
+        }
+    else:
+        template = loader.get_template('../../frontend/templates/frontend/cartanoactiva.html')
+        context = {}
+
+
     
-    print("SERVER_LOCAL: " + server_local)
-    context = {
-        'cif_cliente': cif_cliente,
-        'categorias': categoriasRaw,
-        'productos': productos,
-        'server': server_local,
-        'plantilla': plantilla,
-        'url_facebook': url_facebook,
-        'url_instagram': url_instagram,
-        'url_tripadvisor': url_tripadvisor,
-        'eslogan': eslogan,
-        'carta': carta
-    }
     #FILTRAR EL NOMBRE DE LA CARTA
     #carta = Carta.objects.filter(cif__exact=cif_cliente)
     

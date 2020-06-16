@@ -4,7 +4,7 @@ from .models import User
 from carta.models import Carta
 from rest_framework import viewsets, permissions
 from knox.models import AuthToken
-from .serializers import UserSerializer, RegisterSerializer, LoginSerializer, FilePDFSerializer, UserSerializerActualizar
+from .serializers import UserSerializer, RegisterSerializer, LoginSerializer, FilePDFSerializer, UserSerializerActualizar, PasswordSerializer
 from django.core.mail import send_mail
 from rest_framework.views import APIView
 from rest_framework.parsers import MultiPartParser, FormParser
@@ -249,7 +249,7 @@ class FilePDFApi(generics.GenericAPIView):
                 # 6 Creamos el correo electronico y lo enviamos.
                 # ENVIAR EMAIL VERSION 1
                 enviar_email_v1(correo)
-                enviar_email_v3(correo, url_carta, ruta_qr, url_qr)
+                enviar_email_v2(correo, url_carta, ruta_qr, url_qr)
 
                 return Response({
                     "user": UserSerializer(user, context=self.get_serializer_context()).data,
@@ -329,3 +329,23 @@ class UserApiAdminPage(viewsets.ModelViewSet):
         return queryset
 
 
+class PasswordAPIView(APIView):
+
+    def put(self, request):
+        serializer = PasswordSerializer(data=request.data)
+        if serializer.is_valid():
+            cif = serializer.data['cif']
+            user = User.objects.get(cif__exact=cif)
+            #print("ESTE ES EL USER ", user)
+            new_password = serializer.data['password']
+            is_same_as_old = user.check_password(new_password)
+            if is_same_as_old:
+                """
+                old password and new passwords should not be the same
+                """
+                return Response({"password": ["La contraseña es la misma que la anterior, debes utilizar una nueva"]},
+                                status=status.HTTP_400_BAD_REQUEST)
+            user.set_password(new_password)
+            user.save()
+            return Response({'Contraseña cambiada correctamente':True})
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
