@@ -1048,6 +1048,24 @@ export class CartaPage extends Component {
                                                                                             <option value="L">L</option>
                                                                                             <option value="XL">XL</option>
                                                                                             <option value="XXL">XXL</option>
+                                                                                            <option value="Caña">Caña</option>
+                                                                                            <option value="Tubo">Tubo</option>
+                                                                                            <option value="Maceta">Maceta</option>
+                                                                                            <option value="Copa">Copa</option>
+                                                                                            <option value="Medio">Medio</option>
+                                                                                            <option value="Botellin">Botellin</option>
+                                                                                            <option value="Botella">Botella</option>
+                                                                                            <option value="Tercio 1/3">Tercio 1/3</option>
+                                                                                            <option value="Quinto 1/5">Quinto 1/5</option>
+                                                                                            <option value="Medio Litro 1/2">Medio Litro 1/2</option>
+                                                                                            <option value="Litro 1L">Litro 1L</option>
+                                                                                            <option value="Jarra">Jarra</option>
+                                                                                            <option value="Pinta">Pinta</option>
+                                                                                            <option value="20cl">20cl</option>
+                                                                                            <option value="25cl">25cl</option>
+                                                                                            <option value="33cl">33cl</option>
+                                                                                            <option value="33cl">Chupito</option>
+                                                                                            <option value="33cl">Cocktel</option>
                                                                                         </select>
                                                                                     </div>
                                                                                 </div>
@@ -1076,6 +1094,24 @@ export class CartaPage extends Component {
                                                                                             <option value="L">L</option>
                                                                                             <option value="XL">XL</option>
                                                                                             <option value="XXL">XXL</option>
+                                                                                            <option value="Caña">Caña</option>
+                                                                                            <option value="Tubo">Tubo</option>
+                                                                                            <option value="Maceta">Maceta</option>
+                                                                                            <option value="Copa">Copa</option>
+                                                                                            <option value="Medio">Medio</option>
+                                                                                            <option value="Botellin">Botellin</option>
+                                                                                            <option value="Botella">Botella</option>
+                                                                                            <option value="Tercio 1/3">Tercio 1/3</option>
+                                                                                            <option value="Quinto 1/5">Quinto 1/5</option>
+                                                                                            <option value="Medio Litro 1/2">Medio Litro 1/2</option>
+                                                                                            <option value="Litro 1L">Litro 1L</option>
+                                                                                            <option value="Jarra">Jarra</option>
+                                                                                            <option value="Pinta">Pinta</option>
+                                                                                            <option value="20cl">20cl</option>
+                                                                                            <option value="25cl">25cl</option>
+                                                                                            <option value="33cl">33cl</option>
+                                                                                            <option value="33cl">Chupito</option>
+                                                                                            <option value="33cl">Cocktel</option>
                                                                                         </select>
                                                                                     </div>
                                                                                 </div>
@@ -1104,6 +1140,24 @@ export class CartaPage extends Component {
                                                                                             <option value="L">L</option>
                                                                                             <option value="XL">XL</option>
                                                                                             <option value="XXL">XXL</option>
+                                                                                            <option value="Caña">Caña</option>
+                                                                                            <option value="Tubo">Tubo</option>
+                                                                                            <option value="Maceta">Maceta</option>
+                                                                                            <option value="Copa">Copa</option>
+                                                                                            <option value="Medio">Medio</option>
+                                                                                            <option value="Botellin">Botellin</option>
+                                                                                            <option value="Botella">Botella</option>
+                                                                                            <option value="Tercio 1/3">Tercio 1/3</option>
+                                                                                            <option value="Quinto 1/5">Quinto 1/5</option>
+                                                                                            <option value="Medio Litro 1/2">Medio Litro 1/2</option>
+                                                                                            <option value="Litro 1L">Litro 1L</option>
+                                                                                            <option value="Jarra">Jarra</option>
+                                                                                            <option value="Pinta">Pinta</option>
+                                                                                            <option value="20cl">20cl</option>
+                                                                                            <option value="25cl">25cl</option>
+                                                                                            <option value="33cl">33cl</option>
+                                                                                            <option value="33cl">Chupito</option>
+                                                                                            <option value="33cl">Cocktel</option>
                                                                                         </select>
                                                                                     </div>
                                                                                 </div>

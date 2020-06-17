@@ -14,7 +14,25 @@ TAMANIOS = (
     ('L','L'),
     ('XL','XL'),
     ('XXL','XXL'),
-    ('', '')
+    ('', ''),
+    ('Caña', 'Caña'),
+    ('Tubo', 'Tubo'),
+    ('Maceta' ,'Maceta'),
+    ('Copa', 'Copa'),
+    ('Medio', 'Medio'),
+    ('Botellin', 'Botellin'),
+    ('Botella', 'Botella'),
+    ('Tercio 1/3', 'Tercio 1/3'),
+    ('Quinto 1/5', 'Quinto 1/5'),
+    ('Litro 1L', 'Litro 1L'),
+    ('Medio Litro 1/2', 'Medio Litro 1/2'),
+    ('Jarra', 'Jarra'),
+    ('Pinta', 'Pinta'),
+    ('20cl', '20cl'),
+    ('25cl', '25cl'),
+    ('33cl', '33cl'),
+    ('Chupito', 'Chupito'),
+    ('Cocktel', 'Cocktel'),
 )
 
 
@@ -55,9 +73,9 @@ class Productos(models.Model):
         categoria = models.ForeignKey(Categorias, on_delete=models.CASCADE, related_name="categoria", null=False)
         name = models.CharField(max_length=100, default="producto")
         descripcion= models.CharField(max_length=1000)
-        titulo_precio1 = models.CharField(max_length=13, choices=TAMANIOS, default='')
-        titulo_precio2 = models.CharField(max_length=13, choices=TAMANIOS, default='', null=True)
-        titulo_precio3 = models.CharField(max_length=13, choices=TAMANIOS, default='', null=True)
+        titulo_precio1 = models.CharField(max_length=30, choices=TAMANIOS, default='')
+        titulo_precio2 = models.CharField(max_length=30, choices=TAMANIOS, default='', null=True)
+        titulo_precio3 = models.CharField(max_length=30, choices=TAMANIOS, default='', null=True)
         precio1 = models.FloatField(default="0.0")
         precio2 = models.FloatField(default="0.0", null=True)
         precio3 = models.FloatField(default="0.0", null=True)

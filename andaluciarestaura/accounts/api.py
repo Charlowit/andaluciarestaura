@@ -148,6 +148,14 @@ def handle_uploaded_file(f,ruta):
         for chunk in f.chunks():
             destination.write(chunk)
 
+def handle_uploaded_image(f,ruta):
+    size = (128,128)
+    image = Image.open(f)
+    if image.mode not in ('L', 'RGB'):
+        image = image.convert('RGB')
+    image = image.resize(size, Image.ANTIALIAS)
+    image.save(ruta)
+
 class FilePDFApi(generics.GenericAPIView):
     serializer_class = RegisterSerializer
     parser_classes = (MultiPartParser, FormParser)
@@ -203,7 +211,7 @@ class FilePDFApi(generics.GenericAPIView):
                 # 2 Creamos el fichero y lo copiamos en el directorio anteriormente creado.
                 handle_uploaded_file(request.data["pdf"],ruta_pdf)
                 #encoded_string = base64.b64encode(request.data["logo"].read())
-                handle_uploaded_file(request.data["logo"],ruta_logo)
+                handle_uploaded_image(request.data["logo"],ruta_logo)
 
                 logger.error(request.data["pdf"])
                 logger.error(request.data["logo"])
