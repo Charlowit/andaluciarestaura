@@ -63,7 +63,7 @@ export class ResetPassword extends Component {
             this.props.cambiarpassword(user)
             alert("Contraseña cambiada correctamente. Gracias")
         }
-        else{
+        else {
             alert("Las contraseñas no coinciden porfavor reviselas!")
         }
 
@@ -79,53 +79,55 @@ export class ResetPassword extends Component {
                 <div className="section is-paddingless">
                     <section className="hero has-text-centered is-paddingless">
                         <div className="hero-body is-paddingless" style={bkg}>
-                            <div className="content" style={{marginTop: '70px'}}>
-                                <div className="columns is-centered is-marginless" style={{width: '100%'}}>
+                            <div className="content" style={{ marginTop: '70px' }}>
+                                <h1 className="title" style={colorWhite}>¿Necesita cambiar su contraseña?</h1>
+                                <h1 className="subtitle" style={colorWhite}>No olvide rellenar todos los campos.</h1>
+                                <div className="columns is-centered is-marginless" style={{ width: '100%' }}>
                                     <div className="column is-one-third is-half-tablet is-full-mobile">
                                         <section className="hero has-text-centered">
                                             <div className="hero-body is-paddingless">
                                                 <div className="container ">
                                                     <div className="section ">
                                                         <div>
-                                                            <form style={{marginTop: '-60px'}}>
+                                                            <form style={{ marginTop: '-60px' }}>
                                                                 <div className="field">
                                                                     <label className="label has-text-centered is-size-4"
-                                                                           style={colorWhite}>Contraseña</label>
-                                                                        <div>
-                                                                            <div className="control has-icons-left">
-                                                                                <input type="password"
-                                                                                       placeholder="******"
-                                                                                       name="password"
-                                                                                       className="input"
-                                                                                       onChange={this.onChange}
-                                                                                       value={this.state.password} required/>
-                                                                                <span className="icon is-small is-left">
-                                                                                        <i className="fa fa-lock"></i>
-                                                                                </span>
-                                                                            </div>
+                                                                        style={colorWhite}>Contraseña</label>
+                                                                    <div>
+                                                                        <div className="control has-icons-left">
+                                                                            <input type="password"
+                                                                                placeholder="******"
+                                                                                name="password"
+                                                                                className="input"
+                                                                                onChange={this.onChange}
+                                                                                value={this.state.password} required />
+                                                                            <span className="icon is-small is-left">
+                                                                                <i className="fa fa-lock"></i>
+                                                                            </span>
                                                                         </div>
+                                                                    </div>
                                                                 </div>
                                                                 <div className="field">
                                                                     <label className="label has-text-centered is-size-4"
-                                                                           style={colorWhite}>Repita contraseña</label>
-                                                                        <div>
-                                                                            <div className="control has-icons-left">
-                                                                                <input type="password"
-                                                                                       placeholder="******"
-                                                                                       name="password2"
-                                                                                       className="input"
-                                                                                       onChange={this.onChange}
-                                                                                       value={this.state.password2} required/>
-                                                                                <span className="icon is-small is-left">
-                                                                                        <i className="fa fa-lock"></i>
-                                                                                </span>
-                                                                            </div>
+                                                                        style={colorWhite}>Repita contraseña</label>
+                                                                    <div>
+                                                                        <div className="control has-icons-left">
+                                                                            <input type="password"
+                                                                                placeholder="******"
+                                                                                name="password2"
+                                                                                className="input"
+                                                                                onChange={this.onChange}
+                                                                                value={this.state.password2} required />
+                                                                            <span className="icon is-small is-left">
+                                                                                <i className="fa fa-lock"></i>
+                                                                            </span>
                                                                         </div>
+                                                                    </div>
                                                                 </div>
-                                                                <div style={{marginTop: '60px'}}>
+                                                                <div style={{ marginTop: '60px' }}>
                                                                     <button type="submit" className="button"
-                                                                            onClick={this.onSubmit}
-                                                                            style={{color: '#bca466'}}>Cambiar contraseña
+                                                                        onClick={this.onSubmit}
+                                                                        style={{ color: '#bca466' }}>Cambiar contraseña
                                                                     </button>
                                                                 </div>
                                                             </form>

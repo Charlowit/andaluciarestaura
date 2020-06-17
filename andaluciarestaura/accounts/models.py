@@ -52,7 +52,6 @@ class User(AbstractUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     is_premium = models.BooleanField(default=False)
     date_joined = models.DateTimeField(default=timezone.now)
-    is_premium = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'cif'
     REQUIRED_FIELDS = []

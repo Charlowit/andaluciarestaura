@@ -227,26 +227,23 @@
     <div class="hero-body">
       <div class="container has-text-centered is-clearfix">
         <div class='equal-height'>
-          <a class="copi button is-link" href="javascript:getlink();">Copiar URL</a>
 
-          <script>//<![CDATA[
-            function getlink() {
-              var aux = document.createElement("input");
-              aux.setAttribute("value", window.location.href);
-              document.body.appendChild(aux);
-              aux.select();
-              document.execCommand("copy");
-              document.body.removeChild(aux);
-            }
-//]]></script>
           <div class="card-image has-text-centered" style="margin-top: 20px;">
             <figure class="image is-128x128 is-inline-block">
               {% if cif_cliente %}
               {% with 'clientes/'|add:cif_cliente|add:'/logo.jpeg' as img_static %}
               {% if carta.logo_rounded %}
-              <img class="is-rounded" src="{% static img_static %}"></img>
+              {% if carta.logo_propio %}
+              <img class="is-rounded" src="{{carta.directorio}}/logo.jpeg"></img>
               {% else %}
-              <img src="{% static img_static %}"></img>
+              <img class="is-rounded" src="{% static img_static %}"></img>
+              {% endif %}
+              {% else %}
+              {% if carta.logo_propio %}
+              <img src="{{carta.directorio}}/logo.jpeg"></img>
+              {% else %}
+              <img  src="{% static img_static %}"></img>
+              {% endif %}
               {% endif %}
               {% endwith %}
               {% endif %}
@@ -282,6 +279,18 @@
           </a>
           {% endif %}
         </p>
+        <a class="copi button is-link" href="javascript:getlink();">Copiar URL</a>
+
+        <script>//<![CDATA[
+          function getlink() {
+            var aux = document.createElement("input");
+            aux.setAttribute("value", window.location.href);
+            document.body.appendChild(aux);
+            aux.select();
+            document.execCommand("copy");
+            document.body.removeChild(aux);
+          }
+//]]></script>
         <hr />
         <div class="container">
           <div class="columns">
@@ -318,7 +327,7 @@
 
   <script type="text/javascript">
     function googleTranslateElementInit() {
-      new google.translate.TranslateElement({ pageLanguage: 'es', includedLanguages: 'ar,en,es,jv,ko,pa,pt,ru,zh-CN', layout: google.translate.TranslateElement.InlineLayout.SIMPLE, autoDisplay: false }, 'google_translate_element');
+      new google.translate.TranslateElement({ pageLanguage: 'es', includedLanguages: 'en,es,it,fr,de,el,pt,zh-CN,ja,ar,ru', layout: google.translate.TranslateElement.InlineLayout.SIMPLE, autoDisplay: false }, 'google_translate_element');
     }
   </script>
 
@@ -386,7 +395,9 @@
       <div class="container">
         <div style="margin-top: 40px">
           <!-- FOR DE LA CARTA -->
+          {% for id_categoria_vacia in categorias_vacias %}
           {% for categoria in categorias %}
+          {% if categoria.id != id_categoria_vacia %}
           <div class="container">
 
             <div class='card equal-height ' id="cardColour" style="margin-top: 40px">
@@ -399,10 +410,10 @@
             {% if categoria.info_extra != "-" %}
             <div class="card has-text-centered" style="margin-top: 0px">
               <div>
-                  <p class="subtitle">{{categoria.info_extra}}</p>
+                <p class="subtitle" style="padding-top: 5px; padding-bottom: 5px;"><b>Informacion: {{categoria.info_extra}}</b></p>
               </div>
-          </div>
-          {% endif %}
+            </div>
+            {% endif %}
             {% for producto in productos %}
             {% if categoria.id == producto.categoria %}
             {% if producto.is_activo %}
@@ -410,7 +421,7 @@
               {% if 'default' not in producto.photo %}
               <div class=" has-text-centered">
                 <figure class="image" style="max-width: 480px">
-                  <img class="is-rounded" src={{producto.photo}}></img>
+                  <img  src={{producto.photo}}></img>
                 </figure>
               </div>
               {% endif %}
@@ -564,6 +575,8 @@
             {% endfor %}
           </div>
         </div>
+        {% endif %}
+        {% endfor %}
         {% endfor %}
       </div>
     </div>

@@ -123,6 +123,8 @@ export class Alerts extends Component {
             if(message.nuevaVisualizacion) {
                 alert.success(message.nuevaVisualizacion);
             }
+            
+            
         }
     }
 
