@@ -45,13 +45,22 @@ INSTALLED_APPS = [
     'carta.apps.CartaConfig',
     'rest_framework',
     'corsheaders',
-
+    'django_simple_bulma',
     'knox',
 ]
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication',)
 }
+
+STATICFILES_FINDERS = [
+  # First add the two default Finders, since this will overwrite the default.
+  'django.contrib.staticfiles.finders.FileSystemFinder',
+  'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+
+  # Now add our custom SimpleBulma one.
+  'django_simple_bulma.finders.SimpleBulmaFinder',
+]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -161,10 +170,11 @@ AUTH_USER_MODEL = 'accounts.User'
 
 PUBLIC_URL = ''
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
+    os.path.join(BASE_DIR, "frontend/static"),
 ]
 
 STATIC_ROOT = '/home/ubuntu/andaluciarestaura/andaluciarestaura/frontend/static'
+
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'

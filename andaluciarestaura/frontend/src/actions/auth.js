@@ -284,9 +284,3 @@ export const updateuser = (user) => (dispatch, getState) => {
 
         });
 };
-
-
-
-
-
-

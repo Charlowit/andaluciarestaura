@@ -3,7 +3,11 @@
 {% load static %}
 
 <head>
+  {% load django_simple_bulma %}
+  {% bulma %}
+  {% font_awesome %}
   <link href='https://fonts.googleapis.com/css?family=El Messiri' rel='stylesheet'>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css">
   <style>
     div {
       font-family: 'El Messiri';
@@ -170,6 +174,51 @@
       }
     }
 
+      .whatsapp_btn {
+
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        display: inline-block !important;
+        position: relative;
+        font-family: Arial, sans-serif;
+        letter-spacing: .4px;
+        cursor: pointer;
+        font-weight: 400;
+        text-transform: none;
+        color: #fff;
+        border-radius: 2px;
+        background-color: #5cbe4a;
+        background-repeat: no-repeat;
+        line-height: 1.2;
+        text-decoration: none;
+        text-align: left;
+      }
+
+      .whatsapp_btn_small {
+        font-size: 12px;
+        background-size: 16px;
+        background-position: 5px 2px;
+        padding: 3px 6px 3px 25px;
+      }
+
+      .whatsapp_btn_medium {
+        font-size: 16px;
+        background-size: 20px;
+        background-position: 4px 2px;
+        padding: 4px 6px 4px 30px;
+      }
+
+      .whatsapp_btn_large {
+        font-size: 16px;
+        background-size: 20px;
+        background-position: 5px 5px;
+        padding: 8px 6px 8px 30px;
+        color: #fff;
+      }
+
+      a.whatsapp {
+        color: #fff;
+      }
+
     #cardColour {
       background-color: black;
       color: #d5c69f;
@@ -216,37 +265,50 @@
     <nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
         <a class="navbar-item" href="/">
-          <img src="{% static 'frontend/logoar.png' %}" width="300" height="125">
+          <img style="" src="{% static 'frontend/logoar.png' %}" width="300" height="125">
         </a>
-
       </div>
     </nav>
   </header>
-  <section class="hero is-bold" id="bkg" style="margin-top: 40px ">
+  <div class="pageloader is-active" style="background-color: #bca466;" id="pageloader">
+      <p class="title">
+        <img width="200" height="50" src="{% static 'frontend/hotehub.svg' %}"></img>
+      </p>
+      <p class="title" style="margin-top:70px;"> Córdoba Restaura by Hotehub</p>
+      <p class="title" style="margin-top:90px">Copyright@2020 Todos los derechos reservados </p>
+  </div>
+  <script>
+
+        var pageloader = document.getElementById("pageloader");
+        if (pageloader) {
+          var pageloaderTimeout = setTimeout( function() {
+            pageloader.classList.toggle('is-active');
+            clearTimeout(pageloaderTimeout);
+          }, 850 );
+        }
+  </script>
+  <section class="hero is-bold animate__animated animate__bounceInDown animate__delay-1s " id="bkg" style="margin-top: 40px ">
 
     <div class="hero-body">
       <div class="container has-text-centered is-clearfix">
         <div class='equal-height'>
-          <a class="copi button is-link" href="javascript:getlink();">Copiar URL</a>
 
-          <script>//<![CDATA[
-            function getlink() {
-              var aux = document.createElement("input");
-              aux.setAttribute("value", window.location.href);
-              document.body.appendChild(aux);
-              aux.select();
-              document.execCommand("copy");
-              document.body.removeChild(aux);
-            }
-//]]></script>
           <div class="card-image has-text-centered" style="margin-top: 20px;">
             <figure class="image is-128x128 is-inline-block">
               {% if cif_cliente %}
               {% with 'clientes/'|add:cif_cliente|add:'/logo.jpeg' as img_static %}
               {% if carta.logo_rounded %}
-              <img class="is-rounded" src="{% static img_static %}"></img>
+              {% if carta.logo_propio %}
+              <img class="is-rounded" src="{{carta.directorio}}/logo.jpeg"></img>
               {% else %}
-              <img src="{% static img_static %}"></img>
+              <img class="is-rounded" src="{% static img_static %}"></img>
+              {% endif %}
+              {% else %}
+              {% if carta.logo_propio %}
+              <img src="{{carta.directorio}}/logo.jpeg"></img>
+              {% else %}
+              <img  src="{% static img_static %}"></img>
+              {% endif %}
               {% endif %}
               {% endwith %}
               {% endif %}
@@ -281,8 +343,62 @@
             </span>
           </a>
           {% endif %}
+          <a class="whatsapp button is-rounded is-medium">
+            <span class="icon is-small">
+              <i class="fab fa-whatsapp"></i>
+            </span>
+          </a>
+          <script>//<![CDATA[
+            $(document).ready(function() {
+              var isMobile = {
+                  Android: function() {
+                      return navigator.userAgent.match(/Android/i);
+                  },
+                  BlackBerry: function() {
+                      return navigator.userAgent.match(/BlackBerry/i);
+                  },
+                  iOS: function() {
+                      return navigator.userAgent.match(/iPhone|iPad|iPod/i);
+                  },
+                  Opera: function() {
+                      return navigator.userAgent.match(/Opera Mini/i);
+                  },
+                  Windows: function() {
+                      return navigator.userAgent.match(/IEMobile/i);
+                  },
+                  any: function() {
+                      return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
+                  }
+              };
+               $(document).on("click", '.whatsapp', function() {
+                      if( isMobile.any() ) {
+
+                          var text = $(this).attr("data-text");
+                          var url = $(this).attr("data-link");
+                          var message = encodeURIComponent(text) + " - " + encodeURIComponent(url);
+                          var whatsapp_url = "whatsapp://send?text=" + message;
+                          window.location.href = whatsapp_url;
+                      }
+
+                  });
+              });
+
+          //]]></script>
         </p>
+        <a class="copi button is-link" href="javascript:getlink();">Copiar URL</a>
+
+        <script>//<![CDATA[
+          function getlink() {
+            var aux = document.createElement("input");
+            aux.setAttribute("value", window.location.href);
+            document.body.appendChild(aux);
+            aux.select();
+            document.execCommand("copy");
+            document.body.removeChild(aux);
+          }
+//]]></script>
         <hr />
+
         <div class="container">
           <div class="columns">
             <div class="column">
@@ -297,17 +413,6 @@
           </div>
 
 
-          {% if cif_cliente %}
-          {% with 'clientes/'|add:cif_cliente|add:'' as url_static %}
-          <a href="#" class="button whatsapp">
-            {% endwith %}
-            {% endif %}
-            <span class="icon is-small">
-              <i class="fab fa-whatsapp"></i>
-            </span>
-            <span>Comparte por Whatsapp</span>
-          </a>
-
         </div>
       </div>
     </div>
@@ -318,7 +423,7 @@
 
   <script type="text/javascript">
     function googleTranslateElementInit() {
-      new google.translate.TranslateElement({ pageLanguage: 'es', includedLanguages: 'ar,en,es,jv,ko,pa,pt,ru,zh-CN', layout: google.translate.TranslateElement.InlineLayout.SIMPLE, autoDisplay: false }, 'google_translate_element');
+      new google.translate.TranslateElement({ pageLanguage: 'es', includedLanguages: 'en,es,it,fr,de,el,pt,zh-CN,ja,ar,ru', layout: google.translate.TranslateElement.InlineLayout.SIMPLE, autoDisplay: false }, 'google_translate_element');
     }
   </script>
 
@@ -383,10 +488,14 @@
 
   <div class="section">
     <div>
-      <div class="container">
+      <div class="container ">
         <div style="margin-top: 40px">
           <!-- FOR DE LA CARTA -->
+          {% for id_categoria_vacia in categorias_vacias %}
           {% for categoria in categorias %}
+          {% if categoria.id != id_categoria_vacia %}
+          <div class="container animate__animated animate__bounceInLeft animate__delay-1s">
+
           <div class="container">
            
             <div class='card equal-height ' id="cardColour" style="margin-top: 40px">
@@ -399,18 +508,18 @@
             {% if categoria.info_extra != "-" %}
             <div class="card has-text-centered" style="margin-top: 0px">
               <div>
-                  <p class="subtitle">{{categoria.info_extra}}</p>
+                <p class="subtitle" style="padding-top: 5px; padding-bottom: 5px;"><b>Informacion: {{categoria.info_extra}}</b></p>
               </div>
-          </div>
-          {% endif %}
+            </div>
+            {% endif %}
             {% for producto in productos %}
             {% if categoria.id == producto.categoria %}
             {% if producto.is_activo %}
-            <div class='card' id="fondoCarta">
+            <div class='card animate__animated animate__bounceInLeft animate__delay-1s' id="fondoCarta">
               {% if 'default' not in producto.photo %}
-              <div class=" has-text-centered">
+              <div class="has-text-centered ">
                 <figure class="image" style="max-width: 480px">
-                  <img class="is-rounded" src={{producto.photo}}></img>
+                  <img  src={{producto.photo}}></img>
                 </figure>
               </div>
               {% endif %}
@@ -564,6 +673,8 @@
             {% endfor %}
           </div>
         </div>
+        {% endif %}
+        {% endfor %}
         {% endfor %}
       </div>
     </div>

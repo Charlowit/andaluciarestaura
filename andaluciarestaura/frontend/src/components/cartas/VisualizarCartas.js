@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import { updateuser } from '../../actions/auth';
 import { Animated } from "react-animated-css";
 import { createPortal } from 'react-dom';
+import Tooltip from '@material-ui/core/Tooltip';
 
 const bkg = {
     marginBottom: '6%',
@@ -19,6 +20,8 @@ const bkg = {
 }
 
 
+
+
 export class VisualizarCartas extends Component {
 
     constructor() {
@@ -26,12 +29,12 @@ export class VisualizarCartas extends Component {
         this.state = {
             categoriasParaNuevaCartaObjs: [],
             categoriasParaNuevaCarta: [],
-            nombreNuevaCarta: null,
+            nombreNuevaCarta: "",
             propietario: -1, //Es el id del usuario "1" deberiamos de traer el id
             url_facebook: "",
             url_instagram: "",
             url_tripadvisor: "",
-            plantilla: null,
+            plantilla: "",
             nombreNuevaCategoria: "",
             categoriaSeleccionada: "",
             descripciones: [],
@@ -42,11 +45,14 @@ export class VisualizarCartas extends Component {
             eslogan: "",
             addingCarta: false,
             is_premium: false,
-            establecimiento: null,
+            establecimiento: "",
             addingCarta: false,
             is_premium: "",
             modal_qr: false,
             cartaClickedId: -1,
+            nombreCartaVacio: false,
+            establecimientoVacio: false,
+            plantillaVacia: false,
         };
     }
 
@@ -90,31 +96,65 @@ export class VisualizarCartas extends Component {
 
     onSubmit = e => {
         e.preventDefault();
-        if (this.state.url_facebook == "") {
-            this.state.url_facebook = "-"
+
+        var url_facebook = this.state.url_facebook
+        var url_tripadvisor = this.state.url_tripadvisor
+        var url_instagram = this.state.url_instagram
+        var eslogan = this.state.eslogan
+
+        if (url_facebook == "") {
+            url_facebook = "-"
         }
 
-        if (this.state.url_instagram == "") {
-            this.state.url_instagram = "-"
+        if (url_instagram == "") {
+            url_instagram = "-"
         }
 
-        if (this.state.url_tripadvisor == "") {
-            this.state.url_tripadvisor = "-"
+        if (url_tripadvisor == "") {
+            url_tripadvisor = "-"
         }
 
-        if (this.state.eslogan == "") {
-            this.state.eslogan = "-"
+        if (eslogan == "") {
+            eslogan = "Escribe aquí tu eslogan!"
         }
 
-        const { nombreNuevaCarta, propietario, url_facebook, url_instagram, url_tripadvisor, eslogan, plantilla, establecimiento } = this.state;
+        var nombreCartaVacio = false;
+        var establecimientoVacio = false;
+        var plantillaVacia = false;
+        if (this.state.nombreNuevaCarta == "") {
+            this.setState({ nombreCartaVacio: true })
+            nombreCartaVacio = true;
+            console.log("Esta vacío")
+        } else {
+            this.setState({ nombreCartaVacio: false })
+            nombreCartaVacio = false;
+        }
+
+        if (this.state.establecimiento == "") {
+            this.setState({ establecimientoVacio: true })
+            var establecimientoVacio = true;
+
+        } else {
+            this.setState({ establecimientoVacio: false })
+        }
+
+        if (this.state.plantilla == "") {
+            this.setState({ plantillaVacia: true })
+            var plantillaVacia = true;
+        } else {
+            this.setState({ plantillaVacia: false })
+        }
+
+        const { nombreNuevaCarta, propietario, plantilla, establecimiento } = this.state;
         const carta = { nombreNuevaCarta, propietario, url_facebook, url_instagram, url_tripadvisor, eslogan, plantilla, establecimiento };
-        this.setState({
-            addingCarta: !this.state.addingCarta
-        })
 
-
-        this.props.nuevaCarta(carta)
-
+        console.log("Esta true o false ? --> ", this.state.nombreCartaVacio)
+        if (nombreCartaVacio == false && establecimientoVacio == false && plantillaVacia == false) {
+            this.setState({
+                addingCarta: !this.state.addingCarta
+            })
+            this.props.nuevaCarta(carta)
+        }
 
     }
 
@@ -185,28 +225,69 @@ export class VisualizarCartas extends Component {
                                                         <div className="column ">
                                                             <div className="field">
                                                                 <label className="label">Nombre</label>
-                                                                <div className="control">
-                                                                    <input className="input" onChange={this.onChange} name="nombreNuevaCarta" defaultValue={this.state.nombreNuevaCarta} type="text" placeholder="Nombre para la carta" />
-                                                                </div>
+
+                                                                {this.state.nombreCartaVacio ?
+                                                                    <div>
+                                                                        <div className="control">
+                                                                            <input className="input is-danger" onChange={this.onChange} name="nombreNuevaCarta" defaultValue={this.state.nombreNuevaCarta} type="text" placeholder="Nombre para la carta" />
+                                                                        </div>
+                                                                        <p className="help is-danger" style={{ fontSize: '15px', color: 'red' }}>El campo Nombre está vacío</p>
+                                                                    </div>
+                                                                    :
+                                                                    <div className="control">
+                                                                        <input className="input" onChange={this.onChange} name="nombreNuevaCarta" defaultValue={this.state.nombreNuevaCarta} type="text" placeholder="Nombre para la carta" />
+                                                                    </div>
+                                                                }
                                                             </div>
                                                             <div className="field">
                                                                 <label className="label">Establecimiento</label>
-                                                                <div className="control">
-                                                                    <input className="input" onChange={this.onChange} name="establecimiento" defaultValue={this.state.establecimiento} type="text" placeholder="Bar del Desarrollador!" />
-                                                                </div>
+
+                                                                {this.state.establecimientoVacio ?
+                                                                    <div>
+                                                                        <div className="control">
+                                                                            <input className="input is-danger" onChange={this.onChange} name="establecimiento" defaultValue={this.state.establecimiento} type="text" placeholder="Bar del Desarrollador!" />
+                                                                        </div>
+                                                                        <p className="help is-danger" style={{ fontSize: '15px', color: 'red' }}>El campo Establecimiento está vacío</p>
+                                                                    </div>
+                                                                    :
+                                                                    <div className="control">
+                                                                        <input className="input" onChange={this.onChange} name="establecimiento" defaultValue={this.state.establecimiento} type="text" placeholder="Bar del Desarrollador!" />
+                                                                    </div>
+                                                                }
+
+
                                                             </div>
                                                             <div className="field">
                                                                 <label className="label">Plantilla</label>
-                                                                <div className="control">
-                                                                    <div className="select">
-                                                                        <select name="plantilla" onChange={this.onChange} defaultValue={this.state.plantilla}>
-                                                                            <option>Ninguna plantilla seleccionada</option>
-                                                                            <option value="Plantilla 1">Plantilla 1</option>
-                                                                            <option value="Plantilla 2">Plantilla 2</option>
-                                                                            <option value="Plantilla 3">Plantilla 3</option>
-                                                                        </select>
+
+                                                                {this.state.plantillaVacia ?
+                                                                    <div className="control">
+                                                                        <div className="select is-danger">
+                                                                            <select name="plantilla" onChange={this.onChange} defaultValue={this.state.plantilla}>
+                                                                                <option value="">Ninguna plantilla seleccionada</option>
+                                                                                <option value="Plantilla 1">Plantilla 1</option>
+                                                                                <option value="Plantilla 2">Plantilla 2</option>
+                                                                                <option value="Plantilla 3">Plantilla 3</option>
+                                                                            </select>
+                                                                        </div>
+                                                                        <p className="help is-danger" style={{ fontSize: '15px', color: 'red' }}>Debes seleccionar una plantilla.</p>
+
                                                                     </div>
-                                                                </div>
+
+                                                                    :
+                                                                    <div className="control">
+                                                                        <div className="select">
+                                                                            <select name="plantilla" onChange={this.onChange} defaultValue={this.state.plantilla}>
+                                                                                <option>Ninguna plantilla seleccionada</option>
+                                                                                <option value="Plantilla 1">Plantilla 1</option>
+                                                                                <option value="Plantilla 2">Plantilla 2</option>
+                                                                                <option value="Plantilla 3">Plantilla 3</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+
+
+                                                                }
                                                             </div>
                                                             <div className="field">
                                                                 <label className="label">URL Facebook</label>
@@ -232,13 +313,13 @@ export class VisualizarCartas extends Component {
                                                                     <input className="input" onChange={this.onChange} name="eslogan" defaultValue={this.state.eslogan} type="text" placeholder="El mejor restaurante de la zona!" />
                                                                 </div>
                                                             </div>
-                                                            
+
                                                             <hr />
                                                         </div>
                                                     </div>
                                                 </form>
                                                 <div className="control buttons is-centered">
-                                                    <button className="button is-success" style={{ color: 'white', backgroundColor: '#bca466' }} onClick={this.onSubmit}>Guardar carta y categorias</button>
+                                                    <button className="button is-success" style={{ color: 'white', backgroundColor: '#bca466' }} onClick={this.onSubmit}>Guardar carta</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -298,7 +379,8 @@ export class VisualizarCartas extends Component {
                                                             <div className="media" style={{ paddingTop: '40px' }}>
                                                                 <div className="media-left">
                                                                     <figure className="image is-48x48">
-                                                                        <img className="is-rounded" src={`/static/clientes/${this.props.auth.user.cif}/logo.jpeg`}></img>
+
+                                                                        <img className="is-rounded" src={carta.logo_propio ? `/static/${carta.directorio}/logo.jpeg` : `/static/clientes/${this.state.cif}/logo.jpeg`}></img>
                                                                     </figure>
                                                                 </div>
                                                                 <div className="media-content" height='auto'>
@@ -322,12 +404,15 @@ export class VisualizarCartas extends Component {
 
                                                         <footer className="card-footer">
                                                             <div className="card-footer-item" >
+                                                                <Tooltip title="Activar o desactivar carta">
 
-                                                                <button className="button is-link is-rounded" onClick={e => this.onSubmitDesactivarCarta(e, carta)} style={carta.is_activa ? { backgroundColor: '#bca466', color: 'white' } : { backgroundColor: 'white', border: '1px solid #bca466', color: '#bca466' }}>
-                                                                    <span className="icon is-small" >
-                                                                        <i className="fas fa-power-off"></i>
-                                                                    </span>
-                                                                </button>
+                                                                    <button className="button is-link is-rounded" onClick={e => this.onSubmitDesactivarCarta(e, carta)} style={carta.is_activa ? { backgroundColor: '#bca466', color: 'white' } : { backgroundColor: 'white', border: '1px solid #bca466', color: '#bca466' }}>
+                                                                        <span className="icon is-small" >
+                                                                            <i className="fas fa-power-off"></i>
+                                                                        </span>
+                                                                    </button>
+                                                                </Tooltip>
+
                                                             </div>
                                                             <div className="card-footer-item">
                                                                 <button className="button">
@@ -337,8 +422,13 @@ export class VisualizarCartas extends Component {
                                                                 </button>
                                                             </div>
                                                             <div className="card-footer-item">
+                                                                <Tooltip title="Visitas de la carta">
+                                                                    <span className="icon has-text-left"  >
+                                                                        <i className="fas fa-eye" style={{ fontSize: '35px', color: '#bca466' }}></i>
+                                                                    </span>
+                                                                </Tooltip>
 
-                                                                {carta.contador_visitas}
+                                                                <p style={{ marginLeft: '20px', marginTop: '4px' }}>{carta.contador_visitas}</p>
                                                                 {/*
                                                                 <button className="button is-danger" style={{ backgroundColor: '#bca466' }}>
                                                                     <span className="icon is-small">

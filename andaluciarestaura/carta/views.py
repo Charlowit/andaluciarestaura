@@ -44,6 +44,9 @@ def index_gratis(request,cif_cliente):
     eslogan = ""
     plantilla = ""
 
+    print("Mira el static files dirs ---> ", settings.STATICFILES_DIRS[0])
+    print("BASE DIR ---> ", settings.BASE_DIR)
+
     
     if len(cartas) > 0:
 
@@ -123,7 +126,7 @@ def index_pago(request,cif_cliente, carta_id):
     url_tripadvisor = ""
     eslogan = ""
     plantilla = ""
-
+    categorias_vacias = []
     
         
         
@@ -145,6 +148,8 @@ def index_pago(request,cif_cliente, carta_id):
         if len(data) > 0:
             for p in data:
                 productos.append(p)
+        else:
+            categorias_vacias.append(int(categoriaID))
 
 
     template = None
@@ -167,7 +172,8 @@ def index_pago(request,cif_cliente, carta_id):
             'url_instagram': url_instagram,
             'url_tripadvisor': url_tripadvisor,
             'eslogan': eslogan,
-            'carta': carta
+            'carta': carta,
+            'categorias_vacias': categorias_vacias
         }
     else:
         template = loader.get_template('../../frontend/templates/frontend/cartanoactiva.html')

@@ -94,7 +94,7 @@ export class Alerts extends Component {
                 alert.success(message.nuevaCarta);
             }
             if(message.newEslogan) {
-                alert.success(message.nuevaCarta);
+                alert.success(message.newEslogan);
             }
             if(message.newNombreCarta) {
                 alert.success(message.newNombreCarta);
@@ -123,6 +123,8 @@ export class Alerts extends Component {
             if(message.nuevaVisualizacion) {
                 alert.success(message.nuevaVisualizacion);
             }
+            
+            
         }
     }
 
