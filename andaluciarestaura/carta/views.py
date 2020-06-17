@@ -80,7 +80,8 @@ def index_gratis(request,cif_cliente):
             template = loader.get_template('carta/premium.html')
         else:
             template = loader.get_template('../../frontend/templates/frontend/free2.html')
-            
+        print(productos)
+        print(categoriasRaw)
         context = {
             'cif_cliente': cif_cliente,
             'categorias': categoriasRaw,
@@ -162,6 +163,8 @@ def index_pago(request,cif_cliente, carta_id):
             template = loader.get_template('carta/premium.html')
         
         print("SERVER_LOCAL: " + server_local)
+        #print(productos)
+        #print(categoriasRaw)
         context = {
             'cif_cliente': cif_cliente,
             'categorias': categoriasRaw,

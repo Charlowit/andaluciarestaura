@@ -272,6 +272,25 @@
     </nav>
   </header>
   <div class="pageloader is-active" style="background-color: #bca466;" id="pageloader">
+      <figure style="margin-top: -180px;"class="image is-128x128 is-inline-block title">
+              {% if cif_cliente %}
+              {% with 'clientes/'|add:cif_cliente|add:'/logo.jpeg' as img_static %}
+              {% if carta.logo_rounded %}
+              {% if carta.logo_propio %}
+              <img class="is-rounded" src="{{carta.directorio}}/logo.jpeg"></img>
+              {% else %}
+              <img class="is-rounded" src="{% static img_static %}"></img>
+              {% endif %}
+              {% else %}
+              {% if carta.logo_propio %}
+              <img src="{{carta.directorio}}/logo.jpeg"></img>
+              {% else %}
+              <img  src="{% static img_static %}"></img>
+              {% endif %}
+              {% endif %}
+              {% endwith %}
+              {% endif %}
+      </figure>
       <p class="title">
         <img width="200" height="50" src="{% static 'frontend/hotehub.svg' %}"></img>
       </p>
@@ -470,8 +489,6 @@
         // Change the iframe's box shadow
         $(".goog-te-menu-frame").css('box-shadow', '0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.3)');
 
-
-
         // Change the iframe's size and position?
         $(".goog-te-menu-frame").css({
           'height': '100%',
@@ -492,7 +509,6 @@
       <div class="container ">
         <div style="margin-top: 40px">
           <!-- FOR DE LA CARTA -->
-          {% for id_categoria_vacia in categorias_vacias %}
           {% for categoria in categorias %}
           {% if categoria.id != id_categoria_vacia %}
           <div class="container animate__animated animate__bounceInLeft animate__delay-1s">
@@ -548,7 +564,6 @@
                         </div>
                         <div class="columns">
                           <div class="column is-two-thirds has-text-centered" style="margin-left: 2%">
-
                             {% if producto.is_apio == True %}
                             <img src="{{server}}/static/frontend/Allergens/alergeno_apio.svg"
                               alt="triangle with all three sides equal" width="50" />
@@ -675,11 +690,10 @@
           </div>
         </div>
         {% endif %}
-        {% endfor %}
+
         {% endfor %}
       </div>
     </div>
-  </div>
   </div>
   <footer>
     <section class="section has-text-centered">
