@@ -2,10 +2,11 @@ import React, { Component, Fragment, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { uploadProducto, updateCategoria, getCategorias, deleteproducto, subirproducto, addCategoria, deleteCategoria, subirPhoto, uploadProductParams } from '../../actions/carta';
-import { updateLogoRounded, updateEstablecimiento, getCartaExpecifica, updateEslogan, updateURL, updateNombreCarta } from '../../actions/cartas';
+import { subirCartaLogo, updateLogoRounded, updateEstablecimiento, getCartaExpecifica, updateEslogan, updateURL, updateNombreCarta } from '../../actions/cartas';
 import CargarPdf from '../cartaestatica/CargarPdf'
 import { Animated } from "react-animated-css";
 import { Redirect, Link } from 'react-router-dom';
+import Tooltip from '@material-ui/core/Tooltip';
 
 const div100 = {
     width: '100%',
@@ -58,6 +59,9 @@ export class CartaPage extends Component {
             is_sulfito: false,
             photo: null,
             file: null,
+            photoLogo: null,
+            logoChange: null,
+            editingLogo: false,
             carta: -1,
 
             vacio: false,
@@ -75,6 +79,7 @@ export class CartaPage extends Component {
             newCartaNombre: "",
             updatingProduct: false,
             addPhoto: false,
+            indexEditing: -1,
             newEstablecimiento: "",
             editEstablecimiento: false,
 
@@ -92,7 +97,12 @@ export class CartaPage extends Component {
             addingPhotoArray: [],
             fileArray: [],
             editingProduct: false,
-            productoClicked: null
+            productoClicked: null,
+
+            nombreEstablecimientoVacio: false,
+            esloganVacio: false,
+            urlVacio: false,
+            nombreCartaVacio: false
 
         };
     }
@@ -117,29 +127,30 @@ export class CartaPage extends Component {
 
     };
 
-    onSubmitPhotoProducto = (e, index, producto, cif) => {
+    onSubmitPhotoProducto = e => {
         e.preventDefault();
         //console.log("ESTE ES EL ID DEL PRODUCTO --> ", this.state.clickedProducto)
         let form_data = new FormData();
-        form_data.append('id', producto.id);
-        form_data.append('cif', cif);
+        form_data.append('id', this.state.clickedProducto.id);
+        form_data.append('cif', this.props.auth.user.cif);
         form_data.append('photo', this.state.photo);
 
 
 
-        this.props.subirPhoto(form_data, producto, cif);
+        this.props.subirPhoto(form_data, this.state.clickedProducto, this.props.auth.user.cif);
 
         var is_primera = false;
-        if (this.props.cartaReal[0] == producto.carta) {
+        if (this.props.cartaReal[0] == this.state.clickedProducto.carta) {
             is_primera = true
         }
-        this.props.uploadProducto(producto, cif, is_primera)
+        this.props.uploadProducto(this.state.clickedProducto, this.props.auth.user.cif, is_primera)
         //setTimeout(this.props.uploadProducto(this.state.clickedProducto), 5000)
 
 
         this.setState({
+            addPhoto: false,
             addingPhotoArray: this.state.addingPhotoArray.map((item, indexDentro) => (
-                index == indexDentro ? !item : item = item
+                this.state.indexEditing == indexDentro ? !item : item = item
             ))
         })
         //this.setState({ state: this.state });
@@ -168,95 +179,147 @@ export class CartaPage extends Component {
         var url = null;
         var urlType = "";
 
+        var urlVacio = false;
+
         if (this.state.editURLF) {
             url = this.state.newUrlF;
             urlType = "F";
-            this.setState({
-                editURLF: !this.state.editURLF
-            })
+
         } else if (this.state.editURLI) {
             url = this.state.newUrlI;
             urlType = "I";
-            this.setState({
-                editURLI: !this.state.editURLI
-            })
+
         } else if (this.state.editURLT) {
             url = this.state.newUrlT;
             urlType = "T";
-            this.setState({
-                editURLT: !this.state.editURLT
-            })
+
         }
 
-        const idCarta = this.props.match.params.id
-        const propietario = this.props.auth.user.id
-        const directorio = this.props.cartaReal[0].directorio
-        const establecimiento = carta.establecimiento
-        const name = carta.name
-        const updatedCarta = { propietario, idCarta, url, directorio, establecimiento, name };
+        if (url == "") {
+            this.setState({ urlVacio: true })
+            urlVacio = true
+        } else {
+            this.setState({ urlVacio: false })
+
+        }
+
+        if (urlVacio == false) {
+            const idCarta = this.props.match.params.id
+            const propietario = this.props.auth.user.id
+            const directorio = this.props.cartaReal[0].directorio
+            const establecimiento = carta.establecimiento
+            const name = carta.name
+            const updatedCarta = { propietario, idCarta, url, directorio, establecimiento, name };
 
 
 
 
-        console.log("ira el url --> ", url, " y el tipo --> ", urlType)
-        this.props.updateURL(updatedCarta, urlType);
+            console.log("ira el url --> ", url, " y el tipo --> ", urlType)
+            this.props.updateURL(updatedCarta, urlType);
+
+            if (this.state.editURLF) {
+                this.setState({
+                    editURLF: !this.state.editURLF
+                })
+            } else if (this.state.editURLI) {
+                this.setState({
+                    editURLI: !this.state.editURLI
+                })
+            } else if (this.state.editURLT) {
+                this.setState({
+                    editURLT: !this.state.editURLT
+                })
+            }
+        }
     }
 
     onSubmitNewSlogan = (e, carta) => {
 
         e.preventDefault();
 
-        const eslogan = this.state.newEslogan
-        const idCarta = this.props.match.params.id
-        const propietario = this.props.auth.user.id
-        const directorio = this.props.cartaReal[0].directorio
-        const establecimiento = carta.establecimiento
-        const name = carta.name
-        const updatedCarta = { propietario, idCarta, eslogan, directorio, establecimiento, name };
+        var esloganVacio = false;
+        if (this.state.newEslogan == "") {
+            this.setState({ esloganVacio: true })
+            esloganVacio = true
+        } else {
+            this.setState({ esloganVacio: false })
+        }
 
-        this.setState({
-            editEslogan: !this.state.editEslogan
-        })
+        if (esloganVacio == false) {
+            const eslogan = this.state.newEslogan
+            const idCarta = this.props.match.params.id
+            const propietario = this.props.auth.user.id
+            const directorio = this.props.cartaReal[0].directorio
+            const establecimiento = carta.establecimiento
+            const name = carta.name
+            const updatedCarta = { propietario, idCarta, eslogan, directorio, establecimiento, name };
 
-        console.log("mira el nuevo eslogan --> " + eslogan)
-        this.props.updateEslogan(updatedCarta);
+            this.setState({
+                editEslogan: !this.state.editEslogan
+            })
+
+            console.log("mira el nuevo eslogan --> " + eslogan)
+            this.props.updateEslogan(updatedCarta);
+        }
     }
 
     onSubmitNewCartaNombre = (e, carta) => {
 
         e.preventDefault();
 
-        const cartaName = this.state.newCartaNombre
-        const idCarta = this.props.match.params.id
-        const propietario = this.props.auth.user.id
-        const directorio = this.props.cartaReal[0].directorio
-        const establecimiento = carta.establecimiento
-        const updatedCarta = { propietario, idCarta, cartaName, directorio, establecimiento };
+        var nombreCartaVacio = false;
 
-        this.setState({
-            editNombreCarta: !this.state.editNombreCarta
-        })
+        if (this.state.newCartaNombre == "") {
+            this.setState({ nombreCartaVacio: true })
+            nombreCartaVacio = true
+        } else {
+            this.setState({ nombreCartaVacio: false })
+        }
 
-        this.props.updateNombreCarta(updatedCarta);
+        if (nombreCartaVacio == false) {
+            const cartaName = this.state.newCartaNombre
+            const idCarta = this.props.match.params.id
+            const propietario = this.props.auth.user.id
+            const directorio = this.props.cartaReal[0].directorio
+            const establecimiento = carta.establecimiento
+            const updatedCarta = { propietario, idCarta, cartaName, directorio, establecimiento };
+
+            this.setState({
+                editNombreCarta: !this.state.editNombreCarta
+            })
+
+            this.props.updateNombreCarta(updatedCarta);
+        }
     }
 
     onSubmitNewEstablecimiento = (e, carta) => {
 
         e.preventDefault();
 
-        const establecimiento = this.state.newEstablecimiento
-        const idCarta = this.props.match.params.id
-        const propietario = this.props.auth.user.id
-        const directorio = this.props.cartaReal[0].directorio
-        const name = carta.name
+        var nombreEstablecimientoVacio = false;
 
-        const updatedCarta = { propietario, idCarta, establecimiento, directorio, name };
+        if (this.state.newEstablecimiento == "") {
+            this.setState({ nombreEstablecimientoVacio: true })
+            nombreEstablecimientoVacio = true
+        } else {
+            this.setState({ nombreEstablecimientoVacio: false })
+        }
 
-        this.setState({
-            editEstablecimiento: !this.state.editEstablecimiento
-        })
+        if (nombreEstablecimientoVacio == false) {
+            const establecimiento = this.state.newEstablecimiento
+            const idCarta = this.props.match.params.id
+            const propietario = this.props.auth.user.id
+            const directorio = this.props.cartaReal[0].directorio
+            const name = carta.name
 
-        this.props.updateEstablecimiento(updatedCarta);
+            const updatedCarta = { propietario, idCarta, establecimiento, directorio, name };
+
+            this.setState({
+                editEstablecimiento: !this.state.editEstablecimiento
+            })
+
+            this.props.updateEstablecimiento(updatedCarta);
+        }
     }
 
     onSubmitCambiarPosiciones = (e, categoria) => {
@@ -274,8 +337,8 @@ export class CartaPage extends Component {
 
         this.props.categorias[posicionCategoria].posicion = anteriorPosicion
         console.log("Categoria con igual pocicion que vamos a cambiar --> ", this.props.categorias[posicionCategoria].posicion)
-        this.props.updateCategoria(this.props.categorias[posicionCategoria])
-        this.props.updateCategoria(categoria)
+        this.props.updateCategoria(this.props.categorias[posicionCategoria], true)
+        this.props.updateCategoria(categoria, false)
     }
 
 
@@ -328,12 +391,18 @@ export class CartaPage extends Component {
         })
     }
 
-    addPhoto = (e, producto) => {
+    addPhoto = (e, producto, index) => {
 
         this.setState({
             imagenClickada: e.target.src,
 
         });
+
+
+        console.log("Index editing ..> ", index)
+        this.setState({
+            indexEditing: index
+        })
 
 
         this.setState({
@@ -390,19 +459,22 @@ export class CartaPage extends Component {
 
     editURLF = e => {
         this.setState({
-            editURLF: !this.state.editURLF
+            editURLF: !this.state.editURLF,
+            urlVacio: false
         })
     }
 
     editURLI = e => {
         this.setState({
-            editURLI: !this.state.editURLI
+            editURLI: !this.state.editURLI,
+            urlVacio: false
         })
     }
 
     editURLT = e => {
         this.setState({
-            editURLT: !this.state.editURLT
+            editURLT: !this.state.editURLT,
+            urlVacio: false
         })
     }
 
@@ -521,24 +593,56 @@ export class CartaPage extends Component {
 
     }
 
-    handlePhotoChange = (e, index) => {
+    hangleModalLogoCarta = e => {
+        this.setState({
+            editingLogo: !this.state.editingLogo,
+            logoChange: null
+        })
+    }
+
+
+    handleLogoChange = e => {
+        this.setState({
+            photoLogo: e.target.files[0],
+            logoChange: URL.createObjectURL(e.target.files[0]),
+
+        })
+    }
+
+    onSubmitLogoCarta = e => {
+        e.preventDefault();
+        //console.log("ESTE ES EL ID DEL PRODUCTO --> ", this.state.clickedProducto)
+        let form_data = new FormData();
+        form_data.append('id', this.props.cartaReal[0].id);
+        form_data.append('cif', this.props.auth.user.cif);
+        form_data.append('photo', this.state.photoLogo);
+
+        this.props.subirCartaLogo(form_data, this.props.cartaReal[0]);
+
+        this.setState({
+            editingLogo: !this.state.editingLogo
+        })
+
+    }
+
+    handlePhotoChange = (e) => {
         this.setState({
             photo: e.target.files[0],
             file: URL.createObjectURL(e.target.files[0]),
         }, console.log("Este es el file --> ", URL.createObjectURL(e.target.files[0])))
 
-        console.log("se va a cambiar? --> ", this.state.fileArray[index])
+        console.log("se va a cambiar? --> ", this.state.fileArray[this.state.indexEditing])
 
         this.setState({
             fileArray: this.state.fileArray.map((item, indexDentro) => (
-                indexDentro == index ? item = URL.createObjectURL(e.target.files[0]) : item = item
+                indexDentro == this.state.indexEditing ? item = URL.createObjectURL(e.target.files[0]) : item = item
             )),
             addingPhotoArray: this.state.addingPhotoArray.map((item, indexDentro) => (
-                index == indexDentro ? !item : item = item
+                this.state.indexEditing == indexDentro ? !item : item = item
             ))
         })
 
-        console.log("Se habrá cambiao? --> ", this.state.fileArray[index])
+        console.log("Se habrá cambiao? --> ", this.state.fileArray[this.state.indexEditing])
 
     };
 
@@ -566,7 +670,8 @@ export class CartaPage extends Component {
         deleteCategoria: PropTypes.func.isRequired,
         auth: PropTypes.func.isRequired,
         addCategoria: PropTypes.func.isRequired,
-        cartaReal: PropTypes.object.isRequired
+        cartaReal: PropTypes.object.isRequired,
+        totalcartas: PropTypes.array.isRequired,
     };
 
     componentDidMount() {
@@ -631,9 +736,21 @@ export class CartaPage extends Component {
 
                                             <hr style={{ marginTop: '30px', backgroundColor: '#bca466', color: '#bca466' }} />                                             <form>
                                                 <label className="label" style={{ marginTop: '10px' }}>Escribe tu nuevo eslogan</label>
-                                                <div className="control">
-                                                    <input className="input" onChange={this.onChange} name="newEslogan" defaultValue={this.state.newEslogan} type="text" placeholder="El mejor restaurante de Granada!" />
-                                                </div>
+
+                                                {this.state.esloganVacio ?
+                                                    <div>
+                                                        <div className="control">
+                                                            <input className="input is-danger" onChange={this.onChange} name="newEslogan" defaultValue={this.state.newEslogan} type="text" placeholder="El mejor restaurante de Granada!" />
+                                                        </div>
+                                                        <p className="help is-danger" style={{ fontSize: '15px', color: 'red' }}>El campo está vacío</p>
+
+                                                    </div>
+                                                    :
+                                                    <div className="control">
+                                                        <input className="input " onChange={this.onChange} name="newEslogan" defaultValue={this.state.newEslogan} type="text" placeholder="El mejor restaurante de Granada!" />
+                                                    </div>
+
+                                                }
                                                 <div className="control buttons is-centered" style={{ marginTop: '20px' }}>
                                                     <button className="button is-success" style={{ color: 'white', backgroundColor: '#bca466' }} onClick={e => this.onSubmitNewSlogan(e, carta)}>Guardar</button>
                                                 </div>
@@ -664,9 +781,19 @@ export class CartaPage extends Component {
                                             <hr style={{ marginTop: '30px', backgroundColor: '#bca466', color: '#bca466' }} />
                                             <form>
                                                 <label className="label" style={{ marginTop: '10px' }}>Escribe tu URL de Facebook!</label>
-                                                <div className="control">
-                                                    <input className="input" type="text" name="newUrlF" onChange={this.onChange} defaultValue={this.state.newUrlF} placeholder="https://www.facebook.com/" />
-                                                </div>
+                                                {this.state.urlVacio ?
+                                                    <div>
+                                                        <div className="control">
+                                                            <input className="input is-danger" type="text" name="newUrlF" onChange={this.onChange} defaultValue={this.state.newUrlF} placeholder="https://www.facebook.com/" />
+                                                        </div>
+                                                        <p className="help is-danger" style={{ fontSize: '15px', color: 'red' }}>El campo está vacío</p>
+
+                                                    </div>
+                                                    :
+                                                    <div className="control">
+                                                        <input className="input" type="text" name="newUrlF" onChange={this.onChange} defaultValue={this.state.newUrlF} placeholder="https://www.facebook.com/" />
+                                                    </div>
+                                                }
                                                 <div className="control buttons is-centered" style={{ marginTop: '20px' }}>
                                                     <button className="button is-success" style={{ color: 'white', backgroundColor: '#bca466' }} onClick={e => this.onSubmitURL(e, carta)}>Guardar</button>
                                                 </div>
@@ -696,9 +823,19 @@ export class CartaPage extends Component {
                                             <hr style={{ marginTop: '30px', backgroundColor: '#bca466', color: '#bca466' }} />
                                             <form>
                                                 <label className="label" style={{ marginTop: '10px' }}>Escribe tu URL de Instagram!</label>
-                                                <div className="control">
-                                                    <input className="input" type="text" name="newUrlI" onChange={this.onChange} defaultValue={this.state.newUrlI} placeholder="https://www.instagram.com/" />
-                                                </div>
+                                                {this.state.urlVacio ?
+                                                    <div>
+                                                        <div className="control">
+                                                            <input className="input is-danger" type="text" name="newUrlI" onChange={this.onChange} defaultValue={this.state.newUrlI} placeholder="https://www.instagram.com/" />
+                                                        </div>
+                                                        <p className="help is-danger" style={{ fontSize: '15px', color: 'red' }}>El campo está vacío</p>
+
+                                                    </div>
+                                                    :
+                                                    <div className="control">
+                                                        <input className="input" type="text" name="newUrlI" onChange={this.onChange} defaultValue={this.state.newUrlI} placeholder="https://www.instagram.com/" />
+                                                    </div>
+                                                }
                                                 <div className="control buttons is-centered" style={{ marginTop: '20px' }}>
                                                     <button className="button is-success" style={{ color: 'white', backgroundColor: '#bca466' }} onClick={e => this.onSubmitURL(e, carta)}>Guardar</button>
                                                 </div>
@@ -728,9 +865,18 @@ export class CartaPage extends Component {
                                             <hr style={{ marginTop: '30px', backgroundColor: '#bca466', color: '#bca466' }} />
                                             <form>
                                                 <label className="label" style={{ marginTop: '10px' }}>Escribe tu URL de Tripadvisor!</label>
-                                                <div className="control">
-                                                    <input className="input" name="newUrlT" onChange={this.onChange} defaultValue={this.state.newUrlT} type="text" placeholder="https://www.tripadvisor.es/" />
-                                                </div>
+                                                {this.state.urlVacio ?
+                                                    <div>
+                                                        <div className="control">
+                                                            <input className="input is-danger" name="newUrlT" onChange={this.onChange} defaultValue={this.state.newUrlT} type="text" placeholder="https://www.tripadvisor.es/" />
+                                                        </div>
+                                                        <p className="help is-danger" style={{ fontSize: '15px', color: 'red' }}>El campo está vacío</p>
+                                                    </div>
+                                                    :
+                                                    <div className="control">
+                                                        <input className="input" name="newUrlT" onChange={this.onChange} defaultValue={this.state.newUrlT} type="text" placeholder="https://www.tripadvisor.es/" />
+                                                    </div>
+                                                }
                                                 <div className="control buttons is-centered" style={{ marginTop: '20px' }}>
                                                     <button className="button is-success" style={{ color: 'white', backgroundColor: '#bca466' }} onClick={e => this.onSubmitURL(e, carta)}>Guardar</button>
                                                 </div>
@@ -759,11 +905,22 @@ export class CartaPage extends Component {
                                                 </span>
                                                 <h1 className="title" style={{ marginTop: '10px' }}> NOMBRE CARTA </h1>
                                             </div>
-                                            <hr style={{ marginTop: '30px', backgroundColor: '#bca466', color: '#bca466' }} />                                            <form>
+                                            <hr style={{ marginTop: '30px', backgroundColor: '#bca466', color: '#bca466' }} />
+                                            <form>
                                                 <label className="label" style={{ marginTop: '10px' }}>Escribe el nuevo nombre de tu carta</label>
-                                                <div className="control">
-                                                    <input className="input" type="text" name="newCartaNombre" onChange={this.onChange} defaultValue={this.state.newCartaNombre} placeholder="Nombre de la carta" />
-                                                </div>
+                                                {this.state.nombreCartaVacio ?
+                                                    <div>
+                                                        <div className="control">
+                                                            <input className="input is-danger" type="text" name="newCartaNombre" onChange={this.onChange} defaultValue={this.state.newCartaNombre} placeholder="Nombre de la carta" />
+                                                        </div>
+                                                        <p className="help is-danger" style={{ fontSize: '15px', color: 'red' }}>El campo está vacío</p>
+
+                                                    </div>
+                                                    :
+                                                    <div className="control">
+                                                        <input className="input" type="text" name="newCartaNombre" onChange={this.onChange} defaultValue={this.state.newCartaNombre} placeholder="Nombre de la carta" />
+                                                    </div>
+                                                }
                                                 <div className="control buttons is-centered" style={{ marginTop: '20px' }}>
                                                     <button className="button is-success" style={{ color: 'white', backgroundColor: '#bca466' }} onClick={e => this.onSubmitNewCartaNombre(e, carta)}>Guardar</button>
                                                 </div>
@@ -792,9 +949,20 @@ export class CartaPage extends Component {
                                             </div>
                                             <hr style={{ marginTop: '30px', backgroundColor: '#bca466', color: '#bca466' }} />                                                          <form>
                                                 <label className="label" style={{ marginTop: '10px' }}>Escribe el establecimiento</label>
-                                                <div className="control">
-                                                    <input className="input" onChange={this.onChange} name="newEstablecimiento" defaultValue={this.state.newEstablecimiento} type="text" placeholder="El restaurante del Desarrollador" />
-                                                </div>
+                                                {this.state.nombreEstablecimientoVacio ?
+                                                    <div>
+                                                        <div className="control">
+                                                            <input className="input is-danger" onChange={this.onChange} name="newEstablecimiento" defaultValue={this.state.newEstablecimiento} type="text" placeholder="El restaurante del Desarrollador" />
+                                                        </div>
+                                                        <p className="help is-danger" style={{ fontSize: '15px', color: 'red' }}>El campo está vacío</p>
+
+                                                    </div>
+
+                                                    :
+                                                    <div className="control">
+                                                        <input className="input" onChange={this.onChange} name="newEstablecimiento" defaultValue={this.state.newEstablecimiento} type="text" placeholder="El restaurante del Desarrollador" />
+                                                    </div>
+                                                }
                                                 <div className="control buttons is-centered" style={{ marginTop: '20px' }}>
                                                     <button className="button is-success" style={{ color: 'white', backgroundColor: '#bca466' }} onClick={e => this.onSubmitNewEstablecimiento(e, carta)}>Guardar</button>
                                                 </div>
@@ -802,31 +970,97 @@ export class CartaPage extends Component {
                                         </div>
                                     </div>
                                 </div>
+                                <div class={this.state.editingLogo ? "modal is-active" : "modal"}>
+                                    <div class="modal-background"></div>
+                                    <div class="modal-content">
+                                        <div className="container box">
+                                            <div className="has-text-right">
+                                                <button className="button" style={{ backgroundColor: '#171c8f' }} onClick={this.hangleModalLogoCarta}>
+                                                    <span className="icon is-small">
+                                                        <i className="fas fa-times " style={{ color: 'white' }}></i>
+                                                    </span>
+                                                </button>
+                                            </div>
+                                            <div className="has-text-centered">
+                                                <span className="icon" >
+                                                    <i className="fas fa-camera" style={{ fontSize: '100px', color: "#bca466" }}></i>
+                                                </span>
+                                                <h1 className="title" style={{ marginTop: '10px' }}> NUEVO LOGO DE LA CARTA </h1>
+                                            </div>
+
+                                            <hr style={{ marginTop: '30px', backgroundColor: '#bca466', color: '#bca466' }} />
+                                            <div class="field">
+                                                <div class="file ">
+                                                    <label class="file-label">
+                                                        <input class="file-input" type="file" id="logo" accept=".jpeg" onChange={this.handleLogoChange} name="resume" />
+                                                        <span class="file-cta">
+                                                            <span class="file-icon">
+                                                                <i class="fas fa-camera"></i>
+                                                            </span>
+                                                            <span class="file-label">
+                                                                Escoja el nuevo logo
+                                                            </span>
+                                                        </span>
+
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <h1 className="subtitle">Previsualización: </h1>
+                                                <div className="has-text-centered">
+                                                    <img className="is-rounded" src={this.state.logoChange}></img>
+                                                </div>
+                                            </div>
+                                            <div className="has-text-centered">
+                                                <button className="button  is-success" style={{ backgroundColor: '#bca466', color: 'white' }} onClick={this.onSubmitLogoCarta}>Guardar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div className="hero-body hsl(90%, 159%, 79%)">
                                     <div className="container has-text-centered">
                                         <div style={{ marginBottom: '20px' }}>
-                                            <div className='equal-height is-info' style={{ display: 'inline' }}>
+                                            <div className='equal-height is-info'>
+                                                {this.props.totalcartas[0].id != this.props.cartaReal[0].id ?
 
-                                                <div className=" has-text-centered">
+                                                    <button className="button " style={{ backgroundColor: 'white', color: '#bca466', marginBottom: '10px' }} onClick={this.hangleModalLogoCarta}>
+                                                        <span className="icon is-small">
+                                                            <i className="fas fa-pen"></i>
+                                                        </span>
+                                                    </button>
+                                                    : ""}
+
+                                                <div className=" has-text-centered" >
                                                     <figure className="image is-128x128 is-inline-block">
                                                         {carta.logo_rounded ?
                                                             <img className="is-rounded"
-                                                                src={`/static/clientes/${this.state.cif}/logo.jpeg`}></img>
+                                                                src={this.state.editingLogo || this.state.logoChange != null ? this.state.logoChange : carta.logo_propio ? `${carta.directorio}/logo.jpeg` : `/static/clientes/${this.state.cif}/logo.jpeg`}></img>
                                                             :
                                                             <img
-                                                                src={`/static/clientes/${this.state.cif}/logo.jpeg`}></img>
+                                                                src={this.state.editingLogo || this.state.logoChange != null ? this.state.logoChange : carta.logo_propio ? `${carta.directorio}/logo.jpeg` : `/static/clientes/${this.state.cif}/logo.jpeg`}></img>
 
                                                         }
                                                     </figure>
                                                 </div>
+
                                             </div>
+                                            {carta.logo_rounded ?
+                                                <button className="button is-rounded is-small is-warning" style={{ color: '#bca466', backgroundColor: 'white' }} onClick={e => this.changeLogoRounded(e, carta)}>
+                                                    <span className="icon is-small" style={{ marginTop: '-5px' }}>
+                                                        <i className="fas fa-camera"></i>
+                                                    </span>
+                                                    <span style={{ color: '#bca466', fontSize: '17px' }}>Click para logo cuadrado!</span>
+                                                </button>
+                                                :
 
-                                            <button className="button is-rounded is-small is-warning" style={{ color: '#bca466', backgroundColor: 'white', display: 'inline' }} onClick={e => this.changeLogoRounded(e, carta)}>
-                                                <span className="icon is-small">
-                                                    <i className="fas fa-camera"></i>
-                                                </span>
-                                            </button>
-
+                                                <button className="button is-rounded is-small is-warning" style={{ color: '#bca466', backgroundColor: 'white' }} onClick={e => this.changeLogoRounded(e, carta)}>
+                                                    <span className="icon is-small" style={{ marginTop: '-5px' }}>
+                                                        <i className="fas fa-camera"></i>
+                                                    </span>
+                                                    <span style={{ color: '#bca466', fontSize: '17px' }}>Click para logo redondo!</span>
+                                                </button>
+                                            }
                                         </div>
 
 
@@ -836,7 +1070,7 @@ export class CartaPage extends Component {
                                                 <i className="fas fa-pen"></i>
                                             </span>
                                         </button>
-                                        <div>
+                                        <div style={{ paddingTop: '35px' }}>
                                             <h2 className="subtitle" style={{ display: 'inline' }}> {carta.eslogan != '-' ? carta.eslogan : "Escribe tu slogan!"} </h2>
 
 
@@ -923,29 +1157,29 @@ export class CartaPage extends Component {
                                                     {this.props.categorias.length > 0 ?
                                                         <div className="column" style={{ marginTop: '10px' }}>
                                                             <button className="button is-success is-medium" style={{ backgroundColor: 'white', border: '1px solid white' }} onClick={this.addProduct}>
-                                                                <span class="icon" style={{ color: '#171c8f' }}>
+                                                                <span class="icon" style={{ color: 'black' }}>
                                                                     <i class="fas fa-plus-circle"></i>
                                                                 </span>
-                                                                <p style={{ marginTop: '6px', color: '#171c8f' }}> Añadir Producto</p>
+                                                                <p style={{ marginTop: '6px', color: 'black' }}> Añadir Producto</p>
                                                             </button>
 
                                                         </div>
                                                         :
                                                         <div className="column" style={{ marginTop: '10px' }}>
                                                             <button disabled className="button is-success is-medium" style={{ backgroundColor: 'white', border: '1px solid white' }} onClick={this.addProduct}>
-                                                                <span class="icon" style={{ color: '#171c8f' }}>
+                                                                <span class="icon" style={{ color: 'black' }}>
                                                                     <i class="fas fa-plus-circle"></i>
                                                                 </span>
-                                                                <p style={{ marginTop: '6px', color: '#171c8f' }}> Añadir Producto</p>
+                                                                <p style={{ marginTop: '6px', color: 'black' }}> Añadir Producto</p>
                                                             </button>
                                                         </div>
                                                     }
                                                     <div className="column" style={{ marginTop: '10px', marginBottom: '25px' }}>
                                                         <button className="button is-success is-medium" style={{ backgroundColor: 'white', border: '1px solid white' }} onClick={this.addCategory}>
-                                                            <span class="icon" style={{ color: '#171c8f' }}>
+                                                            <span class="icon" style={{ color: 'black' }}>
                                                                 <i class="fas fa-plus-circle"></i>
                                                             </span>
-                                                            <p style={{ marginTop: '6px', color: '#171c8f' }}> Añadir Categoría</p>
+                                                            <p style={{ marginTop: '6px', color: 'black' }}> Añadir Categoría</p>
                                                         </button>
                                                     </div>
 
@@ -1201,7 +1435,7 @@ export class CartaPage extends Component {
                                                                                 <div className="field">
                                                                                     <div className="control">
                                                                                         <div className="b-checkbox">
-                                                                                            <input id="checkbox" name="is_custaceo" className="styled" type="checkbox" onChange={this.handleCrustaceoChange} defaultValue={is_crustaceo} />
+                                                                                            <input id="checkbox" name="is_crustaceo" className="styled" type="checkbox" onChange={this.handleCrustaceoChange} defaultValue={is_crustaceo} />
                                                                                             <label>  Crustaceo</label>
                                                                                         </div>
                                                                                     </div>
@@ -1355,9 +1589,9 @@ export class CartaPage extends Component {
                                                                 </span>
                                                                 <h1 className="title" style={{ marginTop: '10px' }}> EDITAR PRODUCTO </h1>
 
-                                                            </div>   
-                                                            <hr style={{ marginTop: '30px', backgroundColor: '#bca466', color: '#bca466' }} />     
-                                                                                                                <form>
+                                                            </div>
+                                                            <hr style={{ marginTop: '30px', backgroundColor: '#bca466', color: '#bca466' }} />
+                                                            <form>
                                                                 <div className="columns">
                                                                     <div className="column">
                                                                         <div className="field">
@@ -1513,7 +1747,7 @@ export class CartaPage extends Component {
                                                                                     <div className="field">
                                                                                         <div className="control">
                                                                                             <div className="b-checkbox">
-                                                                                                <input id="checkbox" name="is_apio" className="styled" type="checkbox" onChange={this.handleApioChange} defaultValue={this.state.clickedProducto.is_apio} />
+                                                                                                <input id="checkbox" name="is_apio" className="styled" type="checkbox" onChange={this.handleApioChange} defaultChecked={this.state.clickedProducto.is_apio ? true : false} />
                                                                                                 <label >  Apio</label>
                                                                                             </div>
                                                                                         </div>
@@ -1521,7 +1755,7 @@ export class CartaPage extends Component {
                                                                                     <div className="field">
                                                                                         <div className="control">
                                                                                             <div className="b-checkbox">
-                                                                                                <input id="checkbox" name="is_altramuces" className="styled" type="checkbox" onChange={this.handleAltramucesChange} defaultValue={this.state.clickedProducto.is_altramuces} />
+                                                                                                <input id="checkbox" name="is_altramuces" className="styled" type="checkbox" onChange={this.handleAltramucesChange} defaultChecked={this.state.clickedProducto.is_altramuces ? true : false} />
                                                                                                 <label>  Altramuces</label>
                                                                                             </div>
                                                                                         </div>
@@ -1529,7 +1763,7 @@ export class CartaPage extends Component {
                                                                                     <div className="field">
                                                                                         <div className="control">
                                                                                             <div className="b-checkbox">
-                                                                                                <input id="checkbox" name="is_cacahuete" className="styled" type="checkbox" onChange={this.handleCacahueteChange} defaultValue={this.state.clickedProducto.is_cacahuete} />
+                                                                                                <input id="checkbox" name="is_cacahuete" className="styled" type="checkbox" onChange={this.handleCacahueteChange} defaultChecked={this.state.clickedProducto.is_cacahuete ? true : false} />
                                                                                                 <label >  Cacahuete</label>
                                                                                             </div>
                                                                                         </div>
@@ -1537,7 +1771,7 @@ export class CartaPage extends Component {
                                                                                     <div className="field">
                                                                                         <div className="control">
                                                                                             <div className="b-checkbox">
-                                                                                                <input id="checkbox" name="is_custaceo" className="styled" type="checkbox" onChange={this.handleCrustaceoChange} defaultValue={this.state.clickedProducto.is_crustaceo} />
+                                                                                                <input id="checkbox" name="is_crustaceo" className="styled" type="checkbox" onChange={this.handleCrustaceoChange} defaultChecked={this.state.clickedProducto.is_crustaceo ? true : false} />
                                                                                                 <label>  Crustaceo</label>
                                                                                             </div>
                                                                                         </div>
@@ -1547,7 +1781,7 @@ export class CartaPage extends Component {
                                                                                     <div className="field">
                                                                                         <div className="control">
                                                                                             <div className="b-checkbox">
-                                                                                                <input id="checkbox" name="is_frutas_con_cascara" className="styled" type="checkbox" onChange={this.handleCascaraChange} defaultValue={this.state.clickedProducto.is_frutos_con_cascara} />
+                                                                                                <input id="checkbox" name="is_frutas_con_cascara" className="styled" type="checkbox" onChange={this.handleCascaraChange} defaultChecked={this.state.clickedProducto.is_frutos_con_cascara ? true : false} />
                                                                                                 <label >  Cascara Frutal</label>
                                                                                             </div>
                                                                                         </div>
@@ -1555,7 +1789,7 @@ export class CartaPage extends Component {
                                                                                     <div className="field">
                                                                                         <div className="control">
                                                                                             <div className="b-checkbox">
-                                                                                                <input id="checkbox" name="is_gluten" className="styled" type="checkbox" onChange={this.handleGlutenChange} defaultValue={this.state.clickedProducto.is_gluten} />
+                                                                                                <input id="checkbox" name="is_gluten" className="styled" type="checkbox" onChange={this.handleGlutenChange} defaultChecked={this.state.clickedProducto.is_gluten ? true : false} />
                                                                                                 <label >  Gluten</label>
                                                                                             </div>
                                                                                         </div>
@@ -1563,7 +1797,7 @@ export class CartaPage extends Component {
                                                                                     <div className="field">
                                                                                         <div className="control">
                                                                                             <div className="b-checkbox">
-                                                                                                <input id="checkbox" name="is_huevo" className="styled" type="checkbox" onChange={this.handleHuevoChange} defaultValue={this.state.clickedProducto.is_huevo} />
+                                                                                                <input id="checkbox" name="is_huevo" className="styled" type="checkbox" onChange={this.handleHuevoChange} defaultChecked={this.state.clickedProducto.is_huevo ? true : false} />
                                                                                                 <label >  Huevo</label>
                                                                                             </div>
                                                                                         </div>
@@ -1571,7 +1805,7 @@ export class CartaPage extends Component {
                                                                                     <div className="field">
                                                                                         <div className="control">
                                                                                             <div className="b-checkbox">
-                                                                                                <input id="checkbox" name="is_lacteo" className="styled" type="checkbox" onChange={this.handleLacteoChange} defaultValue={this.state.clickedProducto.is_lacteo} />
+                                                                                                <input id="checkbox" name="is_lacteo" className="styled" type="checkbox" onChange={this.handleLacteoChange} defaultChecked={this.state.clickedProducto.is_lacteo ? true : false} />
                                                                                                 <label >  Lacteo</label>
                                                                                             </div>
                                                                                         </div>
@@ -1581,7 +1815,7 @@ export class CartaPage extends Component {
                                                                                     <div className="field">
                                                                                         <div className="control">
                                                                                             <div className="b-checkbox">
-                                                                                                <input id="checkbox" name="is_molusco" className="styled" type="checkbox" onChange={this.handleMoluscoChange} defaultValue={this.state.clickedProducto.is_molusco} />
+                                                                                                <input id="checkbox" name="is_molusco" className="styled" type="checkbox" onChange={this.handleMoluscoChange} defaultChecked={this.state.clickedProducto.is_molusco ? true : false} />
                                                                                                 <label >  Molusco</label>
                                                                                             </div>
                                                                                         </div>
@@ -1589,7 +1823,7 @@ export class CartaPage extends Component {
                                                                                     <div className="field">
                                                                                         <div className="control">
                                                                                             <div className="b-checkbox">
-                                                                                                <input id="checkbox" name="is_mostaza" className="styled" type="checkbox" onChange={this.handleMostazaChange} defaultValue={this.state.clickedProducto.is_mostaza} />
+                                                                                                <input id="checkbox" name="is_mostaza" className="styled" type="checkbox" onChange={this.handleMostazaChange} defaultChecked={this.state.clickedProducto.is_mostaza ? true : false} />
                                                                                                 <label >  Mostaza</label>
                                                                                             </div>
                                                                                         </div>
@@ -1597,7 +1831,7 @@ export class CartaPage extends Component {
                                                                                     <div className="field">
                                                                                         <div className="control">
                                                                                             <div className="b-checkbox">
-                                                                                                <input id="checkbox" name="is_pescado" className="styled" type="checkbox" onChange={this.handlePescadoChange} defaultValue={this.state.clickedProducto.is_pescado} />
+                                                                                                <input id="checkbox" name="is_pescado" className="styled" type="checkbox" onChange={this.handlePescadoChange} defaultChecked={this.state.clickedProducto.is_pescado ? true : false} />
                                                                                                 <label >  Pescado</label>
                                                                                             </div>
                                                                                         </div>
@@ -1605,7 +1839,7 @@ export class CartaPage extends Component {
                                                                                     <div className="field">
                                                                                         <div className="control">
                                                                                             <div className="b-checkbox">
-                                                                                                <input id="checkbox" name="is_sesamo" className="styled" type="checkbox" onChange={this.handleSesamoChange} defaultValue={this.state.clickedProducto.is_sesamo} />
+                                                                                                <input id="checkbox" name="is_sesamo" className="styled" type="checkbox" onChange={this.handleSesamoChange} defaultChecked={this.state.clickedProducto.is_sesamo ? true : false} />
                                                                                                 <label >  Sesamo</label>
                                                                                             </div>
                                                                                         </div>
@@ -1615,7 +1849,7 @@ export class CartaPage extends Component {
                                                                                     <div className="field">
                                                                                         <div className="control">
                                                                                             <div className="b-checkbox">
-                                                                                                <input id="checkbox" name="is_soja" className="styled" type="checkbox" onChange={this.handleSojaChange} defaultValue={this.state.clickedProducto.is_soja} />
+                                                                                                <input id="checkbox" name="is_soja" className="styled" type="checkbox" onChange={this.handleSojaChange} defaultChecked={this.state.clickedProducto.is_soja ? true : false} />
                                                                                                 <label >  Soja</label>
                                                                                             </div>
                                                                                         </div>
@@ -1623,7 +1857,7 @@ export class CartaPage extends Component {
                                                                                     <div className="field">
                                                                                         <div className="control">
                                                                                             <div className="b-checkbox">
-                                                                                                <input id="checkbox" name="is_sulfito" className="styled" type="checkbox" onChange={this.handleSulfitoChange} defaultValue={this.state.clickedProducto.is_sulfito} />
+                                                                                                <input id="checkbox" name="is_sulfito" className="styled" type="checkbox" onChange={this.handleSulfitoChange} defaultChecked={this.state.clickedProducto.is_sulfito ? true : false} />
                                                                                                 <label >  Sulfitos </label>
                                                                                             </div>
                                                                                         </div>
@@ -1678,7 +1912,7 @@ export class CartaPage extends Component {
                                                         <div>
                                                             <div className="debug">
                                                                 {this.props.categorias.map(categoria => (
-                                                                    <Animated animationIn="fadeIn" animationOut="fadeOutRight">
+                                                                    <Animated animationIn="bounceInLeft" >
                                                                         <div style={{ marginTop: '60px' }} key={categoria.id}>
                                                                             <div className='card equal-height' style={{ backgroundColor: '#d5c69f' }}>
                                                                                 <div className="columns">
@@ -1689,26 +1923,36 @@ export class CartaPage extends Component {
                                                                                     <div className="column is-full-mobile" >
                                                                                         <div className="columns has-text-centered">
                                                                                             <div className="column if-full-mobile">
-                                                                                                <div className="control" style={{ paddingTop: '5px' }}>
+                                                                                                <div className="container" >
                                                                                                     <div className="select">
-                                                                                                        <select onChange={e => this.onSubmitCambiarPosiciones(e, categoria)}>
-                                                                                                            <option>Posicion actual: {categoria.posicion}</option>
-                                                                                                            {this.props.categorias.map((categoria, index) => (
-                                                                                                                <option value={index + 1}>Posicion {index + 1}</option>
-                                                                                                            ))}
 
-                                                                                                        </select>
+                                                                                                        <Tooltip title="Modificar posicion de la categoria en la carta">
+
+                                                                                                            <select onChange={e => this.onSubmitCambiarPosiciones(e, categoria)}>
+                                                                                                                <option>Posicion actual: {categoria.posicion}</option>
+                                                                                                                {this.props.categorias.map((categoria, index) => (
+                                                                                                                    <option value={index + 1}>Posicion {index + 1}</option>
+                                                                                                                ))}
+
+                                                                                                            </select>
+                                                                                                        </Tooltip>
+
                                                                                                     </div>
                                                                                                 </div>
                                                                                             </div>
                                                                                             <div className="column">
-                                                                                                <div style={{ paddingTop: '5px' }}>
-                                                                                                    <button class="button is-danger" onClick={this.props.deleteCategoria.bind(this, categoria.id, categoria.carta)}>
-                                                                                                        <span class="icon is-small">
-                                                                                                            <i class="fas fa-trash"></i>
-                                                                                                        </span>
-                                                                                                    </button>
-                                                                                                </div>
+                                                                                                <Tooltip title="Borrar categoria">
+
+                                                                                                    <div >
+
+                                                                                                        <button class="button is-danger" style={{ backgroundColor: 'white' }} onClick={this.props.deleteCategoria.bind(this, categoria.id, categoria.carta)}>
+                                                                                                            <span class="icon is-small">
+                                                                                                                <i class="fas fa-trash" style={{ color: '#bca466' }}></i>
+                                                                                                            </span>
+                                                                                                        </button>
+                                                                                                    </div>
+                                                                                                </Tooltip>
+
                                                                                             </div>
 
 
@@ -1722,12 +1966,14 @@ export class CartaPage extends Component {
                                                                             </div>
                                                                             {categoria.info_extra != "-" ?
                                                                                 <div className="card has-text-centered" style={{ marginTop: '-10px' }}>
-                                                                                    <div>
-                                                                                        <p className="subtitle">{categoria.info_extra}</p>
+                                                                                    <div style={{ paddingTop: '5px', paddingBottom: '5px' }}>
+                                                                                        <p className="subtitle"><b>Información: {categoria.info_extra}</b></p>
                                                                                     </div>
                                                                                 </div>
                                                                                 : ""}
+                                                                            {/* MODAL DEL LOGO DEL PRODUCTO */}
                                                                             {this.props.cartas.map((producto, index) => (
+
 
                                                                                 <div style={{ marginTop: '20px' }} key={producto.id}>
                                                                                     <div className={this.state.addPhoto ? "modal is-active" : "modal"}>
@@ -1735,7 +1981,7 @@ export class CartaPage extends Component {
                                                                                         <div className="modal-content">
                                                                                             <div className="container box">
                                                                                                 <div className="has-text-right">
-                                                                                                    <button className="button is-danger" onClick={e => this.addPhoto(e, this.state.clickedProducto)}>
+                                                                                                    <button className="button is-danger" onClick={e => this.addPhoto(e, this.state.clickedProducto, index)}>
                                                                                                         <span className="icon is-small">
                                                                                                             <i className="fas fa-times"></i>
                                                                                                         </span>
@@ -1744,19 +1990,38 @@ export class CartaPage extends Component {
                                                                                                 <div className="has-text-centered">
                                                                                                     <label className="label  is-size-4">Sube la foto de tu producto</label>
                                                                                                     <hr style={{ marginTop: '30px' }} />
-                                                                                                    <div className="field">
-                                                                                                        <div className="file has-name">
 
+                                                                                                    <div class="field">
+                                                                                                        <div class="file ">
+                                                                                                            <label class="file-label">
+                                                                                                                <input class="file-input" type="file" id="logo" accept=".jpeg" onChange={e => this.handlePhotoChange(e, index)} name="resume" />
+                                                                                                                <span class="file-cta">
+                                                                                                                    <span class="file-icon">
+                                                                                                                        <i class="fas fa-camera"></i>
+                                                                                                                    </span>
+                                                                                                                    <span class="file-label">
+                                                                                                                        Escoja la nueva foto del producto
+                                                                                                                    </span>
+                                                                                                                </span>
+
+                                                                                                            </label>
                                                                                                         </div>
+                                                                                                    </div>
+                                                                                                    <div className="field">
+
+
+
                                                                                                         <div style={{ marginTop: '10px', marginBottom: '10px' }} className="is-centered">
                                                                                                             <span style={{ marginBottom: '10px' }}>
                                                                                                                 <p>Previsualización:</p>
                                                                                                             </span>
                                                                                                             <span>
-                                                                                                                <img src={this.state.fileArray[index]} />
+                                                                                                                <img src={this.state.fileArray[this.state.indexEditing]} ></img>
+
                                                                                                             </span>
                                                                                                         </div>
                                                                                                     </div>
+                                                                                                    <button className="button is-success" onClick={this.onSubmitPhotoProducto}>Guardar</button>
 
                                                                                                 </div>
                                                                                             </div>
@@ -1765,273 +2030,276 @@ export class CartaPage extends Component {
                                                                                     {/* BUSCATE EL PRODUCTO */}
                                                                                     {categoria.id == producto.categoria ?
 
+                                                                                        <Animated animationIn="bounceInLeft" animationOut="bounceOutDown" >
+                                                                                            <div className='card' style={producto.is_activo ? { opacity: '1' } : { opacity: '0.5' }}>
+                                                                                                <div>
 
-                                                                                        <div className='card' style={producto.is_activo ? { opacity: '1' } : { opacity: '0.5' }}>
-                                                                                            <div className="has-text-centered">
-                                                                                                <label className="file-label">
-                                                                                                    <input className="file-input" type="file" id="logo" accept=".jpeg" onChange={e => this.handlePhotoChange(e, index)} required />
-                                                                                                    <span className="file-cta">
-                                                                                                        <span className="file-icon">
-                                                                                                            <i className="fas fa-camera"></i>
+
+                                                                                                    {/* FALSEAR */}
+                                                                                                    <div class="card-image has-text-centered" style={{ maxWidth: '480px' }}>
+                                                                                                        <figure class="image is-128x128">
+                                                                                                            <img src={this.state.addingPhotoArray[index] || this.state.fileArray[index] != null ? this.state.fileArray[index] : producto.photo} ></img>
+                                                                                                        </figure>
+                                                                                                    </div>
+
+                                                                                                    <button className="button" style={{ backgroundColor: '#bca466', color: 'white' }} onClick={e => this.addPhoto(e, producto, index)}>
+                                                                                                        <span class="file-icon">
+                                                                                                            <i class="fas fa-camera"></i>
                                                                                                         </span>
-                                                                                                        <span className="file-label is-centered">
-                                                                                                            Escoja su foto
-                                                                                                                                </span>
-                                                                                                    </span>
-                                                                                                    <div className="control buttons is-centered" >
-                                                                                                        <button className="button is-success" onClick={e => this.onSubmitPhotoProducto(e, index, producto, this.state.cif)}>Guardar</button>
-                                                                                                    </div>
-                                                                                                </label>
+                                                                                                        <p>FOTO PRODUCTO</p>
+                                                                                                    </button>
 
-                                                                                                <div class="card-image" style={{ maxWidth: '480px' }}>
-                                                                                                    <figure class="image is-128x128">
-                                                                                                        <img src={this.state.addingPhotoArray[index] || this.state.fileArray[index] != null ? this.state.fileArray[index] : producto.photo} ></img>
-                                                                                                    </figure>
                                                                                                 </div>
-                                                                                            </div>
-                                                                                            <div className="columns">
-                                                                                                <div className="column">
-                                                                                                    <div className="container">
-                                                                                                        <div className="column is-full">
-                                                                                                            <div className="columns ">
+                                                                                                <div className="columns">
+                                                                                                    <div className="column">
+                                                                                                        <div className="container">
+                                                                                                            <div className="column is-full">
+                                                                                                                <div className="columns ">
 
-                                                                                                                <div className="column is-two-thirds"
-                                                                                                                    style={{ marginLeft: '2%', marginTop: '2%' }}>
-                                                                                                                    <h1 className="title"> {producto.name} </h1>
-                                                                                                                    <h2 className="subtitle has-text-weight-light">  {producto.descripcion}</h2>
-                                                                                                                </div>
-                                                                                                                <div className="column has-text-centered" style={{ marginTop: '10px' }}>
-                                                                                                                    <div className="columns is-mobile">
-                                                                                                                        {producto.precio1 != 0.0 ?
-                                                                                                                            <div className="column has-text-centered">
-                                                                                                                                <div
-                                                                                                                                    style={{ width: '100%', marginTop: '5%', marginBottom: '6%' }}>
-                                                                                                                                    <span className="icon is-small" style={{ color: 'rgb(51, 153, 255)' }}>
-                                                                                                                                        <i className="fas fa-dot-circle" aria-hidden="true" style={{color: "#bca466"}}></i>
-                                                                                                                                    </span>
-                                                                                                                                </div>
-                                                                                                                                <span>
-                                                                                                                                    <b> {producto.titulo_precio1} </b>
-                                                                                                                                </span>
-                                                                                                                                <div style={{ width: '100%' }}>
-                                                                                                                                    <span>
-                                                                                                                                        <b style={{ color: '#bca466' }}>  {!producto.precio1 == "" ? producto.precio1 : ""}€</b>
-                                                                                                                                    </span>
-                                                                                                                                </div>
-                                                                                                                            </div>
-                                                                                                                            : ""}
-                                                                                                                        {producto.precio2 != 0.0 ?
-                                                                                                                            <div className="column has-text-centered"
-                                                                                                                                style={{ marginLeft: '4%' }}>
-                                                                                                                                <div style={{ width: '100%' }}>
-                                                                                                                                    <span className="icon is-small"
-                                                                                                                                        style={{ fontSize: ' 36px', color: 'rgb(51, 153, 255)' }}>
-                                                                                                                                        <i className="fas fa-dot-circle" aria-hidden="true" style={{color: "#bca466"}}></i>
-                                                                                                                                    </span>
-                                                                                                                                </div>
-                                                                                                                                <span>
-                                                                                                                                    <b> {producto.titulo_precio2} </b>
-                                                                                                                                </span>
-                                                                                                                                <div style={{ width: '100%' }}>
-                                                                                                                                    <span>
-                                                                                                                                        <b style={{ color: '#bca466' }}>  {!producto.precio2 == "" ? producto.precio2 : ""}€</b>
-                                                                                                                                    </span>
-                                                                                                                                </div>
-                                                                                                                            </div>
-                                                                                                                            : ""}
-                                                                                                                        {producto.precio3 != 0.0 ?
-                                                                                                                            <div className="column has-text-centered"
-                                                                                                                                style={{ marginLeft: '4%' }}>
-                                                                                                                                <div style={{ width: '100%' }}>
-                                                                                                                                    <span className="icon is-small"
-                                                                                                                                        style={{ fontSize: ' 36px', color: 'rgb(51, 153, 255)' }}>
-                                                                                                                                        <i className="fas fa-dot-circle" aria-hidden="true" style={{color: "#bca466"}}></i>
-                                                                                                                                    </span>
-                                                                                                                                </div>
-                                                                                                                                <span>
-                                                                                                                                    <b> {producto.titulo_precio3} </b>
-                                                                                                                                </span>
-                                                                                                                                <div style={{ width: '100%' }}>
-                                                                                                                                    <span>
-                                                                                                                                        <b style={{ color: '#bca466' }}>  {!producto.precio3 == "" ? producto.precio3 : ""}€</b>
-                                                                                                                                    </span>
-                                                                                                                                </div>
-                                                                                                                            </div>
-                                                                                                                            : ""}
+                                                                                                                    <div className="column is-two-thirds"
+                                                                                                                        style={{ marginLeft: '2%', marginTop: '2%' }}>
+                                                                                                                        <h1 className="title"> {producto.name} </h1>
+                                                                                                                        <h2 className="subtitle has-text-weight-light">  {producto.descripcion}</h2>
                                                                                                                     </div>
-                                                                                                                </div>
+                                                                                                                    <div className="column has-text-centered" style={{ marginTop: '10px' }}>
+                                                                                                                        <div className="columns is-mobile">
+                                                                                                                            {producto.precio1 != 0.0 ?
+                                                                                                                                <div className="column has-text-centered">
+                                                                                                                                    <div
+                                                                                                                                        style={{ width: '100%', marginTop: '5%', marginBottom: '6%' }}>
+                                                                                                                                        <span className="icon is-small" style={{ color: 'rgb(51, 153, 255)' }}>
+                                                                                                                                            <i className="fas fa-cart-arrow-down" aria-hidden="true" style={{ fontSize: '30px', color: "#bca466" }}></i>
+                                                                                                                                        </span>
+                                                                                                                                    </div>
+                                                                                                                                    <span>
+                                                                                                                                        <b> {producto.titulo_precio1} </b>
+                                                                                                                                    </span>
+                                                                                                                                    <div style={{ width: '100%' }}>
+                                                                                                                                        <span>
+                                                                                                                                            <b style={{ color: '#bca466' }}>  {!producto.precio1 == "" ? producto.precio1 : ""}€</b>
+                                                                                                                                        </span>
+                                                                                                                                    </div>
+                                                                                                                                </div>
+                                                                                                                                : ""}
+                                                                                                                            {producto.precio2 != 0.0 ?
+                                                                                                                                <div className="column has-text-centered"
+                                                                                                                                    style={{ marginLeft: '4%' }}>
+                                                                                                                                    <div style={{ width: '100%' }}>
+                                                                                                                                        <span className="icon is-small"
+                                                                                                                                            style={{ fontSize: ' 36px', color: 'rgb(51, 153, 255)' }}>
+                                                                                                                                            <i className="fas fa-cart-arrow-down" aria-hidden="true" style={{ fontSize: '40px', color: "#bca466" }}></i>
+                                                                                                                                        </span>
+                                                                                                                                    </div>
+                                                                                                                                    <span>
+                                                                                                                                        <b> {producto.titulo_precio2} </b>
+                                                                                                                                    </span>
+                                                                                                                                    <div style={{ width: '100%' }}>
+                                                                                                                                        <span>
+                                                                                                                                            <b style={{ color: '#bca466' }}>  {!producto.precio2 == "" ? producto.precio2 : ""}€</b>
+                                                                                                                                        </span>
+                                                                                                                                    </div>
+                                                                                                                                </div>
+                                                                                                                                : ""}
+                                                                                                                            {producto.precio3 != 0.0 ?
+                                                                                                                                <div className="column has-text-centered"
+                                                                                                                                    style={{ marginLeft: '4%' }}>
+                                                                                                                                    <div style={{ width: '100%' }}>
+                                                                                                                                        <span className="icon is-small"
+                                                                                                                                            style={{ fontSize: ' 36px', color: 'rgb(51, 153, 255)' }}>
+                                                                                                                                            <i className="fas fa-cart-arrow-down" aria-hidden="true" style={{ fontSize: '50px', color: "#bca466" }}></i>
+                                                                                                                                        </span>
+                                                                                                                                    </div>
+                                                                                                                                    <span>
+                                                                                                                                        <b> {producto.titulo_precio3} </b>
+                                                                                                                                    </span>
+                                                                                                                                    <div style={{ width: '100%' }}>
+                                                                                                                                        <span>
+                                                                                                                                            <b style={{ color: '#bca466' }}>  {!producto.precio3 == "" ? producto.precio3 : ""}€</b>
+                                                                                                                                        </span>
+                                                                                                                                    </div>
+                                                                                                                                </div>
+                                                                                                                                : ""}
+                                                                                                                        </div>
+                                                                                                                    </div>
 
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                    </div>
-
-
-                                                                                                    <div className="columns is-full" style={{ marginTop: '-20px' }}>
-                                                                                                        <div className="column is-two-thirds is-full-mobile">
-                                                                                                            <div className="columns is-mobile">
-                                                                                                                <div className="column has-text-centered" style={{ marginLeft: '2%' }}>
-
-                                                                                                                    {producto.is_apio ?
-                                                                                                                        <img
-                                                                                                                            src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_apio.svg"
-                                                                                                                            alt="triangle with all three sides equal" width="50" />
-                                                                                                                        :
-                                                                                                                        ""
-                                                                                                                    }
-
-                                                                                                                    {producto.is_altramuces ?
-
-                                                                                                                        <img
-                                                                                                                            src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_altramuces.svg"
-                                                                                                                            alt="triangle with all three sides equal" width="50" />
-                                                                                                                        :
-                                                                                                                        ""
-                                                                                                                    }
-
-
-                                                                                                                    {producto.is_cacahuete ?
-                                                                                                                        <img
-                                                                                                                            src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_cacahuete.svg"
-                                                                                                                            alt="triangle with all three sides equal" width="50" />
-                                                                                                                        :
-                                                                                                                        ""
-                                                                                                                    }
-
-                                                                                                                    {producto.is_crustaceo ?
-                                                                                                                        <img
-                                                                                                                            src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_crustaceo.svg"
-                                                                                                                            alt="triangle with all three sides equal" width="50" />
-                                                                                                                        :
-                                                                                                                        ""
-                                                                                                                    }
-
-                                                                                                                    {producto.is_frutos_con_cascara ?
-                                                                                                                        <img
-                                                                                                                            src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_frutos_con_cascara.svg"
-                                                                                                                            alt="triangle with all three sides equal" width="50" />
-                                                                                                                        :
-                                                                                                                        ""
-                                                                                                                    }
-
-                                                                                                                    {producto.is_gluten ?
-                                                                                                                        <img
-                                                                                                                            src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_gluten.svg"
-                                                                                                                            alt="triangle with all three sides equal" width="50" />
-                                                                                                                        :
-                                                                                                                        ""
-                                                                                                                    }
-
-                                                                                                                    {producto.is_huevo ?
-                                                                                                                        <img
-                                                                                                                            src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_huevo.svg"
-                                                                                                                            alt="triangle with all three sides equal" width="50" />
-                                                                                                                        :
-                                                                                                                        ""
-                                                                                                                    }
-
-                                                                                                                    {producto.is_lacteo ?
-                                                                                                                        <img
-                                                                                                                            src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_lacteo.svg"
-                                                                                                                            alt="triangle with all three sides equal" width="50" />
-                                                                                                                        :
-                                                                                                                        ""
-                                                                                                                    }
-
-                                                                                                                    {producto.is_molusco ?
-                                                                                                                        <img
-                                                                                                                            src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_moluscos.svg"
-                                                                                                                            alt="triangle with all three sides equal" width="50" />
-                                                                                                                        :
-                                                                                                                        ""
-                                                                                                                    }
-
-
-                                                                                                                    {producto.is_mostaza ?
-                                                                                                                        <img
-                                                                                                                            src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_mostaza.svg"
-                                                                                                                            alt="triangle with all three sides equal" width="50" />
-                                                                                                                        :
-                                                                                                                        ""
-                                                                                                                    }
-                                                                                                                    {producto.is_pescado ?
-                                                                                                                        <img
-                                                                                                                            src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_pescado.svg"
-                                                                                                                            alt="triangle with all three sides equal" width="50" />
-                                                                                                                        :
-                                                                                                                        ""
-                                                                                                                    }
-                                                                                                                    {producto.is_sesamo ?
-                                                                                                                        <img
-                                                                                                                            src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_sesamo.svg"
-                                                                                                                            alt="triangle with all three sides equal" width="50" />
-                                                                                                                        :
-                                                                                                                        ""
-                                                                                                                    }
-                                                                                                                    {producto.is_soja ?
-                                                                                                                        <img
-                                                                                                                            src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_soja.svg"
-                                                                                                                            alt="triangle with all three sides equal" width="50" />
-                                                                                                                        :
-                                                                                                                        ""
-                                                                                                                    }
-                                                                                                                    {producto.is_sulfito ?
-                                                                                                                        <img
-                                                                                                                            src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_sulfito.svg"
-                                                                                                                            alt="triangle with all three sides equal" width="70" style={{ marginBottom: '-18px', marginLeft: '-9px' }} />
-                                                                                                                        :
-                                                                                                                        ""
-                                                                                                                    }
                                                                                                                 </div>
                                                                                                             </div>
                                                                                                         </div>
-                                                                                                        <div className="column is-full-mobile" style={{ marginTop: '20px' }}>
-                                                                                                            <div className="columns is-mobile has-text-centered is-gapless" >
-                                                                                                                <div className="column" >
-                                                                                                                    <div className="is-rounded"
-                                                                                                                        style={{
-                                                                                                                            backgroundColor: '#d5c69f',
-                                                                                                                            padding: '5px'
-                                                                                                                        }}>
-                                                                                                                        <button
-                                                                                                                            className="button is-warning" onClick={(e) => this.onSubmitDesactivateProduct(e, producto)}>
 
-                                                                                                                            <span
-                                                                                                                                className="icon is-small">
-                                                                                                                                <i className="fas fa-power-off"></i>
-                                                                                                                            </span>
-                                                                                                                        </button>
+
+                                                                                                        <div className="columns is-full" style={{ marginTop: '-20px' }}>
+                                                                                                            <div className="column is-two-thirds is-full-mobile">
+                                                                                                                <div className="columns is-mobile">
+                                                                                                                    <div className="column has-text-centered" style={{ marginLeft: '2%' }}>
+
+                                                                                                                        {producto.is_apio ?
+                                                                                                                            <img
+                                                                                                                                src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_apio.svg"
+                                                                                                                                alt="triangle with all three sides equal" width="50" />
+                                                                                                                            :
+                                                                                                                            ""
+                                                                                                                        }
+
+                                                                                                                        {producto.is_altramuces ?
+
+                                                                                                                            <img
+                                                                                                                                src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_altramuces.svg"
+                                                                                                                                alt="triangle with all three sides equal" width="50" />
+                                                                                                                            :
+                                                                                                                            ""
+                                                                                                                        }
+
+
+                                                                                                                        {producto.is_cacahuete ?
+                                                                                                                            <img
+                                                                                                                                src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_cacahuete.svg"
+                                                                                                                                alt="triangle with all three sides equal" width="50" />
+                                                                                                                            :
+                                                                                                                            ""
+                                                                                                                        }
+
+                                                                                                                        {producto.is_crustaceo ?
+                                                                                                                            <img
+                                                                                                                                src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_crustaceo.svg"
+                                                                                                                                alt="triangle with all three sides equal" width="50" />
+                                                                                                                            :
+                                                                                                                            ""
+                                                                                                                        }
+
+                                                                                                                        {producto.is_frutos_con_cascara ?
+                                                                                                                            <img
+                                                                                                                                src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_frutos_con_cascara.svg"
+                                                                                                                                alt="triangle with all three sides equal" width="50" />
+                                                                                                                            :
+                                                                                                                            ""
+                                                                                                                        }
+
+                                                                                                                        {producto.is_gluten ?
+                                                                                                                            <img
+                                                                                                                                src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_gluten.svg"
+                                                                                                                                alt="triangle with all three sides equal" width="50" />
+                                                                                                                            :
+                                                                                                                            ""
+                                                                                                                        }
+
+                                                                                                                        {producto.is_huevo ?
+                                                                                                                            <img
+                                                                                                                                src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_huevo.svg"
+                                                                                                                                alt="triangle with all three sides equal" width="50" />
+                                                                                                                            :
+                                                                                                                            ""
+                                                                                                                        }
+
+                                                                                                                        {producto.is_lacteo ?
+                                                                                                                            <img
+                                                                                                                                src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_lacteo.svg"
+                                                                                                                                alt="triangle with all three sides equal" width="50" />
+                                                                                                                            :
+                                                                                                                            ""
+                                                                                                                        }
+
+                                                                                                                        {producto.is_molusco ?
+                                                                                                                            <img
+                                                                                                                                src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_moluscos.svg"
+                                                                                                                                alt="triangle with all three sides equal" width="50" />
+                                                                                                                            :
+                                                                                                                            ""
+                                                                                                                        }
+
+
+                                                                                                                        {producto.is_mostaza ?
+                                                                                                                            <img
+                                                                                                                                src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_mostaza.svg"
+                                                                                                                                alt="triangle with all three sides equal" width="50" />
+                                                                                                                            :
+                                                                                                                            ""
+                                                                                                                        }
+                                                                                                                        {producto.is_pescado ?
+                                                                                                                            <img
+                                                                                                                                src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_pescado.svg"
+                                                                                                                                alt="triangle with all three sides equal" width="50" />
+                                                                                                                            :
+                                                                                                                            ""
+                                                                                                                        }
+                                                                                                                        {producto.is_sesamo ?
+                                                                                                                            <img
+                                                                                                                                src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_sesamo.svg"
+                                                                                                                                alt="triangle with all three sides equal" width="50" />
+                                                                                                                            :
+                                                                                                                            ""
+                                                                                                                        }
+                                                                                                                        {producto.is_soja ?
+                                                                                                                            <img
+                                                                                                                                src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_soja.svg"
+                                                                                                                                alt="triangle with all three sides equal" width="50" />
+                                                                                                                            :
+                                                                                                                            ""
+                                                                                                                        }
+                                                                                                                        {producto.is_sulfito ?
+                                                                                                                            <img
+                                                                                                                                src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_sulfito.svg"
+                                                                                                                                alt="triangle with all three sides equal" width="70" style={{ marginBottom: '-18px', marginLeft: '-9px' }} />
+                                                                                                                            :
+                                                                                                                            ""
+                                                                                                                        }
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                            <div className="column is-full-mobile" style={{ marginTop: '20px' }}>
+                                                                                                                <div className="columns is-mobile has-text-centered is-gapless" >
+                                                                                                                    <div className="column" >
+                                                                                                                        <div className="is-rounded"
+                                                                                                                            style={{
+                                                                                                                                backgroundColor: '#d5c69f',
+                                                                                                                                padding: '5px'
+                                                                                                                            }}>
+                                                                                                                            <Tooltip title="Activar o desactivar producto">
+                                                                                                                                <button
+                                                                                                                                    className="button is-warning is-rounded" style={{ backgroundColor: 'white' }} onClick={(e) => this.onSubmitDesactivateProduct(e, producto)}>
+
+                                                                                                                                    <span
+                                                                                                                                        className="icon is-small" >
+                                                                                                                                        <i className="fas fa-power-off" style={{ color: '#bca466' }}></i>
+                                                                                                                                    </span>
+                                                                                                                                </button>
+                                                                                                                            </Tooltip>
+                                                                                                                        </div>
 
                                                                                                                     </div>
+                                                                                                                    <div className="column" >
+                                                                                                                        <Tooltip title="Editar producto">
 
-                                                                                                                </div>
-                                                                                                                <div className="column" >
-                                                                                                                    <div className="is-rounded" style={{ backgroundColor: '#d5c69f', padding: '5px' }}>
-                                                                                                                        <button class="button is-warning" onClick={e => this.editProduct(e, producto)}>
-                                                                                                                            <span class="icon is-small">
-                                                                                                                                <i class="fas fa-pen"></i>
-                                                                                                                            </span>
-                                                                                                                        </button>
+                                                                                                                            <div className="is-rounded" style={{ backgroundColor: '#d5c69f', padding: '5px' }}>
+                                                                                                                                <button class="button is-warning" style={{ backgroundColor: 'white' }} onClick={e => this.editProduct(e, producto)}>
+                                                                                                                                    <span class="icon is-small">
+                                                                                                                                        <i class="fas fa-pen" style={{ color: '#bca466' }}></i>
+                                                                                                                                    </span>
+                                                                                                                                </button>
+                                                                                                                            </div>
+                                                                                                                        </Tooltip>
                                                                                                                     </div>
+                                                                                                                    <div className="column" >
+                                                                                                                        <Tooltip title="Borrar producto">
 
-                                                                                                                </div>
-                                                                                                                <div className="column" >
-                                                                                                                    <section className="is-rounded" style={{ backgroundColor: '#d5c69f', padding: '5px' }}>
-                                                                                                                        <button class="button is-danger" onClick={this.props.deleteproducto.bind(this, producto.id, producto.categoria)}>
-                                                                                                                            <span class="icon is-small">
-                                                                                                                                <i class="fas fa-trash"></i>
-                                                                                                                            </span>
-                                                                                                                        </button>
-                                                                                                                    </section>
+                                                                                                                            <section className="is-rounded" style={{ backgroundColor: '#d5c69f', padding: '5px' }}>
+                                                                                                                                <button class="button is-danger" style={{ backgroundColor: 'white' }} onClick={this.props.deleteproducto.bind(this, producto.id, producto.categoria)}>
+                                                                                                                                    <span class="icon is-small">
+                                                                                                                                        <i class="fas fa-trash" style={{ color: '#bca466' }}></i>
+                                                                                                                                    </span>
+                                                                                                                                </button>
+                                                                                                                            </section>
+                                                                                                                        </Tooltip>
+
+                                                                                                                    </div>
                                                                                                                 </div>
                                                                                                             </div>
                                                                                                         </div>
                                                                                                     </div>
                                                                                                 </div>
+
+
                                                                                             </div>
-
-
-                                                                                        </div>
-
+                                                                                        </Animated>
                                                                                         :
                                                                                         <div>
                                                                                             {this.state.vacio = false}
@@ -2078,7 +2346,8 @@ const mapStateToProps = state => ({
     is_active: state.cartas.is_active,
     auth: state.auth,
     cartaReal: state.reducerCartas.expecificCarta,
+    totalcartas: state.reducerCartas.cartas,
     isUpdatingPhoto: state.cartas.isUpdatingPhoto
 });
 
-export default connect(mapStateToProps, { uploadProductParams, updateLogoRounded, uploadProducto, updateCategoria, updateEstablecimiento, updateNombreCarta, updateURL, updateEslogan, getCartaExpecifica, subirproducto, addCategoria, getCategorias, deleteproducto, deleteCategoria, subirPhoto })(CartaPage);
+export default connect(mapStateToProps, { subirCartaLogo, uploadProductParams, updateLogoRounded, uploadProducto, updateCategoria, updateEstablecimiento, updateNombreCarta, updateURL, updateEslogan, getCartaExpecifica, subirproducto, addCategoria, getCategorias, deleteproducto, deleteCategoria, subirPhoto })(CartaPage);

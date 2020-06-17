@@ -221,46 +221,27 @@ class ProductosSubirPhotoApi(viewsets.ModelViewSet):
         ruta = './frontend' + directorio + '/' + productoID + '.jpeg'
         ruta_producto = directorio + '/' + productoID + '.jpeg'
         handle_uploaded_file(request.data["photo"], ruta)
-
-        print("Mira la ruta antes de -- > ", ruta_producto)
-        producto_instance = Productos.objects.filter(id__exact=productoID)
-        print("Producto instance -- > ", producto_instance[0].photo)
-
-        producto_instance[0].photo =ruta_producto
-
-        producto_instance[0].save(update_fields=['photo'])
-
-        print("Producto instance -- > ", producto_instance[0].photo)
-        """
-        producto_prueba = Productos.objects.update_or_create(
-            id = producto_instance[0].id,
-            name = producto_instance[0].name,
-            categoria = producto_instance[0].categoria,
-            descripcion= producto_instance[0].descripcion,
-            titulo_precio1 = producto_instance[0].titulo_precio1,
-            titulo_precio2 = producto_instance[0].titulo_precio2,
-            titulo_precio3 = producto_instance[0].titulo_precio3,
-            precio1 = producto_instance[0].precio1,
-            precio2 = producto_instance[0].precio2,
-            precio3 = producto_instance[0].precio3,
-            is_apio = producto_instance[0].is_apio,
-            is_altramuces = producto_instance[0].is_altramuces,
-            is_cacahuete = producto_instance[0].is_cacahuete,
-            is_crustaceo = producto_instance[0].is_crustaceo,
-            is_frutos_con_cascara = producto_instance[0].is_frutos_con_cascara,
-            is_gluten = producto_instance[0].is_gluten,
-            is_huevo = producto_instance[0].is_huevo,
-            is_lacteo = producto_instance[0].is_lacteo,
-            is_molusco = producto_instance[0].is_molusco,
-            is_mostaza = producto_instance[0].is_mostaza,
-            is_pescado = producto_instance[0].is_pescado,
-            is_sesamo = producto_instance[0].is_sesamo,
-            is_soja = producto_instance[0].is_soja,
-            is_sulfito = producto_instance[0].is_sulfito,
-            photo = ruta_producto
-        )
-        """
-
         
         return Response(status=status.HTTP_200_OK)
 
+class CartaSubirPhotoApi(viewsets.ModelViewSet):
+
+    permission_classes = [
+        permissions.AllowAny
+    ]
+
+    serializer_class = CartaSerializerActualizar
+    parser_classes = (MultiPartParser, FormParser)
+
+    def put(self, request, *args, **kwargs):
+
+        cif_user = request.data["cif"]
+        cartaID = self.request.query_params.get('id', None)
+        
+        directorioCartaRaw = Carta.objects.filter(id__exact=cartaID).values('directorio')
+        directorio = directorioCartaRaw[0]['directorio']
+
+        ruta = './frontend' + directorio + '/logo.jpeg'
+        handle_uploaded_file(request.data["photo"], ruta)
+        
+        return Response(status=status.HTTP_200_OK)

@@ -272,3 +272,38 @@ export const updateLogoRounded = (carta) => (dispatch, getState) => {
 
 }
 
+export const subirCartaLogo = (formdata, carta) => (dispatch, getState) => {
+
+
+    const config = {
+        headers: {
+            'content-type': 'multipart/form-data'
+        }
+    }
+
+
+    axios.put(`api/subirlogocarta/?id=${carta.id}`, formdata, config)
+        .then(res => {
+            console.log("La foto de la carta se ha subido correctamente")
+
+            const body = JSON.stringify({ id: carta.id, establecimiento: carta.establecimiento, name: carta.name, propietario: carta.propietario, directorio: carta.directorio,  logo_propio: true});
+
+            axios.put(`/api/getcartas/${carta.id}/`, body, tokenConfig(getState))
+                .then(res => {
+                    console.log("Cambiado a logo propio")
+                    dispatch({
+                        type: UPDATE_CARTA,
+                        payload: res.data
+                    });
+                })
+                .catch(err => console.log("Esto ta mal? " + err));
+
+
+
+        }).then(res => {
+
+        }).catch(err => console.log(err));
+
+}
+
+

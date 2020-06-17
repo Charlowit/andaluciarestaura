@@ -175,6 +175,7 @@ STATICFILES_DIRS = [
 
 STATIC_ROOT = '/home/ubuntu/andaluciarestaura/andaluciarestaura/frontend/static'
 
+
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
