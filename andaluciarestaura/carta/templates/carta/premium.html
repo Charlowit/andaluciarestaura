@@ -3,7 +3,11 @@
 {% load static %}
 
 <head>
+  {% load django_simple_bulma %}
+  {% bulma %}
+  {% font_awesome %}
   <link href='https://fonts.googleapis.com/css?family=El Messiri' rel='stylesheet'>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css">
   <style>
     div {
       font-family: 'El Messiri';
@@ -261,13 +265,30 @@
     <nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
         <a class="navbar-item" href="/">
-          <img src="{% static 'frontend/logoar.png' %}" width="300" height="125">
+          <img style="" src="{% static 'frontend/logoar.png' %}" width="300" height="125">
         </a>
 
       </div>
     </nav>
   </header>
-  <section class="hero is-bold" id="bkg" style="margin-top: 40px ">
+  <div class="pageloader is-active" style="background-color: #bca466;" id="pageloader">
+      <p class="title">
+        <img width="200" height="50" src="{% static 'frontend/hotehub.svg' %}"></img>
+      </p>
+      <p class="title" style="margin-top:70px;"> Córdoba Restaura by Hotehub</p>
+      <p class="title" style="margin-top:90px">Copyright@2020 Todos los derechos reservados </p>
+  </div>
+  <script>
+
+        var pageloader = document.getElementById("pageloader");
+        if (pageloader) {
+          var pageloaderTimeout = setTimeout( function() {
+            pageloader.classList.toggle('is-active');
+            clearTimeout(pageloaderTimeout);
+          }, 850 );
+        }
+  </script>
+  <section class="hero is-bold animate__animated animate__bounceInDown animate__delay-1s " id="bkg" style="margin-top: 40px ">
 
     <div class="hero-body">
       <div class="container has-text-centered is-clearfix">
@@ -365,10 +386,11 @@
 
                   });
               });
-            }
+
           //]]></script>
         </p>
         <hr />
+
         <div class="container">
           <div class="columns">
             <div class="column">
@@ -458,12 +480,11 @@
 
   <div class="section">
     <div>
-      <div class="container">
+      <div class="container ">
         <div style="margin-top: 40px">
           <!-- FOR DE LA CARTA -->
           {% for categoria in categorias %}
-          <div class="container">
-
+          <div class="container animate__animated animate__bounceInLeft animate__delay-1s">
             <div class='card equal-height ' id="cardColour" style="margin-top: 40px">
               <div class="container">
                 <br />
@@ -481,9 +502,9 @@
             {% for producto in productos %}
             {% if categoria.id == producto.categoria %}
             {% if producto.is_activo %}
-            <div class='card' id="fondoCarta">
+            <div class='card animate__animated animate__bounceInLeft animate__delay-1s' id="fondoCarta">
               {% if 'default' not in producto.photo %}
-              <div class=" has-text-centered">
+              <div class="has-text-centered ">
                 <figure class="image" style="max-width: 480px">
                   <img class="is-rounded" src={{producto.photo}}></img>
                 </figure>
