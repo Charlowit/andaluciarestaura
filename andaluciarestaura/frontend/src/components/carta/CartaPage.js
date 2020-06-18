@@ -143,6 +143,11 @@ export class CartaPage extends Component {
 
         this.props.subirPhoto(form_data, this.state.clickedProducto, this.props.auth.user.cif);
         var is_primera = false;
+<<<<<<< HEAD
+=======
+        console.log("CARTA DE 0 --> ", this.props.totalcartas[0].id)
+        console.log("CARTA DE 0 --> ", this.state.clickedProducto.carta)
+>>>>>>> master
         if (this.props.totalcartas[0].id == this.state.clickedProducto.carta) {
            console.log("CARTA REAL DE 0 --> ",this.props.totalcartas[0].id )
            console.log("PRODUCTO CARTA ID --> ",  this.state.clickedProducto.carta) 
@@ -458,10 +463,11 @@ export class CartaPage extends Component {
             indexEditing: index
         })
 
-
+        var addingPhotoArray = this.state.addingPhotoArray
+        addingPhotoArray[index] = !addingPhotoArray[index]
         this.setState({
             addPhoto: !this.state.addPhoto,
-
+            addingPhotoArray: addingPhotoArray
         });
 
         this.setState({
@@ -499,7 +505,21 @@ export class CartaPage extends Component {
             precio2: producto.precio2,
             precio3: producto.precio3,
             descripcion: producto.descripcion,
-            name: producto.name
+            name: producto.name,
+            is_apio: producto.is_apio,
+            is_altramuces: producto.is_altramuces,
+            is_cacahuete: producto.is_cacahuete,
+            is_crustaceo: producto.is_crustaceo,
+            is_frutos_con_cascara: producto.is_frutos_con_cascara,
+            is_gluten: producto.is_gluten,
+            is_huevo: producto.is_huevo,
+            is_lacteo: producto.is_lacteo,
+            is_molusco: producto.is_molusco,
+            is_mostaza: producto.is_mostaza,
+            is_pescado: producto.is_pescado,
+            is_sesamo: producto.is_sesamo,
+            is_soja: producto.is_soja,
+            is_sulfito: producto.is_sulfito,
         })
     }
 
@@ -509,9 +529,10 @@ export class CartaPage extends Component {
         })
     }
 
-    borrarProducto = e => {
+    borrarProducto = (e, producto) => {
         this.setState({
-            borrarProducto: !this.state.borrarProducto
+            borrarProducto: !this.state.borrarProducto,
+            clickedProducto: producto
         })
     }
     addCategory = e => {
@@ -708,9 +729,7 @@ export class CartaPage extends Component {
             fileArray: this.state.fileArray.map((item, indexDentro) => (
                 indexDentro == this.state.indexEditing ? item = URL.createObjectURL(e.target.files[0]) : item = item
             )),
-            addingPhotoArray: this.state.addingPhotoArray.map((item, indexDentro) => (
-                this.state.indexEditing == indexDentro ? !item : item = item
-            ))
+
         })
 
         console.log("Se habrá cambiao? --> ", this.state.fileArray[this.state.indexEditing])
@@ -784,6 +803,99 @@ export class CartaPage extends Component {
 
                             <section className="hero is-bold" style={bkg}>
 
+
+                                <div className={this.state.borrarProducto ? "modal is-active" : "modal"}>
+                                    <div className="modal-background"></div>
+                                    <div className="modal-content">
+                                        <div className="container box" >
+                                            <div className="has-text-right">
+
+                                                <button className="button" style={{ backgroundColor: '#171c8f' }} onClick={this.borrarProducto}>
+                                                    <span className="icon is-small">
+                                                        <i className="fas fa-times " style={{ color: 'white' }}></i>
+                                                    </span>
+                                                </button>
+                                            </div>
+                                            <div className="has-text-centered">
+
+
+                                                <span className="icon" >
+                                                    <i className="fas fa-trash" style={{ fontSize: '100px', color: "#bca466" }}></i>
+                                                </span>
+                                                <h1 className="title" style={{ marginTop: '10px' }}> BORRAR PRODUCTO </h1>
+                                            </div>
+                                            <hr style={{ marginTop: '30px', backgroundColor: '#bca466', color: '#bca466' }} />
+                                            <form>
+                                                <label className="label has-text-centered" style={{ marginTop: '10px' }}>Estas intentando borrar un producto! ¿Estas seguro?</label>
+
+                                                <div className="columns">
+                                                    <div className="column"></div>
+                                                    <div className="column">
+                                                        <div className="control buttons is-centered" style={{ marginTop: '20px' }}>
+                                                            <button className="button is-success" style={{ color: 'white', backgroundColor: '#bca466' }} onClick={e => this.onSubmitDeleteProducto(e, this.state.clickedProducto.id, producto.categoria)}>Si</button>
+                                                        </div>
+                                                    </div>
+                                                    <div className="column">
+                                                        <div className="control buttons is-centered" style={{ marginTop: '20px' }}>
+                                                            <button className="button is-success" style={{ color: 'white', backgroundColor: '#bca466' }} onClick={this.borrarProducto}>No</button>
+                                                        </div>
+                                                    </div>
+                                                    <div className="column"></div>
+
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div className={this.state.addingPhotoArray[this.state.indexEditing] ? "modal is-active" : "modal"}>
+                                    <div className="modal-background"></div>
+                                    <div className="modal-content">
+                                        <div className="container box">
+                                            <div className="has-text-right">
+                                                <button className="button is-danger" onClick={e => this.addPhoto(e, this.state.clickedProducto, this.state.indexEditing)}>
+                                                    <span className="icon is-small">
+                                                        <i className="fas fa-times"></i>
+                                                    </span>
+                                                </button>
+                                            </div>
+                                            <div className="has-text-centered">
+                                                <label className="label  is-size-4">Sube la foto de tu producto</label>
+                                                <hr style={{ marginTop: '30px' }} />
+
+                                                <div class="field">
+                                                    <div class="file ">
+                                                        <label class="file-label">
+                                                            <input class="file-input" type="file" id="logo" accept=".jpeg" onChange={e => this.handlePhotoChange(e, this.state.indexEditing)} name="resume" />
+                                                            <span class="file-cta">
+                                                                <span class="file-icon">
+                                                                    <i class="fas fa-camera"></i>
+                                                                </span>
+                                                                <span class="file-label">
+                                                                    Escoja la nueva foto del producto
+                                                                </span>
+                                                            </span>
+
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div className="field">
+                                                    <div style={{ marginTop: '10px', marginBottom: '10px' }} className="is-centered">
+                                                        <span style={{ marginBottom: '10px' }}>
+                                                            <p>Previsualización:</p>
+                                                        </span>
+                                                        <span>
+                                                            <img src={this.state.fileArray[this.state.indexEditing]} ></img>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <button className="button is-success" onClick={this.onSubmitPhotoProducto}>Guardar</button>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
                                 <div className={this.state.editEslogan ? "modal is-active" : "modal"}>
                                     <div className="modal-background"></div>
@@ -1094,12 +1206,13 @@ export class CartaPage extends Component {
                                         <div style={{ marginBottom: '20px' }}>
                                             <div className='equal-height is-info'>
                                                 {this.props.totalcartas[0].id != this.props.cartaReal[0].id ?
-
-                                                    <button className="button " style={{ backgroundColor: 'white', color: '#bca466', marginBottom: '10px' }} onClick={this.hangleModalLogoCarta}>
-                                                        <span className="icon is-small">
-                                                            <i className="fas fa-pen"></i>
-                                                        </span>
-                                                    </button>
+                                                    <Tooltip title="Cambiar logo de la carta">
+                                                        <button className="button " style={{ backgroundColor: 'white', color: '#bca466', marginBottom: '10px' }} onClick={this.hangleModalLogoCarta}>
+                                                            <span className="icon is-small">
+                                                                <i className="fas fa-pen"></i>
+                                                            </span>
+                                                        </button>
+                                                    </Tooltip>
                                                     : ""}
 
                                                 <div className=" has-text-centered" >
@@ -1117,91 +1230,113 @@ export class CartaPage extends Component {
 
                                             </div>
                                             {carta.logo_rounded ?
-                                                <button className="button is-rounded is-small is-warning" style={{ color: '#bca466', backgroundColor: 'white' }} onClick={e => this.changeLogoRounded(e, carta)}>
-                                                    <span className="icon is-small" style={{ marginTop: '-5px' }}>
-                                                        <i className="fas fa-camera"></i>
-                                                    </span>
-                                                    <span style={{ color: '#bca466', fontSize: '17px' }}>Click para logo cuadrado!</span>
-                                                </button>
+                                                <Tooltip title="Cambia la forma del logo">
+                                                    <button className="button is-rounded is-small is-warning" style={{ color: '#bca466', backgroundColor: 'white' }} onClick={e => this.changeLogoRounded(e, carta)}>
+                                                        <span className="icon is-small" style={{ marginTop: '-5px' }}>
+                                                            <i className="fas fa-camera"></i>
+                                                        </span>
+                                                        <span style={{ color: '#bca466', fontSize: '17px' }}>Click para logo cuadrado!</span>
+                                                    </button>
+                                                </Tooltip>
                                                 :
-
-                                                <button className="button is-rounded is-small is-warning" style={{ color: '#bca466', backgroundColor: 'white' }} onClick={e => this.changeLogoRounded(e, carta)}>
-                                                    <span className="icon is-small" style={{ marginTop: '-5px' }}>
-                                                        <i className="fas fa-camera"></i>
-                                                    </span>
-                                                    <span style={{ color: '#bca466', fontSize: '17px' }}>Click para logo redondo!</span>
-                                                </button>
+                                                <Tooltip title="Cambia la forma del logo">
+                                                    <button className="button is-rounded is-small is-warning" style={{ color: '#bca466', backgroundColor: 'white' }} onClick={e => this.changeLogoRounded(e, carta)}>
+                                                        <span className="icon is-small" style={{ marginTop: '-5px' }}>
+                                                            <i className="fas fa-camera"></i>
+                                                        </span>
+                                                        <span style={{ color: '#bca466', fontSize: '17px' }}>Click para logo redondo!</span>
+                                                    </button>
+                                                </Tooltip>
                                             }
+
                                         </div>
 
 
                                         <h1 className="title" style={{ display: 'inline', paddingTop: '20px' }}> {carta.establecimiento} </h1>
-                                        <button className="button is-rounded is-small" style={{ color: '#bca466', backgroundColor: 'white', display: 'inline', marginLeft: '7px', marginTop: '-3px' }} onClick={this.editEstablecimiento}>
-                                            <span className="icon is-small">
-                                                <i className="fas fa-pen"></i>
-                                            </span>
-                                        </button>
-                                        <div style={{ paddingTop: '35px' }}>
-                                            <h2 className="subtitle" style={{ display: 'inline' }}> {carta.eslogan != '-' ? carta.eslogan : "Escribe tu slogan!"} </h2>
-
-
-                                            <button className="button is-rounded is-small is-warning" style={{ color: '#bca466', backgroundColor: 'white', display: 'inline', marginLeft: '7px', marginTop: '-3px' }} onClick={this.editEslogan}>
+                                        <Tooltip title="Editar el establecimiento">
+                                            <button className="button is-rounded is-small" style={{ color: '#bca466', backgroundColor: 'white', display: 'inline', marginLeft: '7px', marginTop: '-3px' }} onClick={this.editEstablecimiento}>
                                                 <span className="icon is-small">
                                                     <i className="fas fa-pen"></i>
                                                 </span>
                                             </button>
+                                        </Tooltip>
+                                        <div style={{ paddingTop: '35px' }}>
+                                            <h2 className="subtitle" style={{ display: 'inline' }}> {carta.eslogan != '-' ? carta.eslogan : "Escribe tu slogan!"} </h2>
 
-                                            <p className="field" style={{ marginTop: '15px' }}>
+                                            <Tooltip title="Editar el eslogan actual">
+
+                                                <button className="button is-rounded is-small is-warning" style={{ color: '#bca466', backgroundColor: 'white', display: 'inline', marginLeft: '7px', marginTop: '-3px' }} onClick={this.editEslogan}>
+                                                    <span className="icon is-small">
+                                                        <i className="fas fa-pen"></i>
+                                                    </span>
+                                                </button>
+                                            </Tooltip>
+                                            <div className="field" style={{ marginTop: '15px' }}>
                                                 <a className="button is-rounded is-medium" id="id_boton" onClick={e => this.openUrl(e, carta.url_facebook)} style={{ marginLeft: '10px' }}>
                                                     <span className="icon">
                                                         <i className="fab fa-facebook"></i>
                                                     </span>
                                                 </a>
-                                                <button class="button is-rounded is-small is-warning" style={{ color: '#bca466', backgroundColor: 'white', display: 'inline' }} onClick={this.editURLF}>
-                                                    <span class="icon is-small">
-                                                        <i class="fas fa-pen"></i>
-                                                    </span>
-                                                </button>
+                                                <Tooltip title="Editar el url de Facebook">
+
+                                                    <button className="button is-rounded is-small is-warning" style={{ color: '#bca466', backgroundColor: 'white', display: 'inline' }} onClick={this.editURLF}>
+                                                        <span className="icon is-small">
+                                                            <i className="fas fa-pen"></i>
+                                                        </span>
+                                                    </button>
+                                                </Tooltip>
+
                                                 <a className="button is-rounded is-medium" onClick={e => this.openUrl(e, carta.url_tripadvisor)} style={{ marginLeft: '10px' }}>
                                                     <span className="icon">
                                                         <i className="fab fa-tripadvisor"></i>
                                                     </span>
                                                 </a>
-                                                <button class="button is-rounded is-small is-warning" style={{ color: '#bca466', backgroundColor: 'white', display: 'inline' }} onClick={this.editURLT}>
-                                                    <span class="icon is-small">
-                                                        <i class="fas fa-pen"></i>
-                                                    </span>
-                                                </button>
+
+                                                <Tooltip title="Editar el url de Tripadvisor">
+
+                                                    <button className="button is-rounded is-small is-warning" style={{ color: '#bca466', backgroundColor: 'white' }} onClick={this.editURLT}>
+                                                        <span className="icon is-small">
+                                                            <i className="fas fa-pen"></i>
+                                                        </span>
+                                                    </button>
+                                                </Tooltip>
+
                                                 <a className="button is-rounded is-medium" onClick={e => this.openUrl(e, carta.url_instagram)} style={{ marginLeft: '10px' }} >
                                                     <span className="icon">
                                                         <i className="fab fa-instagram"></i>
                                                     </span>
                                                 </a>
-                                                <button class="button is-rounded is-small is-warning" style={{ color: '#bca466', backgroundColor: 'white', display: 'inline' }} onClick={this.editURLI}>
-                                                    <span class="icon is-small">
-                                                        <i class="fas fa-pen"></i>
-                                                    </span>
-                                                </button>
-                                            </p>
+                                                <Tooltip title="Editar el url de Instagram">
+                                                    <button className="button is-rounded is-small is-warning" style={{ color: '#bca466', backgroundColor: 'white', display: 'inline' }} onClick={this.editURLI}>
+                                                        <span className="icon is-small">
+                                                            <i className="fas fa-pen"></i>
+                                                        </span>
+                                                    </button>
+                                                </Tooltip>
+                                            </div>
                                             <hr />
                                             <div className="container">
                                                 <div className="buttons">
                                                     <div className="columns" style={div100}>
                                                         <div className="column">
-                                                            <button className="button" onClick={e => this.openNewTab(e, carta)}>
-                                                                <span className="icon">
-                                                                    <i className=" fas fa-file-pdf"></i>
-                                                                </span>
-                                                                <span>Ver visualización de la Carta</span>
-                                                            </button>
+                                                            <Tooltip title="Abre la carta online">
+                                                                <button className="button" onClick={e => this.openNewTab(e, carta)}>
+                                                                    <span className="icon">
+                                                                        <i className=" fas fa-file-pdf"></i>
+                                                                    </span>
+                                                                    <span>Ver visualización de la Carta</span>
+                                                                </button>
+                                                            </Tooltip>
                                                         </div>
                                                         <div className="column">
                                                             <h1 className="title" style={{ display: 'inline' }} > {carta.name}</h1>
-                                                            <button class="button is-rounded is-small is-warning" style={{ color: '#bca466', backgroundColor: 'white', display: 'inline', marginLeft: '10px' }} onClick={this.editNombreCarta}>
-                                                                <span class="icon is-small">
-                                                                    <i class="fas fa-pen"></i>
-                                                                </span>
-                                                            </button>
+                                                            <Tooltip title="Cambiar el nombre actual de la carta">
+                                                                <button className="button is-rounded is-small is-warning" style={{ color: '#bca466', backgroundColor: 'white', display: 'inline', marginLeft: '10px' }} onClick={this.editNombreCarta}>
+                                                                    <span className="icon is-small">
+                                                                        <i className="fas fa-pen"></i>
+                                                                    </span>
+                                                                </button>
+                                                            </Tooltip>
                                                         </div>
                                                         <div className="column">
                                                             <button className="button">
@@ -1307,7 +1442,19 @@ export class CartaPage extends Component {
 
                                                     {this.props.categorias.length > 0 ?
                                                         <div className="column" style={{ marginTop: '10px' }}>
-                                                            <button className="button is-success is-medium" style={{ backgroundColor: 'white', border: '1px solid white' }} onClick={this.addProduct}>
+                                                            <Tooltip title="Añade un producto a la carta">
+                                                                <button className="button is-success is-medium" style={{ backgroundColor: 'white', border: '1px solid white' }} onClick={this.addProduct}>
+                                                                    <span class="icon" style={{ color: 'black' }}>
+                                                                        <i class="fas fa-plus-circle"></i>
+                                                                    </span>
+                                                                    <p style={{ marginTop: '6px', color: 'black' }}> Añadir Producto</p>
+                                                                </button>
+                                                            </Tooltip>
+                                                        </div>
+                                                        :
+                                                        <div className="column" style={{ marginTop: '10px' }}>
+
+                                                            <button disabled className="button is-success is-medium" style={{ backgroundColor: 'white', border: '1px solid white' }} onClick={this.addProduct}>
                                                                 <span class="icon" style={{ color: 'black' }}>
                                                                     <i class="fas fa-plus-circle"></i>
                                                                 </span>
@@ -1315,24 +1462,21 @@ export class CartaPage extends Component {
                                                             </button>
 
                                                         </div>
-                                                        :
-                                                        <div className="column" style={{ marginTop: '10px' }}>
-                                                            <button disabled className="button is-success is-medium" style={{ backgroundColor: 'white', border: '1px solid white' }} onClick={this.addProduct}>
+                                                    }
+
+                                                    <div className="column" style={{ marginTop: '10px', marginBottom: '25px' }}>
+                                                        <Tooltip title="Añade una categoria a la carta">
+
+                                                            <button className="button is-success is-medium" style={{ backgroundColor: 'white', border: '1px solid white' }} onClick={this.addCategory}>
                                                                 <span class="icon" style={{ color: 'black' }}>
                                                                     <i class="fas fa-plus-circle"></i>
                                                                 </span>
-                                                                <p style={{ marginTop: '6px', color: 'black' }}> Añadir Producto</p>
+                                                                <p style={{ marginTop: '6px', color: 'black' }}> Añadir Categoría</p>
                                                             </button>
-                                                        </div>
-                                                    }
-                                                    <div className="column" style={{ marginTop: '10px', marginBottom: '25px' }}>
-                                                        <button className="button is-success is-medium" style={{ backgroundColor: 'white', border: '1px solid white' }} onClick={this.addCategory}>
-                                                            <span class="icon" style={{ color: 'black' }}>
-                                                                <i class="fas fa-plus-circle"></i>
-                                                            </span>
-                                                            <p style={{ marginTop: '6px', color: 'black' }}> Añadir Categoría</p>
-                                                        </button>
+                                                        </Tooltip>
+
                                                     </div>
+
 
                                                 </div>
                                             </section>
@@ -2171,107 +2315,6 @@ export class CartaPage extends Component {
 
                                                                                     <div style={{ marginTop: '20px' }} key={producto.id}>
 
-                                                                                        <div className={this.state.borrarProducto ? "modal is-active" : "modal"}>
-                                                                                            <div className="modal-background"></div>
-                                                                                            <div className="modal-content">
-                                                                                                <div className="container box" >
-                                                                                                    <div className="has-text-right">
-
-                                                                                                        <button className="button" style={{ backgroundColor: '#171c8f' }} onClick={this.borrarProducto}>
-                                                                                                            <span className="icon is-small">
-                                                                                                                <i className="fas fa-times " style={{ color: 'white' }}></i>
-                                                                                                            </span>
-                                                                                                        </button>
-                                                                                                    </div>
-                                                                                                    <div className="has-text-centered">
-
-
-                                                                                                        <span className="icon" >
-                                                                                                            <i className="fas fa-trash" style={{ fontSize: '100px', color: "#bca466" }}></i>
-                                                                                                        </span>
-                                                                                                        <h1 className="title" style={{ marginTop: '10px' }}> BORRAR PRODUCTO </h1>
-                                                                                                    </div>
-                                                                                                    <hr style={{ marginTop: '30px', backgroundColor: '#bca466', color: '#bca466' }} />
-                                                                                                    <form>
-                                                                                                        <label className="label has-text-centered" style={{ marginTop: '10px' }}>Estas intentando borrar un producto! ¿Estas seguro?</label>
-
-                                                                                                        <div className="columns">
-                                                                                                            <div className="column"></div>
-                                                                                                            <div className="column">
-                                                                                                                <div className="control buttons is-centered" style={{ marginTop: '20px' }}>
-                                                                                                                    <button className="button is-success" style={{ color: 'white', backgroundColor: '#bca466' }} onClick={e => this.onSubmitDeleteProducto(e, producto.id, producto.categoria)}>Si</button>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                            <div className="column">
-                                                                                                                <div className="control buttons is-centered" style={{ marginTop: '20px' }}>
-                                                                                                                    <button className="button is-success" style={{ color: 'white', backgroundColor: '#bca466' }} onClick={this.borrarProducto}>No</button>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                            <div className="column"></div>
-
-                                                                                                        </div>
-                                                                                                    </form>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </div>
-
-
-
-
-
-
-
-
-
-
-
-                                                                                        <div className={this.state.addPhoto ? "modal is-active" : "modal"}>
-                                                                                            <div className="modal-background"></div>
-                                                                                            <div className="modal-content">
-                                                                                                <div className="container box">
-                                                                                                    <div className="has-text-right">
-                                                                                                        <button className="button is-danger" onClick={e => this.addPhoto(e, this.state.clickedProducto, index)}>
-                                                                                                            <span className="icon is-small">
-                                                                                                                <i className="fas fa-times"></i>
-                                                                                                            </span>
-                                                                                                        </button>
-                                                                                                    </div>
-                                                                                                    <div className="has-text-centered">
-                                                                                                        <label className="label  is-size-4">Sube la foto de tu producto</label>
-                                                                                                        <hr style={{ marginTop: '30px' }} />
-
-                                                                                                        <div class="field">
-                                                                                                            <div class="file ">
-                                                                                                                <label class="file-label">
-                                                                                                                    <input class="file-input" type="file" id="logo" accept=".jpeg" onChange={e => this.handlePhotoChange(e, index)} name="resume" />
-                                                                                                                    <span class="file-cta">
-                                                                                                                        <span class="file-icon">
-                                                                                                                            <i class="fas fa-camera"></i>
-                                                                                                                        </span>
-                                                                                                                        <span class="file-label">
-                                                                                                                            Escoja la nueva foto del producto
-                                                                                                                    </span>
-                                                                                                                    </span>
-
-                                                                                                                </label>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                        <div className="field">
-                                                                                                            <div style={{ marginTop: '10px', marginBottom: '10px' }} className="is-centered">
-                                                                                                                <span style={{ marginBottom: '10px' }}>
-                                                                                                                    <p>Previsualización:</p>
-                                                                                                                </span>
-                                                                                                                <span>
-                                                                                                                    <img src={this.state.fileArray[this.state.indexEditing]} ></img>
-                                                                                                                </span>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                        <button className="button is-success" onClick={this.onSubmitPhotoProducto}>Guardar</button>
-
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </div>
                                                                                         {/* BUSCATE EL PRODUCTO */}
                                                                                         {categoria.id == producto.categoria ?
 
@@ -2527,7 +2570,7 @@ export class CartaPage extends Component {
                                                                                                                             <Tooltip title="Borrar producto">
 
                                                                                                                                 <section className="is-rounded" style={{ backgroundColor: '#d5c69f', padding: '5px' }}>
-                                                                                                                                    <button class="button is-danger" style={{ backgroundColor: 'white' }} onClick={this.borrarProducto}>
+                                                                                                                                    <button class="button is-danger" style={{ backgroundColor: 'white' }} onClick={e => this.borrarProducto(e, producto)}>
                                                                                                                                         <span class="icon is-small">
                                                                                                                                             <i class="fas fa-trash" style={{ color: '#bca466' }}></i>
                                                                                                                                         </span>
