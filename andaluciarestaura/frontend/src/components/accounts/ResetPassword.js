@@ -44,6 +44,7 @@ export class ResetPassword extends Component {
             password2: "",
             passwordvacio: false,
             password2vacio: false,
+            passwordnocoincide: false,
         }
     }
 
@@ -76,6 +77,7 @@ export class ResetPassword extends Component {
         else {
             this.setState({ passwordvacio: true })
             this.setState({ password2vacio: true })
+            this.setState({passwordnocoincide: true})
         }
 
     };
@@ -169,6 +171,11 @@ export class ResetPassword extends Component {
                                                                         </div>
                                                                     }
                                                                 </div>
+                                                                {this.state.passwordnocoincide ?
+                                                                    <p className="is-danger"> Las contraseñas no coinciden</p>
+                                                                    : 
+                                                                    <p>""</p>
+                                                                }
                                                                 <div style={{ marginTop: '60px' }}>
                                                                     <button type="submit" className="button"
                                                                         onClick={this.onSubmit}
