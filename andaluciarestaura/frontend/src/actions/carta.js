@@ -105,6 +105,7 @@ export const uploadProductParams = (producto, categoriaPropia) => (dispatch, get
     console.log("Mira el body --> ", body)
     axios.put(`/api/productact/${producto.id}/?categoria=${categoriaPropia}`, body, tokenConfig(getState))
         .then(res => {
+            dispatch(createMessages({ productoactualizado: "Producto actualizado correctamente." }));
             console.log("Miralo que hemos hcho el update ", res.data.id)
             dispatch({
                 type: UPDATE_PRODUCTO,
@@ -112,7 +113,16 @@ export const uploadProductParams = (producto, categoriaPropia) => (dispatch, get
 
             });
         })
-        .catch(err => console.log("Esto es el subir y mira que error tienes " + err));
+        .catch(err => {
+            const errors = {
+                msg: err.response.data,
+                status: err.response.status
+            }
+            dispatch({
+                type: GET_ERRORS,
+                payload: errors
+            });
+        });
 }
 
 export const subirPhoto = (formdata, producto, cif_user) => dispatch => {

@@ -127,6 +127,9 @@ export class Alerts extends Component {
             if(message.passcorrect){
                 alert.success(message.passcorrect)
             }
+            if(message.productoactualizado){
+                alert.success(message.productoactualizado)
+            }
             
         }
     }
