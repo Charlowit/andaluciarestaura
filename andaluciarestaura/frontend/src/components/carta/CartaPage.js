@@ -2,7 +2,7 @@ import React, { Component, Fragment, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { uploadProducto, updateCategoria, getCategorias, deleteproducto, subirproducto, addCategoria, deleteCategoria, subirPhoto, uploadProductParams } from '../../actions/carta';
-import { subirCartaLogo, updateLogoRounded, updateEstablecimiento, getCartaExpecifica, updateEslogan, updateURL, updateNombreCarta, getCartas } from '../../actions/cartas';
+import { updateIntroduccion, subirCartaLogo, updateLogoRounded, updateEstablecimiento, getCartaExpecifica, updateEslogan, updateURL, updateNombreCarta, getCartas  } from '../../actions/cartas';
 import CargarPdf from '../cartaestatica/CargarPdf'
 import { Animated } from "react-animated-css";
 import { Redirect, Link } from 'react-router-dom';
@@ -84,7 +84,7 @@ export class CartaPage extends Component {
             editEstablecimiento: false,
 
             nombreNuevaCategoria: "",
-            info_extra: "-",
+            info_extra: "",
             posicion: 1,
             clickedProducto: null,
 
@@ -102,8 +102,12 @@ export class CartaPage extends Component {
             nombreEstablecimientoVacio: false,
             esloganVacio: false,
             urlVacio: false,
-            nombreCartaVacio: false
-
+            nombreCartaVacio: false,
+            newIntroduccion: "",
+            editIntroduccion: false,
+            introduccionVacia: false,
+            borrarCategoria: false,
+            borrarProducto: false
         };
     }
 
@@ -138,7 +142,6 @@ export class CartaPage extends Component {
 
 
         this.props.subirPhoto(form_data, this.state.clickedProducto, this.props.auth.user.cif);
-
         var is_primera = false;
         if (this.props.totalcartas[0].id == this.state.clickedProducto.carta) {
            console.log("CARTA REAL DE 0 --> ",this.props.totalcartas[0].id )
@@ -165,9 +168,14 @@ export class CartaPage extends Component {
     onSubmitCategorias = e => {
         e.preventDefault();
 
-        const { nombreNuevaCategoria, info_extra } = this.state;
+        const { nombreNuevaCategoria } = this.state;
         const posicion = this.props.categorias.length + 1
         const carta = this.props.match.params.id
+
+        var info_extra = "-"
+        if (this.state.info_extra != "") {
+            info_extra = this.state.info_extra
+        }
         const categoria = { nombreNuevaCategoria, posicion, info_extra, carta };
 
         this.setState({
@@ -175,6 +183,23 @@ export class CartaPage extends Component {
         })
 
         this.props.addCategoria(categoria);
+    }
+
+    onSubmitDeleteCategoria = (e, id, carta) => {
+        e.preventDefault()
+        this.props.deleteCategoria(id, carta)
+        this.setState({
+            borrarCategoria: !this.state.borrarCategoria
+        })
+    }
+
+    onSubmitDeleteProducto = (e, id, categoria) => {
+        e.preventDefault()
+        this.props.deleteproducto(id, categoria)
+
+        this.setState({
+            borrarProducto: !this.state.borrarProducto
+        })
     }
 
     onSubmitURL = (e, carta) => {
@@ -200,42 +225,39 @@ export class CartaPage extends Component {
 
         }
 
+        var urlFinal = ""
         if (url == "") {
-            this.setState({ urlVacio: true })
-            urlVacio = true
+            url = "-"
         } else {
-            this.setState({ urlVacio: false })
-
+            url = url
         }
 
-        if (urlVacio == false) {
-            const idCarta = this.props.match.params.id
-            const propietario = this.props.auth.user.id
-            const directorio = this.props.cartaReal[0].directorio
-            const establecimiento = carta.establecimiento
-            const name = carta.name
-            const updatedCarta = { propietario, idCarta, url, directorio, establecimiento, name };
+        const idCarta = this.props.match.params.id
+        const propietario = this.props.auth.user.id
+        const directorio = this.props.cartaReal[0].directorio
+        const establecimiento = carta.establecimiento
+        const name = carta.name
+        const updatedCarta = { propietario, idCarta, url, directorio, establecimiento, name };
 
 
 
 
-            console.log("ira el url --> ", url, " y el tipo --> ", urlType)
-            this.props.updateURL(updatedCarta, urlType);
+        this.props.updateURL(updatedCarta, urlType);
 
-            if (this.state.editURLF) {
-                this.setState({
-                    editURLF: !this.state.editURLF
-                })
-            } else if (this.state.editURLI) {
-                this.setState({
-                    editURLI: !this.state.editURLI
-                })
-            } else if (this.state.editURLT) {
-                this.setState({
-                    editURLT: !this.state.editURLT
-                })
-            }
+        if (this.state.editURLF) {
+            this.setState({
+                editURLF: !this.state.editURLF
+            })
+        } else if (this.state.editURLI) {
+            this.setState({
+                editURLI: !this.state.editURLI
+            })
+        } else if (this.state.editURLT) {
+            this.setState({
+                editURLT: !this.state.editURLT
+            })
         }
+
     }
 
     onSubmitNewSlogan = (e, carta) => {
@@ -356,6 +378,33 @@ export class CartaPage extends Component {
         this.props.uploadProducto(producto)
     }
 
+    onSubmitNewIntroduccion = (e, carta) => {
+        e.preventDefault()
+
+        var introduccionVacia = false
+        if (this.state.newIntroduccion == "") {
+            carta.introduccion = "-"
+        } else {
+            carta.introduccion = this.state.newIntroduccion
+
+        }
+
+
+        this.props.updateIntroduccion(carta)
+
+        this.setState({
+            editIntroduccion: !this.editIntroduccion
+        })
+
+
+    }
+
+    onSubmitDesactivarIntroduccion = (e, carta) => {
+        e.preventDefault()
+        carta.visualizar_introduccion = !carta.visualizar_introduccion
+        this.props.updateIntroduccion(carta)
+    }
+
     onSubmitEditarProducto = (e, producto) => {
 
         e.preventDefault();
@@ -421,6 +470,12 @@ export class CartaPage extends Component {
 
     }
 
+    editIntroduccion = e => {
+        this.setState({
+            editIntroduccion: !this.state.editIntroduccion
+        })
+    }
+
     editProduct = (e, producto) => {
 
         if (producto != null) {
@@ -448,6 +503,17 @@ export class CartaPage extends Component {
         })
     }
 
+    borrarCategoria = e => {
+        this.setState({
+            borrarCategoria: !this.state.borrarCategoria
+        })
+    }
+
+    borrarProducto = e => {
+        this.setState({
+            borrarProducto: !this.state.borrarProducto
+        })
+    }
     addCategory = e => {
         this.setState({
             addCategoria: !this.state.addCategoria
@@ -1155,7 +1221,87 @@ export class CartaPage extends Component {
                             </section>
                             {!carta.show_as_pdf ?
                                 <div>
-                                    <div className="section" style={{ marginTop: '-40px' }}>
+                                    <div className={this.state.editIntroduccion ? "modal is-active" : "modal"}>
+                                        <div className="modal-background"></div>
+                                        <div className="modal-content">
+                                            <div className="container box">
+                                                <div className="has-text-right">
+
+                                                    <button className="button" style={{ backgroundColor: '#171c8f' }} onClick={this.editIntroduccion}>
+                                                        <span className="icon is-small">
+                                                            <i className="fas fa-times " style={{ color: 'white' }}></i>
+                                                        </span>
+                                                    </button>
+                                                </div>
+                                                <div className="has-text-centered">
+                                                    <span className="icon" >
+                                                        <i className="fas fa-align-justify" style={{ fontSize: '100px', color: "#bca466" }}></i>
+                                                    </span>
+                                                    <h1 className="title" style={{ marginTop: '10px' }}> INTRODUCCION </h1>
+                                                </div>
+                                                <hr style={{ marginTop: '30px', backgroundColor: '#bca466', color: '#bca466' }} />                                                          <form>
+                                                    <label className="label" style={{ marginTop: '10px' }}>Escribe la introduccion de la carta</label>
+                                                    {this.state.introduccionVacia ?
+                                                        <div>
+                                                            <div className="control">
+                                                                <textarea name="newIntroduccion is-danger" className="textarea" placeholder="Esta es la mejor carta de todas!" size="99" onChange={this.onChange} defaultValue={this.state.newIntroduccion} type="text"></textarea>
+                                                            </div>
+                                                            <p className="help is-danger" style={{ fontSize: '15px', color: 'red' }}>El campo está vacío</p>
+
+                                                        </div>
+
+                                                        :
+                                                        <div className="control">
+                                                            <textarea name="newIntroduccion" className="textarea" placeholder="Esta es la mejor carta de todas!" size="99" onChange={this.onChange} defaultValue={this.state.newIntroduccion} type="text"></textarea>
+                                                        </div>
+                                                    }
+                                                    <div className="control buttons is-centered" style={{ marginTop: '20px' }}>
+                                                        <button className="button is-success" style={{ color: 'white', backgroundColor: '#bca466' }} onClick={e => this.onSubmitNewIntroduccion(e, carta)}>Guardar</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div style={{ marginTop: '-40px' }}>
+                                        <div className="columns">
+                                            <div className="column is-one-quarter">
+                                            </div>
+                                            <div className="column has-text-centered">
+                                                <Tooltip title="Activar o desactivar introducción">
+                                                    <button
+                                                        className="button is-warning is-rounded" style={{ backgroundColor: '#bca466' }} onClick={e => this.onSubmitDesactivarIntroduccion(e, carta)}>
+
+                                                        <span
+                                                            className="icon is-small" >
+                                                            <i className="fas fa-power-off" style={{ color: 'white' }}></i>
+                                                        </span>
+                                                    </button>
+                                                </Tooltip>
+                                                <Tooltip title="Editar introducción">
+                                                    <button
+                                                        className="button is-warning is-rounded" style={{ backgroundColor: '#bca466' }} onClick={this.editIntroduccion}>
+                                                        <span
+                                                            className="icon is-small" >
+                                                            <i className="fas fa-pen" style={{ color: 'white' }}></i>
+                                                        </span>
+                                                    </button>
+                                                </Tooltip>
+                                                <div style={{ marginTop: '10px' }}>
+
+                                                    {carta.introduccion == "-" ?
+
+                                                        <p style={carta.visualizar_introduccion ? { marginLeft: '20px', marginRight: '20px', fontSize: '20px' } : { opacity: 0.5, marginLeft: '20px', marginRight: '20px', fontSize: '20px' }}><b>Escribe aquí la introducción a tu carta!</b></p>
+                                                        :
+                                                        <p style={carta.visualizar_introduccion ? { marginLeft: '20px', marginRight: '20px', fontSize: '20px' } : { opacity: 0.5, marginLeft: '20px', marginRight: '20px', fontSize: '20px' }}><b>{carta.introduccion}</b></p>
+                                                    }
+                                                </div>
+                                            </div>
+                                            <div className="column is-one-quarter">
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div className="section">
                                         <div className="container">
                                             <section className="hero is-small" style={{ minHeight: '100px', backgroundColor: '#d5c69f' }}>
                                                 <div className="columns is-gapless has-text-centered" style={{ marginTop: '15px' }}>
@@ -1917,403 +2063,499 @@ export class CartaPage extends Component {
                                                         <div>
                                                             <div className="debug">
                                                                 {this.props.categorias.map(categoria => (
-                                                                    <Animated animationIn="bounceInLeft" >
-                                                                        <div style={{ marginTop: '60px' }} key={categoria.id}>
-                                                                            <div className='card equal-height' style={{ backgroundColor: '#d5c69f' }}>
-                                                                                <div className="columns">
-                                                                                    <div className="column is-two-thirds">
-                                                                                        <h1 className="title has-text-centered">{categoria.name}</h1>
+                                                                    <div>
+                                                                        <div className={this.state.borrarCategoria ? "modal is-active" : "modal"}>
+                                                                            <div className="modal-background"></div>
+                                                                            <div className="modal-content">
+                                                                                <div className="container box" >
+                                                                                    <div className="has-text-right">
+
+                                                                                        <button className="button" style={{ backgroundColor: '#171c8f' }} onClick={this.borrarCategoria}>
+                                                                                            <span className="icon is-small">
+                                                                                                <i className="fas fa-times " style={{ color: 'white' }}></i>
+                                                                                            </span>
+                                                                                        </button>
                                                                                     </div>
+                                                                                    <div className="has-text-centered">
 
-                                                                                    <div className="column is-full-mobile" >
-                                                                                        <div className="columns has-text-centered">
-                                                                                            <div className="column if-full-mobile">
-                                                                                                <div className="container" >
-                                                                                                    <div className="select">
 
-                                                                                                        <Tooltip title="Modificar posicion de la categoria en la carta">
+                                                                                        <span className="icon" >
+                                                                                            <i className="fas fa-trash" style={{ fontSize: '100px', color: "#bca466" }}></i>
+                                                                                        </span>
+                                                                                        <h1 className="title" style={{ marginTop: '10px' }}> BORRAR CATEGORIA </h1>
+                                                                                    </div>
+                                                                                    <hr style={{ marginTop: '30px', backgroundColor: '#bca466', color: '#bca466' }} />
+                                                                                    <form>
+                                                                                        <label className="label has-text-centered" style={{ marginTop: '10px' }}>Estas intentando borrar una categoria! Debes saber que si la eliminas se borrarán todos los productos que contenga. ¿Estas seguro?</label>
 
-                                                                                                            <select onChange={e => this.onSubmitCambiarPosiciones(e, categoria)}>
-                                                                                                                <option>Posicion actual: {categoria.posicion}</option>
-                                                                                                                {this.props.categorias.map((categoria, index) => (
-                                                                                                                    <option value={index + 1}>Posicion {index + 1}</option>
-                                                                                                                ))}
-
-                                                                                                            </select>
-                                                                                                        </Tooltip>
-
-                                                                                                    </div>
+                                                                                        <div className="columns">
+                                                                                            <div className="column"></div>
+                                                                                            <div className="column">
+                                                                                                <div className="control buttons is-centered" style={{ marginTop: '20px' }}>
+                                                                                                    <button className="button is-success" style={{ color: 'white', backgroundColor: '#bca466' }} onClick={e => this.onSubmitDeleteCategoria(e, categoria.id, categoria.carta)}>Si</button>
                                                                                                 </div>
                                                                                             </div>
                                                                                             <div className="column">
-                                                                                                <Tooltip title="Borrar categoria">
+                                                                                                <div className="control buttons is-centered" style={{ marginTop: '20px' }}>
+                                                                                                    <button className="button is-success" style={{ color: 'white', backgroundColor: '#bca466' }} onClick={this.borrarCategoria}>No</button>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div className="column"></div>
 
-                                                                                                    <div >
+                                                                                        </div>
+                                                                                    </form>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <Animated animationIn="bounceInLeft" >
+                                                                            <div style={{ marginTop: '60px' }} key={categoria.id}>
+                                                                                <div className='card equal-height' style={{ backgroundColor: '#d5c69f' }}>
+                                                                                    <div className="columns">
+                                                                                        <div className="column is-two-thirds">
+                                                                                            <h1 className="title has-text-centered">{categoria.name}</h1>
+                                                                                        </div>
 
-                                                                                                        <button class="button is-danger" style={{ backgroundColor: 'white' }} onClick={this.props.deleteCategoria.bind(this, categoria.id, categoria.carta)}>
-                                                                                                            <span class="icon is-small">
-                                                                                                                <i class="fas fa-trash" style={{ color: '#bca466' }}></i>
+                                                                                        <div className="column is-full-mobile" >
+                                                                                            <div className="columns has-text-centered">
+                                                                                                <div className="column if-full-mobile">
+                                                                                                    <div className="container" >
+                                                                                                        <div className="select">
+
+                                                                                                            <Tooltip title="Modificar posicion de la categoria en la carta">
+
+                                                                                                                <select onChange={e => this.onSubmitCambiarPosiciones(e, categoria)}>
+                                                                                                                    <option>Posicion actual: {categoria.posicion}</option>
+                                                                                                                    {this.props.categorias.map((categoria, index) => (
+                                                                                                                        <option value={index + 1}>Posicion {index + 1}</option>
+                                                                                                                    ))}
+
+                                                                                                                </select>
+                                                                                                            </Tooltip>
+
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div className="column">
+                                                                                                    <Tooltip title="Borrar categoria">
+
+                                                                                                        <div >
+
+                                                                                                            <button class="button is-danger" style={{ backgroundColor: 'white' }} onClick={this.borrarCategoria}>
+                                                                                                                <span class="icon is-small">
+                                                                                                                    <i class="fas fa-trash" style={{ color: '#bca466' }}></i>
+                                                                                                                </span>
+                                                                                                            </button>
+                                                                                                        </div>
+                                                                                                    </Tooltip>
+
+                                                                                                </div>
+
+
+                                                                                            </div>
+                                                                                        </div>
+
+
+                                                                                    </div>
+                                                                                    <div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                {categoria.info_extra != "-" ?
+                                                                                    <div className="card has-text-centered" style={{ marginTop: '-10px' }}>
+                                                                                        <div style={{ paddingTop: '5px', paddingBottom: '5px' }}>
+                                                                                            <p className="subtitle"><b>Información: {categoria.info_extra}</b></p>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    : ""}
+                                                                                {/* MODAL DEL LOGO DEL PRODUCTO */}
+                                                                                {this.props.cartas.map((producto, index) => (
+
+
+                                                                                    <div style={{ marginTop: '20px' }} key={producto.id}>
+
+                                                                                        <div className={this.state.borrarProducto ? "modal is-active" : "modal"}>
+                                                                                            <div className="modal-background"></div>
+                                                                                            <div className="modal-content">
+                                                                                                <div className="container box" >
+                                                                                                    <div className="has-text-right">
+
+                                                                                                        <button className="button" style={{ backgroundColor: '#171c8f' }} onClick={this.borrarProducto}>
+                                                                                                            <span className="icon is-small">
+                                                                                                                <i className="fas fa-times " style={{ color: 'white' }}></i>
                                                                                                             </span>
                                                                                                         </button>
                                                                                                     </div>
-                                                                                                </Tooltip>
-
-                                                                                            </div>
+                                                                                                    <div className="has-text-centered">
 
 
-                                                                                        </div>
-                                                                                    </div>
-
-
-                                                                                </div>
-                                                                                <div>
-                                                                                </div>
-                                                                            </div>
-                                                                            {categoria.info_extra != "-" ?
-                                                                                <div className="card has-text-centered" style={{ marginTop: '-10px' }}>
-                                                                                    <div style={{ paddingTop: '5px', paddingBottom: '5px' }}>
-                                                                                        <p className="subtitle"><b>Información: {categoria.info_extra}</b></p>
-                                                                                    </div>
-                                                                                </div>
-                                                                                : ""}
-                                                                            {/* MODAL DEL LOGO DEL PRODUCTO */}
-                                                                            {this.props.cartas.map((producto, index) => (
-
-
-                                                                                <div style={{ marginTop: '20px' }} key={producto.id}>
-                                                                                    <div className={this.state.addPhoto ? "modal is-active" : "modal"}>
-                                                                                        <div className="modal-background"></div>
-                                                                                        <div className="modal-content">
-                                                                                            <div className="container box">
-                                                                                                <div className="has-text-right">
-                                                                                                    <button className="button is-danger" onClick={e => this.addPhoto(e, this.state.clickedProducto, index)}>
-                                                                                                        <span className="icon is-small">
-                                                                                                            <i className="fas fa-times"></i>
+                                                                                                        <span className="icon" >
+                                                                                                            <i className="fas fa-trash" style={{ fontSize: '100px', color: "#bca466" }}></i>
                                                                                                         </span>
-                                                                                                    </button>
-                                                                                                </div>
-                                                                                                <div className="has-text-centered">
-                                                                                                    <label className="label  is-size-4">Sube la foto de tu producto</label>
-                                                                                                    <hr style={{ marginTop: '30px' }} />
+                                                                                                        <h1 className="title" style={{ marginTop: '10px' }}> BORRAR PRODUCTO </h1>
+                                                                                                    </div>
+                                                                                                    <hr style={{ marginTop: '30px', backgroundColor: '#bca466', color: '#bca466' }} />
+                                                                                                    <form>
+                                                                                                        <label className="label has-text-centered" style={{ marginTop: '10px' }}>Estas intentando borrar un producto! ¿Estas seguro?</label>
 
-                                                                                                    <div class="field">
-                                                                                                        <div class="file ">
-                                                                                                            <label class="file-label">
-                                                                                                                <input class="file-input" type="file" id="logo" accept=".jpeg" onChange={e => this.handlePhotoChange(e, index)} name="resume" />
-                                                                                                                <span class="file-cta">
-                                                                                                                    <span class="file-icon">
-                                                                                                                        <i class="fas fa-camera"></i>
+                                                                                                        <div className="columns">
+                                                                                                            <div className="column"></div>
+                                                                                                            <div className="column">
+                                                                                                                <div className="control buttons is-centered" style={{ marginTop: '20px' }}>
+                                                                                                                    <button className="button is-success" style={{ color: 'white', backgroundColor: '#bca466' }} onClick={e => this.onSubmitDeleteProducto(e, producto.id, producto.categoria)}>Si</button>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                            <div className="column">
+                                                                                                                <div className="control buttons is-centered" style={{ marginTop: '20px' }}>
+                                                                                                                    <button className="button is-success" style={{ color: 'white', backgroundColor: '#bca466' }} onClick={this.borrarProducto}>No</button>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                            <div className="column"></div>
+
+                                                                                                        </div>
+                                                                                                    </form>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+
+
+
+
+
+
+
+
+
+
+
+                                                                                        <div className={this.state.addPhoto ? "modal is-active" : "modal"}>
+                                                                                            <div className="modal-background"></div>
+                                                                                            <div className="modal-content">
+                                                                                                <div className="container box">
+                                                                                                    <div className="has-text-right">
+                                                                                                        <button className="button is-danger" onClick={e => this.addPhoto(e, this.state.clickedProducto, index)}>
+                                                                                                            <span className="icon is-small">
+                                                                                                                <i className="fas fa-times"></i>
+                                                                                                            </span>
+                                                                                                        </button>
+                                                                                                    </div>
+                                                                                                    <div className="has-text-centered">
+                                                                                                        <label className="label  is-size-4">Sube la foto de tu producto</label>
+                                                                                                        <hr style={{ marginTop: '30px' }} />
+
+                                                                                                        <div class="field">
+                                                                                                            <div class="file ">
+                                                                                                                <label class="file-label">
+                                                                                                                    <input class="file-input" type="file" id="logo" accept=".jpeg" onChange={e => this.handlePhotoChange(e, index)} name="resume" />
+                                                                                                                    <span class="file-cta">
+                                                                                                                        <span class="file-icon">
+                                                                                                                            <i class="fas fa-camera"></i>
+                                                                                                                        </span>
+                                                                                                                        <span class="file-label">
+                                                                                                                            Escoja la nueva foto del producto
                                                                                                                     </span>
-                                                                                                                    <span class="file-label">
-                                                                                                                        Escoja la nueva foto del producto
                                                                                                                     </span>
+
+                                                                                                                </label>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                        <div className="field">
+                                                                                                            <div style={{ marginTop: '10px', marginBottom: '10px' }} className="is-centered">
+                                                                                                                <span style={{ marginBottom: '10px' }}>
+                                                                                                                    <p>Previsualización:</p>
                                                                                                                 </span>
-
-                                                                                                            </label>
+                                                                                                                <span>
+                                                                                                                    <img src={this.state.fileArray[this.state.indexEditing]} ></img>
+                                                                                                                </span>
+                                                                                                            </div>
                                                                                                         </div>
+                                                                                                        <button className="button is-success" onClick={this.onSubmitPhotoProducto}>Guardar</button>
+
                                                                                                     </div>
-                                                                                                    <div className="field">
-
-
-
-                                                                                                        <div style={{ marginTop: '10px', marginBottom: '10px' }} className="is-centered">
-                                                                                                            <span style={{ marginBottom: '10px' }}>
-                                                                                                                <p>Previsualización:</p>
-                                                                                                            </span>
-                                                                                                            <span>
-                                                                                                                <img src={this.state.fileArray[this.state.indexEditing]} ></img>
-
-                                                                                                            </span>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                    <button className="button is-success" onClick={this.onSubmitPhotoProducto}>Guardar</button>
-
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
-                                                                                    </div>
-                                                                                    {/* BUSCATE EL PRODUCTO */}
-                                                                                    {categoria.id == producto.categoria ?
+                                                                                        {/* BUSCATE EL PRODUCTO */}
+                                                                                        {categoria.id == producto.categoria ?
 
-                                                                                        <Animated animationIn="bounceInLeft" animationOut="bounceOutDown" >
-                                                                                            <div className='card' style={producto.is_activo ? { opacity: '1' } : { opacity: '0.5' }}>
-                                                                                                <div>
+                                                                                            <Animated animationIn="bounceInLeft" animationOut="bounceOutDown" >
+                                                                                                <div className='card' style={producto.is_activo ? { opacity: '1' } : { opacity: '0.5' }}>
+                                                                                                    <div>
 
 
-                                                                                                    {/* FALSEAR */}
-                                                                                                    <div class="card-image has-text-centered" style={{ maxWidth: '480px' }}>
-                                                                                                        <figure class="image is-128x128">
-                                                                                                            <img src={this.state.addingPhotoArray[index] || this.state.fileArray[index] != null ? this.state.fileArray[index] : producto.photo} ></img>
-                                                                                                        </figure>
+                                                                                                        {/* FALSEAR */}
+                                                                                                        <div class="card-image has-text-centered" style={{ maxWidth: '480px' }}>
+                                                                                                            <figure class="image is-128x128">
+                                                                                                                <img src={this.state.addingPhotoArray[index] || this.state.fileArray[index] != null ? this.state.fileArray[index] : producto.photo} ></img>
+                                                                                                            </figure>
+                                                                                                        </div>
+
+                                                                                                        <button className="button" style={{ backgroundColor: '#bca466', color: 'white' }} onClick={e => this.addPhoto(e, producto, index)}>
+                                                                                                            <span class="file-icon">
+                                                                                                                <i class="fas fa-camera"></i>
+                                                                                                            </span>
+                                                                                                            <p>FOTO PRODUCTO</p>
+                                                                                                        </button>
+
                                                                                                     </div>
+                                                                                                    <div className="columns">
+                                                                                                        <div className="column">
+                                                                                                            <div className="container">
+                                                                                                                <div className="column is-full">
+                                                                                                                    <div className="columns ">
 
-                                                                                                    <button className="button" style={{ backgroundColor: '#bca466', color: 'white' }} onClick={e => this.addPhoto(e, producto, index)}>
-                                                                                                        <span class="file-icon">
-                                                                                                            <i class="fas fa-camera"></i>
-                                                                                                        </span>
-                                                                                                        <p>FOTO PRODUCTO</p>
-                                                                                                    </button>
+                                                                                                                        <div className="column is-two-thirds"
+                                                                                                                            style={{ marginLeft: '2%', marginTop: '2%' }}>
+                                                                                                                            <h1 className="title"> {producto.name} </h1>
+                                                                                                                            <h2 className="subtitle has-text-weight-light">  {producto.descripcion}</h2>
+                                                                                                                        </div>
+                                                                                                                        <div className="column has-text-centered" style={{ marginTop: '10px' }}>
+                                                                                                                            <div className="columns is-mobile">
+                                                                                                                                {producto.precio1 != 0.0 ?
+                                                                                                                                    <div className="column has-text-centered">
+                                                                                                                                        <div
+                                                                                                                                            style={{ width: '100%', marginTop: '5%', marginBottom: '6%' }}>
+                                                                                                                                            <span className="icon is-small" style={{ color: 'rgb(51, 153, 255)' }}>
+                                                                                                                                                <i className="fas fa-cart-arrow-down" aria-hidden="true" style={{ fontSize: '30px', color: "#bca466" }}></i>
+                                                                                                                                            </span>
+                                                                                                                                        </div>
+                                                                                                                                        <span>
+                                                                                                                                            <b> {producto.titulo_precio1} </b>
+                                                                                                                                        </span>
+                                                                                                                                        <div style={{ width: '100%' }}>
+                                                                                                                                            <span>
+                                                                                                                                                <b style={{ color: '#bca466' }}>  {!producto.precio1 == "" ? producto.precio1 : ""}€</b>
+                                                                                                                                            </span>
+                                                                                                                                        </div>
+                                                                                                                                    </div>
+                                                                                                                                    : ""}
+                                                                                                                                {producto.precio2 != 0.0 ?
+                                                                                                                                    <div className="column has-text-centered"
+                                                                                                                                        style={{ marginLeft: '4%' }}>
+                                                                                                                                        <div style={{ width: '100%' }}>
+                                                                                                                                            <span className="icon is-small"
+                                                                                                                                                style={{ fontSize: ' 36px', color: 'rgb(51, 153, 255)' }}>
+                                                                                                                                                <i className="fas fa-cart-arrow-down" aria-hidden="true" style={{ fontSize: '40px', color: "#bca466" }}></i>
+                                                                                                                                            </span>
+                                                                                                                                        </div>
+                                                                                                                                        <span>
+                                                                                                                                            <b> {producto.titulo_precio2} </b>
+                                                                                                                                        </span>
+                                                                                                                                        <div style={{ width: '100%' }}>
+                                                                                                                                            <span>
+                                                                                                                                                <b style={{ color: '#bca466' }}>  {!producto.precio2 == "" ? producto.precio2 : ""}€</b>
+                                                                                                                                            </span>
+                                                                                                                                        </div>
+                                                                                                                                    </div>
+                                                                                                                                    : ""}
+                                                                                                                                {producto.precio3 != 0.0 ?
+                                                                                                                                    <div className="column has-text-centered"
+                                                                                                                                        style={{ marginLeft: '4%' }}>
+                                                                                                                                        <div style={{ width: '100%' }}>
+                                                                                                                                            <span className="icon is-small"
+                                                                                                                                                style={{ fontSize: ' 36px', color: 'rgb(51, 153, 255)' }}>
+                                                                                                                                                <i className="fas fa-cart-arrow-down" aria-hidden="true" style={{ fontSize: '50px', color: "#bca466" }}></i>
+                                                                                                                                            </span>
+                                                                                                                                        </div>
+                                                                                                                                        <span>
+                                                                                                                                            <b> {producto.titulo_precio3} </b>
+                                                                                                                                        </span>
+                                                                                                                                        <div style={{ width: '100%' }}>
+                                                                                                                                            <span>
+                                                                                                                                                <b style={{ color: '#bca466' }}>  {!producto.precio3 == "" ? producto.precio3 : ""}€</b>
+                                                                                                                                            </span>
+                                                                                                                                        </div>
+                                                                                                                                    </div>
+                                                                                                                                    : ""}
+                                                                                                                            </div>
+                                                                                                                        </div>
 
-                                                                                                </div>
-                                                                                                <div className="columns">
-                                                                                                    <div className="column">
-                                                                                                        <div className="container">
-                                                                                                            <div className="column is-full">
-                                                                                                                <div className="columns ">
-
-                                                                                                                    <div className="column is-two-thirds"
-                                                                                                                        style={{ marginLeft: '2%', marginTop: '2%' }}>
-                                                                                                                        <h1 className="title"> {producto.name} </h1>
-                                                                                                                        <h2 className="subtitle has-text-weight-light">  {producto.descripcion}</h2>
                                                                                                                     </div>
-                                                                                                                    <div className="column has-text-centered" style={{ marginTop: '10px' }}>
-                                                                                                                        <div className="columns is-mobile">
-                                                                                                                            {producto.precio1 != 0.0 ?
-                                                                                                                                <div className="column has-text-centered">
-                                                                                                                                    <div
-                                                                                                                                        style={{ width: '100%', marginTop: '5%', marginBottom: '6%' }}>
-                                                                                                                                        <span className="icon is-small" style={{ color: 'rgb(51, 153, 255)' }}>
-                                                                                                                                            <i className="fas fa-cart-arrow-down" aria-hidden="true" style={{ fontSize: '30px', color: "#bca466" }}></i>
-                                                                                                                                        </span>
-                                                                                                                                    </div>
-                                                                                                                                    <span>
-                                                                                                                                        <b> {producto.titulo_precio1} </b>
-                                                                                                                                    </span>
-                                                                                                                                    <div style={{ width: '100%' }}>
-                                                                                                                                        <span>
-                                                                                                                                            <b style={{ color: '#bca466' }}>  {!producto.precio1 == "" ? producto.precio1 : ""}€</b>
-                                                                                                                                        </span>
-                                                                                                                                    </div>
-                                                                                                                                </div>
-                                                                                                                                : ""}
-                                                                                                                            {producto.precio2 != 0.0 ?
-                                                                                                                                <div className="column has-text-centered"
-                                                                                                                                    style={{ marginLeft: '4%' }}>
-                                                                                                                                    <div style={{ width: '100%' }}>
-                                                                                                                                        <span className="icon is-small"
-                                                                                                                                            style={{ fontSize: ' 36px', color: 'rgb(51, 153, 255)' }}>
-                                                                                                                                            <i className="fas fa-cart-arrow-down" aria-hidden="true" style={{ fontSize: '40px', color: "#bca466" }}></i>
-                                                                                                                                        </span>
-                                                                                                                                    </div>
-                                                                                                                                    <span>
-                                                                                                                                        <b> {producto.titulo_precio2} </b>
-                                                                                                                                    </span>
-                                                                                                                                    <div style={{ width: '100%' }}>
-                                                                                                                                        <span>
-                                                                                                                                            <b style={{ color: '#bca466' }}>  {!producto.precio2 == "" ? producto.precio2 : ""}€</b>
-                                                                                                                                        </span>
-                                                                                                                                    </div>
-                                                                                                                                </div>
-                                                                                                                                : ""}
-                                                                                                                            {producto.precio3 != 0.0 ?
-                                                                                                                                <div className="column has-text-centered"
-                                                                                                                                    style={{ marginLeft: '4%' }}>
-                                                                                                                                    <div style={{ width: '100%' }}>
-                                                                                                                                        <span className="icon is-small"
-                                                                                                                                            style={{ fontSize: ' 36px', color: 'rgb(51, 153, 255)' }}>
-                                                                                                                                            <i className="fas fa-cart-arrow-down" aria-hidden="true" style={{ fontSize: '50px', color: "#bca466" }}></i>
-                                                                                                                                        </span>
-                                                                                                                                    </div>
-                                                                                                                                    <span>
-                                                                                                                                        <b> {producto.titulo_precio3} </b>
-                                                                                                                                    </span>
-                                                                                                                                    <div style={{ width: '100%' }}>
-                                                                                                                                        <span>
-                                                                                                                                            <b style={{ color: '#bca466' }}>  {!producto.precio3 == "" ? producto.precio3 : ""}€</b>
-                                                                                                                                        </span>
-                                                                                                                                    </div>
-                                                                                                                                </div>
-                                                                                                                                : ""}
+                                                                                                                </div>
+                                                                                                            </div>
+
+
+                                                                                                            <div className="columns is-full" style={{ marginTop: '-20px' }}>
+                                                                                                                <div className="column is-two-thirds is-full-mobile">
+                                                                                                                    <div className="columns is-mobile">
+                                                                                                                        <div className="column has-text-centered" style={{ marginLeft: '2%' }}>
+
+                                                                                                                            {producto.is_apio ?
+                                                                                                                                <img
+                                                                                                                                    src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_apio.svg"
+                                                                                                                                    alt="triangle with all three sides equal" width="50" />
+                                                                                                                                :
+                                                                                                                                ""
+                                                                                                                            }
+
+                                                                                                                            {producto.is_altramuces ?
+
+                                                                                                                                <img
+                                                                                                                                    src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_altramuces.svg"
+                                                                                                                                    alt="triangle with all three sides equal" width="50" />
+                                                                                                                                :
+                                                                                                                                ""
+                                                                                                                            }
+
+
+                                                                                                                            {producto.is_cacahuete ?
+                                                                                                                                <img
+                                                                                                                                    src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_cacahuete.svg"
+                                                                                                                                    alt="triangle with all three sides equal" width="50" />
+                                                                                                                                :
+                                                                                                                                ""
+                                                                                                                            }
+
+                                                                                                                            {producto.is_crustaceo ?
+                                                                                                                                <img
+                                                                                                                                    src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_crustaceo.svg"
+                                                                                                                                    alt="triangle with all three sides equal" width="50" />
+                                                                                                                                :
+                                                                                                                                ""
+                                                                                                                            }
+
+                                                                                                                            {producto.is_frutos_con_cascara ?
+                                                                                                                                <img
+                                                                                                                                    src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_frutos_con_cascara.svg"
+                                                                                                                                    alt="triangle with all three sides equal" width="50" />
+                                                                                                                                :
+                                                                                                                                ""
+                                                                                                                            }
+
+                                                                                                                            {producto.is_gluten ?
+                                                                                                                                <img
+                                                                                                                                    src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_gluten.svg"
+                                                                                                                                    alt="triangle with all three sides equal" width="50" />
+                                                                                                                                :
+                                                                                                                                ""
+                                                                                                                            }
+
+                                                                                                                            {producto.is_huevo ?
+                                                                                                                                <img
+                                                                                                                                    src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_huevo.svg"
+                                                                                                                                    alt="triangle with all three sides equal" width="50" />
+                                                                                                                                :
+                                                                                                                                ""
+                                                                                                                            }
+
+                                                                                                                            {producto.is_lacteo ?
+                                                                                                                                <img
+                                                                                                                                    src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_lacteo.svg"
+                                                                                                                                    alt="triangle with all three sides equal" width="50" />
+                                                                                                                                :
+                                                                                                                                ""
+                                                                                                                            }
+
+                                                                                                                            {producto.is_molusco ?
+                                                                                                                                <img
+                                                                                                                                    src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_moluscos.svg"
+                                                                                                                                    alt="triangle with all three sides equal" width="50" />
+                                                                                                                                :
+                                                                                                                                ""
+                                                                                                                            }
+
+
+                                                                                                                            {producto.is_mostaza ?
+                                                                                                                                <img
+                                                                                                                                    src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_mostaza.svg"
+                                                                                                                                    alt="triangle with all three sides equal" width="50" />
+                                                                                                                                :
+                                                                                                                                ""
+                                                                                                                            }
+                                                                                                                            {producto.is_pescado ?
+                                                                                                                                <img
+                                                                                                                                    src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_pescado.svg"
+                                                                                                                                    alt="triangle with all three sides equal" width="50" />
+                                                                                                                                :
+                                                                                                                                ""
+                                                                                                                            }
+                                                                                                                            {producto.is_sesamo ?
+                                                                                                                                <img
+                                                                                                                                    src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_sesamo.svg"
+                                                                                                                                    alt="triangle with all three sides equal" width="50" />
+                                                                                                                                :
+                                                                                                                                ""
+                                                                                                                            }
+                                                                                                                            {producto.is_soja ?
+                                                                                                                                <img
+                                                                                                                                    src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_soja.svg"
+                                                                                                                                    alt="triangle with all three sides equal" width="50" />
+                                                                                                                                :
+                                                                                                                                ""
+                                                                                                                            }
+                                                                                                                            {producto.is_sulfito ?
+                                                                                                                                <img
+                                                                                                                                    src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_sulfito.svg"
+                                                                                                                                    alt="triangle with all three sides equal" width="70" style={{ marginBottom: '-18px', marginLeft: '-9px' }} />
+                                                                                                                                :
+                                                                                                                                ""
+                                                                                                                            }
                                                                                                                         </div>
                                                                                                                     </div>
-
                                                                                                                 </div>
-                                                                                                            </div>
-                                                                                                        </div>
+                                                                                                                <div className="column is-full-mobile" style={{ marginTop: '20px' }}>
+                                                                                                                    <div className="columns is-mobile has-text-centered is-gapless" >
+                                                                                                                        <div className="column" >
+                                                                                                                            <div className="is-rounded"
+                                                                                                                                style={{
+                                                                                                                                    backgroundColor: '#d5c69f',
+                                                                                                                                    padding: '5px'
+                                                                                                                                }}>
+                                                                                                                                <Tooltip title="Activar o desactivar producto">
+                                                                                                                                    <button
+                                                                                                                                        className="button is-warning is-rounded" style={{ backgroundColor: 'white' }} onClick={(e) => this.onSubmitDesactivateProduct(e, producto)}>
 
+                                                                                                                                        <span
+                                                                                                                                            className="icon is-small" >
+                                                                                                                                            <i className="fas fa-power-off" style={{ color: '#bca466' }}></i>
+                                                                                                                                        </span>
+                                                                                                                                    </button>
+                                                                                                                                </Tooltip>
+                                                                                                                            </div>
 
-                                                                                                        <div className="columns is-full" style={{ marginTop: '-20px' }}>
-                                                                                                            <div className="column is-two-thirds is-full-mobile">
-                                                                                                                <div className="columns is-mobile">
-                                                                                                                    <div className="column has-text-centered" style={{ marginLeft: '2%' }}>
+                                                                                                                        </div>
+                                                                                                                        <div className="column" >
+                                                                                                                            <Tooltip title="Editar producto">
 
-                                                                                                                        {producto.is_apio ?
-                                                                                                                            <img
-                                                                                                                                src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_apio.svg"
-                                                                                                                                alt="triangle with all three sides equal" width="50" />
-                                                                                                                            :
-                                                                                                                            ""
-                                                                                                                        }
-
-                                                                                                                        {producto.is_altramuces ?
-
-                                                                                                                            <img
-                                                                                                                                src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_altramuces.svg"
-                                                                                                                                alt="triangle with all three sides equal" width="50" />
-                                                                                                                            :
-                                                                                                                            ""
-                                                                                                                        }
-
-
-                                                                                                                        {producto.is_cacahuete ?
-                                                                                                                            <img
-                                                                                                                                src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_cacahuete.svg"
-                                                                                                                                alt="triangle with all three sides equal" width="50" />
-                                                                                                                            :
-                                                                                                                            ""
-                                                                                                                        }
-
-                                                                                                                        {producto.is_crustaceo ?
-                                                                                                                            <img
-                                                                                                                                src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_crustaceo.svg"
-                                                                                                                                alt="triangle with all three sides equal" width="50" />
-                                                                                                                            :
-                                                                                                                            ""
-                                                                                                                        }
-
-                                                                                                                        {producto.is_frutos_con_cascara ?
-                                                                                                                            <img
-                                                                                                                                src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_frutos_con_cascara.svg"
-                                                                                                                                alt="triangle with all three sides equal" width="50" />
-                                                                                                                            :
-                                                                                                                            ""
-                                                                                                                        }
-
-                                                                                                                        {producto.is_gluten ?
-                                                                                                                            <img
-                                                                                                                                src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_gluten.svg"
-                                                                                                                                alt="triangle with all three sides equal" width="50" />
-                                                                                                                            :
-                                                                                                                            ""
-                                                                                                                        }
-
-                                                                                                                        {producto.is_huevo ?
-                                                                                                                            <img
-                                                                                                                                src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_huevo.svg"
-                                                                                                                                alt="triangle with all three sides equal" width="50" />
-                                                                                                                            :
-                                                                                                                            ""
-                                                                                                                        }
-
-                                                                                                                        {producto.is_lacteo ?
-                                                                                                                            <img
-                                                                                                                                src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_lacteo.svg"
-                                                                                                                                alt="triangle with all three sides equal" width="50" />
-                                                                                                                            :
-                                                                                                                            ""
-                                                                                                                        }
-
-                                                                                                                        {producto.is_molusco ?
-                                                                                                                            <img
-                                                                                                                                src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_moluscos.svg"
-                                                                                                                                alt="triangle with all three sides equal" width="50" />
-                                                                                                                            :
-                                                                                                                            ""
-                                                                                                                        }
-
-
-                                                                                                                        {producto.is_mostaza ?
-                                                                                                                            <img
-                                                                                                                                src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_mostaza.svg"
-                                                                                                                                alt="triangle with all three sides equal" width="50" />
-                                                                                                                            :
-                                                                                                                            ""
-                                                                                                                        }
-                                                                                                                        {producto.is_pescado ?
-                                                                                                                            <img
-                                                                                                                                src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_pescado.svg"
-                                                                                                                                alt="triangle with all three sides equal" width="50" />
-                                                                                                                            :
-                                                                                                                            ""
-                                                                                                                        }
-                                                                                                                        {producto.is_sesamo ?
-                                                                                                                            <img
-                                                                                                                                src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_sesamo.svg"
-                                                                                                                                alt="triangle with all three sides equal" width="50" />
-                                                                                                                            :
-                                                                                                                            ""
-                                                                                                                        }
-                                                                                                                        {producto.is_soja ?
-                                                                                                                            <img
-                                                                                                                                src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_soja.svg"
-                                                                                                                                alt="triangle with all three sides equal" width="50" />
-                                                                                                                            :
-                                                                                                                            ""
-                                                                                                                        }
-                                                                                                                        {producto.is_sulfito ?
-                                                                                                                            <img
-                                                                                                                                src="https://www.andaluciarestaura.com/static/frontend/Allergens/alergeno_sulfito.svg"
-                                                                                                                                alt="triangle with all three sides equal" width="70" style={{ marginBottom: '-18px', marginLeft: '-9px' }} />
-                                                                                                                            :
-                                                                                                                            ""
-                                                                                                                        }
-                                                                                                                    </div>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                            <div className="column is-full-mobile" style={{ marginTop: '20px' }}>
-                                                                                                                <div className="columns is-mobile has-text-centered is-gapless" >
-                                                                                                                    <div className="column" >
-                                                                                                                        <div className="is-rounded"
-                                                                                                                            style={{
-                                                                                                                                backgroundColor: '#d5c69f',
-                                                                                                                                padding: '5px'
-                                                                                                                            }}>
-                                                                                                                            <Tooltip title="Activar o desactivar producto">
-                                                                                                                                <button
-                                                                                                                                    className="button is-warning is-rounded" style={{ backgroundColor: 'white' }} onClick={(e) => this.onSubmitDesactivateProduct(e, producto)}>
-
-                                                                                                                                    <span
-                                                                                                                                        className="icon is-small" >
-                                                                                                                                        <i className="fas fa-power-off" style={{ color: '#bca466' }}></i>
-                                                                                                                                    </span>
-                                                                                                                                </button>
+                                                                                                                                <div className="is-rounded" style={{ backgroundColor: '#d5c69f', padding: '5px' }}>
+                                                                                                                                    <button class="button is-warning" style={{ backgroundColor: 'white' }} onClick={e => this.editProduct(e, producto)}>
+                                                                                                                                        <span class="icon is-small">
+                                                                                                                                            <i class="fas fa-pen" style={{ color: '#bca466' }}></i>
+                                                                                                                                        </span>
+                                                                                                                                    </button>
+                                                                                                                                </div>
                                                                                                                             </Tooltip>
                                                                                                                         </div>
+                                                                                                                        <div className="column" >
+                                                                                                                            <Tooltip title="Borrar producto">
 
-                                                                                                                    </div>
-                                                                                                                    <div className="column" >
-                                                                                                                        <Tooltip title="Editar producto">
+                                                                                                                                <section className="is-rounded" style={{ backgroundColor: '#d5c69f', padding: '5px' }}>
+                                                                                                                                    <button class="button is-danger" style={{ backgroundColor: 'white' }} onClick={this.borrarProducto}>
+                                                                                                                                        <span class="icon is-small">
+                                                                                                                                            <i class="fas fa-trash" style={{ color: '#bca466' }}></i>
+                                                                                                                                        </span>
+                                                                                                                                    </button>
+                                                                                                                                </section>
+                                                                                                                            </Tooltip>
 
-                                                                                                                            <div className="is-rounded" style={{ backgroundColor: '#d5c69f', padding: '5px' }}>
-                                                                                                                                <button class="button is-warning" style={{ backgroundColor: 'white' }} onClick={e => this.editProduct(e, producto)}>
-                                                                                                                                    <span class="icon is-small">
-                                                                                                                                        <i class="fas fa-pen" style={{ color: '#bca466' }}></i>
-                                                                                                                                    </span>
-                                                                                                                                </button>
-                                                                                                                            </div>
-                                                                                                                        </Tooltip>
-                                                                                                                    </div>
-                                                                                                                    <div className="column" >
-                                                                                                                        <Tooltip title="Borrar producto">
-
-                                                                                                                            <section className="is-rounded" style={{ backgroundColor: '#d5c69f', padding: '5px' }}>
-                                                                                                                                <button class="button is-danger" style={{ backgroundColor: 'white' }} onClick={this.props.deleteproducto.bind(this, producto.id, producto.categoria)}>
-                                                                                                                                    <span class="icon is-small">
-                                                                                                                                        <i class="fas fa-trash" style={{ color: '#bca466' }}></i>
-                                                                                                                                    </span>
-                                                                                                                                </button>
-                                                                                                                            </section>
-                                                                                                                        </Tooltip>
-
+                                                                                                                        </div>
                                                                                                                     </div>
                                                                                                                 </div>
                                                                                                             </div>
                                                                                                         </div>
                                                                                                     </div>
+
+
                                                                                                 </div>
-
-
+                                                                                            </Animated>
+                                                                                            :
+                                                                                            <div>
+                                                                                                {this.state.vacio = false}
                                                                                             </div>
-                                                                                        </Animated>
-                                                                                        :
-                                                                                        <div>
-                                                                                            {this.state.vacio = false}
-                                                                                        </div>
-                                                                                    }
-                                                                                </div>
-                                                                            ))}
-                                                                        </div>
-                                                                    </Animated>
+                                                                                        }
+                                                                                    </div>
+                                                                                ))}
+                                                                            </div>
+                                                                        </Animated>
+                                                                    </div>
                                                                 ))}
 
                                                             </div>
@@ -2356,4 +2598,4 @@ const mapStateToProps = state => ({
     isUpdatingPhoto: state.cartas.isUpdatingPhoto
 });
 
-export default connect(mapStateToProps, { subirCartaLogo, uploadProductParams, updateLogoRounded, uploadProducto, updateCategoria, updateEstablecimiento, updateNombreCarta, updateURL, updateEslogan, getCartaExpecifica, subirproducto, addCategoria, getCategorias, deleteproducto, deleteCategoria, subirPhoto })(CartaPage);
+export default connect(mapStateToProps, { updateIntroduccion, subirCartaLogo, uploadProductParams, updateLogoRounded, uploadProducto, updateCategoria, updateEstablecimiento, updateNombreCarta, updateURL, updateEslogan, getCartaExpecifica, subirproducto, addCategoria, getCategorias, deleteproducto, deleteCategoria, subirPhoto })(CartaPage);

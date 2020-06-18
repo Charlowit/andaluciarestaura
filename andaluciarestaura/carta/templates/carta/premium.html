@@ -488,8 +488,6 @@
         // Change the iframe's box shadow
         $(".goog-te-menu-frame").css('box-shadow', '0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.3)');
 
-
-
         // Change the iframe's size and position?
         $(".goog-te-menu-frame").css({
           'height': '100%',
@@ -506,6 +504,19 @@
   </script>
 
   <div class="section">
+    {% if carta.visualizar_introduccion %}
+    {% if carta.introduccion != "-" %}
+
+    <div class="columns">
+      <div class="column is-one-quarter" ></div>
+      <div class="column has-text-centered" >
+        <p style="margin-left: 20px; margin-right: 20px; font-size: 20px"><b>{{carta.introduccion}}</b></p>
+      </div>
+      <div class="column is-one-quarter" ></div>
+    </div>
+
+    {% endif %}
+    {% endif %}
     <div>
       <div class="container ">
         <div style="margin-top: 40px">
@@ -515,12 +526,10 @@
           <div class="container animate__animated animate__bounceInLeft animate__delay-1s">
 
           <div class="container">
-           
-            <div class='card equal-height ' id="cardColour" style="margin-top: 40px">
+
+            <div class='card equal-height is-marginless ' id="cardColour" style="margin-top: 40px">
               <div class="container">
-                <br />
-                <h1 class="title has-text-centered" id="colorDoradoTexto">{{categoria.name}}</h1>
-                <br />
+                <h1 class="title has-text-centered" id="colorDoradoTexto" style="padding-top: 10px; padding-bottom: 10px;">{{categoria.name}}</h1>
               </div>
             </div>
             {% if categoria.info_extra != "-" %}
@@ -565,7 +574,6 @@
                         </div>
                         <div class="columns">
                           <div class="column is-two-thirds has-text-centered" style="margin-left: 2%">
-
                             {% if producto.is_apio == True %}
                             <img src="{{server}}/static/frontend/Allergens/alergeno_apio.svg"
                               alt="triangle with all three sides equal" width="50" />
@@ -692,11 +700,9 @@
           </div>
         </div>
         {% endif %}
-       
         {% endfor %}
       </div>
     </div>
-  </div>
   </div>
   <footer>
     <section class="section has-text-centered">

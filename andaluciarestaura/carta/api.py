@@ -122,7 +122,7 @@ class CartasApi(viewsets.ModelViewSet):
             directorio_carta = '/clientes/' + user.cif + '/' +  str(carta.id) 
         else:
             # VARIBALES PARA LOCAL
-            directorio = './frontend/static/clientes/' + user.cif + '/' + str(carta.id) 
+            directorio = '/static/clientes/' + user.cif + '/' + str(carta.id)
             directorio_carta = '/static/clientes/' + user.cif + '/' + str(carta.id) 
 
         try:
