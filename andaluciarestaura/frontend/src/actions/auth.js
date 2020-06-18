@@ -150,8 +150,18 @@ export const cambiarpassword = (user) => (dispatch, getState) => {
 
     axios.put('api/auth/password', user, config)
         .then(res => {
+            dispatch(createMessages({ passcorrect: "Contraseña cambiada correctamente." }));
             console.log("Password reseteada correctamente!")
-        }).catch(err => console.log("Este es el error de restaurar la pass: " , err))
+        }).catch(err => {
+            const errors = {
+                msg: err.response.data,
+                status: err.response.status
+            }
+            dispatch({
+                type: GET_ERRORS,
+                payload: errors
+            });
+        })
 };
 
 export const registro = (user) => dispatch => {
