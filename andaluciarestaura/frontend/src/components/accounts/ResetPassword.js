@@ -173,8 +173,8 @@ export class ResetPassword extends Component {
                                                                 </div>
                                                                 {this.state.passwordnocoincide ?
                                                                     <p className="is-danger"> Las contraseñas no coinciden</p>
-                                                                    : 
-                                                                    <p>""</p>
+                                                                    :
+                                                                    ""
                                                                 }
                                                                 <div style={{ marginTop: '60px' }}>
                                                                     <button type="submit" className="button"
