@@ -254,7 +254,7 @@ class AdminPage extends Component {
                                                     </div>
                                                 </div>
                                                 <div className="column is-one-third">
-                                                    <div className="field ">
+                                                    <div className="field " style={{ marginTop: '-6px' }}>
                                                         <div className="field-label is-normal">
                                                             <label className="label has-text-left" style={colorWhite}>Correo Electronico</label>
                                                         </div>
@@ -269,7 +269,7 @@ class AdminPage extends Component {
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div className="field ">
+                                                    <div className="field " style={{ marginTop: '-6px' }}>
                                                         <div className="field-label is-normal">
                                                             <label className="label has-text-left" style={colorWhite}>Teléfono 1</label>
                                                         </div>
@@ -284,7 +284,7 @@ class AdminPage extends Component {
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div className="field ">
+                                                    <div className="field " >
                                                         <div className="field-label is-normal">
                                                             <label className="label has-text-left" style={colorWhite}>Teléfono 2</label>
                                                         </div>
@@ -299,13 +299,12 @@ class AdminPage extends Component {
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div className="field ">
+                                                    <div className="field " >
                                                         <div className="field-label has-text-left">
                                                             <label className="label" style={colorWhite}>Razón Social</label>
                                                         </div>
                                                         <div className="field-body">
                                                             <div className="field">
-
                                                                 <div className="control">
                                                                     <div className="select" >
                                                                         <select name="razon_social" defaultValue={user.razon_social} onChange={this.onChange} >
@@ -319,30 +318,25 @@ class AdminPage extends Component {
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div className="columns is-mobile">
-
-                                                        <div className="column">
-                                                            <div className="field ">
-                                                                <div className="field-label is-normal">
-                                                                    <label className="label has-text-left" style={colorWhite}>Tipo</label>
-                                                                </div>
-                                                                <div className="field-body">
-                                                                    <div className="control">
-                                                                        <div className="select">
-                                                                            <select name="tipo_negocio" onChange={this.onChange} defaultValue={user.tipo_negocio}>
-                                                                                <option value="Bar">Bar</option>
-                                                                                <option value="Restaurante">Restaurante</option>
-                                                                                <option value="Hotel">Hotel</option>
-                                                                                <option value="Discoteca">Discoteca</option>
-                                                                                <option value="Cafeteria">Cafeteria</option>
-                                                                                <option value="Catering">Catering</option>
-                                                                                <option value="Catering">Churreria</option>
-                                                                                <option value="Pub">Pub</option>
-                                                                                <option value="Cerveceria">Cerveceria</option>
-                                                                                <option value="Heladeria">Heladeria</option>
-                                                                            </select>
-                                                                        </div>
-                                                                    </div>
+                                                    <div className="field " style={{ marginTop: '-6px' }}>
+                                                        <div className="field-label is-normal">
+                                                            <label className="label has-text-left" style={colorWhite}>Tipo</label>
+                                                        </div>
+                                                        <div className="field-body">
+                                                            <div className="control">
+                                                                <div className="select">
+                                                                    <select name="tipo_negocio" onChange={this.onChange} defaultValue={user.tipo_negocio}>
+                                                                        <option value="Bar">Bar</option>
+                                                                        <option value="Restaurante">Restaurante</option>
+                                                                        <option value="Hotel">Hotel</option>
+                                                                        <option value="Discoteca">Discoteca</option>
+                                                                        <option value="Cafeteria">Cafeteria</option>
+                                                                        <option value="Catering">Catering</option>
+                                                                        <option value="Catering">Churreria</option>
+                                                                        <option value="Pub">Pub</option>
+                                                                        <option value="Cerveceria">Cerveceria</option>
+                                                                        <option value="Heladeria">Heladeria</option>
+                                                                    </select>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -352,7 +346,6 @@ class AdminPage extends Component {
 
                                             </div>
                                         </div>
-
                                     </form>
 
                                     <div className="field is-horizontal" style={{ paddingTop: '40px', paddingBottom: '40px' }}>
@@ -361,10 +354,10 @@ class AdminPage extends Component {
                                                 <div className="buttons is-centered">
 
                                                     {this.props.auth.isUpdating ?
-                                                        
+
                                                         <div className="has-text-centered">
 
-                                                            <button className="button is-loading"  style={{ backgroundColor: 'white', color: '#bca466' }}>Cargando</button>
+                                                            <button className="button is-loading" style={{ backgroundColor: 'white', color: '#bca466' }}>Cargando</button>
                                                         </div>
                                                         :
 

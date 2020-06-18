@@ -56,6 +56,9 @@ class Carta(models.Model):
     logo_rounded = models.BooleanField(default=True)
     logo_propio = models.BooleanField(default=False)
 
+    introduccion = models.CharField(max_length=2000, null=True, default="-")
+    visualizar_introduccion = models.BooleanField(default=False)
+
     def __str__(self):
         return self.name
 
