@@ -279,12 +279,22 @@ export const updateIntroduccion = (carta) => (dispatch, getState) => {
     axios.put(`/api/getcartas/${carta.id}/`, body, tokenConfig(getState))
         .then(res => {
             console.log("Its working?")
+            dispatch(createMessages({ introduccionactuliazada: "Introducción a la carta actaulizada correctamente." }));
             dispatch({
                 type: UPDATE_CARTA,
                 payload: res.data
             });
         })
-        .catch(err => console.log("Esto ta mal? " + err));
+        .catch(err => {
+            const errors = {
+                msg: err.response.data,
+                status: err.response.status
+            }
+            dispatch({
+                type: GET_ERRORS,
+                payload: errors
+            });
+        });
 
 }
 
