@@ -127,7 +127,9 @@ export class Alerts extends Component {
             if(message.passcorrect){
                 alert.success(message.passcorrect)
             }
-            
+            if(message.notmatch){
+                alert.error(message.notmatch)
+            }
             
         }
     }

@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { cambiarpassword } from "../../actions/auth";
 import PropTypes from "prop-types";
 import ProgressBar from '../progressbar/ProgressBar'
-
+import { createMessages } from "../../actions/messages";
 
 const image = "https://pngimage.net/wp-content/uploads/2018/06/plato-de-comida-png-5.png";
 var sectionStyle = {
@@ -77,7 +77,7 @@ export class ResetPassword extends Component {
             this.props.cambiarpassword(user)
         }
         else {
-            alert("Las contraseñas no coinciden porfavor reviselas!")
+            createMessages({notmatch:"Las constraseñas no coinciden"})
         }
 
     };
