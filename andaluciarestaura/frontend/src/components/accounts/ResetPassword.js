@@ -73,6 +73,9 @@ export class ResetPassword extends Component {
         if (this.state.password == this.state.password2) {
             const user = { cif, password }
             this.props.cambiarpassword(user)
+            this.setState({ passwordvacio: false })
+            this.setState({ password2vacio: false })
+            this.setState({passwordnocoincide: false})
         }
         else {
             this.setState({ passwordvacio: true })
@@ -172,7 +175,7 @@ export class ResetPassword extends Component {
                                                                     }
                                                                 </div>
                                                                 {this.state.passwordnocoincide ?
-                                                                    <p className="is-danger"> Las contraseñas no coinciden</p>
+                                                                    <p style={{color:'red'}}> <b> Las contraseñas no coinciden </b> </p>
                                                                     :
                                                                     ""
                                                                 }
