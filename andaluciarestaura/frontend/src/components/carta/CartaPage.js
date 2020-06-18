@@ -143,11 +143,6 @@ export class CartaPage extends Component {
 
         this.props.subirPhoto(form_data, this.state.clickedProducto, this.props.auth.user.cif);
         var is_primera = false;
-<<<<<<< HEAD
-=======
-        console.log("CARTA DE 0 --> ", this.props.totalcartas[0].id)
-        console.log("CARTA DE 0 --> ", this.state.clickedProducto.carta)
->>>>>>> master
         if (this.props.totalcartas[0].id == this.state.clickedProducto.carta) {
            console.log("CARTA REAL DE 0 --> ",this.props.totalcartas[0].id )
            console.log("PRODUCTO CARTA ID --> ",  this.state.clickedProducto.carta) 
