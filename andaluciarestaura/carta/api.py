@@ -207,7 +207,8 @@ class ProductosSubirPhotoApi(viewsets.ModelViewSet):
 
     serializer_class = ProductoSerializerActualizar
     parser_classes = (MultiPartParser, FormParser)
-
+    def get_queryset(self):
+        pass
     def put(self, request, *args, **kwargs):
 
         cif_user = request.data["cif"]
@@ -217,18 +218,31 @@ class ProductosSubirPhotoApi(viewsets.ModelViewSet):
         cartaProducto = Productos.objects.filter(id__exact=productoID).values('carta')
         directorioCartaRaw = Carta.objects.filter(id__exact=cartaProducto[0]['carta']).values('directorio')
         directorio = directorioCartaRaw[0]['directorio']
-        ruta = directorio + '/' + productoID + '.jpeg'
+        ruta = settings.STATIC_ROOT + directorio + '/' + productoID + '.jpeg'
 
         #ruta_producto = directorio + '/' + productoID + '.jpeg'
         handle_uploaded_file(request.data["photo"], ruta)
-
-        #print("Mira la ruta antes de -- > ", ruta_producto)
-        #producto_instance = Productos.objects.filter(id__exact=productoID)
-        #print("Producto instance -- > ", producto_instance[0].photo)
-
-        #producto_instance[0].photo = ruta_producto
-
-        #producto_instance[0].save(update_fields=['photo'])
-
+        
         return Response(status=status.HTTP_200_OK)
 
+class CartaSubirPhotoApi(viewsets.ModelViewSet):
+
+    permission_classes = [
+        permissions.AllowAny
+    ]
+
+    serializer_class = CartaSerializerActualizar
+    parser_classes = (MultiPartParser, FormParser)
+
+    def put(self, request, *args, **kwargs):
+
+        cif_user = request.data["cif"]
+        cartaID = self.request.query_params.get('id', None)
+        
+        directorioCartaRaw = Carta.objects.filter(id__exact=cartaID).values('directorio')
+        directorio = directorioCartaRaw[0]['directorio']
+
+        ruta = settings.STATIC_ROOT + directorio + '/logo.jpeg'
+        handle_uploaded_file(request.data["photo"], ruta)
+        
+        return Response(status=status.HTTP_200_OK)

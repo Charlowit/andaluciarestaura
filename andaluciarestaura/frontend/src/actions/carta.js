@@ -240,7 +240,7 @@ export const addCategoria = (categoria) => (dispatch, getState) => {
         });
 }
 
-export const updateCategoria = (categoria) => (dispatch, getState) => {
+export const updateCategoria = (categoria, notificacion) => (dispatch, getState) => {
     //Headers
     const config = {
         headers: {
@@ -253,7 +253,9 @@ export const updateCategoria = (categoria) => (dispatch, getState) => {
     //axios.get(`/api/cartaadmin/?cif=${cif}`)
     axios.put(`/api/damelascategorias/${categoria.id}/?carta=${categoria.carta}`, body, tokenConfig(getState))
         .then(res => {
-            dispatch(createMessages({ updateCategoria: "Categoria actualizada correctamente." }));
+            if(notificacion){
+                dispatch(createMessages({ updateCategoria: "Categoria actualizada correctamente." }));
+            }
 
             dispatch({
                 type: UPDATE_CATEGORIA,

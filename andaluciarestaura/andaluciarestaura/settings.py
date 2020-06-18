@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '$s=6@kmmhg$yxavb)m*#n-72qk6*gr+s7bnwh@#voxod&ef^p%'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 # IMPORTANT: Set True into Production. If you are in local development set to False
 IN_PRODUCTION = True
@@ -45,12 +45,22 @@ INSTALLED_APPS = [
     'carta.apps.CartaConfig',
     'rest_framework',
     'corsheaders',
+    'django_simple_bulma',
     'knox',
 ]
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication',)
 }
+
+STATICFILES_FINDERS = [
+  # First add the two default Finders, since this will overwrite the default.
+  'django.contrib.staticfiles.finders.FileSystemFinder',
+  'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+
+  # Now add our custom SimpleBulma one.
+  'django_simple_bulma.finders.SimpleBulmaFinder',
+]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -164,6 +174,7 @@ STATICFILES_DIRS = [
 ]
 
 STATIC_ROOT = '/home/ubuntu/andaluciarestaura/andaluciarestaura/frontend/static'
+
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'

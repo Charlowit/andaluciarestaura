@@ -101,7 +101,7 @@ class AdminPage extends Component {
                 <section className="section hero is-paddingless" style={{ marginTop: '40px', width: '100%', marginBottom: '30px' }}>
                     {this.props.actualUser.map(user => (
                         <div>
-                            <div className="section is-marginless is-paddingless" style={{ marginTop: '40px'}} width="100%">
+                            <div className="section is-marginless is-paddingless" style={{ marginTop: '40px' }} width="100%">
 
                                 <div className="container">
                                     <div className="columns has-text-centered">
@@ -136,7 +136,7 @@ class AdminPage extends Component {
                                                         <div className="field-body">
                                                             <div className="field">
                                                                 <p className="control has-icons-left">
-                                                                    <input className="input" type="text" placeholder="" name="cif" value={user.cif} readOnly />
+                                                                    <input disabled className="input" type="text" placeholder="" name="cif" value={user.cif} readOnly />
                                                                     <span className="icon is-small is-left">
                                                                         <i className="fas fa-id-card-alt"></i>
                                                                     </span>
@@ -361,12 +361,11 @@ class AdminPage extends Component {
                                                 <div className="buttons is-centered">
 
                                                     {this.props.auth.isUpdating ?
-                                                        <div>
-                                                            <p style={colorWhite}> Guardando sus datos... </p>
-                                                            <ProgressBar />
-                                                            {this.state.guardado = true}
-                                                        </div>
+                                                        
+                                                        <div className="has-text-centered">
 
+                                                            <button className="button is-loading"  style={{ backgroundColor: 'white', color: '#bca466' }}>Cargando</button>
+                                                        </div>
                                                         :
 
                                                         <div className="has-text-centered">
