@@ -130,7 +130,9 @@ export class Alerts extends Component {
             if(message.productoactualizado){
                 alert.success(message.productoactualizado)
             }
-            
+            if(message.logoactualizado){
+                alert.success(message.logoactualizado)
+            }
         }
     }
 

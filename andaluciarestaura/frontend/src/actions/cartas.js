@@ -306,13 +306,23 @@ export const subirCartaLogo = (formdata, carta) => (dispatch, getState) => {
 
             axios.put(`/api/getcartas/${carta.id}/`, body, tokenConfig(getState))
                 .then(res => {
+                    dispatch(createMessages({ logoactualizado: "Logo de la carta actualizado correctamente." }));
                     console.log("Cambiado a logo propio")
                     dispatch({
                         type: UPDATE_CARTA,
                         payload: res.data
                     });
                 })
-                .catch(err => console.log("Esto ta mal? " + err));
+                .catch(err => {
+                    const errors = {
+                        msg: err.response.data,
+                        status: err.response.status
+                    }
+                    dispatch({
+                        type: GET_ERRORS,
+                        payload: errors
+                    });
+                });
 
 
 
