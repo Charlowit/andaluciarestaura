@@ -488,6 +488,19 @@
   </script>
 
   <div class="section">
+    {% if carta.visualizar_introduccion %}
+    {% if carta.introduccion != "-" %}
+
+    <div class="columns">
+      <div class="column is-one-quarter" ></div>
+      <div class="column has-text-centered" >
+        <p style="margin-left: 20px; margin-right: 20px; font-size: 20px"><b>{{carta.introduccion}}</b></p>
+      </div>
+      <div class="column is-one-quarter" ></div>
+    </div>
+
+    {% endif %}
+    {% endif %}
     <div>
       <div class="container ">
         <div style="margin-top: 40px">
@@ -499,11 +512,9 @@
 
           <div class="container">
 
-            <div class='card equal-height ' id="cardColour" style="margin-top: 40px">
+            <div class='card equal-height is-marginless ' id="cardColour" style="margin-top: 40px">
               <div class="container">
-                <br />
-                <h1 class="title has-text-centered" id="colorDoradoTexto">{{categoria.name}}</h1>
-                <br />
+                <h1 class="title has-text-centered" id="colorDoradoTexto" style="padding-top: 10px; padding-bottom: 10px;">{{categoria.name}}</h1>
               </div>
             </div>
             {% if categoria.info_extra != "-" %}

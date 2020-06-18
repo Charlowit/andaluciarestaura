@@ -272,6 +272,22 @@ export const updateLogoRounded = (carta) => (dispatch, getState) => {
 
 }
 
+export const updateIntroduccion = (carta) => (dispatch, getState) => {
+
+    const body = JSON.stringify({ id: carta.id, establecimiento: carta.establecimiento, name: carta.name, propietario: carta.propietario, directorio: carta.directorio, introduccion: carta.introduccion, visualizar_introduccion: carta.visualizar_introduccion});
+
+    axios.put(`/api/getcartas/${carta.id}/`, body, tokenConfig(getState))
+        .then(res => {
+            console.log("Its working?")
+            dispatch({
+                type: UPDATE_CARTA,
+                payload: res.data
+            });
+        })
+        .catch(err => console.log("Esto ta mal? " + err));
+
+}
+
 export const subirCartaLogo = (formdata, carta) => (dispatch, getState) => {
 
 
