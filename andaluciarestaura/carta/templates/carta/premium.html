@@ -523,6 +523,7 @@
         <div style="margin-top: 40px">
           <!-- FOR DE LA CARTA -->
           {% for categoria in categorias %}
+          {% for id_categoria_vacia in categorias_vacias %}
           {% if categoria.id != id_categoria_vacia %}
           <div class="container animate__animated animate__bounceInLeft animate__delay-1s">
 
@@ -701,7 +702,7 @@
           </div>
         </div>
         {% endif %}
-
+        {% endfor %}
         {% endfor %}
       </div>
     </div>
