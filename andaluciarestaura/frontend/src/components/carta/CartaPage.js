@@ -743,7 +743,6 @@ export class CartaPage extends Component {
         auth: PropTypes.func.isRequired,
         addCategoria: PropTypes.func.isRequired,
         cartaReal: PropTypes.object.isRequired,
-        totalcartas: PropTypes.array.isRequired,
     };
 
     componentDidMount() {
@@ -2594,7 +2593,6 @@ const mapStateToProps = state => ({
     is_active: state.cartas.is_active,
     auth: state.auth,
     cartaReal: state.reducerCartas.expecificCarta,
-    totalcartas: state.reducerCartas.cartas,
     isUpdatingPhoto: state.cartas.isUpdatingPhoto
 });
 
