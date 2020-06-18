@@ -3,7 +3,11 @@
 {% load static %}
 
 <head>
+  {% load django_simple_bulma %}
+  {% bulma %}
+  {% font_awesome %}
   <link href='https://fonts.googleapis.com/css?family=El Messiri' rel='stylesheet'>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css">
   <style>
     div {
       font-family: 'El Messiri';
@@ -42,7 +46,42 @@
     }
   </style>
 </head>
+  <div class="pageloader is-active" style="background-color: #bca466;" id="pageloader">
+      <figure style="margin-top: -170px;"class="image is-128x128 is-inline-block title">
+              {% if cif_cliente %}
+              {% with 'clientes/'|add:cif_cliente|add:'/logo.jpeg' as img_static %}
+              {% if carta.logo_rounded %}
+              {% if carta.logo_propio %}
+              <img class="is-rounded" src="/static/{{carta.directorio}}/logo.jpeg"></img>
+              {% else %}
+              <img class="is-rounded" src="{% static img_static %}"></img>
+              {% endif %}
+              {% else %}
+              {% if carta.logo_propio %}
+              <img src="/static/{{carta.directorio}}/logo.jpeg"></img>
+              {% else %}
+              <img  src="{% static img_static %}"></img>
+              {% endif %}
+              {% endif %}
+              {% endwith %}
+              {% endif %}
+      </figure>
+      <p class="title">
+        <img width="200" height="50" src="{% static 'frontend/hotehub.svg' %}"></img>
+      </p>
+      <p class="title" style="margin-top:70px;"> Córdoba Restaura by Hotehub</p>
+      <p class="title" style="margin-top:90px">Copyright@2020 Todos los derechos reservados </p>
+  </div>
+  <script>
 
+        var pageloader = document.getElementById("pageloader");
+        if (pageloader) {
+          var pageloaderTimeout = setTimeout( function() {
+            pageloader.classList.toggle('is-active');
+            clearTimeout(pageloaderTimeout);
+          }, 850 );
+        }
+  </script>
 <body>
   <header>
     <nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
@@ -54,7 +93,7 @@
       </div>
     </nav>
   </header>
-  <section initial-scale=1 class="hero is-info is-bold" id="bkg" style="margin-top: 40px; min-width:470px">
+  <section initial-scale=1 class="hero is-info is-bold animate__animated animate__bounceInDown animate__delay-1s" id="bkg" style="margin-top: 40px; min-width:470px">
     <div class="hero-body">
       <div class="container has-text-centered is-clearfix">
         <div class='equal-height'>

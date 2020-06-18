@@ -71,7 +71,8 @@ export class Alerts extends Component {
                 } else if (error.msg.cif[0] == "user with this cif already exists.") {
                     alert.error("Ese CIF ya esta siendo utilizado.")
                 }
-            } 
+            }
+
         
         }
 
@@ -123,7 +124,9 @@ export class Alerts extends Component {
             if(message.nuevaVisualizacion) {
                 alert.success(message.nuevaVisualizacion);
             }
-            
+            if(message.passcorrect){
+                alert.success(message.passcorrect)
+            }
             
         }
     }

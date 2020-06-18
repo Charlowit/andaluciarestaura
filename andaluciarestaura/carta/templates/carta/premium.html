@@ -270,7 +270,26 @@
       </div>
     </nav>
   </header>
-  <div class="pageloader is-active" style="background-color: #bca466;" id="pageloader">
+      <div class="pageloader is-active" style="background-color: #bca466;" id="pageloader">
+      <figure style="margin-top: -170px;"class="image is-128x128 is-inline-block title">
+              {% if cif_cliente %}
+              {% with 'clientes/'|add:cif_cliente|add:'/logo.jpeg' as img_static %}
+              {% if carta.logo_rounded %}
+              {% if carta.logo_propio %}
+              <img class="is-rounded" src="/static/{{carta.directorio}}/logo.jpeg"></img>
+              {% else %}
+              <img class="is-rounded" src="{% static img_static %}"></img>
+              {% endif %}
+              {% else %}
+              {% if carta.logo_propio %}
+              <img src="/static/{{carta.directorio}}/logo.jpeg"></img>
+              {% else %}
+              <img  src="{% static img_static %}"></img>
+              {% endif %}
+              {% endif %}
+              {% endwith %}
+              {% endif %}
+      </figure>
       <p class="title">
         <img width="200" height="50" src="{% static 'frontend/hotehub.svg' %}"></img>
       </p>
@@ -287,8 +306,8 @@
           }, 850 );
         }
   </script>
-  <section class="hero is-bold animate__animated animate__bounceInDown animate__delay-1s " id="bkg" style="margin-top: 40px ">
 
+  <section class="hero is-bold animate__animated animate__bounceInDown animate__delay-1s " id="bkg" style="margin-top: 40px ">
     <div class="hero-body">
       <div class="container has-text-centered is-clearfix">
         <div class='equal-height'>
@@ -299,13 +318,13 @@
               {% with 'clientes/'|add:cif_cliente|add:'/logo.jpeg' as img_static %}
               {% if carta.logo_rounded %}
               {% if carta.logo_propio %}
-              <img class="is-rounded" src="{{carta.directorio}}/logo.jpeg"></img>
+              <img class="is-rounded" src="/static/{{carta.directorio}}/logo.jpeg"></img>
               {% else %}
               <img class="is-rounded" src="{% static img_static %}"></img>
               {% endif %}
               {% else %}
               {% if carta.logo_propio %}
-              <img src="{{carta.directorio}}/logo.jpeg"></img>
+              <img src="/static/{{carta.directorio}}/logo.jpeg"></img>
               {% else %}
               <img  src="{% static img_static %}"></img>
               {% endif %}
@@ -491,7 +510,6 @@
       <div class="container ">
         <div style="margin-top: 40px">
           <!-- FOR DE LA CARTA -->
-          {% for id_categoria_vacia in categorias_vacias %}
           {% for categoria in categorias %}
           {% if categoria.id != id_categoria_vacia %}
           <div class="container animate__animated animate__bounceInLeft animate__delay-1s">
@@ -674,7 +692,7 @@
           </div>
         </div>
         {% endif %}
-        {% endfor %}
+       
         {% endfor %}
       </div>
     </div>
