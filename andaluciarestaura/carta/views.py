@@ -160,8 +160,15 @@ def index_pago(request,cif_cliente, carta_id):
         if carta['show_as_pdf']:
             template = loader.get_template('../../frontend/templates/frontend/free2.html')
         else :
-            template = loader.get_template('carta/premium.html')
-        
+            if carta['plantilla'] == "Plantilla 3":
+                template = loader.get_template('carta/premium3.html')
+            elif carta['plantilla'] == "Plantilla 2":
+                template = loader.get_template('carta/premium2.html')
+            elif carta['plantilla'] == "Plantilla 1":
+                template = loader.get_template('carta/premium.html')
+            elif carta['plantilla'] == "Plantilla 4":
+                template = loader.get_template('carta/premium4.html')
+
         print("SERVER_LOCAL: " + server_local)
         #print(productos)
         #print(categoriasRaw)

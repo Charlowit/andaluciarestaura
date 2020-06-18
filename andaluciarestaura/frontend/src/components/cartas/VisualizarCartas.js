@@ -268,6 +268,8 @@ export class VisualizarCartas extends Component {
                                                                                 <option value="Plantilla 1">Plantilla 1</option>
                                                                                 <option value="Plantilla 2">Plantilla 2</option>
                                                                                 <option value="Plantilla 3">Plantilla 3</option>
+                                                                                <option value="Plantilla 4">Plantilla 4</option>
+
                                                                             </select>
                                                                         </div>
                                                                         <p className="help is-danger" style={{ fontSize: '15px', color: 'red' }}>Debes seleccionar una plantilla.</p>
@@ -282,6 +284,7 @@ export class VisualizarCartas extends Component {
                                                                                 <option value="Plantilla 1">Plantilla 1</option>
                                                                                 <option value="Plantilla 2">Plantilla 2</option>
                                                                                 <option value="Plantilla 3">Plantilla 3</option>
+                                                                                <option value="Plantilla 4">Plantilla 4</option>
                                                                             </select>
                                                                         </div>
                                                                     </div>
