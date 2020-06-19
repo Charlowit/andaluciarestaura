@@ -1,4 +1,7 @@
 import React, { Component, Fragment } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
 
 const div1 = {
     marginTop: '1%'
@@ -46,11 +49,16 @@ const div13 = {
 
 export class DeliveryPage extends Component {
 
-
+    static propTypes = {
+        auth: PropTypes.object.isRequired,
+    };
+  
     render(){
+
+        const { isAuthenticated } = this.props.auth
         return(
             <Fragment>
-                
+                {isAuthenticated ? 
                 <section className="hero" style={{paddingTop: '40px'}} >
                     <div className="container">
                         <div className="columns">
@@ -171,7 +179,7 @@ export class DeliveryPage extends Component {
                                         <div style={div13}>
                                             <div className="columns is-mobile" style={div12}>
                                                 <div className="column is-four-fifths is-full-mobile">
-                                                    <pS> Subtotal :</pS>
+                                                    <p> Subtotal :</p>
                                                 </div>
                                                 <div className="column is-full-mobile">
                                                     <p> 26,80€ </p>
@@ -294,7 +302,7 @@ export class DeliveryPage extends Component {
                                         <div style={div13}>
                                             <div className="columns is-mobile" style={div12}>
                                                 <div className="column is-four-fifths is-full-mobile">
-                                                    <pS> Subtotal :</pS>
+                                                    <p> Subtotal :</p>
                                                 </div>
                                                 <div className="column is-full-mobile">
                                                     <p> 26,80€ </p>
@@ -417,7 +425,7 @@ export class DeliveryPage extends Component {
                                         <div style={div13}>
                                             <div className="columns is-mobile" style={div12}>
                                                 <div className="column is-four-fifths is-full-mobile">
-                                                    <pS> Subtotal :</pS>
+                                                    <p> Subtotal :</p>
                                                 </div>
                                                 <div className="column is-full-mobile">
                                                     <p> 26,80€ </p>
@@ -540,7 +548,7 @@ export class DeliveryPage extends Component {
                                         <div style={div13}>
                                             <div className="columns is-mobile" style={div12}>
                                                 <div className="column is-four-fifths is-full-mobile">
-                                                    <pS> Subtotal :</pS>
+                                                    <p> Subtotal :</p>
                                                 </div>
                                                 <div className="column is-full-mobile">
                                                     <p> 26,80€ </p>
@@ -576,10 +584,21 @@ export class DeliveryPage extends Component {
                         </div>
                     </div>
                 </section>
+                :
+                
+                <Redirect to="/" />
+                
+                }
             </Fragment>
         )
     }
 
 }
 
-export default DeliveryPage;
+
+const mapStateToProps = state => ({
+    auth: state.auth,
+});
+
+
+export default connect(mapStateToProps)(DeliveryPage);

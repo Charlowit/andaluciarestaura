@@ -776,11 +776,11 @@ export class CartaPage extends Component {
         const { categoriaParaProducto, name, descripcion, tamanio, precio1, precio2, precio3, is_apio, is_altramuces, is_cacahuete, is_crustaceo, is_frutos_con_cascara, is_gluten, is_huevo, is_lacteo, is_molusco, is_mostaza, is_pescado, is_sesamo, is_soja, is_sulfito, carta
         } = this.state;
 
-
+        const { isAuthenticated } = this.props.auth
 
         return (
             <Fragment>
-
+                { isAuthenticated ? 
                 <div>
                     {this.props.cartaReal.map(carta => (
                         <div>
@@ -2619,6 +2619,10 @@ export class CartaPage extends Component {
 
                     ))}
                 </div>
+
+                :
+                    <Redirect to="/" />
+                        }
             </Fragment >
         )
     }

@@ -131,6 +131,7 @@ export default function(state = initialState, action){
         case LOGIN_FAIL:
         case LOGOUT_SUCCESS:
             localStorage.removeItem('token');
+            localStorage.removeItem('storage');
             return {
                 ...state,
                 token: null,
@@ -143,6 +144,7 @@ export default function(state = initialState, action){
                 registerFailed: true,
                 updateFailed: true,
                 needReload: false,
+
             }
         default:
             return state;

@@ -96,8 +96,10 @@ class AdminPage extends Component {
 
 
     render() {
+        const { isAuthenticated } = this.props.auth
         return (
             <React.Fragment>
+                {isAuthenticated ? 
                 <section className="section hero is-paddingless" style={{ marginTop: '40px', width: '100%', marginBottom: '30px' }}>
                     {this.props.actualUser.map(user => (
                         <div>
@@ -385,6 +387,11 @@ class AdminPage extends Component {
                         </div>
                     ))}
                 </ section>
+                : 
+                
+                <Redirect to="/" />
+                
+                }
             </React.Fragment >
         );
     }
