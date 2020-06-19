@@ -1,23 +1,24 @@
-import React from 'react';
+
+import React, { Component, Fragment} from 'react';
 import { Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
-const PrivateRoute = ({ component : Component, auth, ...rest }) => (
-    <Route
-        {...rest}
-        render={props =>
-            localStorage.getItem('token') ? (
-                <Component {...props} />
-            ) : (
-                <Redirect to={{
-                    pathname: "/",
-                    state: { from : props.location}
-                }}
-                />
-            )
-        }
-    />
+const PrivateRoute =  ({
+  comp: Component, // use comp prop
+  auth: { isAuthenticated, token },
+  ...rest
+}) => (
+  <Route
+    {...rest}
+    render={props =>
+        !isAuthenticated ? (
+        <Redirect to="/" />
+      ) : (
+        <Component {...props} />
+      )
+    }
+  />
 );
 
 const mapStateToProps = state => ({

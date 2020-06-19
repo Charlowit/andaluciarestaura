@@ -17,14 +17,13 @@ import PrivateRouteLogin from "./privateroute/PrivateRouteLogin";
 import FileUpload from "./accounts/FileUpload";
 import ViewPdf from "./accounts/ViewPdf";
 import { Provider } from 'react-redux';
-import store from '../store';
+import {store, persistor} from '../store';
 import { loadUser, login } from '../actions/auth';
 import CreditCard from './creditcard/CreditCard';
 import Logo from './avatar/Logo'
 import { Provider as AlertProvider } from 'react-alert';
 //import AlertTemplate from 'react-alert-template-basic';
 import VisualizarCartas from './cartas/VisualizarCartas'
-
 
 import Alerts from './alerta/Alerts';
 import PrivateRouteCartaPage from './privateroute/PrivateRouteCartaPage';
@@ -88,6 +87,7 @@ class App extends Component {
             <Provider store={store}>
                 <AlertProvider template={AlertTemplate} {...alertOptions}>
                     <Router>
+                        <PersistGate persistor={persistor}>
                         <Fragment>
                             <Navbar />
                             <Alerts />
@@ -95,23 +95,24 @@ class App extends Component {
                                 <PrivateRouteLogin exact path="/" component={Login} />
                                 <PrivateRoutePrueba exact path="/admin-page" component={AdminPage} />
                                 <Route exact path="/register-page" component={Registro} />
-                                <PrivateRoutePrueba exact path="/servicios-page" component={ServiciosPage} />
-                                <PrivateRoutePrueba exact path="/carta-page/:id" component={CartaPage} />
-                                <PrivateRoutePrueba exact path="/reservas-page" component={ReservasPage} />
-                                <PrivateRoutePrueba exact path="/delivery-page" component={DeliveryPage} />
-                                <Route exact path="/pdf-upload" component={FileUpload} />
-                                <Route exact path="/view-pdf" component={ViewPdf} />
+                                <PrivateRoute exact path="/servicios-page" component={ServiciosPage} />
+                                <PrivateRoute exact path="/carta-page/:id" component={CartaPage} />
+                                <PrivateRoute exact path="/reservas-page" component={ReservasPage} />
+                                <PrivateRoute exact path="/delivery-page" component={DeliveryPage} />
+                                {/*<Route exact path="/pdf-upload" component={FileUpload} />*/}
+                                {/*<Route exact path="/view-pdf" component={ViewPdf} />*/}
 
                                 {/* PRUEBAS NIETO */}
                                 {/*<Route exact path="/maps-page" component={Maps2} />*/}
                                 {/*<Route exact path="/autocomplete-page" component={Roads} />*/}
-                                <PrivateRoutePrueba exact path="/creditcard-page" component={CreditCard} />
-                                <PrivateRoutePrueba exact path="/avatar-page" component={Logo} />
-                                <PrivateRoutePrueba exact path="/visualizar" component={VisualizarCartas} />
-                                <PrivateRoutePrueba exact path="/reset-password" component={ResetPassword} />
+                                <PrivateRoute exact path="/creditcard-page" component={CreditCard} />
+                                <PrivateRoute exact path="/avatar-page" component={Logo} />
+                                <PrivateRoute exact path="/visualizar" component={VisualizarCartas} />
+                                <PrivateRoute exact path="/reset-password" component={ResetPassword} />
                             </Switch>
                             <Footer />
                         </Fragment>
+                        </PersistGate>
                     </Router>
                 </AlertProvider>
             </Provider>

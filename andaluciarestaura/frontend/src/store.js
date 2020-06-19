@@ -3,12 +3,13 @@ import { createStore, applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 import rootReducer from './reducers';
+import { persistStore } from 'redux-persist';
 
 const initialState = {};
 
 const middleware = [thunk];
 
-const store = createStore(
+export const store = createStore(
     //Esto va a llamar al index.js dentro de la ruta ./reducers y es un punto intermedio entre otros reducers
     rootReducer,
     initialState,
@@ -16,4 +17,6 @@ const store = createStore(
     composeWithDevTools(applyMiddleware(...middleware))
 );
 
-export default store;
+export const persistor = persistStore(store);
+
+export default {store, persistor};

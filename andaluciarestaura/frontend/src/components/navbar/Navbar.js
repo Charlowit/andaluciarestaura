@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from "prop-types";
 import { logout } from '../../actions/auth';
@@ -57,6 +57,11 @@ class Navbar extends Component {
          console.log("LISTA FIN: ")*/
     }
 
+    onSubmitLogout = e => {
+        this.props.logout();
+        <Redirect to="/" />
+    }
+
     render() {
 
 
@@ -94,7 +99,7 @@ class Navbar extends Component {
                         </span>
                         <span className="control">
                             <div className="buttons">
-                                <Link to="/" refresh="true" className="button is-danger" style={{ backgroundColor: '#bca466' }} onClick={this.props.logout}>Logout</Link>
+                                <button  className="button is-danger" style={{ backgroundColor: '#bca466' }} onClick={this.onSubmitLogout}>Logout</button>
                             </div>
                         </span>
                     </div>
