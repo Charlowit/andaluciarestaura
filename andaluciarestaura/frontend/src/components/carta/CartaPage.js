@@ -801,16 +801,13 @@ export class CartaPage extends Component {
                                     <div className="modal-content">
                                         <div className="container box" >
                                             <div className="has-text-right">
-
-                                                <button className="button" style={{ backgroundColor: '#171c8f' }} onClick={this.borrarProducto}>
+                                                <button className="button" style={{ backgroundColor: '#171c8f' }} onClick={e => this.borrarProducto(e, this.state.clickedProducto)}>
                                                     <span className="icon is-small">
                                                         <i className="fas fa-times " style={{ color: 'white' }}></i>
                                                     </span>
                                                 </button>
                                             </div>
                                             <div className="has-text-centered">
-
-
                                                 <span className="icon" >
                                                     <i className="fas fa-trash" style={{ fontSize: '100px', color: "#bca466" }}></i>
                                                 </span>
@@ -824,12 +821,12 @@ export class CartaPage extends Component {
                                                     <div className="column"></div>
                                                     <div className="column">
                                                         <div className="control buttons is-centered" style={{ marginTop: '20px' }}>
-                                                            <button className="button is-success" style={{ color: 'white', backgroundColor: '#bca466' }} onClick={e => this.onSubmitDeleteProducto(e, this.state.clickedProducto.id, producto.categoria)}>Si</button>
+                                                            <button className="button is-success" style={{ color: 'white', backgroundColor: '#bca466' }} onClick={e => this.onSubmitDeleteProducto(e, this.state.clickedProducto.id, this.state.clickedProducto.categoria)}>Si</button>
                                                         </div>
                                                     </div>
                                                     <div className="column">
                                                         <div className="control buttons is-centered" style={{ marginTop: '20px' }}>
-                                                            <button className="button is-success" style={{ color: 'white', backgroundColor: '#bca466' }} onClick={this.borrarProducto}>No</button>
+                                                            <button className="button is-success" style={{ color: 'white', backgroundColor: '#bca466' }} onClick={e => this.borrarProducto(e, this.state.clickedProducto)}>No</button>
                                                         </div>
                                                     </div>
                                                     <div className="column"></div>
@@ -846,19 +843,24 @@ export class CartaPage extends Component {
                                     <div className="modal-content">
                                         <div className="container box">
                                             <div className="has-text-right">
-                                                <button className="button is-danger" onClick={e => this.addPhoto(e, this.state.clickedProducto, this.state.indexEditing)}>
+                                                <button className="button is-danger" style={{ backgroundColor: '#171c8f' }} onClick={e => this.addPhoto(e, this.state.clickedProducto, this.state.indexEditing)}>
                                                     <span className="icon is-small">
-                                                        <i className="fas fa-times"></i>
+                                                        <i className="fas fa-times" style={{ color: 'white' }}></i>
                                                     </span>
                                                 </button>
                                             </div>
-                                            <div className="has-text-centered">
-                                                <label className="label  is-size-4">Sube la foto de tu producto</label>
+                                            <div >
+                                                <div className="has-text-centered">
+                                                    <span className="icon" >
+                                                        <i className="fas fa-camera" style={{ fontSize: '100px', color: "#bca466" }}></i>
+                                                    </span>
+                                                    <h1 className="title" style={{ marginTop: '10px' }}> SUBE LA FOTO DEL PRODUCTO </h1>
+                                                </div>
                                                 <hr style={{ marginTop: '30px' }} />
 
                                                 <div class="field">
                                                     <div class="file ">
-                                                        <label class="file-label">
+                                                        <label class="file-label ">
                                                             <input class="file-input" type="file" id="logo" accept=".jpeg" onChange={e => this.handlePhotoChange(e, this.state.indexEditing)} name="resume" />
                                                             <span class="file-cta">
                                                                 <span class="file-icon">
@@ -872,18 +874,21 @@ export class CartaPage extends Component {
                                                         </label>
                                                     </div>
                                                 </div>
-                                                <div className="field">
+                                                <span style={{ marginBottom: '10px' }}>
+                                                    <p>Previsualización:</p>
+                                                </span>
+                                                <div className="field has-text-centered">
                                                     <div style={{ marginTop: '10px', marginBottom: '10px' }} className="is-centered">
-                                                        <span style={{ marginBottom: '10px' }}>
-                                                            <p>Previsualización:</p>
-                                                        </span>
+
                                                         <span>
                                                             <img src={this.state.fileArray[this.state.indexEditing]} ></img>
                                                         </span>
                                                     </div>
                                                 </div>
-                                                <button className="button is-success" onClick={this.onSubmitPhotoProducto}>Guardar</button>
+                                                <div className="has-text-centered">
+                                                <button className="button is-success" style={{ color: 'white', backgroundColor: '#bca466' }} onClick={this.onSubmitPhotoProducto}>Guardar</button>
 
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -1862,8 +1867,7 @@ export class CartaPage extends Component {
                                                     <div className="modal-content">
                                                         <div className="container box" >
                                                             <div className="has-text-right">
-
-                                                                <button className="button" style={{ backgroundColor: '#171c8f' }} onClick={e => this.editProduct(e, null)}>
+                                                                <button className="button" style={{ backgroundColor: '#171c8f' }} onClick={e => this.editProduct(e, this.state.clickedProducto)}>
                                                                     <span className="icon is-small">
                                                                         <i className="fas fa-times " style={{ color: 'white' }}></i>
                                                                     </span>
