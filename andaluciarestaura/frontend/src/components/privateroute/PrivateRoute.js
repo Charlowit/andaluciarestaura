@@ -6,15 +6,17 @@ import PropTypes from "prop-types";
 const PrivateRoute = ({ component : Component, auth, ...rest }) => (
     <Route
         {...rest}
-        render={props =>{
-            if(auth.isLoading){
-                return <h2>Cargando...</h2>
-            } else if(!auth.isAuthenticated){
-                return <Redirect to="/" />
-            } else{
-                return <Component {...props} />;
-            }
-        }}
+        render={props =>
+            localStorage.getItem('token') ? (
+                <Component {...props} />
+            ) : (
+                <Redirect to={{
+                    pathname: "/",
+                    state: { from : props.location}
+                }}
+                />
+            )
+        }
     />
 );
 

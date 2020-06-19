@@ -67,6 +67,9 @@ export class Login extends Component {
 
     onChange = e => this.setState({ [e.target.name]: e.target.value });
 
+    componentDidMount() {
+        console.log("TOKEN ADMIN PAGE: ", this.props.auth.token)
+    }
 
     render() {
 

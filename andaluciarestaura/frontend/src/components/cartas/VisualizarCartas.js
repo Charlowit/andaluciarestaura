@@ -46,8 +46,6 @@ export class VisualizarCartas extends Component {
             addingCarta: false,
             is_premium: false,
             establecimiento: "",
-            addingCarta: false,
-            is_premium: "",
             modal_qr: false,
             cartaClickedId: -1,
             nombreCartaVacio: false,
@@ -58,16 +56,18 @@ export class VisualizarCartas extends Component {
 
     static propTypes = {
         cartas: PropTypes.array.isRequired,
-        auth: PropTypes.func.isRequired,
+        auth: PropTypes.object.isRequired,
         nuevaCarta: PropTypes.func.isRequired,
     };
 
     componentDidMount() {
-        this.state.cif = this.props.auth.user.cif
-        this.state.propietario = this.props.auth.user.id
+        //var cif = this.props.auth.user.cif
+        this.setState({cif:this.props.auth.user.cif })
+        this.setState({propietario:this.props.auth.user.id })
         this.props.getCartas(this.props.auth.user.cif);
 
     }
+
 
     onChange = e => this.setState({
         [e.target.name]: e.target.value
@@ -174,6 +174,7 @@ export class VisualizarCartas extends Component {
     }
 
     render() {
+
         return (
 
             <div style={{ marginBottom: '-20px' }}>

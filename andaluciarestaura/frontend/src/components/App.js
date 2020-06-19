@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import Navbar from './navbar/Navbar';
 import Footer from './footer/Footer';
 import { HashRouter as Router, Route, Switch, Redirect, Link } from "react-router-dom";
+//import { BrowserRouter as Router, Route, Switch, Redirect, Link, useLocation } from "react-router-dom";
+import { createBrowserHistory } from "history";
 import Login from "./accounts/Login";
 import AdminPage from "./admin/AdminPage";
 import ServiciosPage from "./servicios/ServiciosPage";
@@ -31,13 +33,15 @@ import { Animated } from "react-animated-css";
 import BarraInformacion from './barrainformacion/BarraInformacion';
 import ResetPassword from "./accounts/ResetPassword";
 import PrivateRoutePass from "./privateroute/PrivateRoutePass";
-
+import PrivateRoutePrueba from "./privateroute/PrivateRoutePrueba";
+import { PersistGate } from 'redux-persist/integration/react'
 
 //Alert Options
 const alertOptions = {
     timeout: 3000,
     position: 'top center',
 }
+
 
 const AlertTemplate = ({ style, options, message, close }) => (
     <div>
@@ -71,12 +75,13 @@ const AlertTemplate = ({ style, options, message, close }) => (
     </div>
 
   )
-
 class App extends Component {
 
     componentDidMount() {
         store.dispatch(loadUser());
+
     }
+
     render() {
         return (
 
@@ -88,22 +93,22 @@ class App extends Component {
                             <Alerts />
                             <Switch>
                                 <PrivateRouteLogin exact path="/" component={Login} />
-                                <PrivateRoute exact path="/admin-page" component={AdminPage} />
+                                <PrivateRoutePrueba exact path="/admin-page" component={AdminPage} />
                                 <Route exact path="/register-page" component={Registro} />
-                                <PrivateRoute exact path="/servicios-page" component={ServiciosPage} />
-                                <PrivateRouteCartaPage exact path="/carta-page/:id" component={CartaPage} />
-                                <PrivateRoute exact path="/reservas-page" component={ReservasPage} />
-                                <PrivateRoute exact path="/delivery-page" component={DeliveryPage} />
+                                <PrivateRoutePrueba exact path="/servicios-page" component={ServiciosPage} />
+                                <PrivateRoutePrueba exact path="/carta-page/:id" component={CartaPage} />
+                                <PrivateRoutePrueba exact path="/reservas-page" component={ReservasPage} />
+                                <PrivateRoutePrueba exact path="/delivery-page" component={DeliveryPage} />
                                 <Route exact path="/pdf-upload" component={FileUpload} />
                                 <Route exact path="/view-pdf" component={ViewPdf} />
 
                                 {/* PRUEBAS NIETO */}
                                 {/*<Route exact path="/maps-page" component={Maps2} />*/}
                                 {/*<Route exact path="/autocomplete-page" component={Roads} />*/}
-                                <PrivateRoute exact path="/creditcard-page" component={CreditCard} />
-                                <PrivateRoute exact path="/avatar-page" component={Logo} />
-                                <PrivateRouteVisualizar exact path="/visualizar" component={VisualizarCartas} />
-                                <PrivateRoutePass exact path="/reset-password" component={ResetPassword} />
+                                <PrivateRoutePrueba exact path="/creditcard-page" component={CreditCard} />
+                                <PrivateRoutePrueba exact path="/avatar-page" component={Logo} />
+                                <PrivateRoutePrueba exact path="/visualizar" component={VisualizarCartas} />
+                                <PrivateRoutePrueba exact path="/reset-password" component={ResetPassword} />
                             </Switch>
                             <Footer />
                         </Fragment>

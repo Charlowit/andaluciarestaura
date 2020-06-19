@@ -1,4 +1,4 @@
-import React, { Component, useEffect } from 'react';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from "prop-types";
 import { updateuser, loadUserAdminPage } from '../../actions/auth';
@@ -42,6 +42,7 @@ class AdminPage extends Component {
             qr: "",
             guardado: false,
         };
+
     }
 
     static propTypes = {
@@ -74,6 +75,7 @@ class AdminPage extends Component {
     );
 
     componentDidMount() {
+        console.log("TOKEN ADMIN PAGE: ", this.props.auth.token)
         console.log("Estoy en el component did mount del admin page")
         this.props.loadUserAdminPage(this.props.auth.user.cif);
         this.state.id = this.props.auth.user.id
@@ -94,10 +96,11 @@ class AdminPage extends Component {
         this.state.qr = this.props.auth.user.qr
     }
 
-
     render() {
         return (
-            <React.Fragment>
+
+            <Fragment>
+
                 <section className="section hero is-paddingless" style={{ marginTop: '40px', width: '100%', marginBottom: '30px' }}>
                     {this.props.actualUser.map(user => (
                         <div>
@@ -385,7 +388,7 @@ class AdminPage extends Component {
                         </div>
                     ))}
                 </ section>
-            </React.Fragment >
+            </Fragment >
         );
     }
 }
