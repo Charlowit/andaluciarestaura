@@ -180,12 +180,14 @@ class FilePDFApi(generics.GenericAPIView):
                 if settings.IN_PRODUCTION:
                     # VARIABLES PARA PRODUCCION
                     directorio = settings.STATIC_ROOT +'/clientes/' + cif_user
+
                     directorio_bd = './static/clientes/' + cif_user
 
                 else:
                     # VARIBALES PARA LOCAL
                     directorio = './frontend/static/clientes/' + cif_user
                     directorio_bd = './frontend/static/clientes/' + cif_user
+
 
                 ruta_logo_bd = directorio_bd + '/' + archivo_logo
                 ruta_qr_bd = directorio_bd + '/' + archivo_qr
@@ -230,6 +232,7 @@ class FilePDFApi(generics.GenericAPIView):
                 #logger.error("DESPUES: " + user.marca_comercial)
                 logger.error("USUARIO REGISTRADO!")
 
+
                 userInstance = User.objects.get(id__exact=user.id)
                 carta = Carta.objects.create(
                     name = "CartaPremium",
@@ -239,7 +242,7 @@ class FilePDFApi(generics.GenericAPIView):
                     eslogan = "Escribe aquí tu eslogan!",
                     plantilla = "Plantilla 1",
                     propietario = userInstance,
-                    directorio = directorio,
+                    directorio = "/static/clientes/" + cif_user ,
                     is_activa = True,
                     show_as_pdf = True,
                     establecimiento = "Pon aqui el nombre de tu establecimiento!"

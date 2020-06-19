@@ -208,6 +208,9 @@ class ProductosSubirPhotoApi(viewsets.ModelViewSet):
     serializer_class = ProductoSerializerActualizar
     parser_classes = (MultiPartParser, FormParser)
 
+    def get_queryset(self):
+        pass
+
     def put(self, request, *args, **kwargs):
 
         cif_user = request.data["cif"]
