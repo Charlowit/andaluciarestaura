@@ -406,15 +406,7 @@ export class VisualizarCartas extends Component {
                                                                         </div>
                                                                     </div>
 
-                                                                    <figure>
-                                                                        <img className="is-rounded" src={carta.logo_propio ? `/static/${carta.directorio}/logo.jpeg` : `/static/clientes/${this.state.cif}/logo.jpeg`}></img>
-                                                                    </figure>
                                                                 </div>
-                                                                <div className="media-content" height='auto'>
-                                                                    <p className="title is-5" style={carta.is_activa ? { color: '#bca466' } : { color: 'black' }}>{carta.establecimiento}</p>
-                                                                    <p className="subtitle is-6" style={carta.is_activa ? { color: '#bca466' } : { color: 'black' }}>{carta.name}</p>
-                                                                </div>
-
 
                                                                 <div className="content" style={{ paddingTop: '10px' }}>
                                                                     <Tooltip title="Cambiar visualizacion de la carta">
