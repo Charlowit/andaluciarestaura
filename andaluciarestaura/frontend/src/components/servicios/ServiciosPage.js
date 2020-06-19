@@ -1,4 +1,8 @@
 import React, { Component, Fragment } from 'react';
+import { Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+
 const div1 = {
   maxWidth: '50%'
 };
@@ -47,12 +51,16 @@ const div13 = {
 };
 
 export class ServiciosPage extends Component {
-
+  static propTypes = {
+      auth: PropTypes.object.isRequired,
+  };
 
   render() {
+    const { isAuthenticated } = this.props.auth
     return (
       <Fragment>
-        <section className="section" style={{marginTop: '40px'}}>
+        { isAuthenticated ? 
+        <section className="section" style={{ marginTop: '40px' }}>
 
           <div className="container">
 
@@ -208,10 +216,19 @@ export class ServiciosPage extends Component {
             <hr style={div12} />
           </div>
         </section>
+        
+        :
+          <Redirect to="/" /> 
+        }
       </Fragment>
     )
   }
 
+  
 }
 
-export default ServiciosPage;
+const mapStateToProps = state => ({
+  auth: state.auth,
+});
+
+export default connect(mapStateToProps)(ServiciosPage);

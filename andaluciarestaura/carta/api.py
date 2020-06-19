@@ -122,7 +122,7 @@ class CartasApi(viewsets.ModelViewSet):
             directorio_carta = '/clientes/' + user.cif + '/' +  str(carta.id) 
         else:
             # VARIBALES PARA LOCAL
-            directorio = '/static/clientes/' + user.cif + '/' + str(carta.id)
+            directorio = './frontend/static/clientes/' + user.cif + '/' + str(carta.id)
             directorio_carta = '/static/clientes/' + user.cif + '/' + str(carta.id) 
 
         try:
@@ -207,8 +207,10 @@ class ProductosSubirPhotoApi(viewsets.ModelViewSet):
 
     serializer_class = ProductoSerializerActualizar
     parser_classes = (MultiPartParser, FormParser)
+    
     def get_queryset(self):
         pass
+
     def put(self, request, *args, **kwargs):
 
         cif_user = request.data["cif"]

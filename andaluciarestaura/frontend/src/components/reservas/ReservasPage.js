@@ -1,4 +1,8 @@
 import React, { Component, Fragment } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
+
 const div1 = {
     width: '75%'
 };
@@ -68,11 +72,16 @@ const div17 = {
 };
 
 export class ReservasPage extends Component {
-
-
+    
+    static propTypes = {
+        auth: PropTypes.object.isRequired,
+    };
+  
     render() {
+        const { isAuthenticated } = this.props.auth
         return (
             <Fragment>
+                { isAuthenticated ? 
                 <section class="section" style={{marginTop: '40px'}}>
                     <div class="container">
                         <div class="columns" >
@@ -307,10 +316,22 @@ export class ReservasPage extends Component {
                         </div>
                     </div>
                 </section>
+                : 
+                
+                <Redirect to="/" />
+                
+                }
             </Fragment>
+            
         )
     }
 
 }
 
-export default ReservasPage;
+
+const mapStateToProps = state => ({
+    auth: state.auth,
+});
+
+
+export default connect(mapStateToProps)(ReservasPage);

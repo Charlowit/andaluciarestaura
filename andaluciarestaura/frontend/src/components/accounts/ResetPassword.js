@@ -50,6 +50,7 @@ export class ResetPassword extends Component {
 
     static propTypes = {
         usuario: PropTypes.array.isRequired,
+        auth: PropTypes.object.isRequired
     }
 
     onSubmit = e => {
@@ -89,9 +90,10 @@ export class ResetPassword extends Component {
 
 
     render() {
-
+        const { isAuthenticated } = this.props.auth
         return (
             <React.Fragment>
+                {isAuthenticated ? 
                 <div className="section is-paddingless">
                     <section className="hero has-text-centered is-paddingless">
                         <div className="hero-body is-paddingless" style={bkg}>
@@ -197,6 +199,9 @@ export class ResetPassword extends Component {
                         </div>
                     </section>
                 </div>
+                :
+                  <Redirect to="/" />
+                }
             </React.Fragment>
 
         );
@@ -206,6 +211,7 @@ export class ResetPassword extends Component {
 
 const mapStateToProps = state => ({
     usuario: state.auth.userAdminPage,
+    auth: state.auth
 });
 
 export default connect(mapStateToProps, { cambiarpassword })(ResetPassword);

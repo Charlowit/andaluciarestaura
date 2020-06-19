@@ -1,10 +1,9 @@
-
 import React, { Component, Fragment} from 'react';
 import { Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
-const PrivateRoute =  ({
+const PrivateRoutePrueba =  ({
   comp: Component, // use comp prop
   auth: { isAuthenticated, token },
   ...rest
@@ -12,8 +11,11 @@ const PrivateRoute =  ({
   <Route
     {...rest}
     render={props =>
-        !isAuthenticated ? (
-        <Redirect to="/" />
+      token == null ? (
+        <Redirect to={{
+            pathname: "/",
+            state: {from: location}
+        }}/>
       ) : (
         <Component {...props} />
       )
@@ -25,4 +27,4 @@ const mapStateToProps = state => ({
     auth: state.auth
 });
 
-export default connect(mapStateToProps)(PrivateRoute);
+export default connect(mapStateToProps)(PrivateRoutePrueba);
