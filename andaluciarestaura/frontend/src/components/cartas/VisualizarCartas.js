@@ -397,7 +397,7 @@ export class VisualizarCartas extends Component {
                                                                         <div className="media-left">
                                                                             <figure className="image is-48x48">
 
-                                                                                <img className="is-rounded" src={carta.logo_propio ? `${carta.directorio}/logo.jpeg` : `/static/clientes/${this.state.cif}/logo.jpeg`}></img>
+                                                                                <img className="is-rounded" src={carta.logo_propio ? `/static/${carta.directorio}/logo.jpeg` : `/static/clientes/${this.state.cif}/logo.jpeg`}></img>
                                                                             </figure>
                                                                         </div>
                                                                         <div className="media-content" height='auto'>

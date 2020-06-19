@@ -1219,10 +1219,10 @@ export class CartaPage extends Component {
                                                         <figure className="image is-128x128 is-inline-block">
                                                             {carta.logo_rounded ?
                                                                 <img className="is-rounded"
-                                                                    src={this.state.editingLogo || this.state.logoChange != null ? this.state.logoChange : carta.logo_propio ? `${carta.directorio}/logo.jpeg` : `/static/clientes/${this.state.cif}/logo.jpeg`}></img>
+                                                                    src={this.state.editingLogo || this.state.logoChange != null ? this.state.logoChange : carta.logo_propio ? `/static${carta.directorio}/logo.jpeg` : `/static/clientes/${this.state.cif}/logo.jpeg`}></img>
                                                                 :
                                                                 <img
-                                                                    src={this.state.editingLogo || this.state.logoChange != null ? this.state.logoChange : carta.logo_propio ? `${carta.directorio}/logo.jpeg` : `/static/clientes/${this.state.cif}/logo.jpeg`}></img>
+                                                                    src={this.state.editingLogo || this.state.logoChange != null ? this.state.logoChange : carta.logo_propio ? `/static${carta.directorio}/logo.jpeg` : `/static/clientes/${this.state.cif}/logo.jpeg`}></img>
 
                                                             }
                                                         </figure>
