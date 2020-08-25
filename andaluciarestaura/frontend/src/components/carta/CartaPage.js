@@ -1577,6 +1577,9 @@ export class CartaPage extends Component {
                                                                                                 <option value="L">L</option>
                                                                                                 <option value="XL">XL</option>
                                                                                                 <option value="XXL">XXL</option>
+                                                                                                <option value="Kilo">Kilo</option>
+                                                                                                <option value="Gramos">Gramos</option>
+                                                                                                <option value="Porcion">Porcion</option>
                                                                                                 <option value="Caña">Caña</option>
                                                                                                 <option value="Tubo">Tubo</option>
                                                                                                 <option value="Maceta">Maceta</option>
@@ -1623,6 +1626,9 @@ export class CartaPage extends Component {
                                                                                                 <option value="L">L</option>
                                                                                                 <option value="XL">XL</option>
                                                                                                 <option value="XXL">XXL</option>
+                                                                                                <option value="Kilo">Kilo</option>
+                                                                                                <option value="Gramos">Gramos</option>
+                                                                                                <option value="Porcion">Porcion</option>
                                                                                                 <option value="Caña">Caña</option>
                                                                                                 <option value="Tubo">Tubo</option>
                                                                                                 <option value="Maceta">Maceta</option>
@@ -1669,6 +1675,9 @@ export class CartaPage extends Component {
                                                                                                 <option value="L">L</option>
                                                                                                 <option value="XL">XL</option>
                                                                                                 <option value="XXL">XXL</option>
+                                                                                                <option value="Kilo">Kilo</option>
+                                                                                                <option value="Gramos">Gramos</option>
+                                                                                                <option value="Porcion">Porcion</option>
                                                                                                 <option value="Caña">Caña</option>
                                                                                                 <option value="Tubo">Tubo</option>
                                                                                                 <option value="Maceta">Maceta</option>
@@ -1912,6 +1921,9 @@ export class CartaPage extends Component {
                                                                                                     <option value="L">L</option>
                                                                                                     <option value="XL">XL</option>
                                                                                                     <option value="XXL">XXL</option>
+                                                                                                    <option value="Kilo">Kilo</option>
+                                                                                                    <option value="Gramos">Gramos</option>
+                                                                                                    <option value="Porcion">Porcion</option>
                                                                                                     <option value="Caña">Caña</option>
                                                                                                     <option value="Tubo">Tubo</option>
                                                                                                     <option value="Maceta">Maceta</option>
@@ -1958,6 +1970,9 @@ export class CartaPage extends Component {
                                                                                                     <option value="L">L</option>
                                                                                                     <option value="XL">XL</option>
                                                                                                     <option value="XXL">XXL</option>
+                                                                                                    <option value="Kilo">Kilo</option>
+                                                                                                    <option value="Gramos">Gramos</option>
+                                                                                                    <option value="Porcion">Porcion</option>
                                                                                                     <option value="Caña">Caña</option>
                                                                                                     <option value="Tubo">Tubo</option>
                                                                                                     <option value="Maceta">Maceta</option>
@@ -2004,6 +2019,9 @@ export class CartaPage extends Component {
                                                                                                     <option value="L">L</option>
                                                                                                     <option value="XL">XL</option>
                                                                                                     <option value="XXL">XXL</option>
+                                                                                                    <option value="Kilo">Kilo</option>
+                                                                                                    <option value="Gramos">Gramos</option>
+                                                                                                    <option value="Porcion">Porcion</option>
                                                                                                     <option value="Caña">Caña</option>
                                                                                                     <option value="Tubo">Tubo</option>
                                                                                                     <option value="Maceta">Maceta</option>
