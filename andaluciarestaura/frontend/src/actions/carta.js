@@ -10,6 +10,7 @@ import {
     UPLOADING_PHOTO,
     REGISTER_LOADING,
     UPDATE_CATEGORIA,
+    UPDATE_NOMBRECATEGORIA,
     UPDATE_LOADING,
     UPDATE_PRODUCTO,
     GET_ERRORS
@@ -49,7 +50,6 @@ export const subirproducto = (producto) => (dispatch, getState) => {
             dispatch({
                 type: ADD_PRODUCTO,
                 payload: res.data,
-
             });
         })
         .catch(err => {    
@@ -89,6 +89,7 @@ export const uploadProducto = (producto, cif, is_primera) => (dispatch, getState
     axios.put(`/api/productact/${producto.id}/?categoria=${producto.categoria}`, body, tokenConfig(getState))
         .then(res => {
             console.log("Miralo que hemos hcho el update ", res.data.id)
+            dispatch(createMessages({ updateProducto: "Producto actualizado correctamente." }));
             dispatch({
                 type: UPDATE_PRODUCTO,
                 payload: res.data
@@ -106,6 +107,7 @@ export const uploadProductParams = (producto, categoriaPropia) => (dispatch, get
     axios.put(`/api/productact/${producto.id}/?categoria=${categoriaPropia}`, body, tokenConfig(getState))
         .then(res => {
             console.log("Miralo que hemos hcho el update ", res.data.id)
+            dispatch(createMessages({ updateProducto: "Producto actualizado correctamente." }));
             dispatch({
                 type: UPDATE_PRODUCTO,
                 payload: res.data
@@ -195,6 +197,7 @@ export const getCategorias = (carta_id) => (dispatch, getState) => {
 
 export const deleteCategoria = (categoria_id, carta_id) => (dispatch, getState) => {
 
+    console.log("ESTE ES EL ID DE LA CATEGORIA QUE VOY A BORRAR", categoria_id)
     axios.delete(`/api/damelascategorias/${categoria_id}/?carta=${carta_id}`, tokenConfig(getState))
         .then(res => {
             dispatch(createMessages({ borrarCategoria: "Categoria borrada correctamente." }));
@@ -240,7 +243,7 @@ export const addCategoria = (categoria) => (dispatch, getState) => {
         });
 }
 
-export const updateCategoria = (categoria, notificacion) => (dispatch, getState) => {
+export const updateCategoria = (categoria) => (dispatch, getState) => {
     //Headers
     const config = {
         headers: {
@@ -248,18 +251,40 @@ export const updateCategoria = (categoria, notificacion) => (dispatch, getState)
         }
     };
 
-    const body = JSON.stringify({ name: categoria.name, descripcion: categoria.descripcion, posicion: categoria.posicion, carta: categoria.carta, info_extra: categoria.info_extra });
+    const body = JSON.stringify({ name: categoria.name, descripcion: categoria.descripcion, carta: categoria.carta, info_extra: categoria.info_extra });
     console.log("Body de la nueva carta ->", body)
     //axios.get(`/api/cartaadmin/?cif=${cif}`)
     axios.put(`/api/damelascategorias/${categoria.id}/?carta=${categoria.carta}`, body, tokenConfig(getState))
         .then(res => {
-            if(notificacion){
-                dispatch(createMessages({ updateCategoria: "Categoria actualizada correctamente." }));
-            }
-
+            dispatch(createMessages({ updateCategoria: "Categoria actualizada correctamente." }));
             dispatch({
                 type: UPDATE_CATEGORIA,
                 payload: res.data
+            });
+
+        })
+        .catch(err => console.log(err));
+};
+
+export const updateNombreCategoria = (categoria, idcat, idcarta) => (dispatch, getState) => {
+    //Headers
+    const config = {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    };
+    console.log("ESTE ES EL ID DENTRO DEL ACTION DE LA carta ", idcarta)
+    console.log("ESTE ES EL ID DENTRO DEL ACTION DE LA CATEGORIA ", idcat)
+    const body = JSON.stringify({ name: categoria.nombreNuevaCategoria, descripcion: categoria.descripcion, carta: idcarta, info_extra: categoria.info_extra });
+    console.log("Body de la nueva carta ->", body)
+    //axios.get(`/api/cartaadmin/?cif=${cif}`)
+    axios.put(`/api/damelascategorias/${idcat}/?carta=${idcarta}`, body, tokenConfig(getState))
+        .then(res => {
+            dispatch(createMessages({ updateCategoria: "Categoria actualizada correctamente." }));
+            dispatch({
+                type: UPDATE_NOMBRECATEGORIA,
+                payload: res.data
+
             });
 
         })

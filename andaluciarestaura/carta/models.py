@@ -79,7 +79,8 @@ class Categorias(models.Model):
 class Productos(models.Model):
         categoria = models.ForeignKey(Categorias, on_delete=models.CASCADE, related_name="categoria", null=False)
         name = models.CharField(max_length=100, default="producto")
-        descripcion= models.CharField(max_length=1000)
+        descripcion= models.CharField(max_length=1000, null=True, blank=True)
+        posicion = models.IntegerField(default="-1")
         titulo_precio1 = models.CharField(max_length=30, choices=TAMANIOS, default='')
         titulo_precio2 = models.CharField(max_length=30, choices=TAMANIOS, default='', null=True)
         titulo_precio3 = models.CharField(max_length=30, choices=TAMANIOS, default='', null=True)
