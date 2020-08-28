@@ -1,7 +1,7 @@
 import React, { Component, Fragment, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { uploadProducto, updateCategoria,updateNombreCategoria, getCategorias, deleteproducto, subirproducto, addCategoria, deleteCategoria, subirPhoto, uploadProductParams } from '../../actions/carta';
+import { uploadProducto, updateCategoria, getCategorias, deleteproducto, subirproducto, addCategoria, deleteCategoria, subirPhoto, uploadProductParams } from '../../actions/carta';
 import { updateIntroduccion, subirCartaLogo, updateLogoRounded, updateEstablecimiento, getCartaExpecifica, updateEslogan, updateURL, updateNombreCarta } from '../../actions/cartas';
 import CargarPdf from '../cartaestatica/CargarPdf'
 import { Animated } from "react-animated-css";
@@ -83,7 +83,6 @@ export class CartaPage extends Component {
             newEstablecimiento: "",
             editEstablecimiento: false,
 
-            actualizarCategoria: false,
             nombreNuevaCategoria: "",
             info_extra: "",
             posicion: 1,
@@ -123,36 +122,14 @@ export class CartaPage extends Component {
         console.log("Estoy a null? --> ", carta)
         const producto = { categoriaParaProducto, name, descripcion, tamanio, tamanio2, tamanio3, precio1, precio2, precio3, is_apio, is_altramuces, is_cacahuete, is_crustaceo, is_frutos_con_cascara, is_gluten, is_huevo, is_lacteo, is_molusco, is_mostaza, is_pescado, is_sesamo, is_soja, is_sulfito, carta, photo };
 
-        this.props.subirproducto(producto)
+        this.setState({
+            addingProduct: !this.state.addingProduct
+        })
+
+        console.log("categoria  --> " + categoriaParaProducto)
+        this.props.subirproducto(producto);
 
     };
-
-    componentDidUpdate(prevProps){
-        const { error, alert, message } = this.props;
-        if(message !== prevProps.message){
-            if(message.nuevoProducto) {
-                this.setState({
-                    addingProduct: !this.state.addingProduct
-                })
-            }
-            if(message.updateProducto) {
-                this.setState({
-                    updatingProduct: !this.state.updatingProduct
-                })
-            }
-            if(message.nuevaCategoria) {
-                this.setState({
-                    addCategoria: !this.state.addCategoria
-                })
-            }
-            if(message.updateCategoria) {
-                this.setState({
-                    actualizarCategoria: !this.state.actualizarCategoria
-                })
-            }
-        }
-
-    }
 
     onSubmitPhotoProducto = e => {
         e.preventDefault();
@@ -198,21 +175,11 @@ export class CartaPage extends Component {
         }
         const categoria = { nombreNuevaCategoria, posicion, info_extra, carta };
 
+        this.setState({
+            addCategoria: !this.state.addCategoria
+        })
+
         this.props.addCategoria(categoria);
-    }
-
-    onSubmitActCategorias = (e, categoriamap) => {
-        e.preventDefault();
-
-        const { nombreNuevaCategoria } = this.state;
-
-        var info_extra = "-"
-        if (this.state.info_extra != "") {
-            info_extra = this.state.info_extra
-        }
-        const categoria = { nombreNuevaCategoria, info_extra };
-
-        this.props.updateNombreCategoria(categoria, categoriamap.id, categoriamap.carta);
     }
 
     onSubmitDeleteCategoria = (e, id, carta) => {
@@ -566,12 +533,6 @@ export class CartaPage extends Component {
         })
     }
 
-    actCategory = e => {
-        this.setState({
-            actualizarCategoria: !this.state.actualizarCategoria
-        })
-    }
-
 
     editEslogan = e => {
         console.log("Hola")
@@ -791,11 +752,8 @@ export class CartaPage extends Component {
         deleteCategoria: PropTypes.func.isRequired,
         auth: PropTypes.object.isRequired,
         addCategoria: PropTypes.func.isRequired,
-        updateCategoria: PropTypes.func.isRequired,
         cartaReal: PropTypes.object.isRequired,
         totalcartas: PropTypes.array.isRequired,
-        errors: PropTypes.object.isRequired,
-        messages: PropTypes.object.isRequired,
     };
 
     componentDidMount() {
@@ -1616,9 +1574,6 @@ export class CartaPage extends Component {
                                                                                                 <option value="L">L</option>
                                                                                                 <option value="XL">XL</option>
                                                                                                 <option value="XXL">XXL</option>
-                                                                                                <option value="Kilo">Kilo</option>
-                                                                                                <option value="Gramos">Gramos</option>
-                                                                                                <option value="Porcion">Porcion</option>
                                                                                                 <option value="Caña">Caña</option>
                                                                                                 <option value="Tubo">Tubo</option>
                                                                                                 <option value="Maceta">Maceta</option>
@@ -1644,7 +1599,6 @@ export class CartaPage extends Component {
                                                                                 <div className="field" style={{ marginTop: '10px' }}>
                                                                                     <label className="label">Precio 1</label>
                                                                                     <div className="control">
-
                                                                                         <input className="input" name="precio1" type="text" placeholder="0.0" onChange={this.onChange} defaultValue={precio1} required />
                                                                                     </div>
                                                                                 </div>
@@ -1666,9 +1620,6 @@ export class CartaPage extends Component {
                                                                                                 <option value="L">L</option>
                                                                                                 <option value="XL">XL</option>
                                                                                                 <option value="XXL">XXL</option>
-                                                                                                <option value="Kilo">Kilo</option>
-                                                                                                <option value="Gramos">Gramos</option>
-                                                                                                <option value="Porcion">Porcion</option>
                                                                                                 <option value="Caña">Caña</option>
                                                                                                 <option value="Tubo">Tubo</option>
                                                                                                 <option value="Maceta">Maceta</option>
@@ -1715,9 +1666,6 @@ export class CartaPage extends Component {
                                                                                                 <option value="L">L</option>
                                                                                                 <option value="XL">XL</option>
                                                                                                 <option value="XXL">XXL</option>
-                                                                                                <option value="Kilo">Kilo</option>
-                                                                                                <option value="Gramos">Gramos</option>
-                                                                                                <option value="Porcion">Porcion</option>
                                                                                                 <option value="Caña">Caña</option>
                                                                                                 <option value="Tubo">Tubo</option>
                                                                                                 <option value="Maceta">Maceta</option>
@@ -1961,9 +1909,6 @@ export class CartaPage extends Component {
                                                                                                     <option value="L">L</option>
                                                                                                     <option value="XL">XL</option>
                                                                                                     <option value="XXL">XXL</option>
-                                                                                                    <option value="Kilo">Kilo</option>
-                                                                                                    <option value="Gramos">Gramos</option>
-                                                                                                    <option value="Porcion">Porcion</option>
                                                                                                     <option value="Caña">Caña</option>
                                                                                                     <option value="Tubo">Tubo</option>
                                                                                                     <option value="Maceta">Maceta</option>
@@ -2010,9 +1955,6 @@ export class CartaPage extends Component {
                                                                                                     <option value="L">L</option>
                                                                                                     <option value="XL">XL</option>
                                                                                                     <option value="XXL">XXL</option>
-                                                                                                    <option value="Kilo">Kilo</option>
-                                                                                                    <option value="Gramos">Gramos</option>
-                                                                                                    <option value="Porcion">Porcion</option>
                                                                                                     <option value="Caña">Caña</option>
                                                                                                     <option value="Tubo">Tubo</option>
                                                                                                     <option value="Maceta">Maceta</option>
@@ -2059,9 +2001,6 @@ export class CartaPage extends Component {
                                                                                                     <option value="L">L</option>
                                                                                                     <option value="XL">XL</option>
                                                                                                     <option value="XXL">XXL</option>
-                                                                                                    <option value="Kilo">Kilo</option>
-                                                                                                    <option value="Gramos">Gramos</option>
-                                                                                                    <option value="Porcion">Porcion</option>
                                                                                                     <option value="Caña">Caña</option>
                                                                                                     <option value="Tubo">Tubo</option>
                                                                                                     <option value="Maceta">Maceta</option>
@@ -2295,7 +2234,6 @@ export class CartaPage extends Component {
                                                                                                     <div className="control buttons is-centered" style={{ marginTop: '20px' }}>
                                                                                                         <button className="button is-success" style={{ color: 'white', backgroundColor: '#bca466' }} onClick={e => this.onSubmitDeleteCategoria(e, categoria.id, categoria.carta)}>Si</button>
                                                                                                     </div>
-
                                                                                                 </div>
                                                                                                 <div className="column">
                                                                                                     <div className="control buttons is-centered" style={{ marginTop: '20px' }}>
@@ -2304,51 +2242,6 @@ export class CartaPage extends Component {
                                                                                                 </div>
                                                                                                 <div className="column"></div>
 
-                                                                                            </div>
-                                                                                        </form>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                            {/*Actualizar Categoria*/}
-                                                                                <div className={this.state.actualizarCategoria ? "modal is-active" : "modal"}>
-                                                                                <div className="modal-background"></div>
-                                                                                <div className="modal-content">
-                                                                                    <div className="container box">
-                                                                                        <div className="has-text-right">
-                                                                                            <button className="button" style={{ backgroundColor: '#171c8f' }} onClick={this.actCategory}>
-                                                                                                <span className="icon is-small">
-                                                                                                    <i className="fas fa-times " style={{ color: 'white' }}></i>
-                                                                                                </span>
-                                                                                            </button>
-                                                                                        </div>
-                                                                                        <div className="has-text-centered">
-
-                                                                                            <span className="icon" >
-                                                                                                <i className="fas fa-clipboard" style={{ fontSize: '70px', color: "#bca466" }}></i>
-                                                                                            </span>
-                                                                                            <h1 className="title" style={{ marginTop: '10px' }}> ACTUALIZAR CATEGORIA </h1>
-
-                                                                                        </div>
-
-                                                                                        <hr style={{ marginTop: '30px', backgroundColor: '#bca466', color: '#bca466' }} />
-                                                                                        <form>
-                                                                                            <div className="columns">
-                                                                                                <div className="column">
-                                                                                                    <div className="field">
-                                                                                                        <label className="label" style={{ marginTop: '10px' }}>Nombre para actualizar la categoria</label>
-                                                                                                        <div className="control">
-                                                                                                            <input className="input" onChange={this.onChange} defaultValue={this.state.nombreNuevaCategoria} name="nombreNuevaCategoria" type="text" placeholder="Entrantes, Postres..." />
-                                                                                                        </div>
-
-                                                                                                        <label className="label" style={{ marginTop: '10px' }}>Información extra a actualizar</label>
-                                                                                                        <div className="control">
-                                                                                                            <input className="input" onChange={this.onChange} defaultValue={this.state.info_extra} name="info_extra" type="text" placeholder="Estas tapas llevan todas patatas fritas..." />
-                                                                                                        </div>
-                                                                                                        <div className="has-text-right">
-                                                                                                            <button className="button is-success" style={{ marginTop: '10px', color: 'white', backgroundColor: '#bca466' }} onClick={e => this.onSubmitActCategorias(e, categoria)} > Actualizar </button>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                </div>
                                                                                             </div>
                                                                                         </form>
                                                                                     </div>
@@ -2390,22 +2283,6 @@ export class CartaPage extends Component {
                                                                                                                 <button class="button is-danger" style={{ backgroundColor: 'white' }} onClick={this.borrarCategoria}>
                                                                                                                     <span class="icon is-small">
                                                                                                                         <i class="fas fa-trash" style={{ color: '#bca466' }}></i>
-                                                                                                                    </span>
-                                                                                                                </button>
-                                                                                                            </div>
-                                                                                                        </Tooltip>
-
-
-                                                                                                    </div>
-                                                                                                    <div className="column">
-
-                                                                                                        <Tooltip title="Editar categoria">
-
-                                                                                                            <div >
-
-                                                                                                                <button class="button is-danger" style={{ backgroundColor: 'white' }} onClick={this.actCategory}>
-                                                                                                                    <span class="icon is-small">
-                                                                                                                        <i class="fas fa-pen" style={{ color: '#bca466' }}></i>
                                                                                                                     </span>
                                                                                                                 </button>
                                                                                                             </div>
@@ -2761,9 +2638,7 @@ const mapStateToProps = state => ({
     auth: state.auth,
     cartaReal: state.reducerCartas.expecificCarta,
     totalcartas: state.reducerCartas.cartas,
-    isUpdatingPhoto: state.cartas.isUpdatingPhoto,
-    error: state.errors,
-    message: state.messages
+    isUpdatingPhoto: state.cartas.isUpdatingPhoto
 });
 
-export default connect(mapStateToProps, { updateIntroduccion, subirCartaLogo, uploadProductParams, updateLogoRounded, uploadProducto, updateCategoria, updateNombreCategoria,  updateEstablecimiento, updateNombreCarta, updateURL, updateEslogan, getCartaExpecifica, subirproducto, addCategoria, getCategorias, deleteproducto, deleteCategoria, subirPhoto })(CartaPage);
+export default connect(mapStateToProps, { updateIntroduccion, subirCartaLogo, uploadProductParams, updateLogoRounded, uploadProducto, updateCategoria, updateEstablecimiento, updateNombreCarta, updateURL, updateEslogan, getCartaExpecifica, subirproducto, addCategoria, getCategorias, deleteproducto, deleteCategoria, subirPhoto })(CartaPage);

@@ -1,4 +1,4 @@
-import { GET_CARTA, DELETE_PRODUCTO, ADD_PRODUCTO, GET_PRODUCTOS, GET_CATEGORIAS, DELETE_CATEGORIA, ADD_CATEGORIA, UPDATE_NOMBRECATEGORIA,UPLOADED_PHOTO, UPLOADING_PHOTO, UPDATE_CATEGORIA, UPDATE_PRODUCTO } from '../actions/types.js';
+import { GET_CARTA, DELETE_PRODUCTO, ADD_PRODUCTO, GET_PRODUCTOS, GET_CATEGORIAS, DELETE_CATEGORIA, ADD_CATEGORIA, UPLOADED_PHOTO, UPLOADING_PHOTO, UPDATE_CATEGORIA, UPDATE_PRODUCTO } from '../actions/types.js';
 
 const initialState = {
     cartas: [],
@@ -67,13 +67,6 @@ export default function(state = initialState, action) {
             return {
                 ...state,
                 categorias: categorias1
-            }
-        case UPDATE_NOMBRECATEGORIA:
-            return{
-                ...state,
-                cartas: state.cartas.map(categoria => (
-                    categoria.id == action.payload.id ? categoria = action.payload : categoria = categoria
-                ))
             }
         case ADD_CATEGORIA:
             return {
