@@ -49,7 +49,7 @@ export class Alerts extends Component {
             if(error.msg.name)
                 alert.error("Debes de rellenar el campo Nombre.")
             if(error.msg.precio1)
-                alert.error("Debes de rellenar el campo del primer precio.")
+                alert.error("Debes de rellenar el campo precio. O recuerda poner un punto o una coma. Ej: 2.8 ")
             if(error.msg.descripcion)
                 alert.error("Debes de rellenar el campo Descripcion del nuevo producto.")
             if(error.msg.categoria)

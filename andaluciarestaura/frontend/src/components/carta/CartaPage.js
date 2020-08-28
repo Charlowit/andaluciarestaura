@@ -122,14 +122,30 @@ export class CartaPage extends Component {
         console.log("Estoy a null? --> ", carta)
         const producto = { categoriaParaProducto, name, descripcion, tamanio, tamanio2, tamanio3, precio1, precio2, precio3, is_apio, is_altramuces, is_cacahuete, is_crustaceo, is_frutos_con_cascara, is_gluten, is_huevo, is_lacteo, is_molusco, is_mostaza, is_pescado, is_sesamo, is_soja, is_sulfito, carta, photo };
 
-        this.setState({
-            addingProduct: !this.state.addingProduct
-        })
-
         console.log("categoria  --> " + categoriaParaProducto)
         this.props.subirproducto(producto);
 
     };
+
+    componentDidUpdate(prevProps){
+
+        const { error, alert, message } = this.props;
+
+        if(message !== prevProps.message) {
+
+            if(message.nuevoProducto) {
+                this.setState({
+                    addingProduct: !this.state.addingProduct
+                })
+            }
+            if(message.nuevaCategoria) {
+                this.setState({
+                    addCategoria: !this.state.addCategoria
+                })
+            }
+
+        }
+    }
 
     onSubmitPhotoProducto = e => {
         e.preventDefault();
@@ -174,10 +190,6 @@ export class CartaPage extends Component {
             info_extra = this.state.info_extra
         }
         const categoria = { nombreNuevaCategoria, posicion, info_extra, carta };
-
-        this.setState({
-            addCategoria: !this.state.addCategoria
-        })
 
         this.props.addCategoria(categoria);
     }
@@ -754,6 +766,8 @@ export class CartaPage extends Component {
         addCategoria: PropTypes.func.isRequired,
         cartaReal: PropTypes.object.isRequired,
         totalcartas: PropTypes.array.isRequired,
+        error: PropTypes.object.isRequired,
+        message: PropTypes.object.isRequired
     };
 
     componentDidMount() {
@@ -2204,55 +2218,12 @@ export class CartaPage extends Component {
                                                                 <div className="debug">
                                                                     {this.props.categorias.map(categoria => (
                                                                         <div>
-                                                                            <div className={this.state.borrarCategoria ? "modal is-active" : "modal"}>
-                                                                                <div className="modal-background"></div>
-                                                                                <div className="modal-content">
-                                                                                    <div className="container box" >
-                                                                                        <div className="has-text-right">
-
-                                                                                            <button className="button" style={{ backgroundColor: '#171c8f' }} onClick={this.borrarCategoria}>
-                                                                                                <span className="icon is-small">
-                                                                                                    <i className="fas fa-times " style={{ color: 'white' }}></i>
-                                                                                                </span>
-                                                                                            </button>
-                                                                                        </div>
-                                                                                        <div className="has-text-centered">
-
-
-                                                                                            <span className="icon" >
-                                                                                                <i className="fas fa-trash" style={{ fontSize: '100px', color: "#bca466" }}></i>
-                                                                                            </span>
-                                                                                            <h1 className="title" style={{ marginTop: '10px' }}> BORRAR CATEGORIA </h1>
-                                                                                        </div>
-                                                                                        <hr style={{ marginTop: '30px', backgroundColor: '#bca466', color: '#bca466' }} />
-                                                                                        <form>
-                                                                                            <label className="label has-text-centered" style={{ marginTop: '10px' }}>Estas intentando borrar una categoria! Debes saber que si la eliminas se borrarán todos los productos que contenga. ¿Estas seguro?</label>
-
-                                                                                            <div className="columns">
-                                                                                                <div className="column"></div>
-                                                                                                <div className="column">
-                                                                                                    <div className="control buttons is-centered" style={{ marginTop: '20px' }}>
-                                                                                                        <button className="button is-success" style={{ color: 'white', backgroundColor: '#bca466' }} onClick={e => this.onSubmitDeleteCategoria(e, categoria.id, categoria.carta)}>Si</button>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                                <div className="column">
-                                                                                                    <div className="control buttons is-centered" style={{ marginTop: '20px' }}>
-                                                                                                        <button className="button is-success" style={{ color: 'white', backgroundColor: '#bca466' }} onClick={this.borrarCategoria}>No</button>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                                <div className="column"></div>
-
-                                                                                            </div>
-                                                                                        </form>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
                                                                             <Animated animationIn="bounceInLeft" >
                                                                                 <div style={{ marginTop: '60px' }} key={categoria.id}>
                                                                                     <div className='card equal-height' style={{ backgroundColor: '#d5c69f' }}>
                                                                                         <div className="columns">
                                                                                             <div className="column is-two-thirds">
-                                                                                                <h1 className="title has-text-centered">{categoria.name}</h1>
+                                                                                                <h1 className="title has-text-centered">{categoria.name}, {categoria.id}</h1>
                                                                                             </div>
 
                                                                                             <div className="column is-full-mobile" >
@@ -2277,9 +2248,7 @@ export class CartaPage extends Component {
                                                                                                     </div>
                                                                                                     <div className="column">
                                                                                                         <Tooltip title="Borrar categoria">
-
                                                                                                             <div >
-
                                                                                                                 <button class="button is-danger" style={{ backgroundColor: 'white' }} onClick={this.borrarCategoria}>
                                                                                                                     <span class="icon is-small">
                                                                                                                         <i class="fas fa-trash" style={{ color: '#bca466' }}></i>
@@ -2287,10 +2256,63 @@ export class CartaPage extends Component {
                                                                                                                 </button>
                                                                                                             </div>
                                                                                                         </Tooltip>
+                                                                                                        <div className={this.state.borrarCategoria ? "modal is-active" : "modal"}>
+                                                                                                            <div className="modal-background"></div>
+                                                                                                            <div className="modal-content">
+                                                                                                                <div className="container box" >
+                                                                                                                    <div className="has-text-right">
 
+                                                                                                                        <button className="button" style={{ backgroundColor: '#171c8f' }} onClick={this.borrarCategoria}>
+                                                                                                                            <span className="icon is-small">
+                                                                                                                                <i className="fas fa-times " style={{ color: 'white' }}></i>
+                                                                                                                            </span>
+                                                                                                                        </button>
+                                                                                                                    </div>
+                                                                                                                    <div className="has-text-centered">
+
+
+                                                                                                                        <span className="icon" >
+                                                                                                                            <i className="fas fa-trash" style={{ fontSize: '100px', color: "#bca466" }}></i>
+                                                                                                                        </span>
+                                                                                                                        <h1 className="title" style={{ marginTop: '10px' }}> BORRAR CATEGORIA </h1>
+                                                                                                                    </div>
+                                                                                                                    <hr style={{ marginTop: '30px', backgroundColor: '#bca466', color: '#bca466' }} />
+                                                                                                                    <form>
+                                                                                                                        <label className="label has-text-centered" style={{ marginTop: '10px' }}>Estas intentando borrar una categoria! Debes saber que si la eliminas se borrarán todos los productos que contenga. ¿Estas seguro?</label>
+
+                                                                                                                        <div className="columns">
+                                                                                                                            <div className="column"></div>
+                                                                                                                            <div className="column">
+                                                                                                                                <div className="control buttons is-centered" style={{ marginTop: '20px' }}>
+                                                                                                                                    var categoryid = {categoria.id}
+                                                                                                                                    var categorycarta = {categoria.carta}
+                                                                                                                                    <button className="button is-success" style={{ color: 'white', backgroundColor: '#bca466' }} onClick={e => this.onSubmitDeleteCategoria(e, categoryid, categorycarta)}>Si</button>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                            <div className="column">
+                                                                                                                                <div className="control buttons is-centered" style={{ marginTop: '20px' }}>
+                                                                                                                                    <button className="button is-success" style={{ color: 'white', backgroundColor: '#bca466' }} onClick={this.borrarCategoria}>No</button>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                            <div className="column"></div>
+
+                                                                                                                        </div>
+                                                                                                                    </form>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>
                                                                                                     </div>
-
-
+                                                                                                    <div className="column">
+                                                                                                        <Tooltip title="Editar categoria">
+                                                                                                            <div >
+                                                                                                                <button class="button is-danger" style={{ backgroundColor: 'white' }} onClick={this.borrarCategoria}>
+                                                                                                                    <span class="icon is-small">
+                                                                                                                        <i class="fas fa-pen" style={{ color: '#bca466' }}></i>
+                                                                                                                    </span>
+                                                                                                                </button>
+                                                                                                            </div>
+                                                                                                        </Tooltip>
+                                                                                                    </div>
                                                                                                 </div>
                                                                                             </div>
 
@@ -2638,7 +2660,9 @@ const mapStateToProps = state => ({
     auth: state.auth,
     cartaReal: state.reducerCartas.expecificCarta,
     totalcartas: state.reducerCartas.cartas,
-    isUpdatingPhoto: state.cartas.isUpdatingPhoto
+    isUpdatingPhoto: state.cartas.isUpdatingPhoto,
+    error: state.errors,
+    message: state.messages
 });
 
 export default connect(mapStateToProps, { updateIntroduccion, subirCartaLogo, uploadProductParams, updateLogoRounded, uploadProducto, updateCategoria, updateEstablecimiento, updateNombreCarta, updateURL, updateEslogan, getCartaExpecifica, subirproducto, addCategoria, getCategorias, deleteproducto, deleteCategoria, subirPhoto })(CartaPage);
