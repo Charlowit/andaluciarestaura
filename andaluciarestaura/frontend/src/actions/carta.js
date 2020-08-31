@@ -10,6 +10,7 @@ import {
     UPLOADING_PHOTO,
     REGISTER_LOADING,
     UPDATE_CATEGORIA,
+    UPDATE_NOMBRECATEGORIA,
     UPDATE_LOADING,
     UPDATE_PRODUCTO,
     GET_ERRORS
@@ -107,6 +108,7 @@ export const uploadProductParams = (producto, categoriaPropia) => (dispatch, get
         .then(res => {
             dispatch(createMessages({ productoactualizado: "Producto actualizado correctamente." }));
             console.log("Miralo que hemos hcho el update ", res.data.id)
+            dispatch(createMessages({ updateProducto: "El producto se ha actualizado correctamente!." }));
             dispatch({
                 type: UPDATE_PRODUCTO,
                 payload: res.data
@@ -269,6 +271,31 @@ export const updateCategoria = (categoria, notificacion) => (dispatch, getState)
 
             dispatch({
                 type: UPDATE_CATEGORIA,
+                payload: res.data
+            });
+
+        })
+        .catch(err => console.log(err));
+};
+
+export const actNombreCategoria = (categoria) => (dispatch, getState) => {
+    //Headers
+    const config = {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    };
+
+    const body = JSON.stringify({ name: categoria.nombreNuevaCategoria, posicion: categoria.posicion, info_extra: categoria.info_extra, carta: categoria.carta });
+    console.log("Body de la nueva carta ->", body)
+    //axios.get(`/api/cartaadmin/?cif=${cif}`)
+    axios.put(`/api/damelascategorias/${categoria.id}/?carta=${categoria.carta}`, body, tokenConfig(getState))
+        .then(res => {
+
+            dispatch(createMessages({ updateNameCategoria: "Categoria actualizada correctamente." }));
+
+            dispatch({
+                type: UPDATE_NOMBRECATEGORIA,
                 payload: res.data
             });
 

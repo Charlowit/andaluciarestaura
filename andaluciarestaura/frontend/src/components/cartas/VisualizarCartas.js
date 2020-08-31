@@ -51,7 +51,6 @@ export class VisualizarCartas extends Component {
             nombreCartaVacio: false,
             establecimientoVacio: false,
             plantillaVacia: false,
-            plantillaSeleccionada: ""
         };
     }
 
@@ -90,14 +89,6 @@ export class VisualizarCartas extends Component {
         e.preventDefault();
 
         carta.show_as_pdf = !carta.show_as_pdf
-
-        this.props.updateShow(carta);
-    };
-
-    onChangePlantilla = (e, carta) => {
-        e.preventDefault();
-
-        carta.plantilla = e.target.value;
 
         this.props.updateShow(carta);
     };
@@ -277,10 +268,10 @@ export class VisualizarCartas extends Component {
                                                                                 <div className="select is-danger">
                                                                                     <select name="plantilla" onChange={this.onChange} defaultValue={this.state.plantilla}>
                                                                                         <option value="">Ninguna plantilla seleccionada</option>
-                                                                                        <option value="Plantilla 1">Tema: Defecto</option>
-                                                                                        <option value="Plantilla 2">Tema: Discoteca</option>
-                                                                                        <option value="Plantilla 3">Tema: Terraza</option>
-                                                                                        <option value="Plantilla 4">Tema: Postres</option>
+                                                                                        <option value="Plantilla 1">Plantilla 1</option>
+                                                                                        <option value="Plantilla 2">Plantilla 2</option>
+                                                                                        <option value="Plantilla 3">Plantilla 3</option>
+                                                                                        <option value="Plantilla 4">Plantilla 4</option>
 
                                                                                     </select>
                                                                                 </div>
@@ -292,11 +283,11 @@ export class VisualizarCartas extends Component {
                                                                             <div className="control">
                                                                                 <div className="select">
                                                                                     <select name="plantilla" onChange={this.onChange} defaultValue={this.state.plantilla}>
-                                                                                        <option value="">Ninguna plantilla seleccionada</option>
-                                                                                        <option value="Plantilla 1">Tema: Defecto</option>
-                                                                                        <option value="Plantilla 2">Tema: Discoteca</option>
-                                                                                        <option value="Plantilla 3">Tema: Terraza</option>
-                                                                                        <option value="Plantilla 4">Tema: Postres</option>
+                                                                                        <option>Ninguna plantilla seleccionada</option>
+                                                                                        <option value="Plantilla 1">Plantilla 1</option>
+                                                                                        <option value="Plantilla 2">Plantilla 2</option>
+                                                                                        <option value="Plantilla 3">Plantilla 3</option>
+                                                                                        <option value="Plantilla 4">Plantilla 4</option>
                                                                                     </select>
                                                                                 </div>
                                                                             </div>
@@ -357,9 +348,9 @@ export class VisualizarCartas extends Component {
                                                     <div className="box" >
                                                         <div className="has-text-right">
 
-                                                            <button className="button is-danger " style={{ backgroundColor: '#171c8f' }} onClick={this.modalQr}>
+                                                            <button className="button is-danger " onClick={this.modalQr}>
                                                                 <span className="icon is-small">
-                                                                    <i className="fas fa-times" style={{color: 'white'}}></i>
+                                                                    <i className="fas fa-times"></i>
                                                                 </span>
                                                             </button>
                                                         </div>
@@ -369,9 +360,7 @@ export class VisualizarCartas extends Component {
                                                         <div className="field ">
                                                             <div className="field-body" >
                                                                 <div className="field" >
-                                                                    <Tooltip title="Descargar el codigo QR">
-                                                                        <a className="button" style={{ backgroundColor: '#bca466', color: 'white' }} href={this.props.cartas[0].id == this.state.cartaClickedId ? `/static/clientes/${this.props.auth.user.cif}/qr.jpg` : `/static/clientes/${this.props.auth.user.cif}/${carta.id}/qr.jpg`} download="QRcode">Descargar</a>
-                                                                    </Tooltip>
+                                                                    <a className="button" style={{ backgroundColor: '#bca466', color: 'white' }} href={this.props.cartas[0].id == this.state.cartaClickedId ? `/static/clientes/${this.props.auth.user.cif}/qr.jpg` : `/static/clientes/${this.props.auth.user.cif}/${carta.id}/qr.jpg`} download="QRcode">Descargar</a>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -409,29 +398,12 @@ export class VisualizarCartas extends Component {
                                                                 </div>
 
                                                                 <div className="content" style={{ paddingTop: '10px' }}>
-                                                                    <Tooltip title="Cambiar visualizacion de la carta">
-                                                                        <div className="select">
-                                                                            <select onChange={e => this.onChangePremium(e, carta)} defaultValue={carta.show_as_pdf}>
-                                                                                <option value="true">Ver como PDF</option>
-                                                                                <option value="false">Vista Premium</option>
-                                                                            </select>
-                                                                        </div>
-                                                                    </Tooltip>
-                                                                </div>
-
-
-                                                                <div className="content" style={{ paddingTop: '10px' }}>
-                                                                    <Tooltip title="Cambiar tema de la carta">
-                                                                        <div className="select">
-                                                                            <select id="plantillaSeleccionada" onChange={e => this.onChangePlantilla(e, carta)} defaultValue={carta.plantilla}>
-                                                                                <option value="">Ninguna plantilla seleccionada</option>
-                                                                                <option value="Plantilla 1">Tema: Defecto</option>
-                                                                                <option value="Plantilla 2">Tema: Discoteca</option>
-                                                                                <option value="Plantilla 3">Tema: Terraza</option>
-                                                                                <option value="Plantilla 4">Tema: Postres</option>
-                                                                            </select>
-                                                                        </div>
-                                                                    </Tooltip>
+                                                                    <div className="select">
+                                                                        <select onChange={e => this.onChangePremium(e, carta)} defaultValue={carta.show_as_pdf}>
+                                                                            <option value="true">Ver como PDF</option>
+                                                                            <option value="false">Vista Premium</option>
+                                                                        </select>
+                                                                    </div>
                                                                 </div>
 
                                                                 <footer className="card-footer">
@@ -447,14 +419,11 @@ export class VisualizarCartas extends Component {
 
                                                                     </div>
                                                                     <div className="card-footer-item">
-                                                                        <Tooltip title="Editar la carta">
+                                                                        <button className="button">
 
-                                                                            <button className="button">
+                                                                            <Link className="link" style={{ width: '100%', color: '#bca466' }} to={`/carta-page/${carta.id}`}>Editar</Link>
 
-                                                                                <Link className="link" style={{ width: '100%', color: '#bca466' }} to={`/carta-page/${carta.id}`}>Editar</Link>
-
-                                                                            </button>
-                                                                        </Tooltip>
+                                                                        </button>
                                                                     </div>
                                                                     <div className="card-footer-item">
                                                                         <Tooltip title="Visitas de la carta">

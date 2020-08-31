@@ -2,7 +2,6 @@ import axios from 'axios';
 import { GET_ALL_CARTAS, ADD_CARTA, DELETE_CARTA, GET_EXPECIFIC_CARTA, GET_CARTA, GET_CATEGORIAS, UPDATE_CARTA, GET_ERRORS } from './types';
 import { tokenConfig } from './auth'
 import { createMessages } from './messages'
-import { createTransform } from 'redux-persist';
 
 export const getCartas = (cif) => (dispatch, getState) => {
 
@@ -240,7 +239,7 @@ export const updateURL = (carta, urltype) => (dispatch, getState) => {
 
 export const updateShow = (carta) => (dispatch, getState) => {
 
-    const body = JSON.stringify({ id: carta.id, establecimiento: carta.establecimiento, name: carta.name, propietario: carta.propietario, show_as_pdf: carta.show_as_pdf, directorio: carta.directorio, plantilla: carta.plantilla });
+    const body = JSON.stringify({ id: carta.id, establecimiento: carta.establecimiento, name: carta.name, propietario: carta.propietario, show_as_pdf: carta.show_as_pdf, directorio: carta.directorio });
 
     axios.put(`/api/getcartas/${carta.id}/`, body, tokenConfig(getState))
         .then(res => {
