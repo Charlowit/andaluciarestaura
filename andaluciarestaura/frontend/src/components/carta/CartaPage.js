@@ -889,7 +889,7 @@ export class CartaPage extends Component {
 
                             <section className="hero is-bold" style={bkg}>
 
-
+                            <div>
                                 <div className={this.state.borrarProducto ? "modal is-active" : "modal"}>
                                     <div className="modal-background"></div>
                                     <div className="modal-content">
@@ -1337,7 +1337,7 @@ export class CartaPage extends Component {
                                                             </span>
                                                         </button>
                                                     </Tooltip>
-                                                    : "" }
+                                                    }
 
                                                 <div className=" has-text-centered" >
                                                     <figure className="image is-128x128 is-inline-block">
