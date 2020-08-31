@@ -2848,13 +2848,9 @@ const mapStateToProps = state => ({
     is_active: state.cartas.is_active,
     auth: state.auth,
     cartaReal: state.reducerCartas.expecificCarta,
-<<<<<<< HEAD
-    isUpdatingPhoto: state.cartas.isUpdatingPhoto
-=======
     totalcartas: state.reducerCartas.cartas,
     isUpdatingPhoto: state.cartas.isUpdatingPhoto,
     message: state.messages
->>>>>>> master
 });
 
 export default connect(mapStateToProps, { updateIntroduccion, subirCartaLogo, uploadProductParams, updateLogoRounded, uploadProducto, updateCategoria, updateEstablecimiento, updateNombreCarta, updateURL, updateEslogan, getCartaExpecifica, subirproducto, addCategoria, getCategorias, deleteproducto, deleteCategoria, subirPhoto, actNombreCategoria })(CartaPage);
