@@ -49,7 +49,7 @@ export class Alerts extends Component {
             if(error.msg.name)
                 alert.error("Debes de rellenar el campo Nombre.")
             if(error.msg.precio1)
-                alert.error("Debes de rellenar el campo del primer precio.")
+                alert.error("Debes de rellenar el campo del primer precio. O bien has introducido mal el preccio, recuerda es con punto. Ej: 2.5")
             if(error.msg.descripcion)
                 alert.error("Debes de rellenar el campo Descripcion del nuevo producto.")
             if(error.msg.categoria)
@@ -123,7 +123,12 @@ export class Alerts extends Component {
             if(message.nuevaVisualizacion) {
                 alert.success(message.nuevaVisualizacion);
             }
-            
+            if(message.updateNameCategoria){
+                alert.success(message.updateNameCategoria)
+            }
+            if(message.updateProducto){
+                alert.success(message.updateProducto)
+            }
             
         }
     }

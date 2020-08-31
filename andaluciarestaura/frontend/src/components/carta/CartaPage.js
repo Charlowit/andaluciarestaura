@@ -1,7 +1,7 @@
 import React, { Component, Fragment, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { uploadProducto, updateCategoria, getCategorias, deleteproducto, subirproducto, addCategoria, deleteCategoria, subirPhoto, uploadProductParams } from '../../actions/carta';
+import { uploadProducto, updateCategoria, getCategorias, deleteproducto, subirproducto, addCategoria, deleteCategoria, subirPhoto, uploadProductParams, actNombreCategoria } from '../../actions/carta';
 import { updateIntroduccion, subirCartaLogo, updateLogoRounded, updateEstablecimiento, getCartaExpecifica, updateEslogan, updateURL, updateNombreCarta } from '../../actions/cartas';
 import CargarPdf from '../cartaestatica/CargarPdf'
 import { Animated } from "react-animated-css";
@@ -108,7 +108,8 @@ export class CartaPage extends Component {
             introduccionVacia: false,
             borrarCategoria: false,
             borrarProducto: false,
-            clickedCategoria: null
+            clickedCategoria: null,
+            actCategoria: false
         };
     }
 
@@ -122,10 +123,6 @@ export class CartaPage extends Component {
         let carta = this.props.match.params.id;
         console.log("Estoy a null? --> ", carta)
         const producto = { categoriaParaProducto, name, descripcion, tamanio, tamanio2, tamanio3, precio1, precio2, precio3, is_apio, is_altramuces, is_cacahuete, is_crustaceo, is_frutos_con_cascara, is_gluten, is_huevo, is_lacteo, is_molusco, is_mostaza, is_pescado, is_sesamo, is_soja, is_sulfito, carta, photo };
-
-        this.setState({
-            addingProduct: !this.state.addingProduct
-        })
 
         console.log("categoria  --> " + categoriaParaProducto)
         this.props.subirproducto(producto);
@@ -176,11 +173,28 @@ export class CartaPage extends Component {
         }
         const categoria = { nombreNuevaCategoria, posicion, info_extra, carta };
 
-        this.setState({
-            addCategoria: !this.state.addCategoria
-        })
-
         this.props.addCategoria(categoria);
+    }
+
+    onSubmitActualizarCategoria = e => {
+        e.preventDefault();
+        var id = this.state.clickedCategoria.id
+        var posicion = this.state.clickedCategoria.posicion
+        var carta = this.state.clickedCategoria.carta
+        var nombreNuevaCategoria = this.state.clickedCategoria.nombre
+        if(this.state.nombreNuevaCategoria != ""){
+            nombreNuevaCategoria = this.state.nombreNuevaCategoria
+        }
+        var info_extra = this.state.clickedCategoria.info_extra
+        if (this.state.info_extra != "") {
+            info_extra = this.state.info_extra
+        }
+        const categoria = { id , nombreNuevaCategoria, posicion, info_extra, carta };
+
+
+
+        this.props.actNombreCategoria(categoria);
+
     }
 
     onSubmitDeleteCategoria = (e, id, carta) => {
@@ -475,6 +489,69 @@ export class CartaPage extends Component {
         })
     }
 
+    componentDidUpdate(prevProps){
+        const { alert, message } = this.props;
+
+        if(message !== prevProps.message){
+
+
+            if(message.nuevaCategoria) {
+                this.setState({
+                    addCategoria: !this.state.addCategoria,
+                    info_extra: "",
+                    nombreNuevaCategoria: "",
+                    posicion: 1,
+                })
+            }
+            if(message.nuevoProducto) {
+                this.setState({
+                    addingProduct : !this.state.addingProduct,
+                    tamanio: "",
+                    tamanio2: "",
+                    tamanio3: "",
+                    precio1: "",
+                    precio2: "0.0",
+                    precio3: "0.0",
+                    descripcion: "",
+                    name: "",
+                    is_apio: false,
+                    is_altramuces: false,
+                    is_cacahuete: false,
+                    is_crustaceo: false,
+                    is_frutos_con_cascara: false,
+                    is_gluten: false,
+                    is_huevo: false,
+                    is_lacteo: false,
+                    is_molusco: false,
+                    is_mostaza: false,
+                    is_pescado: false,
+                    is_sesamo: false,
+                    is_soja: false,
+                    is_sulfito: false,
+                })
+
+            }
+
+            if(message.updateNameCategoria){
+                this.setState({
+                    actCategoria: !this.state.actCategoria,
+                    clickedCategoria: null,
+                })
+
+
+            }
+
+            if(message.updateProducto){
+                this.setState({
+                    updatingProduct: !this.state.updatingProduct,
+                    clickedProducto: null,
+                })
+            }
+
+        }
+
+    }
+
     editProduct = (e, producto) => {
 
         if (producto != null) {
@@ -522,6 +599,16 @@ export class CartaPage extends Component {
             clickedCategoria: categoria
         })
     }
+
+    actualizarCategoria = (e, categoria) => {
+        this.setState({
+            actCategoria: !this.state.actCategoria,
+            clickedCategoria: categoria
+        })
+
+    }
+
+
 
     borrarProducto = (e, producto) => {
         this.setState({
@@ -756,6 +843,7 @@ export class CartaPage extends Component {
         addCategoria: PropTypes.func.isRequired,
         cartaReal: PropTypes.object.isRequired,
         totalcartas: PropTypes.array.isRequired,
+        message: PropTypes.object.isRequired
     };
 
     componentDidMount() {
@@ -1528,6 +1616,7 @@ export class CartaPage extends Component {
                                             </div>
 
 
+
                                             <div className={this.state.addingProduct ? "modal is-active" : "modal"}>
                                                 <div className="modal-background"></div>
                                                 <div className="modal-content">
@@ -1576,6 +1665,10 @@ export class CartaPage extends Component {
                                                                                             <option value="L">L</option>
                                                                                             <option value="XL">XL</option>
                                                                                             <option value="XXL">XXL</option>
+                                                                                            <option value="Kilo">Kilo</option>
+                                                                                            <option value="Gramos">Gramos</option>
+                                                                                            <option value="Porcion">Porcion</option>
+                                                                                            <option value="Trozo">Trozo</option>
                                                                                             <option value="Caña">Caña</option>
                                                                                             <option value="Tubo">Tubo</option>
                                                                                             <option value="Maceta">Maceta</option>
@@ -1622,6 +1715,10 @@ export class CartaPage extends Component {
                                                                                             <option value="L">L</option>
                                                                                             <option value="XL">XL</option>
                                                                                             <option value="XXL">XXL</option>
+                                                                                            <option value="Kilo">Kilo</option>
+                                                                                            <option value="Gramos">Gramos</option>
+                                                                                            <option value="Porcion">Porcion</option>
+                                                                                            <option value="Trozo">Trozo</option>
                                                                                             <option value="Caña">Caña</option>
                                                                                             <option value="Tubo">Tubo</option>
                                                                                             <option value="Maceta">Maceta</option>
@@ -1668,6 +1765,10 @@ export class CartaPage extends Component {
                                                                                             <option value="L">L</option>
                                                                                             <option value="XL">XL</option>
                                                                                             <option value="XXL">XXL</option>
+                                                                                            <option value="Kilo">Kilo</option>
+                                                                                            <option value="Gramos">Gramos</option>
+                                                                                            <option value="Porcion">Porcion</option>
+                                                                                            <option value="Trozo">Trozo</option>
                                                                                             <option value="Caña">Caña</option>
                                                                                             <option value="Tubo">Tubo</option>
                                                                                             <option value="Maceta">Maceta</option>
@@ -1911,6 +2012,10 @@ export class CartaPage extends Component {
                                                                                                 <option value="L">L</option>
                                                                                                 <option value="XL">XL</option>
                                                                                                 <option value="XXL">XXL</option>
+                                                                                                <option value="Kilo">Kilo</option>
+                                                                                                <option value="Gramos">Gramos</option>
+                                                                                                <option value="Porcion">Porcion</option>
+                                                                                                <option value="Trozo">Trozo</option>
                                                                                                 <option value="Caña">Caña</option>
                                                                                                 <option value="Tubo">Tubo</option>
                                                                                                 <option value="Maceta">Maceta</option>
@@ -1957,6 +2062,10 @@ export class CartaPage extends Component {
                                                                                                 <option value="L">L</option>
                                                                                                 <option value="XL">XL</option>
                                                                                                 <option value="XXL">XXL</option>
+                                                                                                <option value="Kilo">Kilo</option>
+                                                                                                <option value="Gramos">Gramos</option>
+                                                                                                <option value="Porcion">Porcion</option>
+                                                                                                <option value="Trozo">Trozo</option>
                                                                                                 <option value="Caña">Caña</option>
                                                                                                 <option value="Tubo">Tubo</option>
                                                                                                 <option value="Maceta">Maceta</option>
@@ -2003,6 +2112,10 @@ export class CartaPage extends Component {
                                                                                                 <option value="L">L</option>
                                                                                                 <option value="XL">XL</option>
                                                                                                 <option value="XXL">XXL</option>
+                                                                                                <option value="Kilo">Kilo</option>
+                                                                                                <option value="Gramos">Gramos</option>
+                                                                                                <option value="Porcion">Porcion</option>
+                                                                                                <option value="Trozo">Trozo</option>
                                                                                                 <option value="Caña">Caña</option>
                                                                                                 <option value="Tubo">Tubo</option>
                                                                                                 <option value="Maceta">Maceta</option>
@@ -2205,8 +2318,8 @@ export class CartaPage extends Component {
                                                         <div>
                                                             <div className="debug">
                                                                 {this.props.categorias.map((categoria, index) => (
-                                                                    <div>
-                                                                        <div className={this.state.borrarCategoria ? "modal is-active" : "modal"} key={index}>
+                                                                    <div key={index}>
+                                                                        <div className={this.state.borrarCategoria ? "modal is-active" : "modal"} >
                                                                             <div className="modal-background"></div>
                                                                             <div className="modal-content">
                                                                                 <div className="container box" >
@@ -2250,6 +2363,51 @@ export class CartaPage extends Component {
                                                                             </div>
                                                                         </div>
 
+                                                                        <div className={this.state.actCategoria ? "modal is-active" : "modal"}>
+                                                                            <div className="modal-background"></div>
+                                                                            <div className="modal-content">
+                                                                                <div className="container box">
+                                                                                    <div className="has-text-right">
+                                                                                        <button className="button" style={{ backgroundColor: '#171c8f' }} onClick={e => this.actualizarCategoria(e, this.state.clickedCategoria)}>
+                                                                                            <span className="icon is-small">
+                                                                                                <i className="fas fa-times " style={{ color: 'white' }}></i>
+                                                                                            </span>
+                                                                                        </button>
+                                                                                    </div>
+                                                                                    <div className="has-text-centered">
+
+                                                                                        <span className="icon" >
+                                                                                            <i className="fas fa-clipboard" style={{ fontSize: '70px', color: "#bca466" }}></i>
+                                                                                        </span>
+                                                                                        <h1 className="title" style={{ marginTop: '10px' }}> ACTUALIZAR CATEGORIA </h1>
+
+                                                                                    </div>
+
+                                                                                    <hr style={{ marginTop: '30px', backgroundColor: '#bca466', color: '#bca466' }} />
+                                                                                    <form>
+                                                                                        <div className="columns">
+                                                                                            <div className="column">
+                                                                                                <div className="field">
+                                                                                                    <label className="label" style={{ marginTop: '10px' }}>Nuevo nombre para la categoria</label>
+                                                                                                    <div className="control">
+                                                                                                        <input className="input" onChange={this.onChange} name="nombreNuevaCategoria" type="text" placeholder="Entrantes, Postres..." />
+                                                                                                    </div>
+
+                                                                                                    <label className="label" style={{ marginTop: '10px' }}>Nueva información extra</label>
+                                                                                                    <div className="control">
+                                                                                                        <input className="input" onChange={this.onChange} name="info_extra" type="text" placeholder="Estas tapas llevan todas patatas fritas..." />
+                                                                                                    </div>
+                                                                                                    <div className="has-text-right">
+                                                                                                        <button className="button is-success" style={{ marginTop: '10px', color: 'white', backgroundColor: '#bca466' }} onClick={e => this.onSubmitActualizarCategoria(e)} > ACTUALIZAR </button>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </form>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
                                                                             <div style={{ marginTop: '60px' }} key={categoria.id}>
                                                                                 <div className='card equal-height' style={{ backgroundColor: '#d5c69f' }}>
                                                                                     <div className="columns">
@@ -2285,6 +2443,20 @@ export class CartaPage extends Component {
                                                                                                             <button class="button is-danger" style={{ backgroundColor: 'white' }} onClick={e => this.borrarCategoria(e, categoria)}>
                                                                                                                 <span class="icon is-small">
                                                                                                                     <i class="fas fa-trash" style={{ color: '#bca466' }}></i>
+                                                                                                                </span>
+                                                                                                            </button>
+                                                                                                        </div>
+                                                                                                    </Tooltip>
+
+                                                                                                </div>
+                                                                                                <div className="column">
+                                                                                                    <Tooltip title="Actualizar Categoria">
+
+                                                                                                        <div >
+
+                                                                                                            <button class="button is-danger" style={{ backgroundColor: 'white' }} onClick={e => this.actualizarCategoria(e, categoria)}>
+                                                                                                                <span class="icon is-small">
+                                                                                                                    <i class="fas fa-pen" style={{ color: '#bca466' }}></i>
                                                                                                                 </span>
                                                                                                             </button>
                                                                                                         </div>
@@ -2639,7 +2811,8 @@ const mapStateToProps = state => ({
     auth: state.auth,
     cartaReal: state.reducerCartas.expecificCarta,
     totalcartas: state.reducerCartas.cartas,
-    isUpdatingPhoto: state.cartas.isUpdatingPhoto
+    isUpdatingPhoto: state.cartas.isUpdatingPhoto,
+    message: state.messages
 });
 
-export default connect(mapStateToProps, { updateIntroduccion, subirCartaLogo, uploadProductParams, updateLogoRounded, uploadProducto, updateCategoria, updateEstablecimiento, updateNombreCarta, updateURL, updateEslogan, getCartaExpecifica, subirproducto, addCategoria, getCategorias, deleteproducto, deleteCategoria, subirPhoto })(CartaPage);
+export default connect(mapStateToProps, { updateIntroduccion, subirCartaLogo, uploadProductParams, updateLogoRounded, uploadProducto, updateCategoria, updateEstablecimiento, updateNombreCarta, updateURL, updateEslogan, getCartaExpecifica, subirproducto, addCategoria, getCategorias, deleteproducto, deleteCategoria, subirPhoto, actNombreCategoria })(CartaPage);
